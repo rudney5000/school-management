@@ -1,0 +1,45 @@
+---
+description: Règles globales de code — appliquées à tous les fichiers
+alwaysApply: true
+---
+
+# Règles globales
+
+## Langue
+- Code (variables, fonctions, types, commentaires) : **anglais**
+- Messages UI, labels, textes : **français**
+- Commits git : **anglais**, format conventionnel (`feat:`, `fix:`, `chore:`)
+
+## TypeScript
+- Toujours `strict: true`
+- Pas de `any` — utiliser `unknown` si nécessaire, puis narrowing
+- Préférer `type` sur `interface` sauf pour les objets extensibles
+- Les fonctions async retournent toujours un type explicite
+- Zod pour toute validation runtime (API input, env vars)
+
+## Nommage
+- Variables / fonctions : `camelCase`
+- Types / Classes / Composants : `PascalCase`
+- Constantes globales : `SCREAMING_SNAKE_CASE`
+- Fichiers : `kebab-case.ts` (sauf composants React : `PascalCase.tsx`)
+- DB colonnes : `snake_case`
+
+## Structure des fichiers
+- 1 responsabilité par fichier
+- Max ~200 lignes — découper si plus grand
+- Exports nommés uniquement (pas de `export default` sauf composants React et pages)
+
+## Erreurs
+- Pas de `try/catch` vides
+- Toujours logger l'erreur avant de la relancer
+- Utiliser un type `AppError` custom avec `code` + `message` + `statusCode`
+
+## Commentaires
+- Pas de commentaires évidents (`// increment i`)
+- Commenter le **pourquoi**, pas le **quoi**
+- Les TODO doivent avoir un ticket/issue référencé : `// TODO #42 — migrer vers Redis`
+
+## Git
+- Commits atomiques (1 changement = 1 commit)
+- Jamais de `console.log` committé en dehors du debug explicite
+- `.env` jamais committé — toujours `.env.example` à jour
