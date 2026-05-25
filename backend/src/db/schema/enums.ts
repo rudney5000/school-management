@@ -1,0 +1,42 @@
+import { pgEnum } from 'drizzle-orm/pg-core';
+
+export const genderEnum = pgEnum('gender', ['male', 'female']);
+
+export const dayOfWeekEnum = pgEnum('day_of_week', [
+    'MONDAY',
+    'TUESDAY',
+    'WEDNESDAY',
+    'THURSDAY',
+    'FRIDAY',
+    'SATURDAY',
+    'SUNDAY',
+]);
+
+export const attendanceStatusEnum = pgEnum('attendance_status', [
+    'PRESENT',
+    'ABSENT',
+    'LATE',
+    'EXCUSED',
+]);
+
+export const paymentStatusEnum = pgEnum('payment_status', [
+    'PENDING',
+    'PAID',
+    'FAILED',
+    'REFUNDED',
+]);
+
+export const payrollStatusEnum = pgEnum('payroll_status', [
+    'PENDING',
+    'PAID',
+    'CANCELLED',
+]);
+export const paymentTypeEnum = pgEnum('payment_type', [
+    'TUITION',
+    'CANTEEN',
+    'UNIFORM',
+    'EXAM_FEE',
+    'TRANSPORT',
+    'ACTIVITY',
+    'OTHER',
+]);
