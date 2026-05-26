@@ -40,3 +40,13 @@ export const paymentTypeEnum = pgEnum('payment_type', [
     'ACTIVITY',
     'OTHER',
 ]);
+
+export const roleEnum = pgEnum('role', [
+    'super_admin',
+    'admin',
+    'director',
+    'teacher',
+    'worker',
+    'parent',
+    'student',
+]);
