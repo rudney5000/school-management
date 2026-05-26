@@ -15,3 +15,4 @@ export * from './finance';
 export * from './school';
 export * from './enums'
 export * from './students';
+export * from './users';
