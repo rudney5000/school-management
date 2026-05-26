@@ -21,6 +21,7 @@ export const students = pgTable('students', {
   isActive: boolean('is_active').notNull().default(true),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  deletedAt: timestamp('deleted_at'),
 }, (table) => ({
   idx_students_school: index('idx_students_school').on(table.schoolId),
   idx_students_parent: index('idx_students_parent').on(table.parentId),
