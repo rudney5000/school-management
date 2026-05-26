@@ -7,8 +7,8 @@ import {
   schoolQuerySchema,
   updateSubSchoolSchema,
 } from '@/modules/sub-schools/sub-schools.schema';
-import { authenticate } from '@/middleware/authenticate.ts';
-import { authorize } from '@/middleware/authorize.ts';
+import { authenticate } from '@/middleware/authenticate';
+import { authorize } from '@/middleware/authorize';
 
 const router = Router();
 const controller = new SubSchoolsController();
