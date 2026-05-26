@@ -39,10 +39,6 @@ coverage/
 .docker/
 docker-compose.override.yml
 
-# Backend specific
-backend/src/db/migrations/*.sql
-!backend/src/db/migrations/.gitkeep
-
 # Frontend specific
 frontend/.vite/
 frontend/dist/
