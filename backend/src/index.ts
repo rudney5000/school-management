@@ -3,8 +3,16 @@ import { createApp } from './app';
 import { env } from './config/env';
 import { db } from './db';
 import { sql } from 'drizzle-orm';
+import { migrate } from 'drizzle-orm/postgres-js/migrator';
 
 async function bootstrap(): Promise<void> {
+
+  if (env.NODE_ENV === 'production') {
+    console.log('Running migrations...');
+    await migrate(db, { migrationsFolder: './migrations' });
+    console.log('✓ Migrations done');
+  }
+
   await db.execute(sql`SELECT 1`);
   console.log('✓ Database connected');
 
