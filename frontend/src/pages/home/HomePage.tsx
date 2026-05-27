@@ -1,49 +1,79 @@
-import { Button } from "@shared/ui/button";
-import { Badge } from "@shared/ui/badge";
-import {Card} from "@shared/ui/card";
+
 import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger
-} from "@shared/ui/accordion";
-import {
+    GraduationCap,
+    Users,
+    BookOpen,
+    Calendar,
+    ShieldCheck,
+    BarChart3,
+    MessageSquare,
+    Trophy,
+    Clock,
+    Sparkles,
     LayoutGrid,
     Layers3,
-    MessageSquare,
     Puzzle,
-    ShieldCheck,
     Smartphone,
-    Sparkles,
 } from "lucide-react";
+import {Button} from "@shared/ui/button.tsx";
+import {Badge} from "@shared/ui/badge.tsx";
+import {Card} from "@shared/ui/card.tsx";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@shared/ui/accordion.tsx";
 
 const features = [
     {
         icon: <Layers3 className="h-5 w-5" />,
-        title: "Well organized Layer",
-        desc: "Structure claire et scalable pour ton produit.",
+        title: "Multi-Level Management",
+        desc: "Gestion seamless du primaire au superieur.",
     },
     {
         icon: <Sparkles className="h-5 w-5" />,
-        title: "Clean & Modern Design",
-        desc: "Gros contrastes, espaces généreux et cartes premium.",
+        title: "Modern Learning",
+        desc: "Interface intuitive et experience premium.",
     },
     {
         icon: <Puzzle className="h-5 w-5" />,
-        title: "Full Customize",
-        desc: "Facile à adapter à ta marque et à ton contenu.",
+        title: "Fully Customizable",
+        desc: "Adaptez la platforme a votre etablissement.",
     },
     {
         icon: <LayoutGrid className="h-5 w-5" />,
-        title: "1 Screen",
-        desc: "Une page forte, lisible et orientée conversion.",
+        title: "All-in-One Platform",
+        desc: "Une solution complete pour toute l'ecole.",
     },
 ];
 
 const stats = [
-    { value: "450+", label: "Positive Reviews" },
-    { value: "80%", label: "Daily Progress" },
-    { value: "50+", label: "Trusted Companies" },
+    { value: "150+", label: "Etablissements" },
+    { value: "50K+", label: "Eleves Actifs" },
+    { value: "98%", label: "Satisfaction" },
+];
+
+const userTypes = [
+    {
+        icon: <GraduationCap className="h-5 w-5" />,
+        title: "Eleves",
+        desc: "Acces aux cours, notes et emploi du temps en temps reel.",
+        color: "bg-emerald-100 text-emerald-600",
+    },
+    {
+        icon: <Users className="h-5 w-5" />,
+        title: "Enseignants",
+        desc: "Gestion des classes, publication des notes et suivi pedagogique.",
+        color: "bg-blue-100 text-blue-600",
+    },
+    {
+        icon: <BookOpen className="h-5 w-5" />,
+        title: "Parents",
+        desc: "Suivi des progres et communication directe avec l'ecole.",
+        color: "bg-amber-100 text-amber-600",
+    },
+    {
+        icon: <BarChart3 className="h-5 w-5" />,
+        title: "Administration",
+        desc: "Tableau de bord complet pour une gestion efficace.",
+        color: "bg-rose-100 text-rose-600",
+    },
 ];
 
 export function HomePage() {
@@ -53,19 +83,19 @@ export function HomePage() {
                 <nav className="mb-10 flex items-center justify-between rounded-full bg-white/70 px-5 py-4 backdrop-blur">
                     <div className="flex items-center gap-3">
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
-                            C
+                            S
                         </div>
                         <span className="text-2xl font-semibold tracking-tight text-blue-600">
-              coca
-            </span>
+                            SchoolHub
+                        </span>
                     </div>
 
                     <div className="hidden items-center gap-8 text-sm text-slate-600 md:flex">
                         <a href="#features" className="hover:text-slate-950">
-                            Features
+                            Fonctionnalites
                         </a>
-                        <a href="#showcase" className="hover:text-slate-950">
-                            Showcase
+                        <a href="#users" className="hover:text-slate-950">
+                            Utilisateurs
                         </a>
                         <a href="#faq" className="hover:text-slate-950">
                             FAQ
@@ -74,9 +104,9 @@ export function HomePage() {
 
                     <div className="flex items-center gap-3">
                         <Button variant="ghost" className="rounded-full">
-                            Login
+                            Connexion
                         </Button>
-                        <Button className="rounded-full px-6">Sign Up</Button>
+                        <Button className="rounded-full px-6">Commencer</Button>
                     </div>
                 </nav>
 
@@ -84,26 +114,25 @@ export function HomePage() {
                     <div className="space-y-8">
                         <div className="space-y-5">
                             <Badge className="rounded-full px-4 py-2 text-sm" variant="secondary">
-                                Available file
+                                Disponible maintenant
                             </Badge>
 
                             <h1 className="max-w-xl text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">
-                                Epay - Wallet App Landing Page
+                                La plateforme scolaire complete
                             </h1>
 
                             <p className="max-w-xl text-lg leading-8 text-slate-600">
-                                Une homepage moderne, claire et premium, inspirée d’un style
-                                mobile-first avec de grandes cartes, des CTA visibles et une
-                                hiérarchie forte.
+                                Gerez tous les niveaux d'education sur une seule plateforme moderne.
+                                Du primaire au superieur, chaque acteur trouve sa place.
                             </p>
                         </div>
 
                         <div className="flex flex-wrap gap-4">
                             <Button size="lg" className="rounded-full px-8">
-                                Get Started
+                                Demarrer gratuitement
                             </Button>
                             <Button size="lg" variant="outline" className="rounded-full px-8">
-                                Book a Demo
+                                Voir la demo
                             </Button>
                         </div>
 
@@ -123,8 +152,8 @@ export function HomePage() {
 
                         <Card className="relative overflow-hidden rounded-[2rem] border-0 bg-blue-600 p-6 text-white shadow-[0_30px_80px_rgba(37,99,235,0.35)]">
                             <div className="mb-6 flex items-center justify-between text-sm text-white/80">
-                                <span className="font-semibold">coca</span>
-                                <span>Trusted by 50+ companies</span>
+                                <span className="font-semibold">SchoolHub</span>
+                                <span>150+ etablissements nous font confiance</span>
                             </div>
 
                             <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
@@ -134,9 +163,9 @@ export function HomePage() {
                                             <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-blue-600">
                                                 <ShieldCheck className="h-4 w-4" />
                                             </div>
-                                            <h3 className="font-semibold">Top Notch Secured</h3>
+                                            <h3 className="font-semibold">Securite Garantie</h3>
                                             <p className="mt-2 text-sm text-slate-600">
-                                                Sécurité, fiabilité et confiance pour tes utilisateurs.
+                                                Donnees protegees et confidentialite respectee.
                                             </p>
                                         </Card>
 
@@ -144,35 +173,35 @@ export function HomePage() {
                                             <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-blue-600">
                                                 <MessageSquare className="h-4 w-4" />
                                             </div>
-                                            <h3 className="font-semibold">Engage Customers</h3>
+                                            <h3 className="font-semibold">Communication Fluide</h3>
                                             <p className="mt-2 text-sm text-slate-600">
-                                                Des écrans qui guident naturellement vers l’action.
+                                                Echanges instantanes entre tous les acteurs.
                                             </p>
                                         </Card>
                                     </div>
 
                                     <h2 className="max-w-md text-3xl font-semibold tracking-tight">
-                                        We will take care of your everything
+                                        Tout pour reussir l'annee scolaire
                                     </h2>
 
                                     <div className="mt-6 space-y-3">
                                         <Accordion type="single" collapsible className="w-full">
                                             <AccordionItem value="item-1">
-                                                <AccordionTrigger>Anti-Loss Technology</AccordionTrigger>
+                                                <AccordionTrigger>Suivi des Notes en temps reel</AccordionTrigger>
                                                 <AccordionContent>
-                                                    Protection, stabilité et expérience fluide.
+                                                    Visualisez les progres et les performances instantanement.
                                                 </AccordionContent>
                                             </AccordionItem>
                                             <AccordionItem value="item-2">
-                                                <AccordionTrigger>Exchange Easily</AccordionTrigger>
+                                                <AccordionTrigger>Emploi du Temps Interactif</AccordionTrigger>
                                                 <AccordionContent>
-                                                    Interaction simple et navigation rapide.
+                                                    Planning personnalise et notifications automatiques.
                                                 </AccordionContent>
                                             </AccordionItem>
                                             <AccordionItem value="item-3">
-                                                <AccordionTrigger>Fully Encrypted</AccordionTrigger>
+                                                <AccordionTrigger>Espace de Cours Digital</AccordionTrigger>
                                                 <AccordionContent>
-                                                    Architecture pensée pour la confiance.
+                                                    Ressources pedagogiques accessibles partout.
                                                 </AccordionContent>
                                             </AccordionItem>
                                         </Accordion>
@@ -186,19 +215,28 @@ export function HomePage() {
                                                 <Smartphone className="h-5 w-5" />
                                             </div>
                                             <div>
-                                                <div className="font-semibold">Mobile Preview</div>
-                                                <div className="text-sm text-slate-600">Wallet app mockup</div>
+                                                <div className="font-semibold">Application Mobile</div>
+                                                <div className="text-sm text-slate-600">Disponible iOS & Android</div>
                                             </div>
                                         </div>
 
                                         <div className="rounded-3xl bg-slate-100 p-4">
                                             <div className="mx-auto h-64 max-w-[220px] rounded-[2rem] bg-gradient-to-b from-slate-900 to-slate-700 p-3 text-white shadow-xl">
                                                 <div className="h-full rounded-[1.5rem] bg-white p-4 text-slate-950">
-                                                    <div className="text-xs text-slate-500">My Task</div>
+                                                    <div className="text-xs text-slate-500">Mon Espace</div>
                                                     <div className="mt-3 space-y-3">
-                                                        <div className="h-10 rounded-2xl bg-slate-100" />
-                                                        <div className="h-10 rounded-2xl bg-slate-100" />
-                                                        <div className="h-10 rounded-2xl bg-blue-100" />
+                                                        <div className="flex items-center gap-2 rounded-2xl bg-blue-50 p-3">
+                                                            <Calendar className="h-4 w-4 text-blue-600" />
+                                                            <span className="text-xs font-medium">Emploi du temps</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-2 rounded-2xl bg-emerald-50 p-3">
+                                                            <Trophy className="h-4 w-4 text-emerald-600" />
+                                                            <span className="text-xs font-medium">Mes notes: 16.5</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-2 rounded-2xl bg-amber-50 p-3">
+                                                            <Clock className="h-4 w-4 text-amber-600" />
+                                                            <span className="text-xs font-medium">Prochain cours: 14h</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -207,16 +245,38 @@ export function HomePage() {
 
                                     <Card className="rounded-[1.75rem] border-0 bg-slate-100 p-5 text-slate-950 shadow-lg">
                                         <h3 className="text-xl font-semibold">
-                                            Your access anytime, anywhere
+                                            Acces permanent, partout
                                         </h3>
                                         <p className="mt-2 text-sm text-slate-600">
-                                            Responsive experience pour desktop et mobile.
+                                            Compatible desktop, tablette et mobile pour tous.
                                         </p>
                                     </Card>
                                 </div>
                             </div>
                         </Card>
                     </div>
+                </div>
+            </section>
+
+            <section id="users" className="mx-auto max-w-7xl px-6 pb-10 lg:px-10">
+                <div className="mb-8 text-center">
+                    <h2 className="text-3xl font-semibold tracking-tight">
+                        Une plateforme pour tous
+                    </h2>
+                    <p className="mt-2 text-slate-600">
+                        Chaque acteur de l'education trouve son espace dedie.
+                    </p>
+                </div>
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    {userTypes.map((item) => (
+                        <Card key={item.title} className="group rounded-3xl border-0 bg-white p-6 shadow-sm transition-all hover:shadow-lg">
+                            <div className={cn("mb-4 flex h-11 w-11 items-center justify-center rounded-full", item.color)}>
+                                {item.icon}
+                            </div>
+                            <h3 className="text-lg font-semibold">{item.title}</h3>
+                            <p className="mt-2 text-sm text-slate-600">{item.desc}</p>
+                        </Card>
+                    ))}
                 </div>
             </section>
 
@@ -238,11 +298,12 @@ export function HomePage() {
                 <div className="grid gap-6 lg:grid-cols-2">
                     <Card className="rounded-[2rem] border-0 bg-white p-8 shadow-sm">
                         <h2 className="text-3xl font-semibold tracking-tight">
-                            Built for a strong first impression
+                            Concu pour l'education moderne
                         </h2>
                         <p className="mt-4 text-slate-600">
-                            La structure ci-dessus fonctionne très bien pour une landing page
-                            produit, SaaS ou wallet app.
+                            Notre plateforme s'adapte a tous les niveaux: maternelle, primaire,
+                            college, lycee et enseignement superieur. Chaque etablissement trouve
+                            son modele ideal.
                         </p>
                         <div className="mt-6 flex flex-wrap gap-3">
                             <Badge variant="secondary" className="rounded-full px-4 py-2">
@@ -261,15 +322,16 @@ export function HomePage() {
                     </Card>
 
                     <Card className="rounded-[2rem] border-0 bg-blue-600 p-8 text-white shadow-sm">
-                        <h2 className="text-3xl font-semibold tracking-tight">Next step</h2>
+                        <h2 className="text-3xl font-semibold tracking-tight">
+                            Pret a transformer votre etablissement?
+                        </h2>
                         <p className="mt-4 text-white/80">
-                            Je peux maintenant te générer la version encore plus fidèle à ton
-                            image, avec hero asymétrique, sections superposées et mockups plus
-                            réalistes.
+                            Rejoignez plus de 150 etablissements qui font confiance a SchoolHub
+                            pour moderniser leur gestion scolaire et ameliorer l'experience educative.
                         </p>
                         <div className="mt-6 flex flex-wrap gap-3">
                             <Button className="rounded-full bg-white px-6 text-blue-600 hover:bg-white/90">
-                                Generate premium version
+                                Demander une demo
                             </Button>
                         </div>
                     </Card>
@@ -277,4 +339,8 @@ export function HomePage() {
             </section>
         </main>
     );
+}
+
+function cn(...classes: (string | boolean | undefined)[]) {
+    return classes.filter(Boolean).join(' ');
 }
