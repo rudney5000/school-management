@@ -1,8 +1,12 @@
-import {createRootRoute, createRoute, createRouter, RouterProvider} from "@tanstack/react-router";
+import {createRootRoute, createRoute, createRouter, Outlet, RouterProvider} from "@tanstack/react-router";
 import {HomeLayout} from "@app/router/layouts/HomeLayout";
 import {HomePage} from "@/pages/home/HomePage";
+import {NotFoundPage} from "@/pages/404/NotFoundPage.tsx";
 
-const rootRoute = createRootRoute();
+const rootRoute = createRootRoute({
+    component: Outlet,
+    notFoundComponent: NotFoundPage
+});
 
 const homeLayoutRoute = createRoute({
     getParentRoute: () => rootRoute,
