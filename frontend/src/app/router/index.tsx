@@ -2,6 +2,7 @@ import {createRootRoute, createRoute, createRouter, Outlet, RouterProvider} from
 import {HomeLayout} from "@app/router/layouts/HomeLayout";
 import {HomePage} from "@/pages/home/HomePage";
 import {NotFoundPage} from "@/pages/404/NotFoundPage.tsx";
+import {FAQPage} from "@/pages/faq/FAQPage.tsx";
 
 const rootRoute = createRootRoute({
     component: Outlet,
@@ -18,6 +19,12 @@ const homeRoute = createRoute({
     getParentRoute: () => homeLayoutRoute,
     path: '/',
     component: HomePage
+})
+
+const faqRoute = createRoute({
+    getParentRoute: () => homeLayoutRoute,
+    path: '/faq',
+    component: FAQPage
 })
 
 const dashboardRoute = createRoute({
@@ -42,7 +49,8 @@ const routeTree = rootRoute.addChildren([
     homeLayoutRoute
         .addChildren(
     [
-        homeRoute
+        homeRoute,
+        faqRoute
     ]),
     loginRoute,
     registerRoute,

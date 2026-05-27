@@ -1,4 +1,3 @@
-
 import {
     GraduationCap,
     Users,
@@ -19,6 +18,7 @@ import {Button} from "@shared/ui/button.tsx";
 import {Badge} from "@shared/ui/badge.tsx";
 import {Card} from "@shared/ui/card.tsx";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@shared/ui/accordion.tsx";
+import {Link} from "@tanstack/react-router";
 
 const features = [
     {
@@ -97,9 +97,9 @@ export function HomePage() {
                         <a href="#users" className="hover:text-slate-950">
                             Utilisateurs
                         </a>
-                        <a href="#faq" className="hover:text-slate-950">
+                        <Link to="/faq" className="hover:text-slate-950">
                             FAQ
-                        </a>
+                        </Link>
                     </div>
 
                     <div className="flex items-center gap-3">
