@@ -2,64 +2,42 @@ import {ApiWrapper} from "@shared/api/ApiWrapper.ts";
 import {baseApi} from "@shared/api/instance.ts";
 import type {CommonResponse} from "@shared/helperClass/CommonResponse.ts";
 import type {CommonError} from "@shared/helperClass/CommonError.ts";
-
-export interface LoginPayload {
-    email: string
-    password: string
-}
-
-export interface RegisterPayload extends LoginPayload {
-    role: 'admin' | 'director' | 'teacher' | 'worker' | 'parent' | 'student'
-    workerId?: string
-    parentId?: string
-    studentId?: string
-    teacherId?: string
-}
-
-export interface AuthResponse {
-    accessToken: string
-    refreshToken: string
-}
-
-export interface MeResponse {
-    id: string
-    email: string
-    role: string
-    schoolId: string
-    subSchoolId: string
-}
+import type {LoginDto} from "@features/auth/model/dto/LoginDto.ts";
+import type {AuthTokensDto} from "@features/auth/model/dto/AuthTokensDto.ts";
+import type {RegisterDto} from "@features/auth/model/dto/RegisterDto.ts";
+import type {UserDto} from "@features/auth/model/dto/UserDto.ts";
 
 class AuthApi extends ApiWrapper {
     constructor() {
         super(baseApi);
     }
 
-    async login(payload: LoginPayload): Promise<CommonResponse<AuthResponse | CommonError>> {
+    async login(payload: LoginDto): Promise<CommonResponse<AuthTokensDto | CommonError>> {
         return this.handleRequest(
             this._baseApi.post('/auth/login', payload),
-            (data) => data as AuthResponse
+            (data) => data as AuthTokensDto
         )
     }
 
-    async register(payload: RegisterPayload): Promise<CommonResponse<AuthResponse | CommonError>> {
+    async register(payload: RegisterDto): Promise<CommonResponse<AuthTokensDto | CommonError>> {
         return this.handleRequest(
             this._baseApi.post('/auth/register', payload),
-            (data) => data as AuthResponse
+            (data) => data as AuthTokensDto
         )
     }
 
 
-    async me(): Promise<CommonResponse<MeResponse | CommonError>> {
+    async me(): Promise<CommonResponse<UserDto | CommonError>> {
         return this.handleRequest(
             this._baseApi.get('/auth/me'),
-            (data) => data as MeResponse
+            (data) => data as UserDto
         )
     }
 
-    async refresh(refreshToken: string): Promise<CommonResponse<AuthResponse | CommonError>> {
+    async refresh(refreshToken: string): Promise<CommonResponse<AuthTokensDto | CommonError>> {
         return this.handleRequest(
             this._baseApi.post('/auth/refresh', { refreshToken }),
-            (data) => data as AuthResponse
+            (data) => data as AuthTokensDto
         )
     }
     async logout(): Promise<CommonResponse<void | CommonError>> {
