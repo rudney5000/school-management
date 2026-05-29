@@ -3,6 +3,10 @@ import {HomeLayout} from "@app/router/layouts/HomeLayout";
 import {HomePage} from "@/pages/home/HomePage";
 import {NotFoundPage} from "@/pages/404/NotFoundPage.tsx";
 import {FAQPage} from "@/pages/faq/FAQPage.tsx";
+import {AuthLayout} from "@app/router/layouts/AuthLayout.tsx";
+import {requireGuest} from "@app/router/guards.ts";
+import {LoginPage} from "@/pages/login/LoginPage.tsx";
+import {RegisterPage} from "@/pages/register/RegisterPage.tsx";
 
 const rootRoute = createRootRoute({
     component: Outlet,
@@ -13,6 +17,13 @@ const homeLayoutRoute = createRoute({
     getParentRoute: () => rootRoute,
     id: 'home-layout',
     component: HomeLayout,
+});
+
+const authLayoutRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    id: 'auth-layout',
+    component: AuthLayout,
+    beforeLoad: requireGuest
 });
 
 const homeRoute = createRoute({
@@ -29,31 +40,33 @@ const faqRoute = createRoute({
 
 const dashboardRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/admin/dashboard',
+    path: '/dashboard',
     component: () => <div>Dashboard</div>
 })
 
 const loginRoute = createRoute({
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => authLayoutRoute,
     path: '/login',
-    component: () => <div>Login</div>
+    component: LoginPage
 })
 
 const registerRoute = createRoute({
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => authLayoutRoute,
     path: '/register',
-    component: () => <div>Inscription</div>
+    component: RegisterPage
 })
 
 const routeTree = rootRoute.addChildren([
     homeLayoutRoute
-        .addChildren(
-    [
-        homeRoute,
-        faqRoute
-    ]),
-    loginRoute,
-    registerRoute,
+        .addChildren([
+            homeRoute,
+            faqRoute
+        ]),
+    authLayoutRoute
+        .addChildren([
+            loginRoute,
+            registerRoute
+        ]),
     dashboardRoute
     ]);
 
