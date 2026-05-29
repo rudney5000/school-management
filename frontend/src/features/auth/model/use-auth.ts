@@ -5,8 +5,8 @@ import { setCredentials } from '@features/auth/store/auth-slice.ts'
 import { useAppDispatch } from '@/shared/store/hooks'
 import { baseApi } from '@/shared/api/instance'
 import type { LoginFormData, RegisterFormData } from './auth.schema'
-import type { AuthResponse, MeResponse } from '../api/auth.api'
 import type {CommonError} from "@shared/helperClass/CommonError.ts";
+import type {AuthTokensDto} from "@features/auth/model/dto/AuthTokensDto.ts";
 
 export function useAuth() {
     const dispatch = useAppDispatch()
@@ -14,20 +14,18 @@ export function useAuth() {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
-    const handleAuthSuccess = async (tokens: AuthResponse) => {
+    const handleAuthSuccess = async (tokens: AuthTokensDto) => {
         baseApi.saveToken(tokens.accessToken)
         localStorage.setItem('refreshToken', tokens.refreshToken)
 
-        const meRes = await authApi.me()
-        if (!meRes.IsSuccess) return
-
-        const me = meRes.result as MeResponse
+        const payload = JSON.parse(atob(tokens.accessToken.split('.')[1]))
         dispatch(setCredentials({
             accessToken: tokens.accessToken,
-            role: me.role,
-            email: me.email,
-            schoolId: me.schoolId,
-            subSchoolId: me.subSchoolId,
+            refreshToken: tokens.refreshToken,
+            role: payload.role,
+            email: payload.email,
+            schoolId: payload.schoolId,
+            subSchoolId: payload.subSchoolId ?? null,
         }))
 
         navigate({ to: '/dashboard' })
@@ -40,7 +38,7 @@ export function useAuth() {
         const res = await authApi.login(data)
 
         if (res.IsSuccess) {
-            await handleAuthSuccess(res.result as AuthResponse)
+            await handleAuthSuccess(res.result as AuthTokensDto)
         } else {
             setError((res.result as CommonError).Message)
         }
@@ -59,7 +57,7 @@ export function useAuth() {
         })
 
         if (res.IsSuccess) {
-            await handleAuthSuccess(res.result as AuthResponse)
+            await handleAuthSuccess(res.result as AuthTokensDto)
         } else {
             setError((res.result as CommonError).Message)
         }
