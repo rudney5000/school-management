@@ -12,7 +12,8 @@ export abstract class ApiWrapper {
         const [result, error] = await request
 
         if (result) {
-            const raw = (result as { data: unknown }).data
+            const response = (result as { data: { data?: unknown; success?: boolean } }).data
+            const raw = response?.data !== undefined ? response.data : response
             const data = transform ? transform(raw) : (raw as T)
             return new CommonResponse<T>(Status.Success, data)
         }
