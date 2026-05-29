@@ -1,9 +1,12 @@
 import { createSlice, type PayloadAction, type Slice } from '@reduxjs/toolkit'
+import type {UserRole} from "@features/auth/model/dto/RegisterDto.ts";
 
 export interface AuthState {
     accessToken: string | null
-    role: string | null
+    refreshToken: string | null
+    role: UserRole | null
     email: string | null
+    userId: string | null
     schoolId: string | null
     subSchoolId: string | null
     isAuthenticated: boolean
@@ -11,38 +14,38 @@ export interface AuthState {
 
 const initialState: AuthState = {
     accessToken:     localStorage.getItem('accessToken'),
-    role:            localStorage.getItem('role'),
+    refreshToken:     localStorage.getItem('refreshToken'),
+    role:            localStorage.getItem('role') as UserRole || null,
     email:           localStorage.getItem('email'),
+    userId:          localStorage.getItem('userId'),
     schoolId:        localStorage.getItem('schoolId'),
     subSchoolId:     localStorage.getItem('subSchoolId'),
     isAuthenticated: !!localStorage.getItem('accessToken'),
 }
 
-const authSlice: Slice<AuthState> = createSlice({
+export const authSlice: Slice<AuthState> = createSlice({
     name: 'auth',
     initialState,
     reducers: {
         setCredentials: (
             state,
-            action: PayloadAction<{
-                accessToken: string
-                role: string
-                email: string
-                schoolId: string
-                subSchoolId?: string
-            }>,
+            action: PayloadAction<AuthState & { refreshToken: string }>,
         ) => {
-            const { accessToken, role, email, schoolId, subSchoolId } = action.payload
+            const { accessToken, refreshToken, role, email, userId, schoolId, subSchoolId } = action.payload
             state.accessToken     = accessToken
+            state.refreshToken    = refreshToken
             state.role            = role
             state.email           = email
+            state.userId          = userId
             state.schoolId        = schoolId
-            state.subSchoolId     = subSchoolId ?? null
+            state.subSchoolId     = subSchoolId
             state.isAuthenticated = true
-            localStorage.setItem('accessToken', accessToken)
-            localStorage.setItem('role', role)
-            localStorage.setItem('email', email)
-            localStorage.setItem('schoolId', schoolId)
+
+            localStorage.setItem('accessToken', accessToken!)
+            localStorage.setItem('refreshToken', refreshToken)
+            localStorage.setItem('role', role!)
+            localStorage.setItem('email', email!)
+            localStorage.setItem('schoolId', schoolId!)
             if (subSchoolId) localStorage.setItem('subSchoolId', subSchoolId)
         },
         logout: (state) => {
@@ -56,7 +59,5 @@ const authSlice: Slice<AuthState> = createSlice({
         },
     },
 })
-
-export { authSlice }
 
 export const { setCredentials, logout } = authSlice.actions
