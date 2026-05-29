@@ -103,9 +103,9 @@ export function HomePage() {
                     </div>
 
                     <div className="flex items-center gap-3">
-                        <Button variant="ghost" className="rounded-full">
+                        <Link to="/login" className="rounded-full">
                             Connexion
-                        </Button>
+                        </Link>
                         <Button className="rounded-full px-6">Commencer</Button>
                     </div>
                 </nav>
