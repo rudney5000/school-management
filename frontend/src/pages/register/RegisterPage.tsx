@@ -8,7 +8,7 @@ import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
 import {
     Select,
-    SelectContent,
+    SelectContent, SelectGroup,
     SelectItem,
     SelectTrigger,
     SelectValue,
@@ -78,10 +78,12 @@ export function RegisterPage() {
                         <SelectTrigger className={errors.role ? 'border-red-500' : ''}>
                             <SelectValue placeholder="Select your role" />
                         </SelectTrigger>
-                        <SelectContent>
-                            {roles.map(({ value, label }) => (
-                                <SelectItem key={value} value={value}>{label}</SelectItem>
-                            ))}
+                        <SelectContent position="popper" className="z-50">
+                            <SelectGroup>
+                                {roles.map(({ value, label }) => (
+                                    <SelectItem key={value} value={value}>{label}</SelectItem>
+                                ))}
+                            </SelectGroup>
                         </SelectContent>
                     </Select>
                     {errors.role && (
