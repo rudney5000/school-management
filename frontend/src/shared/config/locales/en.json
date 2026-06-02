@@ -150,5 +150,60 @@
       "permanent_access": "Permanent Access, Everywhere",
       "permanent_access_description": "Compatible desktop, tablet and mobile for everyone."
     }
+  },
+  "nav": {
+    "group": {
+      "main": "Main",
+      "pedagogy": "Pedagogy",
+      "people": "People",
+      "system": "System",
+      "other": "Other"
+    },
+    "dashboard": "Dashboard",
+    "schools": "Schools",
+    "classes": "Classes",
+    "schedule": "Schedule",
+    "courses": "Courses",
+    "exams": "Exams",
+    "assessments": "Assessments",
+    "reports": "Reports",
+    "teachers": "Teachers",
+    "students": "Students",
+    "parents": "Parents",
+    "attendance": "Attendance",
+    "messages": "Messages",
+    "settings": "Settings"
+  },
+  "header": {
+    "search": "Search...",
+    "notifications": "Notifications"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Overview",
+    "stats": {
+      "schools": "Schools",
+      "classes": "Classes",
+      "levels": "Levels",
+      "courses": "Courses",
+      "exams": "Exams",
+      "students": "Students",
+      "teachers": "Teachers"
+    },
+    "schedule": {
+      "title": "Today's Classes",
+      "viewAll": "View all"
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "viewAll": "View all"
+    },
+    "enrollment": {
+      "title": "Enrollment by Level"
+    },
+    "attendance": {
+      "title": "Attendance Rate"
+    }
   }
+
 }

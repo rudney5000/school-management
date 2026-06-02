@@ -150,5 +150,59 @@
       "permanent_access": "Accès permanent, partout",
       "permanent_access_description": "Compatible desktop, tablette et mobile pour tous."
     }
+  },
+  "nav": {
+    "group": {
+      "main":     "Principal",
+      "pedagogy": "Pédagogie",
+      "people":   "Personnes",
+      "system":   "Système",
+      "other":    "Autre"
+    },
+    "dashboard":   "Tableau de bord",
+    "schools":     "Établissements",
+    "classes":     "Classes",
+    "schedule":    "Emploi du temps",
+    "courses":     "Cours",
+    "exams":       "Examens",
+    "assessments": "Évaluations",
+    "reports":     "Rapports",
+    "teachers":    "Enseignants",
+    "students":    "Élèves",
+    "parents":     "Parents",
+    "attendance":  "Présences",
+    "messages":    "Messages",
+    "settings":    "Paramètres"
+  },
+  "header": {
+    "search":        "Rechercher...",
+    "notifications": "Notifications"
+  },
+  "dashboard": {
+    "title":          "Tableau de bord",
+    "subtitle":       "Vue d'ensemble",
+    "stats": {
+      "schools":  "Établissements",
+      "classes":  "Classes",
+      "levels":   "Niveaux",
+      "courses":  "Cours",
+      "exams":    "Examens",
+      "students": "Élèves",
+      "teachers": "Enseignants"
+    },
+    "schedule": {
+      "title":   "Cours du jour",
+      "viewAll": "Voir tout"
+    },
+    "activity": {
+      "title":   "Activité récente",
+      "viewAll": "Tout voir"
+    },
+    "enrollment": {
+      "title": "Inscriptions par niveau"
+    },
+    "attendance": {
+      "title": "Taux de présence"
+    }
   }
 }

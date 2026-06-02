@@ -104,5 +104,77 @@
       "ready_description": "Присоединяйтесь к более чем 150 учебным заведениям, которые доверяют SchoolHub для модернизации школьного управления и улучшения образовательного опыта.",
       "request_demo": "Запросить демо"
     }
+  },
+  "nav": {
+    "group": {
+      "main": "Главное",
+      "pedagogy": "Педагогика",
+      "people": "Люди",
+      "system": "Система",
+      "other": "Прочее"
+    },
+    "dashboard": "Панель управления",
+    "schools": "Учреждения",
+    "classes": "Классы",
+    "schedule": "Расписание",
+    "courses": "Курсы",
+    "exams": "Экзамены",
+    "assessments": "Оценки",
+    "reports": "Отчёты",
+    "teachers": "Учителя",
+    "students": "Ученики",
+    "parents": "Родители",
+    "attendance": "Посещаемость",
+    "messages": "Сообщения",
+    "settings": "Настройки"
+  },
+  "header": {
+    "search": "Поиск...",
+    "notifications": "Уведомления"
+  },
+  "dashboard": {
+    "title": "Панель управления",
+    "subtitle": "Обзор",
+    "stats": {
+      "schools": "Учреждения",
+      "classes": "Классы",
+      "levels": "Уровни",
+      "courses": "Курсы",
+      "exams": "Экзамены",
+      "students": "Ученики",
+      "teachers": "Учителя",
+      "totalStudents": "Всего учеников",
+      "totalCourses": "Всего курсов",
+      "attendance": "Посещаемость",
+      "upcomingEvents": "Предстоящие события"
+    },
+    "schedule": {
+      "title": "Занятия сегодня",
+      "viewAll": "Смотреть всё"
+    },
+    "activity": {
+      "title": "Последние действия",
+      "viewAll": "Смотреть всё",
+      "newStudent": "Новый ученик зарегистрирован",
+      "courseCreated": "Создан новый курс",
+      "examScheduled": "Запланирован экзамен",
+      "attendanceUpdated": "Обновлена посещаемость"
+    },
+    "enrollment": {
+      "title": "Зачисление по уровням"
+    },
+    "attendance": {
+      "title": "Посещаемость"
+    },
+    "charts": {
+      "studentEnrollment": "Зачисление учеников",
+      "totalStudents": "Всего учеников",
+      "newStudents": "Новые ученики",
+      "weeklyAttendance": "Еженедельная посещаемость",
+      "present": "Присутствуют",
+      "absent": "Отсутствуют",
+      "courseDistribution": "Распределение курсов",
+      "recentActivity": "Последняя активность"
+    }
   }
 }
