@@ -1,4 +1,4 @@
-import {Link, useNavigate} from "@tanstack/react-router";
+import {Link} from "@tanstack/react-router";
 import {Button} from "@shared/ui/button.tsx";
 import {Badge} from "@shared/ui/badge.tsx";
 import {Card} from "@shared/ui/card.tsx";
@@ -10,11 +10,8 @@ import {useLocaleRoute} from "@shared/lib/useLocaleRoute";
 
 export function HeroSection() {
     const { t } = useTranslation();
-    const navigate = useNavigate()
     const { localeRoute } = useLocaleRoute();
-    console.log(localeRoute('/$locale/login'))
 
-    
     const stats = [
         { value: "150+", label: t('home.hero_section.establishments') },
         { value: "50K+", label: t('home.hero_section.active_students') },
@@ -47,21 +44,9 @@ export function HeroSection() {
                 <div className="flex items-center gap-3">
                     <LanguageSwitcher />
 
-                    <Button
-                        onClick={() => {
-                            console.log('click')
-
-                            navigate({
-                                to: '/$locale/login',
-                                params: {
-                                    locale: 'fr',
-                                },
-                            })
-                        }}
-                        className="rounded-full"
-                    >
+                    <Link {...localeRoute('/$locale/login')}>
                         {t('home.hero_section.login')}
-                    </Button>
+                    </Link>
                     <Button className="rounded-full px-6">{t('home.hero_section.get_started')}</Button>
                 </div>
             </nav>
