@@ -14,7 +14,7 @@ export function useLanguageSwitcher() {
         localStorage.setItem(LOCALE_STORAGE_KEY, newLocale)
 
         const newPath = location.pathname.replace(
-            /^\/(fr|en|ru)/,
+            /^\/(fr|en|ru|ln)/,
             `/${newLocale}`
         )
 

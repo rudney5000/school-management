@@ -1,0 +1,169 @@
+{
+  "login": {
+    "welcome_back": "Boyei lisusu",
+    "sign_in_to_continue": "Kota na compte na yo mpo okoba",
+    "email_address": "Adrɛsi ya email",
+    "password": "Mot de passe",
+    "sign_in": "Kokota",
+    "signing_in": "Kokota ezali kosalema...",
+    "no_account": "Ozali na compte te?",
+    "create_one": "Sala compte moko",
+    "demo_credentials": "Ba identifiants ya demo",
+    "admin": "Administrateur",
+    "password_label": "Mot de passe"
+  },
+  "register": {
+    "create_account": "Sala compte",
+    "join_today": "Yaka na SchoolManager CD lelo",
+    "email_address": "Adrɛsi ya email",
+    "role": "Mosala",
+    "select_role": "Pona mosala na yo",
+    "administrator": "Administrateur",
+    "director": "Mokambi",
+    "teacher": "Molakisi",
+    "staff_worker": "Mosali",
+    "parent": "Moboti",
+    "student": "Moyekoli",
+    "password": "Mot de passe",
+    "min_characters": "Moke koleka bilembo 8 te",
+    "confirm_password": "Ndima mot de passe",
+    "repeat_password": "Zongela mot de passe",
+    "creating_account": "Compte ezali kosalama...",
+    "create_account_button": "Sala compte",
+    "already_have_account": "Ozali déjà na compte?",
+    "sign_in": "Kokota"
+  },
+  "nav": {
+    "group": {
+      "main": "Ya liboso",
+      "pedagogy": "Mateya",
+      "people": "Bato",
+      "system": "Système",
+      "other": "Mosusu"
+    },
+    "dashboard": "Tableau ya bokambi",
+    "schools": "Eteyelo",
+    "classes": "Kelasi",
+    "schedule": "Programɛ",
+    "courses": "Mateya",
+    "exams": "Ba examen",
+    "assessments": "Bomekoli",
+    "reports": "Ba rapport",
+    "teachers": "Balakisi",
+    "students": "Bayekoli",
+    "parents": "Baboti",
+    "attendance": "Présence",
+    "messages": "Ba message",
+    "settings": "Ba paramètre"
+  },
+  "home": {
+    "hero_section": {
+      "features": "Misala",
+      "users": "Basaleli",
+      "faq": "Mituna oyo etunamaka mingi",
+      "login": "Kokota",
+      "get_started": "Bandá",
+      "available_now": "Ezali sikoyo",
+      "complete_platform": "Plateforme ya kelasi ya mobimba",
+      "platform_description": "Bokamba ba niveaux nyonso ya mateya na plateforme moko ya mikolo oyo. Kobanda na primaire kino na université, moto nyonso azali na esika na ye.",
+      "start_free": "Bandá ofele",
+      "view_demo": "Tala démonstration",
+      "establishments": "Ba eteyelo",
+      "active_students": "Bayekoli bazali kosalela",
+      "satisfaction": "Esengo ya basaleli",
+      "trusted_by": "Ba eteyelo koleka 150 batieli biso motema",
+      "security_guaranteed": "Bokengi ezali",
+      "security_description": "Ba données ebatelami mpe confidentialité etosami.",
+      "fluid_communication": "Kosolola malamu",
+      "communication_description": "Ba échanges ya mbangu kati na bato nyonso.",
+      "everything_to_succeed": "Nyonso mpo na kolonga mobu ya kelasi",
+      "real_time_grades": "Kolanda ba notes na tango ya solo",
+      "real_time_grades_description": "Mona progrès mpe ba performances mbala moko.",
+      "interactive_schedule": "Programɛ ya mayele",
+      "interactive_schedule_description": "Programɛ ya moto na moto mpe ba notifications automatiques.",
+      "digital_classroom": "Espace numérique ya mateya",
+      "digital_classroom_description": "Ba ressources pédagogiques ezali partout.",
+      "mobile_app": "Application mobile",
+      "available_ios_android": "Ezali na iOS mpe Android",
+      "my_space": "Espace na ngai",
+      "schedule": "Programɛ",
+      "my_grades": "Ba notes na ngai",
+      "next_class": "Cours oyo elandi",
+      "permanent_access": "Accès tango nyonso, bisika nyonso",
+      "permanent_access_description": "Esalaka na ordinateur, tablette mpe téléphone."
+    },
+    "users": {
+      "platform_for_all": "Plateforme mpo na bato nyonso",
+      "everyone_finds_place": "Moto nyonso azwi esika na ye.",
+      "students": "Bayekoli",
+      "students_description": "Accès na mateya, ba notes mpe programɛ na tango ya solo.",
+      "teachers": "Balakisi",
+      "teachers_description": "Bokambi ya ba classes, publication ya ba notes mpe suivi pédagogique.",
+      "parents": "Baboti",
+      "parents_description": "Kolanda progrès ya mwana mpe kosolola na eteyelo.",
+      "administration": "Administration",
+      "administration_description": "Tableau de bord ya bokambi ya malamu."
+    },
+    "stats": {
+      "students": "Bayekoli",
+      "teachers": "Balakisi",
+      "schools": "Ba eteyelo",
+      "courses": "Mateya"
+    },
+    "dashboard": {
+      "title": "Bokamba eteyelo na yo na ndenge ya malamu",
+      "description": "Système ya bokambi ya kelasi oyo esalisaka administration, ematisaka mateya mpe epesaka nzela ya kosolola malamu.",
+      "cta": "Bandá"
+    },
+    "showcase": {
+      "modern_dashboard": "Tableau de bord ya mikolo oyo",
+      "modern_dashboard_description": "Interface ya pete mpo na kozwa accès na misala nyonso noki.",
+      "mobile_friendly": "Esalaka na téléphone",
+      "mobile_friendly_description": "Kota na ba données ya eteyelo na yo bisika nyonso mpe na appareil nyonso.",
+      "secure_reliable": "Ezali sécurisé mpe fiable",
+      "secure_reliable_description": "Bokengi ya niveau ya entreprise mpo na kobatela ba données sensibles.",
+      "designed_for_modern_education": "Esalemi mpo na mateya ya mikolo oyo",
+      "designed_description": "Plateforme na biso ekoki kosalelama na maternelle, primaire, collège, lycée mpe université. Eteyelo nyonso ekoki kozwa modèle oyo ebongi na yango.",
+      "ready_to_transform": "Ozali prêt mpo na kobongola eteyelo na yo?",
+      "ready_description": "Sangana na ba eteyelo koleka 150 oyo bazali kotiela SchoolHub motema mpo na kobongisa bokambi mpe expérience éducative.",
+      "request_demo": "Senga démonstration"
+    }
+  },
+  "header": {
+    "search": "Rechercher...",
+    "notifications": "Notifications"
+  },
+
+  "dashboard": {
+    "title": "Tableau de bord",
+    "subtitle": "Vue d'ensemble",
+
+    "stats": {
+      "schools": "Établissements",
+      "classes": "Classes",
+      "levels": "Niveaux",
+      "courses": "Cours",
+      "exams": "Examens",
+      "students": "Élèves",
+      "teachers": "Enseignants"
+    },
+
+    "schedule": {
+      "title": "Cours du jour",
+      "viewAll": "Voir tout"
+    },
+
+    "activity": {
+      "title": "Activité récente",
+      "viewAll": "Tout voir"
+    },
+
+    "enrollment": {
+      "title": "Inscriptions par niveau"
+    },
+
+    "attendance": {
+      "title": "Taux de présence"
+    }
+  }
+}

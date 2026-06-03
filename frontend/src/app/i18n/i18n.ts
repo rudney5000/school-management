@@ -4,6 +4,7 @@ import { initReactI18next } from 'react-i18next'
 import fr from '@shared/config/locales/fr.json'
 import en from '@/shared/config/locales/en.json'
 import ru from '@/shared/config/locales/ru.json'
+import ln from  '@/shared/config/locales/ln.json'
 
 i18n
     .use(initReactI18next)
@@ -17,6 +18,9 @@ i18n
             },
             ru: {
                 translation: ru,
+            },
+            ln: {
+                translation: ln,
             },
         },
         fallbackLng: 'fr',
