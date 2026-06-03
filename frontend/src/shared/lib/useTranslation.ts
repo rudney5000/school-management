@@ -1,5 +1,5 @@
 import { useTranslation as useI18NextTranslation } from 'react-i18next'
-import {SUPPORTED_LOCALES} from "@shared/constants/consts.ts";
+import {SUPPORT_LOCALES} from "@shared/config/i18n/locale-config";
 
 const LOCALE_STORAGE_KEY = 'locale'
 
@@ -16,7 +16,7 @@ export function useTranslation() {
 
         if (
             savedLocale &&
-            SUPPORTED_LOCALES.includes(savedLocale as never)
+            SUPPORT_LOCALES.includes(savedLocale as never)
         ) {
             await i18n.changeLanguage(savedLocale)
         }

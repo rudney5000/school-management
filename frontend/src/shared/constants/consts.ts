@@ -1,1 +1,0 @@
-export const SUPPORTED_LOCALES = ['fr', 'en', 'ru'] as const

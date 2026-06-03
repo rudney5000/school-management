@@ -1,16 +1,16 @@
 import {createRootRoute, createRoute, createRouter, Outlet, redirect, RouterProvider} from "@tanstack/react-router";
 import {HomeLayout} from "@app/router/layouts/HomeLayout";
 import {HomePage} from "@/pages/home/HomePage";
-import {NotFoundPage} from "@/pages/404/NotFoundPage.tsx";
-import {FAQPage} from "@/pages/faq/FAQPage.tsx";
-import {AuthLayout} from "@app/router/layouts/AuthLayout.tsx";
-import {requireGuest} from "@app/router/guards.ts";
-import {LoginPage} from "@/pages/login/LoginPage.tsx";
-import {RegisterPage} from "@/pages/register/RegisterPage.tsx";
-import i18n from "@app/i18n/i18n.ts";
-import {SUPPORTED_LOCALES} from "@shared/constants/consts.ts";
-import {DashboardLayout} from "@app/router/layouts/DashboardLayout.tsx";
+import {NotFoundPage} from "@/pages/404/NotFoundPage";
+import {FAQPage} from "@/pages/faq/FAQPage";
+import {AuthLayout} from "@app/router/layouts/AuthLayout";
+import {requireGuest} from "@app/router/guards";
+import {LoginPage} from "@/pages/login/LoginPage";
+import {RegisterPage} from "@/pages/register/RegisterPage";
+import i18n from "@app/i18n/i18n";
+import {DashboardLayout} from "@app/router/layouts/DashboardLayout";
 import {DashboardPage} from "@/pages/dashboard";
+import {SUPPORT_LOCALES} from "@shared/config/i18n/locale-config";
 
 type RouterContext = {
     isAuthenticated: () => boolean;
@@ -34,11 +34,11 @@ const localeRoute = createRoute({
     beforeLoad: async ({ params }) => {
         const locale = params.locale as string
 
-        if (!SUPPORTED_LOCALES.includes(locale as never)) {
+        if (!SUPPORT_LOCALES.includes(locale as never)) {
             throw redirect({
                 to: '/$locale',
                 params: {
-                    locale: SUPPORTED_LOCALES[0]
+                    locale: SUPPORT_LOCALES[0]
                 }
             })
         }
