@@ -4,6 +4,7 @@ import { navByRole, type NavGroup } from './nav-items'
 import { School } from 'lucide-react'
 import { useTranslation } from '@shared/lib/useTranslation.ts'
 import type { UserRole } from '@features/auth/model/dto/RegisterDto.ts'
+import {getInitials} from "@shared/lib/getInitial";
 
 type SidebarProps = {
     role?: UserRole
@@ -34,16 +35,8 @@ export function Sidebar({
 
     const groups: NavGroup[] = navByRole[role]
 
-    const initials = userName
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2)
-
     return (
         <aside className="flex flex-col w-[220px] shrink-0 bg-white border-r border-zinc-100 h-screen sticky top-0">
-            {/* Logo */}
             <div className="flex items-center gap-2.5 px-4 h-14 border-b border-zinc-100 shrink-0">
                 <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center shrink-0">
                     <School className="w-4 h-4 text-white" />
@@ -58,11 +51,10 @@ export function Sidebar({
                 </div>
             </div>
 
-            {/* User profile card */}
             <div className="mx-3 mt-3 rounded-xl bg-indigo-600 p-3 shrink-0">
                 <div className="flex items-center gap-2.5 mb-3">
                     <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                        <span className="text-[12px] font-semibold text-white">{initials}</span>
+                        <span className="text-[12px] font-semibold text-white">{getInitials(userName)}</span>
                     </div>
                     <div className="flex-1 min-w-0">
                         <p className="text-[12px] font-semibold text-white truncate">{userName}</p>
@@ -89,7 +81,6 @@ export function Sidebar({
                 )}
             </div>
 
-            {/* Nav */}
             <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-4">
                 {groups.map((group) => (
                     <div key={group.groupKey}>
@@ -125,7 +116,6 @@ export function Sidebar({
                                             />
                                             <span className="flex-1 truncate">{t(item.labelKey)}</span>
 
-                                            {/* Badge */}
                                             {item.badge && (
                                                 <span
                                                     className={cn(
@@ -147,7 +137,6 @@ export function Sidebar({
                 ))}
             </nav>
 
-            {/* Live class footer */}
             {liveClass && (
                 <div className="shrink-0 mx-3 mb-3 px-3 py-2.5 rounded-xl bg-indigo-50 border border-indigo-100">
                     <div className="flex items-center gap-1.5 mb-0.5">
