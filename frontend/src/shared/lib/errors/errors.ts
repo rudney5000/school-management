@@ -59,4 +59,12 @@ export const errors = {
             ln: "Libunga oyo ekanisamaki te esalemi",
         },
     },
+    validation: {
+        missingSchoolId: {
+            en: "School ID is required to fetch sub-schools",
+            fr: "L'ID de l'école est requis pour récupérer les sous-écoles",
+            ru: "ID школы обязателен для получения подразделений",
+            ln: "ID ya école esengeli mpo na kozwa ba sous-écoles",
+        },
+    }
 };
