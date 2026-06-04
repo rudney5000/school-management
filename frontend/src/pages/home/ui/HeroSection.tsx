@@ -1,12 +1,24 @@
 import {Link} from "@tanstack/react-router";
-import {Button} from "@shared/ui/button.tsx";
-import {Badge} from "@shared/ui/badge.tsx";
-import {Card} from "@shared/ui/card.tsx";
-import {Calendar, Clock, MessageSquare, ShieldCheck, Smartphone, Trophy} from "lucide-react";
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@shared/ui/accordion.tsx";
-import { useTranslation } from '@/shared/lib/useTranslation';
-import {LanguageSwitcher} from "@features/change-language/ui/LanguageSwitcher.tsx";
-import {useLocaleRoute} from "@shared/lib/useLocaleRoute";
+import {
+    Button,
+    Badge,
+    Card,
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger
+} from "@shared/ui";
+import {
+    Calendar,
+    Clock,
+    MessageSquare,
+    ShieldCheck,
+    Smartphone,
+    Trophy
+} from "lucide-react";
+import { useTranslation } from '@/shared/lib';
+import {LanguageSwitcher} from "@features/change-language/ui/LanguageSwitcher";
+import {useLocaleRoute} from "@shared/lib";
 
 export function HeroSection() {
     const { t } = useTranslation();
