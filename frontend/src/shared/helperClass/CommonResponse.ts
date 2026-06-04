@@ -12,4 +12,8 @@ export class CommonResponse<T> {
     public get IsSuccess(): boolean {
         return this.status === Status.Success
     }
+
+    get IsFail(): boolean {
+        return this.status === Status.Fail
+    }
 }

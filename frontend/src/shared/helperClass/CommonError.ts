@@ -1,26 +1,33 @@
+import type {ApiErrorShape} from "@shared/helperClass/ApiErrorShape";
+
 export class CommonError {
-    private readonly _data: unknown
+    private readonly _data: unknown;
 
     constructor(data: unknown) {
-        this._data = data
+        this._data = data;
     }
 
-    get data(): unknown {
-        return this._data
+    public get data(): unknown {
+        return this._data;
     }
 
-    get Message(): string {
-        const response = this._data as { response?: { data?: { error?: { message?: string } } } }
-        return response?.response?.data?.error?.message ?? 'An unexpected error occurred'
+    private get errorShape(): ApiErrorShape {
+        if (this._data && typeof this._data === 'object') {
+            return this._data as ApiErrorShape;
+        }
+        return {};
     }
 
-    get Code(): string {
-        const response = this._data as { response?: { data?: { error?: { code?: string } } } }
-        return response?.response?.data?.error?.code ?? 'UNKNOWN_ERROR'
+    public get Message(): string {
+        return this.errorShape.response?.data?.error?.message
+            ?? (this._data instanceof Error ? this._data.message : 'An unexpected error occurred');
     }
 
-    get StatusCode(): number {
-        const response = this._data as { response?: { status?: number } }
-        return response?.response?.status ?? 500
+    public get Code(): string {
+        return this.errorShape.response?.data?.error?.code ?? 'UNKNOWN_ERROR';
+    }
+
+    public get StatusCode(): number {
+        return this.errorShape.response?.status ?? 500;
     }
 }

@@ -2,6 +2,11 @@ import type { BaseApi } from './BaseApi'
 import { CommonResponse, Status } from "@shared/helperClass/CommonResponse.ts";
 import {CommonError} from "@shared/helperClass/CommonError.ts";
 
+export interface ApiResponseShape<T = unknown> {
+    data: T;
+    success?: boolean;
+}
+
 export abstract class ApiWrapper {
     constructor(protected readonly _baseApi: BaseApi) {}
 
@@ -12,8 +17,9 @@ export abstract class ApiWrapper {
         const [result, error] = await request
 
         if (result) {
-            const response = (result as { data: { data?: unknown; success?: boolean } }).data
-            const raw = response?.data !== undefined ? response.data : response
+            const axiosResponse = (result as { data: ApiResponseShape<unknown> });
+            const responseData = axiosResponse.data
+            const raw = responseData?.data !== undefined ? responseData.data : responseData
             const data = transform ? transform(raw) : (raw as T)
             return new CommonResponse<T>(Status.Success, data)
         }
