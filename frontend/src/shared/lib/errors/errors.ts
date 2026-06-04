@@ -51,4 +51,12 @@ export const errors = {
             ln: "Libunga ya réseau",
         },
     },
+    common: {
+        unexpectedError: {
+            en: "Unexpected error",
+            fr: "Une erreur inattendue est survenue",
+            ru: "Произошла непредвиденная ошибка",
+            ln: "Libunga oyo ekanisamaki te esalemi",
+        },
+    },
 };
