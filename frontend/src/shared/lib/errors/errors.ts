@@ -66,5 +66,64 @@ export const errors = {
             ru: "ID школы обязателен для получения подразделений",
             ln: "ID ya école esengeli mpo na kozwa ba sous-écoles",
         },
+
+        firstNameRequired: {
+            en: "First name is required",
+            fr: "Le prénom est obligatoire",
+            ru: "Имя обязательно",
+            ln: "Kombo ya liboso esengeli",
+        },
+
+        lastNameRequired: {
+            en: "Last name is required",
+            fr: "Le nom est obligatoire",
+            ru: "Фамилия обязательна",
+            ln: "Kombo ya libota esengeli",
+        },
+
+        emailInvalid: {
+            en: "Invalid email address",
+            fr: "Adresse email invalide",
+            ru: "Неверный email",
+            ln: "Email ezali malamu te",
+        },
+
+        genderRequired: {
+            en: "Gender is required",
+            fr: "Le genre est obligatoire",
+            ru: "Пол обязателен",
+            ln: "Genre esengeli",
+        },
+        maxLength20: {
+            en: "Maximum 20 characters",
+            fr: "Maximum 20 caractères",
+            ru: "Максимум 20 символов",
+            ln: "Mikanda 20 koleka te",
+        },
+        maxLength100: {
+            en: "Maximum 100 characters",
+            fr: "Maximum 100 caractères",
+            ru: "Максимум 100 символов",
+            ln: "Mikanda 100 koleka te",
+        },
+
+        maxLength255: {
+            en: "Maximum 255 characters",
+            fr: "Maximum 255 caractères",
+            ru: "Максимум 255 символов",
+            ln: "Mikanda 255 koleka te",
+        },
+        dateOfBirthRequired: {
+            en: "Date of birth is required",
+            fr: "La date de naissance est requise",
+            ru: "Дата рождения обязательна",
+            ln: "Mokolo ya mbotama esengeli",
+        },
+        enrollmentDateRequired: {
+            en: "Enrollment date is required",
+            fr: "La date d'inscription est requise",
+            ru: "Дата зачисления обязательна",
+            ln: "Mokolo ya inscription esengeli",
+        },
     }
 };
