@@ -179,6 +179,7 @@
         "dateOfBirth": "Mokolo ya kobotama",
         "enrollmentDate": "Mokolo ya kolekisama",
         "address": "Adilesi",
+        "image": "Image",
         "isActive": "Moyindami ya active"
       },
       "gender": {

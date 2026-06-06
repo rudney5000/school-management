@@ -190,6 +190,7 @@
         "dateOfBirth": "Дата рождения",
         "enrollmentDate": "Дата зачисления",
         "address": "Адрес",
+        "image": "Изображение",
         "isActive": "Активный студент"
       },
       "gender": {

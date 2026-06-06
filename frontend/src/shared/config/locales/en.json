@@ -218,6 +218,7 @@
         "dateOfBirth": "Date of birth",
         "enrollmentDate": "Enrollment date",
         "address": "Address",
+        "image": "Image",
         "isActive": "Active student"
       },
       "gender": {
