@@ -1,4 +1,3 @@
-import {Link} from "@tanstack/react-router";
 import {
     Button,
     Badge,
@@ -6,7 +5,8 @@ import {
     Accordion,
     AccordionContent,
     AccordionItem,
-    AccordionTrigger
+    AccordionTrigger,
+    LocaleLink
 } from "@shared/ui";
 import {
     Calendar,
@@ -18,11 +18,9 @@ import {
 } from "lucide-react";
 import { useTranslation } from '@/shared/lib';
 import {LanguageSwitcher} from "@features/change-language/ui/LanguageSwitcher";
-import {useLocaleRoute} from "@shared/lib";
 
 export function HeroSection() {
     const { t } = useTranslation();
-    const { localeRoute } = useLocaleRoute();
 
     const stats = [
         { value: "150+", label: t('home.hero_section.establishments') },
@@ -48,17 +46,17 @@ export function HeroSection() {
                     <a href="#users" className="hover:text-slate-950">
                         {t('home.hero_section.users')}
                     </a>
-                    <Link {...localeRoute('/$locale/faq')} className="hover:text-slate-950">
+                    <LocaleLink to='/faq' className="hover:text-slate-950">
                         {t('home.hero_section.faq')}
-                    </Link>
+                    </LocaleLink>
                 </div>
 
                 <div className="flex items-center gap-3">
                     <LanguageSwitcher />
 
-                    <Link {...localeRoute('/$locale/login')}>
+                    <LocaleLink to='/login'>
                         {t('home.hero_section.login')}
-                    </Link>
+                    </LocaleLink>
                     <Button className="rounded-full px-6">{t('home.hero_section.get_started')}</Button>
                 </div>
             </nav>
