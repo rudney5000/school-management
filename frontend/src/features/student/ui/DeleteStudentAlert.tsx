@@ -1,6 +1,7 @@
 import React from 'react'
 import {type Student, useDeleteStudent} from '@entities/student'
 import {DeleteAlert} from "@shared/ui";
+import {useParams} from "@tanstack/react-router";
 
 type Props = {
     student: Student
@@ -17,8 +18,9 @@ export const DeleteStudentAlert: React.FC<Props> = ({
                                                     }) => {
     const { mutate, isPending } = useDeleteStudent()
 
+    const { subSchoolId } = useParams({ strict: false })
     function onClick() {
-        mutate(student.id, {
+        mutate({id: student.id, subSchoolId: subSchoolId!}, {
             onSuccess: () => {
                 handleSuccess?.()
             },

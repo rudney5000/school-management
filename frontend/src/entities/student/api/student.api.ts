@@ -43,9 +43,9 @@ export class StudentApi extends ApiWrapper {
         )
     }
 
-    delete(id: string) {
+    delete(id: string, subSchoolId: string) {
         return this.handleRequest(
-            this._baseApi.delete(`/students/${id}`),
+            this._baseApi.delete(`/students/${id}`, {subSchoolId}),
             undefined
         )
     }
