@@ -1,10 +1,11 @@
-import { Link, useRouterState } from '@tanstack/react-router'
+import { useRouterState } from '@tanstack/react-router'
 import { cn } from '@shared/lib/utils'
 import { navByRole, type NavGroup } from './nav-items'
 import { School } from 'lucide-react'
-import { useTranslation } from '@shared/lib/useTranslation.ts'
-import type { UserRole } from '@features/auth/model/dto/RegisterDto.ts'
+import { useTranslation } from '@shared/lib/useTranslation'
+import type { UserRole } from '@features/auth/model/dto/RegisterDto'
 import {getInitials} from "@shared/lib/getInitial";
+import {LocaleLink} from "@shared/ui";
 
 type SidebarProps = {
     role?: UserRole
@@ -97,8 +98,8 @@ export function Sidebar({
 
                                 return (
                                     <li key={item.path}>
-                                        <Link
-                                            to={fullPath}
+                                        <LocaleLink
+                                            to={item.path}
                                             className={cn(
                                                 'flex items-center gap-2.5 px-2 py-[7px] rounded-lg text-[13px] transition-all duration-150 group',
                                                 isActive
@@ -128,9 +129,9 @@ export function Sidebar({
                                                     {item.badge}
                                                 </span>
                                             )}
-                                        </Link>
+                                        </LocaleLink>
                                     </li>
-                                )
+                                );
                             })}
                         </ul>
                     </div>

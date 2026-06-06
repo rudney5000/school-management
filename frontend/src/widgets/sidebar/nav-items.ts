@@ -15,7 +15,7 @@ import {
     MessageSquare,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import type {UserRole} from "@features/auth/model/dto/RegisterDto.ts";
+import type {UserRole} from "@features/auth/model/dto/RegisterDto";
 
 export type NavItem = {
     labelKey: string
@@ -33,34 +33,34 @@ export const adminNav: NavGroup[] = [
     {
         groupKey: 'nav.group.main',
         items: [
-            { labelKey: 'nav.dashboard',     icon: LayoutDashboard, path: '/dashboard' },
-            { labelKey: 'nav.schools',       icon: Building2,       path: '/dashboard/schools' },
-            { labelKey: 'nav.classes',       icon: DoorOpen,        path: '/dashboard/classes' },
-            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/dashboard/schedule' },
+            { labelKey: 'nav.dashboard',     icon: LayoutDashboard, path: '/sub-schools/$subSchoolId/dashboard' },
+            { labelKey: 'nav.schools',       icon: Building2,       path: '/sub-schools/$subSchoolId/schools' },
+            { labelKey: 'nav.classes',       icon: DoorOpen,        path: '/sub-schools/$subSchoolId/classes' },
+            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/sub-schools/$subSchoolId/schedule' },
         ],
     },
     {
         groupKey: 'nav.group.pedagogy',
         items: [
-            { labelKey: 'nav.courses',       icon: BookOpen,        path: '/dashboard/courses' },
-            { labelKey: 'nav.exams',         icon: PenLine,         path: '/dashboard/exams' },
-            { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/dashboard/assessments' },
-            { labelKey: 'nav.reports',       icon: BarChart3,       path: '/dashboard/reports' },
+            { labelKey: 'nav.courses',       icon: BookOpen,        path: '/sub-schools/$subSchoolId/courses' },
+            { labelKey: 'nav.exams',         icon: PenLine,         path: '/sub-schools/$subSchoolId/exams' },
+            { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/sub-schools/$subSchoolId/assessments' },
+            { labelKey: 'nav.reports',       icon: BarChart3,       path: '/sub-schools/$subSchoolId/reports' },
         ],
     },
     {
         groupKey: 'nav.group.people',
         items: [
-            { labelKey: 'nav.teachers',      icon: Users,           path: '/dashboard/teachers' },
-            { labelKey: 'nav.students',      icon: GraduationCap,   path: '/dashboard/students' },
-            { labelKey: 'nav.parents',       icon: UserCheck,       path: '/dashboard/parents' },
+            { labelKey: 'nav.teachers',      icon: Users,           path: '/sub-schools/$subSchoolId/teachers' },
+            { labelKey: 'nav.students',      icon: GraduationCap,   path: '/sub-schools/$subSchoolId/students' },
+            { labelKey: 'nav.parents',       icon: UserCheck,       path: '/sub-schools/$subSchoolId/parents' },
         ],
     },
     {
         groupKey: 'nav.group.system',
         items: [
-            { labelKey: 'nav.messages',      icon: MessageSquare,   path: '/dashboard/messages', badge: 3 },
-            { labelKey: 'nav.settings',      icon: Settings,        path: '/dashboard/settings' },
+            { labelKey: 'nav.messages',      icon: MessageSquare,   path: '/sub-schools/$subSchoolId/messages', badge: 3 },
+            { labelKey: 'nav.settings',      icon: Settings,        path: '/sub-schools/$subSchoolId/settings' },
         ],
     },
 ]
@@ -69,25 +69,25 @@ export const teacherNav: NavGroup[] = [
     {
         groupKey: 'nav.group.main',
         items: [
-            { labelKey: 'nav.dashboard',     icon: LayoutDashboard, path: '/dashboard' },
-            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/dashboard/schedule' },
-            { labelKey: 'nav.courses',       icon: BookOpen,        path: '/dashboard/courses' },
+            { labelKey: 'nav.dashboard',     icon: LayoutDashboard, path: '/sub-schools/$subSchoolId/dashboard' },
+            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/sub-schools/$subSchoolId/schedule' },
+            { labelKey: 'nav.courses',       icon: BookOpen,        path: '/sub-schools/$subSchoolId/courses' },
         ],
     },
     {
         groupKey: 'nav.group.pedagogy',
         items: [
-            { labelKey: 'nav.exams',         icon: PenLine,         path: '/dashboard/exams' },
-            { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/dashboard/assessments' },
-            { labelKey: 'nav.attendance',    icon: ClipboardList,   path: '/dashboard/attendance' },
+            { labelKey: 'nav.exams',         icon: PenLine,         path: '/sub-schools/$subSchoolId/exams' },
+            { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/sub-schools/$subSchoolId/assessments' },
+            { labelKey: 'nav.attendance',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendance' },
         ],
     },
     {
         groupKey: 'nav.group.people',
         items: [
-            { labelKey: 'nav.students',      icon: GraduationCap,   path: '/dashboard/students' },
-            { labelKey: 'nav.messages',      icon: MessageSquare,   path: '/dashboard/messages', badge: 3 },
-            { labelKey: 'nav.settings',      icon: Settings,        path: '/dashboard/settings' },
+            { labelKey: 'nav.students',      icon: GraduationCap,   path: '/sub-schools/$subSchoolId/students' },
+            { labelKey: 'nav.messages',      icon: MessageSquare,   path: '/sub-schools/$subSchoolId/messages', badge: 3 },
+            { labelKey: 'nav.settings',      icon: Settings,        path: '/sub-schools/$subSchoolId/settings' },
         ],
     },
 ]
@@ -96,24 +96,24 @@ export const studentNav: NavGroup[] = [
     {
         groupKey: 'nav.group.main',
         items: [
-            { labelKey: 'nav.dashboard',     icon: LayoutDashboard, path: '/dashboard' },
-            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/dashboard/schedule' },
-            { labelKey: 'nav.courses',       icon: BookOpen,        path: '/dashboard/courses' },
+            { labelKey: 'nav.dashboard',     icon: LayoutDashboard, path: '/sub-schools/$subSchoolId/dashboard' },
+            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/sub-schools/$subSchoolId/schedule' },
+            { labelKey: 'nav.courses',       icon: BookOpen,        path: '/sub-schools/$subSchoolId/courses' },
         ],
     },
     {
         groupKey: 'nav.group.pedagogy',
         items: [
-            { labelKey: 'nav.exams',         icon: PenLine,         path: '/dashboard/exams' },
-            { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/dashboard/assessments' },
-            { labelKey: 'nav.attendance',    icon: ClipboardList,   path: '/dashboard/attendance' },
+            { labelKey: 'nav.exams',         icon: PenLine,         path: '/sub-schools/$subSchoolId/exams' },
+            { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/sub-schools/$subSchoolId/assessments' },
+            { labelKey: 'nav.attendance',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendance' },
         ],
     },
     {
         groupKey: 'nav.group.other',
         items: [
-            { labelKey: 'nav.messages',      icon: MessageSquare,   path: '/dashboard/messages', badge: 1 },
-            { labelKey: 'nav.settings',      icon: Settings,        path: '/dashboard/settings' },
+            { labelKey: 'nav.messages',      icon: MessageSquare,   path: '/sub-schools/$subSchoolId/messages', badge: 1 },
+            { labelKey: 'nav.settings',      icon: Settings,        path: '/sub-schools/$subSchoolId/settings' },
         ],
     },
 ]
@@ -122,34 +122,34 @@ export const directorNav: NavGroup[] = [
     {
         groupKey: 'nav.group.main',
         items: [
-            { labelKey: 'nav.dashboard',     icon: LayoutDashboard, path: '/dashboard' },
-            { labelKey: 'nav.schools',       icon: Building2,       path: '/dashboard/schools' },
-            { labelKey: 'nav.classes',       icon: DoorOpen,        path: '/dashboard/classes' },
-            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/dashboard/schedule' },
+            { labelKey: 'nav.dashboard',     icon: LayoutDashboard, path: '/sub-schools/$subSchoolId/dashboard' },
+            { labelKey: 'nav.schools',       icon: Building2,       path: '/sub-schools/$subSchoolId/schools' },
+            { labelKey: 'nav.classes',       icon: DoorOpen,        path: '/sub-schools/$subSchoolId/classes' },
+            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/sub-schools/$subSchoolId/schedule' },
         ],
     },
     {
         groupKey: 'nav.group.pedagogy',
         items: [
-            { labelKey: 'nav.courses',       icon: BookOpen,        path: '/dashboard/courses' },
-            { labelKey: 'nav.exams',         icon: PenLine,         path: '/dashboard/exams' },
-            { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/dashboard/assessments' },
-            { labelKey: 'nav.reports',       icon: BarChart3,       path: '/dashboard/reports' },
+            { labelKey: 'nav.courses',       icon: BookOpen,        path: '/sub-schools/$subSchoolId/courses' },
+            { labelKey: 'nav.exams',         icon: PenLine,         path: '/sub-schools/$subSchoolId/exams' },
+            { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/sub-schools/$subSchoolId/assessments' },
+            { labelKey: 'nav.reports',       icon: BarChart3,       path: '/sub-schools/$subSchoolId/reports' },
         ],
     },
     {
         groupKey: 'nav.group.people',
         items: [
-            { labelKey: 'nav.teachers',      icon: Users,           path: '/dashboard/teachers' },
-            { labelKey: 'nav.students',      icon: GraduationCap,   path: '/dashboard/students' },
-            { labelKey: 'nav.parents',       icon: UserCheck,       path: '/dashboard/parents' },
+            { labelKey: 'nav.teachers',      icon: Users,           path: '/sub-schools/$subSchoolId/teachers' },
+            { labelKey: 'nav.students',      icon: GraduationCap,   path: '/sub-schools/$subSchoolId/students' },
+            { labelKey: 'nav.parents',       icon: UserCheck,       path: '/sub-schools/$subSchoolId/parents' },
         ],
     },
     {
         groupKey: 'nav.group.system',
         items: [
-            { labelKey: 'nav.messages',      icon: MessageSquare,   path: '/dashboard/messages', badge: 3 },
-            { labelKey: 'nav.settings',      icon: Settings,        path: '/dashboard/settings' },
+            { labelKey: 'nav.messages',      icon: MessageSquare,   path: '/sub-schools/$subSchoolId/messages', badge: 3 },
+            { labelKey: 'nav.settings',      icon: Settings,        path: '/sub-schools/$subSchoolId/settings' },
         ],
     },
 ]
@@ -161,17 +161,17 @@ export const parentNav: NavGroup[] = [
             {
                 labelKey: 'nav.dashboard',
                 icon: LayoutDashboard,
-                path: '/dashboard',
+                path: '/sub-schools/$subSchoolId/dashboard',
             },
             {
                 labelKey: 'nav.children',
                 icon: GraduationCap,
-                path: '/dashboard/children',
+                path: '/sub-schools/$subSchoolId/children',
             },
             {
                 labelKey: 'nav.schedule',
                 icon: CalendarDays,
-                path: '/dashboard/schedule',
+                path: '/sub-schools/$subSchoolId/schedule',
             },
         ],
     },
@@ -181,17 +181,17 @@ export const parentNav: NavGroup[] = [
             {
                 labelKey: 'nav.assessments',
                 icon: TrendingUp,
-                path: '/dashboard/assessments',
+                path: '/sub-schools/$subSchoolId/assessments',
             },
             {
                 labelKey: 'nav.attendance',
                 icon: ClipboardList,
-                path: '/dashboard/attendance',
+                path: '/sub-schools/$subSchoolId/attendance',
             },
             {
                 labelKey: 'nav.reports',
                 icon: BarChart3,
-                path: '/dashboard/reports',
+                path: '/sub-schools/$subSchoolId/reports',
             },
         ],
     },
@@ -201,13 +201,13 @@ export const parentNav: NavGroup[] = [
             {
                 labelKey: 'nav.messages',
                 icon: MessageSquare,
-                path: '/dashboard/messages',
+                path: '/sub-schools/$subSchoolId/messages',
                 badge: 2,
             },
             {
                 labelKey: 'nav.settings',
                 icon: Settings,
-                path: '/dashboard/settings',
+                path: '/sub-schools/$subSchoolId/settings',
             },
         ],
     },
@@ -220,12 +220,12 @@ export const workerNav: NavGroup[] = [
             {
                 labelKey: 'nav.dashboard',
                 icon: LayoutDashboard,
-                path: '/dashboard',
+                path: '/sub-schools/$subSchoolId',
             },
             {
                 labelKey: 'nav.schedule',
                 icon: CalendarDays,
-                path: '/dashboard/schedule',
+                path: '/sub-schools/$subSchoolId/schedule',
             },
         ],
     },
@@ -235,17 +235,17 @@ export const workerNav: NavGroup[] = [
             {
                 labelKey: 'nav.tasks',
                 icon: ClipboardList,
-                path: '/dashboard/tasks',
+                path: '/sub-schools/$subSchoolId/tasks',
             },
             {
                 labelKey: 'nav.maintenance',
                 icon: Settings,
-                path: '/dashboard/maintenance',
+                path: '/sub-schools/$subSchoolId/maintenance',
             },
             {
                 labelKey: 'nav.reports',
                 icon: BarChart3,
-                path: '/dashboard/reports',
+                path: '/sub-schools/$subSchoolId/reports',
             },
         ],
     },
@@ -255,12 +255,12 @@ export const workerNav: NavGroup[] = [
             {
                 labelKey: 'nav.messages',
                 icon: MessageSquare,
-                path: '/dashboard/messages',
+                path: '/sub-schools/$subSchoolId/messages',
             },
             {
                 labelKey: 'nav.settings',
                 icon: Settings,
-                path: '/dashboard/settings',
+                path: '/sub-schools/$subSchoolId/settings',
             },
         ],
     },
