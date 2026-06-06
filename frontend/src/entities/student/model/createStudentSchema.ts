@@ -35,6 +35,12 @@ export const studentBaseSchema = z.object({
         message: getErrorMessage('validation.genderRequired'),
     }),
 
+    avatarUrl: z
+        .string()
+        .url()
+        .optional()
+        .or(z.literal('')),
+
     dateOfBirth: z
         .string()
         .min(1, getErrorMessage('validation.dateOfBirthRequired')),
