@@ -24,7 +24,9 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ drawerTitle, drawerDescript
                         {drawerDescription}
                     </SheetDescription>
                 </SheetHeader>
-                {children}
+                <div className="overflow-y-auto flex-1 pr-1">
+                    {children}
+                </div>
             </SheetContent>
         </Sheet>
 
