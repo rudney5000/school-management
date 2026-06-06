@@ -36,9 +36,9 @@ export class StudentApi extends ApiWrapper {
         )
     }
 
-    update(id: string, payload: UpdateStudentDto){
+    update(id: string, payload: UpdateStudentDto, subSchoolId: string){
         return this.handleRequest<Student>(
-            this._baseApi.patch(`/students/${id}`, payload),
+            this._baseApi.patch(`/students/${id}`, payload, {subSchoolId} ),
             (raw) => raw as Student
         )
     }

@@ -20,6 +20,7 @@ import {
 import {type UpdateStudentDto, updateStudentSchema, type Student, useUpdateStudent} from '@entities/student'
 import CustomDrawer from "@shared/ui/custom-drawer/custom-drawer";
 import {useTranslation} from "@shared/lib";
+import {useParams} from "@tanstack/react-router";
 
 type Props = {
     student: Student
@@ -41,14 +42,20 @@ export const EditStudentForm: React.FC<Props> = ({
         mode: "onTouched",
         defaultValues: {
             ...student,
+            image: student.image ?? undefined,
+            phone: student.phone ?? undefined,
+            address: student.address ?? undefined,
+            parentId: student.parentId ?? undefined,
         },
     })
     const { t } = useTranslation()
 
     const { mutate, isPending } = useUpdateStudent()
 
+    const { subSchoolId } = useParams({ strict: false })
+
     function onSubmit(dto: UpdateStudentDto) {
-        mutate({ id: student.id, dto }, {
+        mutate({ id: student.id, dto, subSchoolId: subSchoolId! }, {
             onSuccess: () => {
                 handleSuccess?.()
             },
@@ -63,7 +70,7 @@ export const EditStudentForm: React.FC<Props> = ({
             drawerDescription={t('dashboard.students.form.addDescription')}
         >
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1">
+                <form onSubmit={form.handleSubmit(onSubmit, (errors) => console.log('errors', errors))} className="space-y-1">
 
                     <FormField
                         control={form.control}

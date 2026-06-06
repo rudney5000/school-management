@@ -6,8 +6,8 @@ export const useUpdateStudent = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: ({ id, dto }: { id: string; dto: UpdateStudentDto }) =>
-            studentApi.update(id, dto),
+        mutationFn: ({ id, dto, subSchoolId }: { id: string; dto: UpdateStudentDto, subSchoolId: string }) =>
+            studentApi.update(id, dto, subSchoolId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['students'] })
         },

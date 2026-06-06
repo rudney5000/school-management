@@ -62,7 +62,6 @@ export const createStudentSchema = studentBaseSchema.extend({
 
 export const updateStudentSchema = createStudentSchema
     .partial()
-    .omit({ subSchoolId: true })
 
 export type CreateStudentDto = z.infer<typeof createStudentSchema>
 export type UpdateStudentDto = z.infer<typeof updateStudentSchema>
