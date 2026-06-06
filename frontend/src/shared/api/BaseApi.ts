@@ -51,8 +51,8 @@ export class BaseApi {
         return this.send(this._axiosInstance.post<T>(url, data, { params }))
     }
 
-    public patch<T>(url: string, data?: unknown) {
-        return this.send(this._axiosInstance.patch<T>(url, data))
+    public patch<T>(url: string, data?: unknown, params?: object) {
+        return this.send(this._axiosInstance.patch<T>(url, data, {  params }))
     }
 
     public put<T>(url: string, data?: unknown) {
