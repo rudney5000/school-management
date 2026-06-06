@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction, type Slice } from '@reduxjs/toolkit'
+import {type ActionCreatorWithoutPayload, createSlice, type PayloadAction, type Slice} from '@reduxjs/toolkit'
 import type {UserRole} from "@features/auth/model/dto/RegisterDto.ts";
 
 export interface AuthState {
@@ -48,16 +48,17 @@ export const authSlice: Slice<AuthState> = createSlice({
             localStorage.setItem('schoolId', schoolId!)
             if (subSchoolId) localStorage.setItem('subSchoolId', subSchoolId)
         },
-        logout: (state) => {
+        logout: (state, _action: PayloadAction<undefined>) => {
             state.accessToken     = null
             state.role            = null
             state.email           = null
+            state.userId          = null
             state.schoolId        = null
             state.subSchoolId     = null
             state.isAuthenticated = false
-            localStorage.clear()
         },
     },
 })
 
-export const { setCredentials, logout } = authSlice.actions
+export const { setCredentials } = authSlice.actions
+export const logout = authSlice.actions.logout as ActionCreatorWithoutPayload<'auth/logout'>;
