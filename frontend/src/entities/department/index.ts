@@ -1,0 +1,6 @@
+export * from './api/department.api'
+export * from './lib/useDepartments'
+export * from './model/types'
+export * from './model/dto'
+export * from './model/selectors'
+export * from './model/slice'
