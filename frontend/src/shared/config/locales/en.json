@@ -224,6 +224,21 @@
       "gender": {
         "male": "Male",
         "female": "Female"
+      },
+      "columns": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "phone": "Phone",
+        "gender": "Gender",
+        "image": "Photo",
+        "dateOfBirth": "Date of birth",
+        "enrollmentDate": "Enrollment",
+        "status": "Status"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
       }
     },
     "common": {

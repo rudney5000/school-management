@@ -196,6 +196,21 @@
       "gender": {
         "male": "Мужской",
         "female": "Женский"
+      },
+      "columns": {
+        "firstName": "Имя",
+        "lastName": "Фамилия",
+        "email": "Электронная почта",
+        "phone": "Телефон",
+        "gender": "Пол",
+        "image": "Фото",
+        "dateOfBirth": "Дата рождения",
+        "enrollmentDate": "Зачисление",
+        "status": "Статус"
+      },
+      "status": {
+        "active": "Активный",
+        "inactive": "Неактивный"
       }
     },
     "common": {

@@ -221,7 +221,22 @@
         "image": "Image",
         "isActive": "Étudiant actif"
       },
-      "gender": { "male": "Homme", "female": "Femme" }
+      "gender": { "male": "Homme", "female": "Femme" },
+      "columns": {
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email",
+        "phone": "Téléphone",
+        "gender": "Genre",
+        "image": "Photo",
+        "dateOfBirth": "Date de naissance",
+        "enrollmentDate": "Inscription",
+        "status": "Statut"
+      },
+      "status": {
+        "active": "Actif",
+        "inactive": "Inactif"
+      }
     },
     "common": {
       "cancel": "Annuler",

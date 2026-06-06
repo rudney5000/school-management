@@ -180,6 +180,21 @@
       "gender": {
         "male": "Mobali",
         "female": "Mwasi"
+      },
+      "columns": {
+        "firstName": "Nkombo ya liboso",
+        "lastName": "Nkombo ya libota",
+        "email": "Emaila",
+        "phone": "Telefone",
+        "gender": "Bokolo",
+        "image": "Photo",
+        "dateOfBirth": "Mokolo ya kobotama",
+        "enrollmentDate": "Kolekisama",
+        "status": "Etat"
+      },
+      "status": {
+        "active": "Ya mosala",
+        "inactive": "Ya solo te"
       }
     },
     "common": {
