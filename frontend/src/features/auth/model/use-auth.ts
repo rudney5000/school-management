@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { authApi } from '../api/auth.api'
-import { setCredentials } from '@features/auth/store/auth-slice.ts'
+import { setCredentials } from '@features/auth/store/auth-slice'
 import { useAppDispatch } from '@/shared/store/hooks'
 import { baseApi } from '@/shared/api/instance'
 import type { LoginFormData, RegisterFormData } from './auth.schema'
-import type {CommonError} from "@shared/helperClass/CommonError.ts";
-import type {AuthTokensDto} from "@features/auth/model/dto/AuthTokensDto.ts";
+import type {CommonError} from "@shared/helperClass/CommonError";
+import type {AuthTokensDto} from "@features/auth/model/dto/AuthTokensDto";
+import i18n from "@app/i18n/i18n";
+import {store} from "@shared/store";
 
 export function useAuth() {
     const dispatch = useAppDispatch()
@@ -28,7 +30,19 @@ export function useAuth() {
             subSchoolId: payload.subSchoolId ?? null,
         }))
 
-        navigate({ to: '/dashboard' })
+        const locale = i18n.language
+        const subSchoolId = payload.subSchoolId
+            ?? store.getState().subSchool?.selectedSubSchoolId
+            ?? localStorage.getItem('subSchoolId')
+            ?? 'select';
+
+        navigate({
+            to: '/$locale/sub-schools/$subSchoolId/dashboard',
+            params: {
+                locale,
+                subSchoolId
+            }
+        })
     }
 
     const login = async (data: LoginFormData) => {
