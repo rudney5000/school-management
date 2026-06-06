@@ -1,32 +1,32 @@
 import type { Request, Response } from 'express';
 import { asyncHandler } from '@/shared/utils/async-handler';
 import { respond } from '@/shared/utils/respond';
-import type {
+import {
   CreateStudentDto,
-  SchoolQueryDto,
+  SubSchoolQueryDto,
   UpdateStudentDto,
 } from '@/modules/students/students.schema';
 import {StudentsService} from "@/modules/students/students.service";
 
-function resolveSchoolId(req: Request): string {
-  if (req.user?.schoolId) {
-    return req.user.schoolId;
+function resolvesSubSchoolId(req: Request): string {
+  if (req.user?.subSchoolId) {
+    return req.user.subSchoolId;
   }
-  return (req.query as SchoolQueryDto).schoolId;
+  return (req.query as SubSchoolQueryDto).subSchoolId;
 }
 
 export class StudentsController {
   private readonly service = new StudentsService();
 
   getAll = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const schoolId = resolveSchoolId(req);
-    const data = await this.service.findAll(schoolId);
+    const subSchoolId = resolvesSubSchoolId(req);
+    const data = await this.service.findAll(subSchoolId);
     respond(res, data);
   });
 
   getById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const schoolId = resolveSchoolId(req);
-    const data = await this.service.findById(req.params.id, schoolId);
+    const subSchoolId = resolvesSubSchoolId(req);
+    const data = await this.service.findById(req.params.id, subSchoolId);
     respond(res, data);
   });
 
@@ -36,7 +36,7 @@ export class StudentsController {
   });
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSchoolId(req);
+    const subSchoolId = resolvesSubSchoolId(req);
     const data = await this.service.update(
       req.params.id,
       subSchoolId,
@@ -46,8 +46,8 @@ export class StudentsController {
   });
 
   remove = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const schoolId = resolveSchoolId(req);
-    await this.service.softDelete(req.params.id, schoolId);
+    const subSchoolId = resolvesSubSchoolId(req);
+    await this.service.softDelete(req.params.id, subSchoolId);
     res.status(204).send();
   });
 }

@@ -164,31 +164,32 @@ async function seed() {
         console.log('~ Admin user already exists');
     }
 
-    const [existingStudent] = await db.select().from(users)
-        .where(eq(users.email, 'marie.kabila@saintjoseph.cd'));
-
-    if (!existingStudent) {
-        const [student] = await db.insert(students).values({
-            firstName: 'Marie',
-            lastName: 'Kabila',
-            email: 'marie.kabila@saintjoseph.cd',
-            gender: 'female',
-            dateOfBirth: '2008-07-20',
-            enrollmentDate: '2024-09-01',
-            schoolId: school.id,
-        }).returning();
-
-        await db.insert(users).values({
-            email: 'marie.kabila@saintjoseph.cd',
-            password: hashedPassword,
-            role: 'student',
-            studentId: student.id,
-        });
-
-        console.log('✓ Student user: marie.kabila@saintjoseph.cd');
-    } else {
-        console.log('~ Student user already exists');
+    try {
+        await db.delete(users).where(eq(users.email, 'marie.kabila@saintjoseph.cd'))
+        console.log('✓ Deleted user')
+        await db.delete(students).where(eq(students.email, 'marie.kabila@saintjoseph.cd'))
+        console.log('✓ Deleted student')
+    } catch(err) {
+        console.error('Delete error:', err)
     }
+    const [student] = await db.insert(students).values({
+        firstName: 'Marie',
+        lastName: 'Kabila',
+        email: 'marie.kabila@saintjoseph.cd',
+        gender: 'female',
+        dateOfBirth: '2008-07-20',
+        enrollmentDate: '2024-09-01',
+        subSchoolId: subSchool.id,
+    }).returning()
+
+    await db.insert(users).values({
+        email: 'marie.kabila@saintjoseph.cd',
+        password: hashedPassword,
+        role: 'student',
+        studentId: student.id,
+    })
+
+    console.log('✓ Student user: marie.kabila@saintjoseph.cd')
 
     console.log('\n✓ Seed completed. Test credentials (password: password123):');
     console.log('  Admin   → admin@saintjoseph.cd');

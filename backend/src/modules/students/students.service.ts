@@ -7,25 +7,25 @@ import type { CreateStudentDto, UpdateStudentDto } from './students.schema';
 export type StudentRecord = typeof students.$inferSelect;
 
 export class StudentsService {
-  async findAll(schoolId: string): Promise<StudentRecord[]> {
+  async findAll(subSchoolId: string): Promise<StudentRecord[]> {
     return db
       .select()
       .from(students)
       .where(
         and(
-          eq(students.schoolId, schoolId),
+          eq(students.subSchoolId, subSchoolId),
         ),
       );
   }
 
-  async findById(id: string, schoolId: string): Promise<StudentRecord> {
+  async findById(id: string, subSchoolId: string): Promise<StudentRecord> {
     const [student] = await db
       .select()
       .from(students)
       .where(
         and(
           eq(students.id, id),
-          eq(students.schoolId, schoolId),
+          eq(students.subSchoolId, subSchoolId),
         ),
       );
 
@@ -40,7 +40,7 @@ async create(input: CreateStudentDto): Promise<StudentRecord> {
     const [student] = await db
         .insert(students)
         .values({
-            schoolId:       input.schoolId,
+            subSchoolId:       input.subSchoolId,
             parentId:       input.parentId,
             firstName:      input.firstName,
             lastName:       input.lastName,
@@ -59,10 +59,10 @@ async create(input: CreateStudentDto): Promise<StudentRecord> {
 
   async update(
     id: string,
-    schoolId: string,
+    subSchoolId: string,
     input: UpdateStudentDto,
   ): Promise<StudentRecord> {
-    await this.findById(id, schoolId);
+    await this.findById(id, subSchoolId);
 
     const [student] = await db
       .update(students)
@@ -73,7 +73,7 @@ async create(input: CreateStudentDto): Promise<StudentRecord> {
       .where(
         and(
           eq(students.id, id),
-          eq(students.schoolId, schoolId),
+          eq(students.subSchoolId, subSchoolId),
         ),
       )
       .returning();
@@ -81,8 +81,8 @@ async create(input: CreateStudentDto): Promise<StudentRecord> {
     return student;
   }
 
-  async softDelete(id: string, schoolId: string): Promise<void> {
-    await this.findById(id, schoolId);
+  async softDelete(id: string, subSchoolId: string): Promise<void> {
+    await this.findById(id, subSchoolId);
 
     await db
       .update(students)
@@ -90,7 +90,7 @@ async create(input: CreateStudentDto): Promise<StudentRecord> {
       .where(
         and(
             eq(students.id, id),
-            eq(students.schoolId, schoolId)
+            eq(students.subSchoolId, subSchoolId)
         ),
       );
   }

@@ -1,5 +1,5 @@
 {
-  "id": "943a21c3-01f5-45a7-99f6-77655a31b613",
+  "id": "c28849ee-08b1-4100-a9ff-fd85a2daed5c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1708,6 +1708,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "date_of_birth": {
           "name": "date_of_birth",
           "type": "date",
@@ -1720,8 +1726,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "school_id": {
-          "name": "school_id",
+        "sub_school_id": {
+          "name": "sub_school_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -1761,11 +1767,11 @@
         }
       },
       "indexes": {
-        "idx_students_school": {
-          "name": "idx_students_school",
+        "idx_students_sub-school": {
+          "name": "idx_students_sub-school",
           "columns": [
             {
-              "expression": "school_id",
+              "expression": "sub_school_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1808,12 +1814,12 @@
         }
       },
       "foreignKeys": {
-        "students_school_id_schools_id_fk": {
-          "name": "students_school_id_schools_id_fk",
+        "students_sub_school_id_sub_schools_id_fk": {
+          "name": "students_sub_school_id_sub_schools_id_fk",
           "tableFrom": "students",
-          "tableTo": "schools",
+          "tableTo": "sub_schools",
           "columnsFrom": [
-            "school_id"
+            "sub_school_id"
           ],
           "columnsTo": [
             "id"

@@ -234,9 +234,10 @@ CREATE TABLE IF NOT EXISTS "students" (
 	"phone" varchar(20),
 	"address" text,
 	"gender" "gender" NOT NULL,
+	"image" text,
 	"date_of_birth" date NOT NULL,
 	"enrollment_date" date NOT NULL,
-	"school_id" uuid NOT NULL,
+	"sub_school_id" uuid NOT NULL,
 	"parent_id" uuid,
 	"is_active" boolean DEFAULT true NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
@@ -382,7 +383,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "students" ADD CONSTRAINT "students_school_id_schools_id_fk" FOREIGN KEY ("school_id") REFERENCES "public"."schools"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "students" ADD CONSTRAINT "students_sub_school_id_sub_schools_id_fk" FOREIGN KEY ("sub_school_id") REFERENCES "public"."sub_schools"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -436,7 +437,7 @@ CREATE INDEX IF NOT EXISTS "idx_payrolls_teacher" ON "payrolls" USING btree ("te
 CREATE INDEX IF NOT EXISTS "idx_payrolls_status" ON "payrolls" USING btree ("status");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_schools_district" ON "schools" USING btree ("district_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_schools_code" ON "schools" USING btree ("code");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "idx_students_school" ON "students" USING btree ("school_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_students_sub-school" ON "students" USING btree ("sub_school_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_students_parent" ON "students" USING btree ("parent_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_students_email" ON "students" USING btree ("email");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_users_email" ON "users" USING btree ("email");--> statement-breakpoint
