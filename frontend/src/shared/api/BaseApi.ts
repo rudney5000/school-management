@@ -59,8 +59,8 @@ export class BaseApi {
         return this.send(this._axiosInstance.put<T>(url, data))
     }
 
-    public delete<T>(url: string) {
-        return this.send(this._axiosInstance.delete<T>(url))
+    public delete<T>(url: string, params?: object) {
+        return this.send(this._axiosInstance.delete<T>(url, {  params }))
     }
 
     private _createInstance(baseURL: string): AxiosInstance {
