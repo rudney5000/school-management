@@ -232,6 +232,12 @@
       "deleteAlert": {
         "title": "Are you sure?",
         "description": "This action cannot be undone. The data will be permanently deleted."
+      },
+      "actions": {
+        "label": "Actions",
+        "edit": "Edit",
+        "delete": "Delete",
+        "openMenu": "Open menu"
       }
     }
   },

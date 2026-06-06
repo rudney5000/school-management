@@ -188,6 +188,12 @@
       "deleteAlert": {
         "title": "Ozali na likambo?",
         "description": "Mosala oyo ekoki kobongwana te. Makambo ekobebisama seko."
+      },
+      "actions": {
+        "label": "Misala",
+        "edit": "Kobongola",
+        "delete": "Koboma",
+        "openMenu": "Kofungola menu"
       }
     }
   },

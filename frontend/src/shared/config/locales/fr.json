@@ -229,6 +229,12 @@
       "deleteAlert": {
         "title": "Êtes-vous sûr ?",
         "description": "Cette action est irréversible. Les données seront définitivement supprimées."
+      },
+      "actions": {
+        "label": "Actions",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "openMenu": "Ouvrir le menu"
       }
     }
   },
