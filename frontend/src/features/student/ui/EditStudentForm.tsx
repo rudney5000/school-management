@@ -11,7 +11,7 @@ import {
     FormMessage,
     Input,
     Select,
-    SelectContent, 
+    SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
@@ -38,7 +38,10 @@ export const EditStudentForm: React.FC<Props> = ({
                                                  }) => {
     const form = useForm<UpdateStudentDto>({
         resolver: zodResolver(updateStudentSchema),
-        defaultValues: { ...student },
+        mode: "onTouched",
+        defaultValues: {
+            ...student,
+        },
     })
     const { t } = useTranslation()
 
@@ -163,6 +166,28 @@ export const EditStudentForm: React.FC<Props> = ({
                             <FormItem>
                                 <FormLabel>{t('dashboard.students.fields.address')}</FormLabel>
                                 <FormControl><Input {...field} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="image"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{t('dashboard.students.fields.image')}</FormLabel>
+                                <FormControl>
+                                    <Input {...field} placeholder="https://..." />
+                                </FormControl>
+                                {field.value && (
+                                    <img
+                                        src={field.value}
+                                        alt="Aperçu"
+                                        className="w-12 h-12 rounded-full object-cover mt-1"
+                                        onError={(e) => { e.currentTarget.style.display = 'none' }}
+                                    />
+                                )}
                                 <FormMessage />
                             </FormItem>
                         )}
