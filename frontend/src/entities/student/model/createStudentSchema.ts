@@ -60,7 +60,9 @@ export const createStudentSchema = studentBaseSchema.extend({
     parentId: z.string().uuid().optional().or(z.literal('')),
 });
 
-export const updateStudentSchema = studentBaseSchema.partial();
+export const updateStudentSchema = createStudentSchema
+    .partial()
+    .omit({ subSchoolId: true })
 
 export type CreateStudentDto = z.infer<typeof createStudentSchema>
 export type UpdateStudentDto = z.infer<typeof updateStudentSchema>

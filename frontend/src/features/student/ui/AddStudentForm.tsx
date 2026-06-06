@@ -41,8 +41,9 @@ export const AddStudentForm: React.FC<AddStudentFormProps> = ({
 
     const form = useForm<CreateStudentDto>({
         resolver: zodResolver(createStudentSchema),
+        mode: "onTouched",
         defaultValues: {
-            schoolId: subSchoolId ?? '',
+            subSchoolId: subSchoolId ?? '',
             isActive: true,
         },
     })
@@ -169,6 +170,28 @@ export const AddStudentForm: React.FC<AddStudentFormProps> = ({
                             <FormItem>
                                 <FormLabel>{t('dashboard.students.fields.address')}</FormLabel>
                                 <FormControl><Input {...field} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="image"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{t('dashboard.students.fields.image')}</FormLabel>
+                                <FormControl>
+                                    <Input {...field} placeholder="https://..." />
+                                </FormControl>
+                                {field.value && (
+                                    <img
+                                        src={field.value}
+                                        alt="Aperçu"
+                                        className="w-12 h-12 rounded-full object-cover mt-1"
+                                        onError={(e) => { e.currentTarget.style.display = 'none' }}
+                                    />
+                                )}
                                 <FormMessage />
                             </FormItem>
                         )}
