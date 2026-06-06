@@ -10,38 +10,35 @@ import {
     Button,
     Icons
 } from "@/shared/ui/"
+import { useTranslation } from "@shared/lib";
 
-interface DeleteProps  {
+interface DeleteProps {
     isLoading: boolean
     isOpen?: boolean
     onOpenChange: (open: boolean) => void
     onClick: () => void
 }
 
-export const DeleteAlert: React.FC<DeleteProps> = ({isOpen,onClick, isLoading, onOpenChange}) => {
+export const DeleteAlert: React.FC<DeleteProps> = ({ isOpen, onClick, isLoading, onOpenChange }) => {
+    const { t } = useTranslation()
+
     return (
         <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogTitle>{t('dashboard.common.deleteAlert.title')}</AlertDialogTitle>
                     <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete your account
-                        and remove your data from our servers.
+                        {t('dashboard.common.deleteAlert.description')}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <Button variant={'destructive'} onClick={onClick}>
-                        {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin"/>}
-                        Continue
+                    <AlertDialogCancel>{t('dashboard.common.cancel')}</AlertDialogCancel>
+                    <Button variant="destructive" onClick={onClick}>
+                        {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+                        {t('dashboard.common.confirm')}
                     </Button>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
-    );
-};
-
-
-
-
-
+    )
+}

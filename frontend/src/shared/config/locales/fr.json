@@ -222,6 +222,14 @@
         "isActive": "Étudiant actif"
       },
       "gender": { "male": "Homme", "female": "Femme" }
+    },
+    "common": {
+      "cancel": "Annuler",
+      "confirm": "Confirmer",
+      "deleteAlert": {
+        "title": "Êtes-vous sûr ?",
+        "description": "Cette action est irréversible. Les données seront définitivement supprimées."
+      }
     }
   },
   "theme": {

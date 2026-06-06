@@ -225,6 +225,14 @@
         "male": "Male",
         "female": "Female"
       }
+    },
+    "common": {
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "deleteAlert": {
+        "title": "Are you sure?",
+        "description": "This action cannot be undone. The data will be permanently deleted."
+      }
     }
   },
   "theme": {

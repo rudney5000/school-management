@@ -137,7 +137,6 @@
   "dashboard": {
     "title": "Tableau de bord",
     "subtitle": "Vue d'ensemble",
-
     "stats": {
       "schools": "Établissements",
       "classes": "Classes",
@@ -147,21 +146,17 @@
       "students": "Élèves",
       "teachers": "Enseignants"
     },
-
     "schedule": {
       "title": "Cours du jour",
       "viewAll": "Voir tout"
     },
-
     "activity": {
       "title": "Activité récente",
       "viewAll": "Tout voir"
     },
-
     "enrollment": {
       "title": "Inscriptions par niveau"
     },
-
     "attendance": {
       "title": "Taux de présence"
     },
@@ -185,6 +180,14 @@
       "gender": {
         "male": "Mobali",
         "female": "Mwasi"
+      }
+    },
+    "common": {
+      "cancel": "Koboya",
+      "confirm": "Kokima",
+      "deleteAlert": {
+        "title": "Ozali na likambo?",
+        "description": "Mosala oyo ekoki kobongwana te. Makambo ekobebisama seko."
       }
     }
   },
