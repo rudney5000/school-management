@@ -1,4 +1,4 @@
-import { and, eq } from 'drizzle-orm';
+import {and, eq, isNull} from 'drizzle-orm';
 import { db } from '@/db';
 import { students } from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
@@ -14,6 +14,7 @@ export class StudentsService {
       .where(
         and(
           eq(students.subSchoolId, subSchoolId),
+            isNull(students.deletedAt)
         ),
       );
   }
