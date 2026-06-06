@@ -9,13 +9,14 @@ import {
     DropdownMenuTrigger,
 } from "@/shared/ui"
 import { MoreHorizontal } from "lucide-react"
+import type {Row} from "@tanstack/react-table";
 
 interface ColumnActionsProps<TData> {
-    data: TData
+    row: Row<TData>
     children: ReactNode
 }
 
-export function ColumnActions<TData>({ data, children }: ColumnActionsProps<TData>) {
+export function ColumnActions<TData>({ row, children }: ColumnActionsProps<TData>) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -24,11 +25,11 @@ export function ColumnActions<TData>({ data, children }: ColumnActionsProps<TDat
                     <MoreHorizontal className="h-4 w-4" />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="z-[9999]">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 {React.Children.map(children, (child) =>
                     React.isValidElement(child)
-                        ? React.cloneElement(child as React.ReactElement<any>, { data })
+                        ? React.cloneElement(child as React.ReactElement<any>, { row })
                         : child
                 )}
             </DropdownMenuContent>
