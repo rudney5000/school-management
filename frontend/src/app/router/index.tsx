@@ -11,6 +11,7 @@ import i18n from "@app/i18n/i18n";
 import {DashboardLayout} from "@app/router/layouts/DashboardLayout";
 import {DashboardPage} from "@/pages/dashboard";
 import {SUPPORT_LOCALES} from "@shared/config/i18n/locale-config";
+import StudentsPage from "@/pages/student/StudentsPage.tsx";
 
 type RouterContext = {
     isAuthenticated: () => boolean;
@@ -25,8 +26,6 @@ const rootRoute = createRootRoute({
     component: LocaleOutlet,
     notFoundComponent: NotFoundPage
 });
-
-
 
 const localeRoute = createRoute({
     getParentRoute: () => rootRoute,
@@ -63,7 +62,7 @@ const authLayoutRoute = createRoute({
 
 const dashboardLayoutRoute = createRoute({
     getParentRoute: () => localeRoute,
-    id: 'dashboard-layout',
+    id: 'dashboard',
     component: DashboardLayout,
     beforeLoad: ({ context, params }) => {
         const ctx = context as RouterContext
@@ -74,7 +73,8 @@ const dashboardLayoutRoute = createRoute({
                 params: { locale: params.locale }
             })
         }
-    }
+    },
+    notFoundComponent: NotFoundPage
 })
 
 const homeRoute = createRoute({
@@ -89,12 +89,6 @@ const faqRoute = createRoute({
     component: FAQPage
 })
 
-const dashboardRoute = createRoute({
-    getParentRoute: () => dashboardLayoutRoute,
-    path: 'dashboard',
-    component: DashboardPage
-})
-
 const loginRoute = createRoute({
     getParentRoute: () => authLayoutRoute,
     path: 'login',
@@ -105,6 +99,36 @@ const registerRoute = createRoute({
     getParentRoute: () => authLayoutRoute,
     path: 'register',
     component: RegisterPage
+})
+
+export const subSchoolRoute = createRoute({
+    getParentRoute: () => dashboardLayoutRoute,
+    path: 'sub-schools/$subSchoolId',
+    component: LocaleOutlet
+})
+
+const dashboardRoute = createRoute({
+    getParentRoute: () => subSchoolRoute,
+    path: 'dashboard',
+    component: DashboardPage,
+})
+
+// const dashboardIndexRoute = createRoute({
+//     getParentRoute: () => dashboardBaseRoute,
+//     path: '/',
+//     component: DashboardPage
+// })
+
+// export const schoolRoute = createRoute({
+//     getParentRoute: () => dashboardRoute,
+//     path: 'schools/$schoolId',
+//     component: SchoolPage
+// })
+
+const studentRoute = createRoute({
+    getParentRoute: () => subSchoolRoute,
+    path: 'students',
+    component: StudentsPage
 })
 
 const routeTree = rootRoute.addChildren([
@@ -121,8 +145,11 @@ const routeTree = rootRoute.addChildren([
             ]),
         dashboardLayoutRoute
             .addChildren([
-                dashboardRoute
-        ])
+                subSchoolRoute.addChildren([
+                    dashboardRoute,
+                    studentRoute
+                ]),
+            ])
     ])
 ]);
 

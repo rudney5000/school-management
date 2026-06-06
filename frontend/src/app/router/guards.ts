@@ -15,11 +15,16 @@ export function requireAuth({ params }: {params: { locale: string }}) {
 
 export function requireGuest({ params }: {params: { locale: string }}) {
     const { isAuthenticated } = store.getState().auth
+
     if (isAuthenticated) {
+        const subSchoolId = store.getState().subSchool?.selectedSubSchoolId
+            ?? localStorage.getItem('subSchoolId')
+
         throw redirect({
-            to: '/$locale/dashboard',
+            to: '/$locale/sub-schools/$subSchoolId/dashboard',
             params: {
-                locale: params.locale
+                locale: params.locale,
+                subSchoolId: subSchoolId ?? 'select'
             }
         })
     }
