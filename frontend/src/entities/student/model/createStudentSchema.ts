@@ -35,7 +35,7 @@ export const studentBaseSchema = z.object({
         message: getErrorMessage('validation.genderRequired'),
     }),
 
-    avatarUrl: z
+    image: z
         .string()
         .url()
         .optional()
@@ -56,7 +56,7 @@ export const studentBaseSchema = z.object({
 })
 
 export const createStudentSchema = studentBaseSchema.extend({
-    schoolId: z.string().uuid(),
+    subSchoolId: z.string().uuid(),
     parentId: z.string().uuid().optional().or(z.literal('')),
 });
 

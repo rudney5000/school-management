@@ -73,19 +73,19 @@ const StudentsPage = () => {
                 },
             },
             {
-                accessorKey: "avatar",
-                header: "AVATAR",
+                accessorKey: "image",
+                header: "IMAGE",
                 cell: ({ row }) => {
                     const firstName = row.getValue('firstName') as string
                     const lastName = row.getValue('lastName') as string
-                    const avatarUrl = row.original.avatarUrl
+                    const image = row.original.image
                         ?? `https://i.pravatar.cc/150?u=${row.original.id}`
 
                     return (
                         <div className="flex items-center gap-2">
-                            {avatarUrl ? (
+                            {image ? (
                                 <img
-                                    src={avatarUrl}
+                                    src={image}
                                     alt={`${firstName} ${lastName}`}
                                     className="w-7 h-7 rounded-full object-cover flex-shrink-0"
                                 />

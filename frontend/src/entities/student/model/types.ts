@@ -6,10 +6,10 @@ export type Student = {
     phone?: string
     address?: string
     gender: 'male' | 'female'
-    avatar?: string | null
+    image?: string | null
     dateOfBirth: string
     enrollmentDate: string
-    schoolId: string
+    subSchoolId: string
     parentId?: string
     isActive: boolean
     createdAt: string

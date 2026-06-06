@@ -5,12 +5,12 @@ import type {CommonError} from "@shared/helperClass/CommonError";
 import type {Student} from "@entities/student";
 import {useEffect} from "react";
 
-export const useStudents = (schoolId?: string) => {
+export const useStudents = (subSchoolId?: string) => {
     const query = useQuery<Student[], Error>({
-        queryKey: ['students', schoolId],
-        enabled: !!schoolId,
+        queryKey: ['students', subSchoolId],
+        enabled: !!subSchoolId,
         queryFn: async (): Promise<Student[]> => {
-            const response = await studentApi.getAll(schoolId ? { schoolId } : undefined)
+            const response = await studentApi.getAll(subSchoolId ? { subSchoolId } : undefined)
 
             if(!response.IsSuccess) {
                 const apiError = response.result as CommonError

@@ -3,5 +3,5 @@ export type StudentParamsDto = {
 }
 
 export type StudentListQueryDto = {
-    schoolId?: string
+    subSchoolId?: string
 }
