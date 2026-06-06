@@ -171,5 +171,10 @@
     "light": "Polele",
     "dark": "Molili",
     "system": "Ya système"
+  },
+  "user": {
+    "profile": "Profil",
+    "settings": "Bongisi",
+    "logout": "Kobima"
   }
 }

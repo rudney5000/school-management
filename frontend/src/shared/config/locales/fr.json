@@ -210,5 +210,10 @@
     "light": "Clair",
     "dark": "Sombre",
     "system": "Système"
+  },
+  "user": {
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logout": "Déconnexion"
   }
 }

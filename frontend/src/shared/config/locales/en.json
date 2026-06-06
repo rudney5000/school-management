@@ -210,6 +210,11 @@
     "light": "Light",
     "dark": "Dark",
     "system": "System"
+  },
+  "user": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
   }
 
 }
