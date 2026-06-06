@@ -175,6 +175,27 @@
       "absent": "Отсутствуют",
       "courseDistribution": "Распределение курсов",
       "recentActivity": "Последняя активность"
+    },
+    "students": {
+      "form": {
+        "addTitle": "Новый студент",
+        "addDescription": "Заполните необходимую информацию."
+      },
+      "fields": {
+        "firstName": "Имя",
+        "lastName": "Фамилия",
+        "email": "Электронная почта",
+        "phone": "Телефон",
+        "gender": "Пол",
+        "dateOfBirth": "Дата рождения",
+        "enrollmentDate": "Дата зачисления",
+        "address": "Адрес",
+        "isActive": "Активный студент"
+      },
+      "gender": {
+        "male": "Мужской",
+        "female": "Женский"
+      }
     }
   },
   "theme": {

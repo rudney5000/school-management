@@ -164,6 +164,27 @@
 
     "attendance": {
       "title": "Taux de présence"
+    },
+    "students": {
+      "form": {
+        "addTitle": "Moyindami ya sika",
+        "addDescription": "Tondela bisaleli oyo basengeli."
+      },
+      "fields": {
+        "firstName": "Nkombo ya liboso",
+        "lastName": "Nkombo ya libota",
+        "email": "Emaila",
+        "phone": "Telefone",
+        "gender": "Bokolo",
+        "dateOfBirth": "Mokolo ya kobotama",
+        "enrollmentDate": "Mokolo ya kolekisama",
+        "address": "Adilesi",
+        "isActive": "Moyindami ya active"
+      },
+      "gender": {
+        "male": "Mobali",
+        "female": "Mwasi"
+      }
     }
   },
   "theme": {

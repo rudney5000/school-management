@@ -203,6 +203,27 @@
     },
     "attendance": {
       "title": "Attendance Rate"
+    },
+    "students": {
+      "form": {
+        "addTitle": "New student",
+        "addDescription": "Fill in the required information."
+      },
+      "fields": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "phone": "Phone",
+        "gender": "Gender",
+        "dateOfBirth": "Date of birth",
+        "enrollmentDate": "Enrollment date",
+        "address": "Address",
+        "isActive": "Active student"
+      },
+      "gender": {
+        "male": "Male",
+        "female": "Female"
+      }
     }
   },
   "theme": {

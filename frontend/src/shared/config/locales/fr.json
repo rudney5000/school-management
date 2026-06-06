@@ -203,6 +203,24 @@
     },
     "attendance": {
       "title": "Taux de présence"
+    },
+    "students": {
+      "form": {
+        "addTitle": "Nouvel étudiant",
+        "addDescription": "Remplissez les informations demandées."
+      },
+      "fields": {
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email",
+        "phone": "Téléphone",
+        "gender": "Genre",
+        "dateOfBirth": "Date de naissance",
+        "enrollmentDate": "Date d'inscription",
+        "address": "Adresse",
+        "isActive": "Étudiant actif"
+      },
+      "gender": { "male": "Homme", "female": "Femme" }
     }
   },
   "theme": {
