@@ -236,7 +236,12 @@
       "status": {
         "active": "Actif",
         "inactive": "Inactif"
-      }
+      },
+      "loading": "Chargement...",
+      "error": "Une erreur est survenue",
+      "title": "Étudiants",
+      "add": "Ajouter",
+      "add_student": "Ajouter un étudiant"
     },
     "common": {
       "cancel": "Annuler",

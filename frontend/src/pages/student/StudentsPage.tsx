@@ -149,22 +149,25 @@ const StudentsPage = () => {
         },
     ]
 
-    if (isLoading) return <div>Loading...</div>
-    if (isError) return <div>Error</div>
+    if (isLoading) return <div>{t('dashboard.students.loading')}</div>
+    if (isError) return <div>{t('dashboard.students.error')}</div>
 
     return (
         <div>
-            <h3 className="text-2xl lg:text-4xl font-extrabold mb-2">Étudiants</h3>
+            <h3 className="text-2xl lg:text-4xl font-extrabold mb-2">
+                {t('dashboard.students.title')}
+            </h3>
 
             <DataTable columns={columns} data={data ?? []} searchKey="firstName">
                 <AddStudentForm
                     isOpen={isCreateOpen}
                     handleOpen={() => setIsCreateOpen(!isCreateOpen)}
                     handleSuccess={() => setIsCreateOpen(false)}
-                    submitButtonLabel="Ajouter"
+                    submitButtonLabel={t('dashboard.students.add')}
                 />
+
                 <Button onClick={() => setIsCreateOpen(!isCreateOpen)}>
-                    Ajouter un étudiant
+                    {t('dashboard.students.add_student')}
                 </Button>
             </DataTable>
         </div>

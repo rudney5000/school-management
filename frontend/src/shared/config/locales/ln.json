@@ -195,7 +195,12 @@
       "status": {
         "active": "Ya mosala",
         "inactive": "Ya solo te"
-      }
+      },
+      "loading": "Ezali kotonda...",
+      "error": "Libunga moko esalemi",
+      "title": "Bayekoli",
+      "add": "Bakisa",
+      "add_student": "Bakisa moyekoli"
     },
     "common": {
       "cancel": "Koboya",

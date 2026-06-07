@@ -239,7 +239,12 @@
       "status": {
         "active": "Active",
         "inactive": "Inactive"
-      }
+      },
+      "loading": "Loading...",
+      "error": "An error occurred",
+      "title": "Students",
+      "add": "Add",
+      "add_student": "Add Student"
     },
     "common": {
       "cancel": "Cancel",
