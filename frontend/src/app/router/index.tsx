@@ -11,7 +11,8 @@ import i18n from "@app/i18n/i18n";
 import {DashboardLayout} from "@app/router/layouts/DashboardLayout";
 import {DashboardPage} from "@/pages/dashboard";
 import {SUPPORT_LOCALES} from "@shared/config/i18n/locale-config";
-import StudentsPage from "@/pages/student/StudentsPage.tsx";
+import StudentsPage from "@/pages/student/StudentsPage";
+import TeachersPage from "@/pages/teacher/TeachersPage";
 
 type RouterContext = {
     isAuthenticated: () => boolean;
@@ -113,22 +114,16 @@ const dashboardRoute = createRoute({
     component: DashboardPage,
 })
 
-// const dashboardIndexRoute = createRoute({
-//     getParentRoute: () => dashboardBaseRoute,
-//     path: '/',
-//     component: DashboardPage
-// })
-
-// export const schoolRoute = createRoute({
-//     getParentRoute: () => dashboardRoute,
-//     path: 'schools/$schoolId',
-//     component: SchoolPage
-// })
-
 const studentRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'students',
     component: StudentsPage
+})
+
+const teachersRoute = createRoute({
+    getParentRoute: () => subSchoolRoute,
+    path: 'teachers',
+    component: TeachersPage
 })
 
 const routeTree = rootRoute.addChildren([
@@ -147,7 +142,8 @@ const routeTree = rootRoute.addChildren([
             .addChildren([
                 subSchoolRoute.addChildren([
                     dashboardRoute,
-                    studentRoute
+                    studentRoute,
+                    teachersRoute
                 ]),
             ])
     ])
