@@ -65,4 +65,4 @@ export class TeacherApi extends ApiWrapper {
         )
     }
 }
-export const studentApi = new TeacherApi()
+export const teacherApi = new TeacherApi()
