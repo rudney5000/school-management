@@ -290,6 +290,31 @@
       "title": "Teachers",
       "add_teacher": "Add Teacher"
     },
+    "parents": {
+      "title": "Parents",
+      "add_parent": "Add parent",
+      "loading": "Loading...",
+      "error": "An error occurred.",
+      "form": {
+        "addTitle": "New parent",
+        "addDescription": "Fill in the required information.",
+        "editTitle": "Edit parent",
+        "editDescription": "Update parent information."
+      },
+      "fields": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "phone": "Phone"
+      },
+      "columns": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "phone": "Phone",
+        "createdAt": "Registered"
+      }
+    },
     "common": {
       "cancel": "Cancel",
       "confirm": "Confirm",

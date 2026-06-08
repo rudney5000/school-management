@@ -246,6 +246,31 @@
       "title": "Balakisi",
       "add_teacher": "Bakisa molakisi"
     },
+    "parents": {
+      "title": "Baboti",
+      "add_parent": "Kobakisa moboti",
+      "loading": "Kozela...",
+      "error": "Nzela ya malamu elongi.",
+      "form": {
+        "addTitle": "Moboti ya sika",
+        "addDescription": "Tondela bisaleli oyo esengami.",
+        "editTitle": "Kobongisa moboti",
+        "editDescription": "Longola bisaleli ya moboti."
+      },
+      "fields": {
+        "firstName": "Nkombo ya liboso",
+        "lastName": "Nkombo ya libota",
+        "email": "Email",
+        "phone": "Telefone"
+      },
+      "columns": {
+        "firstName": "Nkombo ya liboso",
+        "lastName": "Nkombo ya libota",
+        "email": "Email",
+        "phone": "Telefone",
+        "createdAt": "Mokolo ya kotia"
+      }
+    },
     "common": {
       "cancel": "Koboya",
       "confirm": "Kokima",

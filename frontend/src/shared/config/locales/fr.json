@@ -287,6 +287,31 @@
       "title": "Enseignants",
       "add_teacher": "Ajouter un prof"
     },
+    "parents": {
+      "title": "Parents",
+      "add_parent": "Ajouter un parent",
+      "loading": "Chargement...",
+      "error": "Une erreur est survenue.",
+      "form": {
+        "addTitle": "Nouveau parent",
+        "addDescription": "Remplissez les informations requises.",
+        "editTitle": "Modifier le parent",
+        "editDescription": "Mettez à jour les informations du parent."
+      },
+      "fields": {
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email",
+        "phone": "Téléphone"
+      },
+      "columns": {
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email",
+        "phone": "Téléphone",
+        "createdAt": "Inscrit le"
+      }
+    },
     "common": {
       "cancel": "Annuler",
       "confirm": "Confirmer",

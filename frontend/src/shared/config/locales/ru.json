@@ -262,6 +262,31 @@
       "title": "Учителя",
       "add_teacher": "Добавить учителя"
     },
+    "parents": {
+      "title": "Родители",
+      "add_parent": "Добавить родителя",
+      "loading": "Загрузка...",
+      "error": "Произошла ошибка.",
+      "form": {
+        "addTitle": "Новый родитель",
+        "addDescription": "Заполните необходимую информацию.",
+        "editTitle": "Редактировать родителя",
+        "editDescription": "Обновите информацию о родителе."
+      },
+      "fields": {
+        "firstName": "Имя",
+        "lastName": "Фамилия",
+        "email": "Email",
+        "phone": "Телефон"
+      },
+      "columns": {
+        "firstName": "Имя",
+        "lastName": "Фамилия",
+        "email": "Email",
+        "phone": "Телефон",
+        "createdAt": "Зарегистрирован"
+      }
+    },
     "common": {
       "cancel": "Отмена",
       "confirm": "Подтвердить",
