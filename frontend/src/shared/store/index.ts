@@ -9,6 +9,7 @@ import {schoolSlice} from "@entities/school";
 import {studentSlice} from "@entities/student";
 import {subSchoolSlice} from "@entities/sub-school/model/slice";
 import {teacherSlice} from "@entities/teacher";
+import {parentSlice} from "@entities/parent";
 
 export const store = configureStore({
     reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
         subSchool: subSchoolSlice.reducer,
         student: studentSlice.reducer,
         teacher: teacherSlice.reducer,
+        parent: parentSlice.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 })
