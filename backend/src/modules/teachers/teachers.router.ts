@@ -2,10 +2,12 @@ import { Router } from 'express';
 import { validate } from '@/shared/utils/validate';
 import { TeachersController } from '@/modules/teachers/teachers.controller';
 import {
-  createTeacherSchema,
-  teacherParamsSchema,
-  schoolQuerySchema,
-  updateTeacherSchema,
+    teacherParamsSchema,
+    subSchoolQuerySchema,
+    updateTeacherSchema,
+    createTeacherWithAssignmentSchema,
+    assignTeacherSchema,
+    updateAssignmentSchema,
 } from '@/modules/teachers/teachers.schema';
 import { authenticate } from '@/middleware/authenticate';
 import { authorize } from '@/middleware/authorize';
@@ -17,21 +19,21 @@ router.get(
   '/',
   authenticate,
   authorize('admin', 'director'),
-  validate({ query: schoolQuerySchema }),
+  validate({ query: subSchoolQuerySchema }),
   controller.getAll,
 );
 router.get(
   '/:id',
   authenticate,
   authorize('admin', 'director', 'teacher'),
-  validate({ params: teacherParamsSchema, query: schoolQuerySchema }),
+  validate({ params: teacherParamsSchema, query: subSchoolQuerySchema }),
   controller.getById,
 );
 router.post(
   '/',
   authenticate,
   authorize('admin'),
-  validate({ body: createTeacherSchema }),
+  validate({ body: createTeacherWithAssignmentSchema  }),
   controller.create,
 );
 router.patch(
@@ -40,7 +42,7 @@ router.patch(
   authorize('admin'),
   validate({
     params: teacherParamsSchema,
-    query: schoolQuerySchema,
+    query: subSchoolQuerySchema,
     body: updateTeacherSchema,
   }),
   controller.update,
@@ -49,8 +51,16 @@ router.delete(
   '/:id',
   authenticate,
   authorize('admin'),
-  validate({ params: teacherParamsSchema, query: schoolQuerySchema }),
+  validate({ params: teacherParamsSchema, query: subSchoolQuerySchema }),
   controller.remove,
 );
+
+router.post('/:id/assign', authenticate, authorize('admin'),
+    validate({ params: teacherParamsSchema, body: assignTeacherSchema }),
+    controller.assign);
+
+router.patch('/:id/assignment', authenticate, authorize('admin'),
+    validate({ params: teacherParamsSchema, query: subSchoolQuerySchema, body: updateAssignmentSchema }),
+    controller.updateAssignment);
 
 export { router as teachersRouter };
