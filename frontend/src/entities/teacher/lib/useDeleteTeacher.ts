@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { handleApiError } from '@shared/lib'
-import {studentApi} from "@entities/student";
+import {teacherApi} from "@entities/teacher";
 
 export const useDeleteTeacher = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
         mutationFn: ({ id, subSchoolId }: { id: string; subSchoolId: string }) =>
-            studentApi.delete(id, subSchoolId),
+            teacherApi.delete(id, subSchoolId),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['students'] })
+            queryClient.invalidateQueries({ queryKey: ['teachers'] })
         },
         onError: (error: Error) => {
             handleApiError(error)
