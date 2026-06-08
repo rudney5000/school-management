@@ -218,6 +218,50 @@
       "add": "Добавить",
       "add_student": "Добавить студента"
     },
+    "teachers": {
+      "form": {
+        "addTitle": "Новый учитель",
+        "addDescription": "Заполните необходимую информацию.",
+        "editTitle": "Редактировать учитель",
+        "editDescription": "Обновите информацию."
+      },
+      "fields": {
+        "firstName": "Имя",
+        "lastName": "Фамилия",
+        "email": "Email",
+        "phone": "Телефон",
+        "gender": "Пол",
+        "dateOfBirth": "Дата рождения",
+        "address": "Адрес",
+        "hireDate": "Дата найма",
+        "qualification": "Квалификация",
+        "specialization": "Специализация"
+      },
+      "gender": {
+        "male": "Мужской",
+        "female": "Женский"
+      },
+      "columns": {
+        "firstName": "Имя",
+        "lastName": "Фамилия",
+        "email": "Email",
+        "phone": "Телефон",
+        "gender": "Пол",
+        "dateOfBirth": "Дата рождения",
+        "hireDate": "Дата найма",
+        "qualification": "Квалификация",
+        "specialization": "Специализация",
+        "status": "Статус"
+      },
+      "status": {
+        "active": "Активен",
+        "inactive": "Неактивен"
+      },
+      "loading": "Загрузка...",
+      "error": "Произошла ошибка",
+      "title": "Учителя",
+      "add_teacher": "Добавить учителя"
+    },
     "common": {
       "cancel": "Отмена",
       "confirm": "Подтвердить",

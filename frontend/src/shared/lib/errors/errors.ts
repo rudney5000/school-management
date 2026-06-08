@@ -125,5 +125,11 @@ export const errors = {
             ru: "Дата зачисления обязательна",
             ln: "Mokolo ya inscription esengeli",
         },
+        hireDateRequired: {
+            en: "Hire date is required",
+            fr: "La date d'embauche est requise",
+            ru: "Дата найма обязательна",
+            ln: "Mokolo ya koyeba esengeli",
+        }
     }
 };

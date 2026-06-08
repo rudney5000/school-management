@@ -246,6 +246,50 @@
       "add": "Add",
       "add_student": "Add Student"
     },
+    "teachers": {
+      "form": {
+        "addTitle": "New teacher",
+        "addDescription": "Fill in the required information.",
+        "editTitle": "Edit teacher",
+        "editDescription": "Update teacher information."
+      },
+      "fields": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "phone": "Phone",
+        "gender": "Gender",
+        "dateOfBirth": "Date of birth",
+        "address": "Address",
+        "hireDate": "Hire date",
+        "qualification": "Qualification",
+        "specialization": "Specialization"
+      },
+      "gender": {
+        "male": "Male",
+        "female": "Female"
+      },
+      "columns": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "phone": "Phone",
+        "gender": "Gender",
+        "dateOfBirth": "Date of birth",
+        "hireDate": "Hire date",
+        "qualification": "Qualification",
+        "specialization": "Specialization",
+        "status": "Status"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "loading": "Loading...",
+      "error": "An error occurred",
+      "title": "Teachers",
+      "add_teacher": "Add Teacher"
+    },
     "common": {
       "cancel": "Cancel",
       "confirm": "Confirm",

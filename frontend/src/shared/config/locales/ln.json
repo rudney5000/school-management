@@ -202,6 +202,50 @@
       "add": "Bakisa",
       "add_student": "Bakisa moyekoli"
     },
+    "teachers": {
+      "form": {
+        "addTitle": "Molakisi ya sika",
+        "addDescription": "Tondela bisaleli oyo esengami.",
+        "editTitle": "Kobongola molakisi",
+        "editDescription": "Kobongola ba informaions ya molakisi oyo."
+      },
+      "fields": {
+        "firstName": "Nkombo ya liboso",
+        "lastName": "Nkombo ya libota",
+        "email": "Email",
+        "phone": "Telefone",
+        "gender": "Bokolo",
+        "dateOfBirth": "Mokolo ya kobotama",
+        "address": "Adresse",
+        "hireDate": "Mokolo ya kosalela",
+        "qualification": "Bonsomi ya mosala",
+        "specialization": "Sujet ya koteya"
+      },
+      "gender": {
+        "male": "Mobali",
+        "female": "Mwasi"
+      },
+      "columns": {
+        "firstName": "Nkombo ya liboso",
+        "lastName": "Nkombo ya libota",
+        "email": "Email",
+        "phone": "Telefone",
+        "gender": "Bokolo",
+        "dateOfBirth": "Kobotama",
+        "hireDate": "Kosalela",
+        "qualification": "Bonsomi",
+        "specialization": "Sujet",
+        "status": "Kondima"
+      },
+      "status": {
+        "active": "Azali kosala",
+        "inactive": "Asalaka te"
+      },
+      "loading": "Ezali kotonda...",
+      "error": "Libunga moko esalemi",
+      "title": "Balakisi",
+      "add_teacher": "Bakisa molakisi"
+    },
     "common": {
       "cancel": "Koboya",
       "confirm": "Kokima",

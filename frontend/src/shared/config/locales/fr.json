@@ -243,6 +243,50 @@
       "add": "Ajouter",
       "add_student": "Ajouter un étudiant"
     },
+    "teachers": {
+      "form": {
+        "addTitle": "Nouvel enseignant",
+        "addDescription": "Remplissez les informations requises.",
+        "editTitle": "Modifier l'enseignant",
+        "editDescription": "Mettez à jour les informations requises."
+      },
+      "fields": {
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email",
+        "phone": "Téléphone",
+        "gender": "Genre",
+        "dateOfBirth": "Date de naissance",
+        "address": "Adresse",
+        "hireDate": "Date d'embauche",
+        "qualification": "Qualification",
+        "specialization": "Spécialisation"
+      },
+      "gender": {
+        "male": "Masculin",
+        "female": "Féminin"
+      },
+      "columns": {
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email",
+        "phone": "Téléphone",
+        "gender": "Genre",
+        "dateOfBirth": "Date de naissance",
+        "hireDate": "Embauche",
+        "qualification": "Qualification",
+        "specialization": "Spécialisation",
+        "status": "Statut"
+      },
+      "status": {
+        "active": "Actif",
+        "inactive": "Inactif"
+      },
+      "loading": "Chargement...",
+      "error": "Une erreur est survenue",
+      "title": "Enseignants",
+      "add_teacher": "Ajouter un prof"
+    },
     "common": {
       "cancel": "Annuler",
       "confirm": "Confirmer",
