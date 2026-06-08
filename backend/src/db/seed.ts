@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import {db} from './index';
 import {
     schools, subSchools, districts, cities,
-    departments, countries, workers, students, users,
+    departments, countries, workers, students, users, teacherSchools, teachers,
 } from './schema';
 import {eq} from 'drizzle-orm';
 
@@ -180,20 +180,66 @@ async function seed() {
         dateOfBirth: '2008-07-20',
         enrollmentDate: '2024-09-01',
         subSchoolId: subSchool.id,
-    }).returning()
+    }).returning();
 
     await db.insert(users).values({
         email: 'marie.kabila@saintjoseph.cd',
         password: hashedPassword,
         role: 'student',
         studentId: student.id,
-    })
+    });
 
     console.log('✓ Student user: marie.kabila@saintjoseph.cd')
+
+    await db.delete(users).where(eq(users.email, 'jean.muamba@saintjoseph.cd')).catch(() => {});
+    await db.delete(teacherSchools).where(
+        eq(teacherSchools.teacherId,
+            db.select({ id: teachers.id })
+                .from(teachers)
+                .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'))
+                .limit(1)
+        )
+    ).catch(() => {});
+    await db.delete(teachers).where(eq(teachers.email, 'jean.muamba@saintjoseph.cd')).catch(() => {});
+
+    const [existingTeacher] = await db.select().from(teachers)
+        .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'));
+
+    if (!existingTeacher) {
+        const [teacher] = await db.insert(teachers).values({
+            firstName: 'Jean',
+            lastName: 'Muamba',
+            email: 'jean.muamba@saintjoseph.cd',
+            gender: 'male',
+            dateOfBirth: '1985-03-15',
+            phone: '+243 81 234 5678',
+        }).returning();
+
+        await db.insert(teacherSchools).values({
+            teacherId: teacher.id,
+            subSchoolId: subSchool.id,
+            hireDate: '2020-09-01',
+            qualification: 'Licence en Mathématiques',
+            specialization: 'Mathématiques',
+            isActive: true,
+        });
+
+        await db.insert(users).values({
+            email: 'jean.muamba@saintjoseph.cd',
+            password: hashedPassword,
+            role: 'teacher',
+            teacherId: teacher.id,
+        });
+
+        console.log('✓ Teacher user: jean.muamba@saintjoseph.cd');
+    } else {
+        console.log('~ Teacher already exists');
+    }
 
     console.log('\n✓ Seed completed. Test credentials (password: password123):');
     console.log('  Admin   → admin@saintjoseph.cd');
     console.log('  Student → marie.kabila@saintjoseph.cd');
+    console.log('  Teacher → jean.muamba@saintjoseph.cd');
 
     process.exit(0);
 }

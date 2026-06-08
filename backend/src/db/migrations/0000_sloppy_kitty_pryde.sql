@@ -89,6 +89,17 @@ CREATE TABLE IF NOT EXISTS "sub_schools" (
 	CONSTRAINT "sub_schools_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "teacher_schools" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"teacher_id" uuid NOT NULL,
+	"sub_school_id" uuid NOT NULL,
+	"hire_date" date NOT NULL,
+	"qualification" text,
+	"specialization" text,
+	"is_active" boolean DEFAULT true NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "teachers" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"first_name" varchar(100) NOT NULL,
@@ -98,10 +109,6 @@ CREATE TABLE IF NOT EXISTS "teachers" (
 	"address" text,
 	"gender" "gender" NOT NULL,
 	"date_of_birth" date NOT NULL,
-	"hire_date" date NOT NULL,
-	"qualification" text,
-	"specialization" text,
-	"school_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "teachers_email_unique" UNIQUE("email")
@@ -287,7 +294,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "teachers" ADD CONSTRAINT "teachers_school_id_schools_id_fk" FOREIGN KEY ("school_id") REFERENCES "public"."schools"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "teacher_schools" ADD CONSTRAINT "teacher_schools_teacher_id_teachers_id_fk" FOREIGN KEY ("teacher_id") REFERENCES "public"."teachers"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -420,7 +427,8 @@ END $$;
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_sub_schools_school" ON "sub_schools" USING btree ("school_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_sub_schools_code" ON "sub_schools" USING btree ("code");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "idx_teachers_school" ON "teachers" USING btree ("school_id");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "uniq_teacher_school" ON "teacher_schools" USING btree ("teacher_id","sub_school_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_teachers_schools_sub_school" ON "teacher_schools" USING btree ("sub_school_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_teachers_email" ON "teachers" USING btree ("email");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_workers_sub_school" ON "workers" USING btree ("sub_school_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_parents_sub_school" ON "parents" USING btree ("sub_school_id");--> statement-breakpoint

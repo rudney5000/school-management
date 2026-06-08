@@ -1,5 +1,5 @@
 {
-  "id": "c28849ee-08b1-4100-a9ff-fd85a2daed5c",
+  "id": "51010260-f78b-478d-a9bb-69e6272e9d00",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -365,6 +365,118 @@
         }
       }
     },
+    "public.teacher_schools": {
+      "name": "teacher_schools",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "teacher_id": {
+          "name": "teacher_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sub_school_id": {
+          "name": "sub_school_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hire_date": {
+          "name": "hire_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "qualification": {
+          "name": "qualification",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "specialization": {
+          "name": "specialization",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "uniq_teacher_school": {
+          "name": "uniq_teacher_school",
+          "columns": [
+            {
+              "expression": "teacher_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "sub_school_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_teachers_schools_sub_school": {
+          "name": "idx_teachers_schools_sub_school",
+          "columns": [
+            {
+              "expression": "sub_school_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "teacher_schools_teacher_id_teachers_id_fk": {
+          "name": "teacher_schools_teacher_id_teachers_id_fk",
+          "tableFrom": "teacher_schools",
+          "tableTo": "teachers",
+          "columnsFrom": [
+            "teacher_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.teachers": {
       "name": "teachers",
       "schema": "",
@@ -419,30 +531,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "hire_date": {
-          "name": "hire_date",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "qualification": {
-          "name": "qualification",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "specialization": {
-          "name": "specialization",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "school_id": {
-          "name": "school_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -459,21 +547,6 @@
         }
       },
       "indexes": {
-        "idx_teachers_school": {
-          "name": "idx_teachers_school",
-          "columns": [
-            {
-              "expression": "school_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
         "idx_teachers_email": {
           "name": "idx_teachers_email",
           "columns": [
@@ -490,21 +563,7 @@
           "with": {}
         }
       },
-      "foreignKeys": {
-        "teachers_school_id_schools_id_fk": {
-          "name": "teachers_school_id_schools_id_fk",
-          "tableFrom": "teachers",
-          "tableTo": "schools",
-          "columnsFrom": [
-            "school_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "teachers_email_unique": {
