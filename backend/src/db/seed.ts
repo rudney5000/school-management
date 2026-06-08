@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import {db} from './index';
 import {
     schools, subSchools, districts, cities,
-    departments, countries, workers, students, users, teacherSchools, teachers,
+    departments, countries, workers, students, users, teacherSchools, teachers, parents,
 } from './schema';
 import {eq} from 'drizzle-orm';
 
@@ -190,6 +190,43 @@ async function seed() {
     });
 
     console.log('✓ Student user: marie.kabila@saintjoseph.cd')
+
+    await db.delete(users)
+        .where(eq(users.email, 'sophie.kabila@saintjoseph.cd'))
+        .catch(() => {});
+
+    await db.delete(parents)
+        .where(eq(parents.email, 'sophie.kabila@saintjoseph.cd'))
+        .catch(() => {});
+
+    const [existingParent] = await db.select()
+        .from(parents)
+        .where(eq(parents.email, 'sophie.kabila@saintjoseph.cd'));
+
+    if (!existingParent) {
+        const [parent] = await db.insert(parents)
+            .values({
+                firstName: 'Sophie',
+                lastName: 'Kabila',
+                email: 'sophie.kabila@saintjoseph.cd',
+                phone: '+243 81 111 2222',
+                subSchoolId: subSchool.id,
+            })
+            .returning();
+
+        await db.insert(users)
+            .values({
+                email: 'sophie.kabila@saintjoseph.cd',
+                password: hashedPassword,
+                role: 'parent',
+                parentId: parent.id,
+            });
+
+        console.log('✓ Parent user: sophie.kabila@saintjoseph.cd');
+    } else {
+        console.log('~ Parent already exists');
+    }
+
 
     await db.delete(users).where(eq(users.email, 'jean.muamba@saintjoseph.cd')).catch(() => {});
     await db.delete(teacherSchools).where(
