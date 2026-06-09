@@ -271,6 +271,29 @@
         "createdAt": "Mokolo ya kotia"
       }
     },
+    "classes": {
+      "title": "Baklasi",
+      "add_class": "Kobakisa klasi",
+      "loading": "Kozela...",
+      "error": "Nzela ya malamu elongi.",
+      "form": {
+        "addTitle": "Klasi ya sika",
+        "addDescription": "Tondela bisaleli oyo esengami.",
+        "editTitle": "Kobongisa klasi",
+        "editDescription": "Longola bisaleli ya klasi."
+      },
+      "fields": {
+        "name": "Nkombo",
+        "gradeLevel": "Etando",
+        "capacity": "Bonsomi ya bato"
+      },
+      "columns": {
+        "name": "Nkombo",
+        "gradeLevel": "Etando",
+        "capacity": "Bonsomi",
+        "status": "Kondima"
+      }
+    },
     "common": {
       "cancel": "Koboya",
       "confirm": "Kokima",

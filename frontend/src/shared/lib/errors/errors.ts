@@ -66,7 +66,12 @@ export const errors = {
             ru: "ID школы обязателен для получения подразделений",
             ln: "ID ya école esengeli mpo na kozwa ba sous-écoles",
         },
-
+        name: {
+            en: "Name is required",
+            fr: "Le nom est requis",
+            ru: "Имя обязательно",
+            ln: "Kombo esengeli",
+        },
         firstNameRequired: {
             en: "First name is required",
             fr: "Le prénom est obligatoire",
@@ -130,6 +135,12 @@ export const errors = {
             fr: "La date d'embauche est requise",
             ru: "Дата найма обязательна",
             ln: "Mokolo ya koyeba esengeli",
+        },
+        capacityInvalid: {
+            en: "Capacity must be a positive number",
+            fr: "La capacité doit être un nombre positif",
+            ru: "Вместимость должна быть положительным числом",
+            ln: "Mikanda ya mokolo ya mokolo esengeli",
         }
     }
 };

@@ -312,6 +312,29 @@
         "createdAt": "Inscrit le"
       }
     },
+    "classes": {
+      "title": "Classes",
+      "add_class": "Ajouter une classe",
+      "loading": "Chargement...",
+      "error": "Une erreur est survenue.",
+      "form": {
+        "addTitle": "Nouvelle classe",
+        "addDescription": "Remplissez les informations requises.",
+        "editTitle": "Modifier la classe",
+        "editDescription": "Mettez à jour les informations de la classe."
+      },
+      "fields": {
+        "name": "Nom",
+        "gradeLevel": "Niveau",
+        "capacity": "Capacité"
+      },
+      "columns": {
+        "name": "Nom",
+        "gradeLevel": "Niveau",
+        "capacity": "Capacité",
+        "status": "Statut"
+      }
+    },
     "common": {
       "cancel": "Annuler",
       "confirm": "Confirmer",

@@ -287,6 +287,29 @@
         "createdAt": "Зарегистрирован"
       }
     },
+    "classes": {
+      "title": "Классы",
+      "add_class": "Добавить класс",
+      "loading": "Загрузка...",
+      "error": "Произошла ошибка.",
+      "form": {
+        "addTitle": "Новый класс",
+        "addDescription": "Заполните необходимую информацию.",
+        "editTitle": "Редактировать класс",
+        "editDescription": "Обновите информацию о классе."
+      },
+      "fields": {
+        "name": "Название",
+        "gradeLevel": "Уровень",
+        "capacity": "Вместимость"
+      },
+      "columns": {
+        "name": "Название",
+        "gradeLevel": "Уровень",
+        "capacity": "Вместимость",
+        "status": "Статус"
+      }
+    },
     "common": {
       "cancel": "Отмена",
       "confirm": "Подтвердить",

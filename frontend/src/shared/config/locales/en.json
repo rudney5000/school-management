@@ -315,6 +315,29 @@
         "createdAt": "Registered"
       }
     },
+    "classes": {
+      "title": "Classes",
+      "add_class": "Add class",
+      "loading": "Loading...",
+      "error": "An error occurred.",
+      "form": {
+        "addTitle": "New class",
+        "addDescription": "Fill in the required information.",
+        "editTitle": "Edit class",
+        "editDescription": "Update class information."
+      },
+      "fields": {
+        "name": "Name",
+        "gradeLevel": "Grade level",
+        "capacity": "Capacity"
+      },
+      "columns": {
+        "name": "Name",
+        "gradeLevel": "Grade level",
+        "capacity": "Capacity",
+        "status": "Status"
+      }
+    },
     "common": {
       "cancel": "Cancel",
       "confirm": "Confirm",
