@@ -13,7 +13,8 @@ import {DashboardPage} from "@/pages/dashboard";
 import {SUPPORT_LOCALES} from "@shared/config/i18n/locale-config";
 import StudentsPage from "@/pages/student/StudentsPage";
 import TeachersPage from "@/pages/teacher/TeachersPage";
-import ParentsPage from "@/pages/parent/ParentsPage.tsx";
+import ParentsPage from "@/pages/parent/ParentsPage";
+import ClassesPage from "@/pages/class/ClassPage";
 
 type RouterContext = {
     isAuthenticated: () => boolean;
@@ -133,6 +134,12 @@ const parentsRoute = createRoute({
     component: ParentsPage
 })
 
+const classesRoute = createRoute({
+    getParentRoute: () => subSchoolRoute,
+    path: 'classes',
+    component: ClassesPage
+})
+
 const routeTree = rootRoute.addChildren([
     localeRoute.addChildren([
         homeLayoutRoute
@@ -151,7 +158,8 @@ const routeTree = rootRoute.addChildren([
                     dashboardRoute,
                     studentRoute,
                     teachersRoute,
-                    parentsRoute
+                    parentsRoute,
+                    classesRoute
                 ]),
             ])
     ])
