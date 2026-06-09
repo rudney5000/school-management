@@ -7,4 +7,5 @@ export type Parent = {
     phone?: string | null
     subSchoolId: string
     createdAt: string
+    children: { id: string; firstName: string; lastName: string }[]
 }
