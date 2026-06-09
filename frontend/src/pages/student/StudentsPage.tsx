@@ -8,19 +8,22 @@ import { AddStudentForm, EditStudentForm, DeleteStudentAlert } from '@features/s
 import type { Student } from '@entities/student'
 import {ActionsComponent} from "@shared/ui/common/ActionsComponent";
 import {cn, useTranslation} from "@shared/lib";
-import {useParams} from "@tanstack/react-router";
+import {useNavigate, useParams} from "@tanstack/react-router";
+import i18n from "@app/i18n/i18n";
 
 const StudentsPage = () => {
     const [isCreateOpen, setIsCreateOpen] = React.useState(false)
     const [studentToUpdate, setStudentToUpdate] = React.useState<Student>()
     const [studentToDelete, setStudentToDelete] = React.useState<Student>()
+    const navigate = useNavigate()
+    const { t } = useTranslation()
 
+    const locale = i18n.language
     const { subSchoolId } = useParams({
         from: '/$locale/dashboard/sub-schools/$subSchoolId/students',
     })
-    const { data, isLoading, isError } = useStudents(subSchoolId)
 
-    const { t } = useTranslation()
+    const { data, isLoading, isError } = useStudents(subSchoolId)
 
     const columns: ColumnDef<Student>[] = [
         {
@@ -131,6 +134,16 @@ const StudentsPage = () => {
                         row={row}
                         onEditAction={() => setStudentToUpdate(row.original)}
                         onDeleteAction={() => setStudentToDelete(row.original)}
+                        onViewAction={(student) => {
+                            navigate({
+                                to: '/$locale/sub-schools/$subSchoolId/students/$studentId',
+                                params: {
+                                    locale,
+                                    subSchoolId,
+                                    studentId: student.id,
+                                },
+                            })
+                        }}
                     />
                     <EditStudentForm
                         student={row.original}
