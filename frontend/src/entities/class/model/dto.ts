@@ -1,7 +1,7 @@
-export type TeacherParamsDto = {
+export type ClassParamsDto = {
     id: string
 }
 
-export type TeacherListQueryDto = {
+export type ClassListQueryDto = {
     subSchoolId: string
 }

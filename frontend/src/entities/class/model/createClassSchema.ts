@@ -1,72 +1,33 @@
 import { z } from 'zod'
 import { getErrorMessage } from '@shared/lib'
 
-const teacherIdentitySchema = z.object({
-    firstName: z
+export const createClassSchema = z.object({
+    name: z
         .string()
         .trim()
-        .min(1, getErrorMessage('validation.firstNameRequired'))
+        .min(1, getErrorMessage('validation.name'))
         .max(100, getErrorMessage('validation.maxLength100')),
 
-    lastName: z
+    gradeLevel: z
         .string()
         .trim()
-        .min(1, getErrorMessage('validation.lastNameRequired'))
-        .max(100, getErrorMessage('validation.maxLength100')),
-
-    email: z
-        .string()
-        .trim()
-        .email(getErrorMessage('validation.emailInvalid')),
-
-    phone: z
-        .string()
-        .max(20, getErrorMessage('validation.maxLength20'))
+        .max(100, getErrorMessage('validation.maxLength100'))
         .optional()
         .or(z.literal('')),
 
-    address: z
-        .string()
-        .max(255)
-        .optional()
-        .or(z.literal('')),
+    capacity: z
+        .coerce
+        .number({ invalid_type_error: getErrorMessage('validation.capacityInvalid') })
+        .int()
+        .positive()
+        .optional(),
 
-    gender: z.enum(['male', 'female'], {
-        message: getErrorMessage('validation.genderRequired'),
-    }),
-
-    dateOfBirth: z
-        .string()
-        .min(1, getErrorMessage('validation.dateOfBirthRequired')),
+    subSchoolId: z.string().uuid('Invalid sub-school ID'),
 })
 
-const teacherAssignmentSchema = z.object({
-    subSchoolId: z.string().uuid(),
-
-    hireDate: z
-        .string()
-        .min(1, getErrorMessage('validation.hireDateRequired')),
-
-    qualification: z
-        .string()
-        .optional()
-        .or(z.literal('')),
-
-    specialization: z
-        .string()
-        .optional()
-        .or(z.literal('')),
-})
-
-export const createTeacherSchema = teacherIdentitySchema.merge(teacherAssignmentSchema)
-
-export const updateTeacherSchema = teacherIdentitySchema.partial()
-
-export const updateAssignmentSchema = teacherAssignmentSchema
+export const updateClassSchema = createClassSchema
     .partial()
     .omit({ subSchoolId: true })
 
-export type CreateTeacherDto    = z.infer<typeof createTeacherSchema>
-export type UpdateTeacherDto    = z.infer<typeof updateTeacherSchema>
-export type UpdateAssignmentDto = z.infer<typeof updateAssignmentSchema>
-export type AssignTeacherDto = z.infer<typeof teacherAssignmentSchema>
+export type CreateClassDto = z.infer<typeof createClassSchema>
+export type UpdateClassDto    = z.infer<typeof updateClassSchema>

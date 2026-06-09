@@ -1,21 +1,21 @@
 import {createSlice, type PayloadAction, type Slice} from "@reduxjs/toolkit";
 
-type TeacherState = {
-    selectedTeacherId: string | null;
+type ClassState = {
+    selectedClassId: string | null;
 }
 
-const initialState: TeacherState = {
-    selectedTeacherId: null,
+const initialState: ClassState = {
+    selectedClassId: null,
 };
 
-export const teacherSlice: Slice<TeacherState> = createSlice({
-    name: 'teacher',
+export const classSlice: Slice<ClassState> = createSlice({
+    name: 'class',
     initialState,
     reducers: {
-        setSelectedStudentId: (state, action: PayloadAction<string>) => {
-            state.selectedTeacherId = action.payload;
+        setSelectedClassId: (state, action: PayloadAction<string>) => {
+            state.selectedClassId = action.payload;
         },
     },
 });
 
-export const { setSelectedTeacherId } = teacherSlice.actions;
+export const { setSelectedClassId } = classSlice.actions;

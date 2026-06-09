@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { handleApiError } from '@shared/lib'
-import {teacherApi, type UpdateTeacherDto} from "@entities/teacher";
+import {classApi, type UpdateClassDto} from "@entities/class";
 
-export const useUpdateTeacher = () => {
+export const useUpdateClass = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: ({ id, dto, subSchoolId }: { id: string; dto: UpdateTeacherDto, subSchoolId: string }) =>
-            teacherApi.update(id, dto, subSchoolId),
+        mutationFn: ({ id, dto, subSchoolId }: { id: string; dto: UpdateClassDto, subSchoolId: string }) =>
+            classApi.update(id, dto, subSchoolId),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['teachers'] })
+            queryClient.invalidateQueries({ queryKey: ['classes'] })
         },
         onError: (error: Error) => {
             handleApiError(error)
