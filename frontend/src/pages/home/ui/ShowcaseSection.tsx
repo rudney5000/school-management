@@ -1,7 +1,9 @@
 import React from 'react';
-import {Card} from "@shared/ui/card.tsx";
-import {Badge} from "@shared/ui/badge.tsx";
-import {Button} from "@shared/ui/button.tsx";
+import {
+    Badge,
+    Button,
+    Card
+} from "@shared/ui";
 import { useTranslation } from '@/shared/lib/useTranslation';
 
 interface ShowcaseItem {
@@ -14,23 +16,8 @@ interface ShowcaseSectionProps {
   items?: ShowcaseItem[];
 }
 
-export const ShowcaseSection: React.FC<ShowcaseSectionProps> = ({ items }) => {
+export const ShowcaseSection: React.FC<ShowcaseSectionProps> = () => {
   const { t } = useTranslation();
-  
-  const defaultItems: ShowcaseItem[] = items || [
-    {
-      title: t('home.showcase.modern_dashboard'),
-      description: t('home.showcase.modern_dashboard_description'),
-    },
-    {
-      title: t('home.showcase.mobile_friendly'),
-      description: t('home.showcase.mobile_friendly_description'),
-    },
-    {
-      title: t('home.showcase.secure_reliable'),
-      description: t('home.showcase.secure_reliable_description'),
-    },
-  ];
 
   return (
       <section id="showcase" className="mx-auto max-w-7xl px-6 pb-16 lg:px-10">
