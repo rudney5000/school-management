@@ -196,6 +196,12 @@
         "active": "Ya mosala",
         "inactive": "Ya solo te"
       },
+      "details": {
+        "title": "Moyekoli ya sika",
+        "description": "Tondela bisaleli oyo basengeli.",
+        "confirm": "Kokima mpona kozwa moyekoli",
+        "cancel": "Kokima"
+      },
       "loading": "Ezali kotonda...",
       "error": "Libunga moko esalemi",
       "title": "Bayekoli",
@@ -292,6 +298,28 @@
         "gradeLevel": "Etando",
         "capacity": "Bonsomi",
         "status": "Kondima"
+      }
+    },
+    "courses": {
+      "title": "Ba mateya",
+      "add_course": "Kobakisa mateya",
+      "loading": "Kozela...",
+      "error": "Nzela ya malamu elongi.",
+      "form": {
+        "addTitle": "Mateya ya sika",
+        "addDescription": "Tondela bisaleli oyo esengami.",
+        "editTitle": "Kobongola mateya",
+        "editDescription": "Longola bisaleli ya mateya."
+      },
+      "fields": {
+        "name": "Nkombo",
+        "code": "Kode",
+        "description": "Kotambola"
+      },
+      "columns": {
+        "name": "Nkombo",
+        "code": "Kode",
+        "description": "Kotambola"
       }
     },
     "common": {

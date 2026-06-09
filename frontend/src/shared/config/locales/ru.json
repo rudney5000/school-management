@@ -212,6 +212,13 @@
         "active": "Активный",
         "inactive": "Неактивный"
       },
+      "details": {
+        "personalInfo": "Личная информация",
+        "dates": "Даты",
+        "studentId": "Идентификатор",
+        "parents": "Связанные родители",
+        "noParents": "Родители не привязаны"
+      },
       "loading": "Загрузка...",
       "error": "Произошла ошибка",
       "title": "Студенты",
@@ -308,6 +315,30 @@
         "gradeLevel": "Уровень",
         "capacity": "Вместимость",
         "status": "Статус"
+      }
+    },
+    "courses": {
+      "title": "Курсы",
+      "add_course": "Добавить курс",
+      "loading": "Загрузка...",
+      "error": "Произошла ошибка.",
+      "form": {
+        "addTitle": "Новый курс",
+        "addDescription": "Заполните необходимую информацию.",
+        "editTitle": "Редактировать курс",
+        "editDescription": "Обновите информацию о курсе."
+      },
+      "fields": {
+        "name": "Название",
+        "description": "Описание",
+        "teacher": "Учитель",
+        "credits": "Кредиты"
+      },
+      "columns": {
+        "name": "Название",
+        "description": "Описание",
+        "teacher": "Учитель",
+        "credits": "Кредиты"
       }
     },
     "common": {

@@ -240,6 +240,13 @@
         "active": "Active",
         "inactive": "Inactive"
       },
+      "details": {
+        "personalInfo": "Personal information",
+        "dates": "Dates",
+        "studentId": "Student ID",
+        "parents": "Associated parents",
+        "noParents": "No associated parents"
+      },
       "loading": "Loading...",
       "error": "An error occurred",
       "title": "Students",
@@ -338,9 +345,32 @@
         "status": "Status"
       }
     },
+    "courses": {
+      "title": "Courses",
+      "add_course": "Add course",
+      "loading": "Loading...",
+      "error": "An error occurred.",
+      "form": {
+        "addTitle": "New course",
+        "addDescription": "Fill in the required information.",
+        "editTitle": "Edit course",
+        "editDescription": "Update course information."
+      },
+      "fields": {
+        "name": "Name",
+        "description": "Description",
+        "credits": "Credits"
+      },
+      "columns": {
+        "name": "Name",
+        "description": "Description",
+        "credits": "Credits"
+      }
+    },
     "common": {
       "cancel": "Cancel",
       "confirm": "Confirm",
+      "loading": "Loading...",
       "deleteAlert": {
         "title": "Are you sure?",
         "description": "This action cannot be undone. The data will be permanently deleted."

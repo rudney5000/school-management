@@ -237,6 +237,13 @@
         "active": "Actif",
         "inactive": "Inactif"
       },
+      "details": {
+        "personalInfo": "Informations personnelles",
+        "dates": "Dates",
+        "studentId": "Identifiant",
+        "parents": "Parents associés",
+        "noParents": "Aucun parent associé"
+      },
       "loading": "Chargement...",
       "error": "Une erreur est survenue",
       "title": "Étudiants",
@@ -333,6 +340,28 @@
         "gradeLevel": "Niveau",
         "capacity": "Capacité",
         "status": "Statut"
+      }
+    },
+    "courses": {
+      "title": "Cours",
+      "add_course": "Ajouter un cours",
+      "loading": "Chargement...",
+      "error": "Une erreur est survenue.",
+      "form": {
+        "addTitle": "Nouveau cours",
+        "addDescription": "Remplissez les informations requises.",
+        "editTitle": "Modifier le cours",
+        "editDescription": "Mettez à jour les informations du cours."
+      },
+      "fields": {
+        "name": "Nom",
+        "code": "Code",
+        "description": "Description"
+      },
+      "columns": {
+        "name": "Nom",
+        "code": "Code",
+        "description": "Description"
       }
     },
     "common": {

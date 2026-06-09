@@ -141,6 +141,18 @@ export const errors = {
             fr: "La capacité doit être un nombre positif",
             ru: "Вместимость должна быть положительным числом",
             ln: "Mikanda ya mokolo ya mokolo esengeli",
-        }
+        },
+        code: {
+            en: "Code is required",
+            fr: "Le code est requis",
+            ru: "Код обязателен",
+            ln: "Kode esengeli",
+        },
+        credits: {
+            en: "Credits is required",
+            fr: "Les crédits sont requis",
+            ru: "Кредиты обязательны",
+            ln: "Kredita esengeli",
+        },
     }
 };
