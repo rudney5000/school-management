@@ -2,8 +2,21 @@ import 'dotenv/config';
 import bcrypt from 'bcryptjs';
 import {db} from './index';
 import {
-    schools, subSchools, districts, cities,
-    departments, countries, workers, students, users, teacherSchools, teachers, parents, classes,
+    schools,
+    subSchools,
+    districts,
+    cities,
+    departments,
+    countries,
+    workers,
+    students,
+    users,
+    teacherSchools,
+    teachers,
+    parents,
+    classes,
+    parentStudents,
+    courses,
 } from './schema';
 import {and, eq} from 'drizzle-orm';
 
@@ -139,6 +152,30 @@ async function seed() {
 
     console.log('✓ SubSchool:', subSchool.name);
 
+    const sampleCourses = [
+        { name: 'Mathématiques', code: 'MATH-01', description: 'Algèbre, géométrie et analyse', credits: 4, subSchoolId: subSchool.id },
+        { name: 'Français', code: 'FR-01', description: 'Grammaire, littérature et expression écrite', credits: 4, subSchoolId: subSchool.id },
+        { name: 'Physique-Chimie', code: 'PC-01', description: 'Mécanique, thermodynamique et chimie générale', credits: 3, subSchoolId: subSchool.id },
+        { name: 'Biologie', code: 'BIO-01', description: 'Sciences de la vie et de la terre', credits: 3, subSchoolId: subSchool.id },
+        { name: 'Histoire-Géographie', code: 'HG-01', description: 'Histoire du Congo et géographie mondiale', credits: 2, subSchoolId: subSchool.id },
+        { name: 'Anglais', code: 'EN-01', description: 'Langue anglaise niveau secondaire', credits: 2, subSchoolId: subSchool.id },
+        { name: 'Éducation Civique', code: 'EC-01', description: 'Citoyenneté et institutions', credits: 1, subSchoolId: subSchool.id },
+        { name: 'Informatique', code: 'INFO-01', description: 'Bureautique et initiation à la programmation', credits: 2, subSchoolId: subSchool.id },
+    ];
+
+    for (const course of sampleCourses) {
+        const [existing] = await db.select().from(courses)
+            .where(and(eq(courses.code, course.code), eq(courses.subSchoolId, course.subSchoolId)));
+
+        if (!existing) {
+            await db.insert(courses).values(course);
+            console.log(`✓ Course created: ${course.name}`);
+        } else {
+            console.log(`~ Course already exists: ${course.name}`);
+        }
+    }
+
+
     const sampleClasses = [
         { name: '1ère Année Secondaire A', gradeLevel: 'Secondaire 1', capacity: 35, subSchoolId: subSchool.id },
         { name: '1ère Année Secondaire B', gradeLevel: 'Secondaire 1', capacity: 35, subSchoolId: subSchool.id },
@@ -209,42 +246,54 @@ async function seed() {
 
     console.log('✓ Student user: marie.kabila@saintjoseph.cd')
 
-    await db.delete(users)
-        .where(eq(users.email, 'sophie.kabila@saintjoseph.cd'))
-        .catch(() => {});
+    await db.delete(users).where(eq(users.email, 'paul.kabila@saintjoseph.cd')).catch(() => {});
+    await db.delete(students).where(eq(students.email, 'paul.kabila@saintjoseph.cd')).catch(() => {});
 
-    await db.delete(parents)
-        .where(eq(parents.email, 'sophie.kabila@saintjoseph.cd'))
-        .catch(() => {});
+    const [student2] = await db.insert(students).values({
+        firstName: 'Paul',
+        lastName: 'Kabila',
+        email: 'paul.kabila@saintjoseph.cd',
+        gender: 'male',
+        dateOfBirth: '2010-03-15',
+        enrollmentDate: '2024-09-01',
+        subSchoolId: subSchool.id,
+    }).returning();
 
-    const [existingParent] = await db.select()
-        .from(parents)
-        .where(eq(parents.email, 'sophie.kabila@saintjoseph.cd'));
+    await db.insert(users).values({
+        email: 'paul.kabila@saintjoseph.cd',
+        password: hashedPassword,
+        role: 'student',
+        studentId: student2.id,
+    });
 
-    if (!existingParent) {
-        const [parent] = await db.insert(parents)
-            .values({
-                firstName: 'Sophie',
-                lastName: 'Kabila',
-                email: 'sophie.kabila@saintjoseph.cd',
-                phone: '+243 81 111 2222',
-                subSchoolId: subSchool.id,
-            })
-            .returning();
+    console.log('✓ Student 2: paul.kabila@saintjoseph.cd');
 
-        await db.insert(users)
-            .values({
-                email: 'sophie.kabila@saintjoseph.cd',
-                password: hashedPassword,
-                role: 'parent',
-                parentId: parent.id,
-            });
+    await db.delete(users).where(eq(users.email, 'sophie.kabila@saintjoseph.cd')).catch(() => {});
+    await db.delete(parents).where(eq(parents.email, 'sophie.kabila@saintjoseph.cd')).catch(() => {});
 
-        console.log('✓ Parent user: sophie.kabila@saintjoseph.cd');
-    } else {
-        console.log('~ Parent already exists');
-    }
+    const [parent] = await db.insert(parents).values({
+        firstName: 'Sophie',
+        lastName: 'Kabila',
+        email: 'sophie.kabila@saintjoseph.cd',
+        phone: '+243 81 111 2222',
+        subSchoolId: subSchool.id,
+    }).returning();
 
+    await db.insert(users).values({
+        email: 'sophie.kabila@saintjoseph.cd',
+        password: hashedPassword,
+        role: 'parent',
+        parentId: parent.id,
+    });
+    console.log('✓ Parent user: sophie.kabila@saintjoseph.cd');
+
+    await db.insert(parentStudents)
+        .values([
+            { parentId: parent.id, studentId: student.id },
+            { parentId: parent.id, studentId: student2.id },
+        ])
+        .onConflictDoNothing();
+    console.log('✓ Parent-students links created');
 
     await db.delete(users).where(eq(users.email, 'jean.muamba@saintjoseph.cd')).catch(() => {});
     await db.delete(teacherSchools).where(
