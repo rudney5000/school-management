@@ -1,13 +1,16 @@
 import { Languages } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { useLanguageSwitcher } from "@features/change-language";
+import type {Locale} from "@shared/config/i18n/locale-config";
 
-const languages = [
-    { code: "fr", label: "FR", flag: "🇫🇷" },
-    { code: "en", label: "EN", flag: "🇬🇧" },
-    { code: "ru", label: "RU", flag: "🇷🇺" },
-    { code: "ln", label: "LN", flag: "ln" },
-] as const;
+export const languages = [
+    { code: 'fr' as const, label: 'FR', flag: '🇫🇷', name: 'Français' },
+    { code: 'en' as const, label: 'EN', flag: '🇬🇧', name: 'English' },
+    { code: 'ru' as const, label: 'RU', flag: '🇷🇺', name: 'Русский' },
+    { code: 'ln' as const, label: 'LN', flag: '🇨🇩', name: 'Lingála' },
+] as const satisfies readonly { code: Locale; label: string; flag: string; name: string }[]
+
+export type Language = typeof languages[number]
 
 export function LanguageSwitcher() {
     const { locale, switchLanguage } = useLanguageSwitcher();
