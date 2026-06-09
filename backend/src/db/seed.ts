@@ -3,9 +3,9 @@ import bcrypt from 'bcryptjs';
 import {db} from './index';
 import {
     schools, subSchools, districts, cities,
-    departments, countries, workers, students, users, teacherSchools, teachers, parents,
+    departments, countries, workers, students, users, teacherSchools, teachers, parents, classes,
 } from './schema';
-import {eq} from 'drizzle-orm';
+import {and, eq} from 'drizzle-orm';
 
 async function seed() {
     console.log('Seeding...');
@@ -138,6 +138,24 @@ async function seed() {
     }).returning())[0];
 
     console.log('✓ SubSchool:', subSchool.name);
+
+    const sampleClasses = [
+        { name: '1ère Année Secondaire A', gradeLevel: 'Secondaire 1', capacity: 35, subSchoolId: subSchool.id },
+        { name: '1ère Année Secondaire B', gradeLevel: 'Secondaire 1', capacity: 35, subSchoolId: subSchool.id },
+        { name: '2ème Année Secondaire A', gradeLevel: 'Secondaire 2', capacity: 30, subSchoolId: subSchool.id },
+        { name: '3ème Année Secondaire A', gradeLevel: 'Secondaire 3', capacity: 30, subSchoolId: subSchool.id },
+    ];
+
+    for (const cls of sampleClasses) {
+        const [existingClass] = await db.select().from(classes).where(
+            and(eq(classes.name, cls.name), eq(classes.subSchoolId, cls.subSchoolId))
+        );
+
+        if (!existingClass) {
+            await db.insert(classes).values(cls);
+            console.log(`✓ Class created: ${cls.name}`);
+        }
+    }
 
     const hashedPassword = await bcrypt.hash('password123', 10);
 
