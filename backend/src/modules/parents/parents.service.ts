@@ -1,18 +1,48 @@
 import { and, eq } from 'drizzle-orm';
 import { db } from '@/db';
-import { parents } from '@/db/schema';
+import {parents, parentStudents, students} from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
 import type { CreateParentDto, UpdateParentDto } from './parents.schema';
 
 export type ParentRecord = typeof parents.$inferSelect;
 
 export class ParentsService {
-  async findAll(subSchoolId: string): Promise<ParentRecord[]> {
-    return db
-      .select()
-      .from(parents)
-      .where(eq(parents.subSchoolId, subSchoolId));
-  }
+    async findAll(subSchoolId: string) {
+        try {
+            const rows = await db
+                .select({
+                    parent: parents,
+                    student: {
+                        id: students.id,
+                        firstName: students.firstName,
+                        lastName: students.lastName,
+                    },
+                })
+                .from(parents)
+                .leftJoin(parentStudents, eq(parentStudents.parentId, parents.id))
+                .leftJoin(students, eq(students.id, parentStudents.studentId))
+                .where(eq(parents.subSchoolId, subSchoolId));
+
+            const map = new Map<string, typeof parents.$inferSelect & {
+                children: { id: string; firstName: string; lastName: string }[]
+            }>();
+
+            for (const row of rows) {
+                if (!map.has(row.parent.id)) {
+                    map.set(row.parent.id, { ...row.parent, children: [] });
+                }
+                if (row.student?.id) {
+                    map.get(row.parent.id)!.children.push(
+                        row.student as { id: string; firstName: string; lastName: string }
+                    );
+                }
+            }
+
+            return [...map.values()];
+        } catch (error) {
+            throw new AppError('INTERNAL_ERROR', 'Erreur lors de la récupération des parents', 500);
+        }
+    }
 
   async findById(id: string, subSchoolId: string): Promise<ParentRecord> {
     const [parent] = await db

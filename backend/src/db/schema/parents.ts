@@ -1,6 +1,7 @@
-import { pgTable, uuid, varchar, timestamp, index } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, timestamp, index, primaryKey } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import {subSchools} from "@/db/schema/subSchool";
+import {students} from "@/db/schema/students";
 
 export const parents = pgTable('parents', {
     id: uuid('id').primaryKey().defaultRandom(),
@@ -15,9 +16,23 @@ export const parents = pgTable('parents', {
     idx_parents_sub_school: index('idx_parents_sub_school').on(table.subSchoolId)
 }));
 
-export const parentsRelations = relations(parents, ({ one }) => ({
+export const parentStudents = pgTable('parent_students', {
+    parentId: uuid('parent_id').notNull().references(() => parents.id, { onDelete: 'cascade' }),
+    studentId: uuid('student_id').notNull().references(() => students.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+}, (table) => ({
+    pk: primaryKey({ columns: [table.parentId, table.studentId] }),
+}));
+
+export const parentStudentsRelations = relations(parentStudents, ({ one }) => ({
+    parent: one(parents, { fields: [parentStudents.parentId], references: [parents.id] }),
+    student: one(students, { fields: [parentStudents.studentId], references: [students.id] }),
+}));
+
+export const parentsRelations = relations(parents, ({ one, many }) => ({
     subSchool: one(subSchools, {
         fields: [parents.subSchoolId],
         references: [subSchools.id],
     }),
+    parentStudents: many(parentStudents),
 }));
