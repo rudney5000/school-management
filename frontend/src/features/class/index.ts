@@ -1,3 +1,3 @@
-export { AddParentForm } from './ui/AddParentForm'
-export { EditParentForm } from './ui/EditParentForm'
-export { DeleteParentAlert } from './ui/DeleteParentAlert'
+export { AddClassForm } from './ui/AddClassForm.tsx'
+export { EditClassForm } from './ui/EditClassForm.tsx'
+export { DeleteClassAlert } from './ui/DeleteClassAlert.tsx'
