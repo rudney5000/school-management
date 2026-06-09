@@ -24,7 +24,7 @@ export class StudentApi extends ApiWrapper {
 
     getById(params: StudentParamsDto) {
         return this.handleRequest<Student>(
-            this._baseApi.get(`/students/${params.id}`),
+            this._baseApi.get(`/students/${params.id}`, {subSchoolId: params.subSchoolId}),
             (raw) => raw as Student
         )
     }

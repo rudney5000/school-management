@@ -1,6 +1,7 @@
 export * from './model/createStudentSchema'
 export * from './api/student.api'
 export * from './lib/useStudents'
+export * from './lib/useStudent'
 export * from './lib/useCreateStudent'
 export * from './lib/useUpdateStudent'
 export * from './lib/useDeleteStudent'
