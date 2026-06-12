@@ -86,7 +86,7 @@ export const AddCourseForm: React.FC<Props> = ({
                             <FormItem>
                                 <FormLabel>{t('dashboard.courses.fields.code')}</FormLabel>
                                 <FormControl>
-                                    <Input {...field} placeholder="Ex: Math" />
+                                    <Input {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
