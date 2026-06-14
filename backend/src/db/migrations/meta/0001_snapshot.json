@@ -1,6 +1,6 @@
 {
-  "id": "15ecf66e-085b-4291-a4d9-88d44ce5ee8d",
-  "prevId": "51010260-f78b-478d-a9bb-69e6272e9d00",
+  "id": "4d2e2e5a-8d37-4285-ac17-5971149dd982",
+  "prevId": "c08d3ed7-cc86-4cb2-9a53-a187b0b155f0",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -531,6 +531,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "enrollment_date": {
+          "name": "enrollment_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -783,6 +789,32 @@
           "type": "varchar(20)",
           "primaryKey": false,
           "notNull": false
+        },
+        "gender": {
+          "name": "gender",
+          "type": "gender",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "address": {
+          "name": "address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
         },
         "sub_school_id": {
           "name": "sub_school_id",
@@ -1156,6 +1188,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "sub_school_id": {
+          "name": "sub_school_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -1232,6 +1270,19 @@
           "tableTo": "teachers",
           "columnsFrom": [
             "teacher_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "schedules_sub_school_id_sub_schools_id_fk": {
+          "name": "schedules_sub_school_id_sub_schools_id_fk",
+          "tableFrom": "schedules",
+          "tableTo": "sub_schools",
+          "columnsFrom": [
+            "sub_school_id"
           ],
           "columnsTo": [
             "id"

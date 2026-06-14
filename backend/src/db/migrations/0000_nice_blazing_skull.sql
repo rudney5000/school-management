@@ -109,6 +109,7 @@ CREATE TABLE IF NOT EXISTS "teachers" (
 	"address" text,
 	"gender" "gender" NOT NULL,
 	"date_of_birth" date NOT NULL,
+	"enrollment_date" date NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "teachers_email_unique" UNIQUE("email")
@@ -127,6 +128,13 @@ CREATE TABLE IF NOT EXISTS "workers" (
 	CONSTRAINT "workers_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "parent_students" (
+	"parent_id" uuid NOT NULL,
+	"student_id" uuid NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "parent_students_parent_id_student_id_pk" PRIMARY KEY("parent_id","student_id")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "parents" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid,
@@ -134,6 +142,10 @@ CREATE TABLE IF NOT EXISTS "parents" (
 	"last_name" varchar(100) NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"phone" varchar(20),
+	"gender" "gender" NOT NULL,
+	"image" text,
+	"address" text,
+	"is_active" boolean DEFAULT true NOT NULL,
 	"sub_school_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "parents_email_unique" UNIQUE("email")
@@ -301,6 +313,18 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "workers" ADD CONSTRAINT "workers_sub_school_id_sub_schools_id_fk" FOREIGN KEY ("sub_school_id") REFERENCES "public"."sub_schools"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "parent_students" ADD CONSTRAINT "parent_students_parent_id_parents_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."parents"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "parent_students" ADD CONSTRAINT "parent_students_student_id_students_id_fk" FOREIGN KEY ("student_id") REFERENCES "public"."students"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
