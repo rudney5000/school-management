@@ -17,6 +17,7 @@ import ParentsPage from "@/pages/parent/ParentsPage";
 import ClassesPage from "@/pages/class/ClassPage";
 import StudentDetailsPage from "@/pages/student/StudentDetailsPage";
 import CoursesPage from "@/pages/courses/CoursesPage.tsx";
+import SchedulePage from "@/pages/schedule/SchedulePage.tsx";
 
 type RouterContext = {
     isAuthenticated: () => boolean;
@@ -130,6 +131,18 @@ const studentDetailRoute = createRoute({
     component: StudentDetailsPage
 })
 
+const teacherDetailRoute = createRoute({
+    getParentRoute: () => subSchoolRoute,
+    path: 'teachers/$teacherId',
+    component: LocaleOutlet
+})
+
+const parentDetailRoute = createRoute({
+    getParentRoute: () => subSchoolRoute,
+    path: 'parents/$parentId',
+    component: LocaleOutlet
+})
+
 const teachersRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'teachers',
@@ -154,6 +167,12 @@ const coursesRoute = createRoute({
     component: CoursesPage
 })
 
+const scheduleRoute = createRoute({
+    getParentRoute: () => subSchoolRoute,
+    path: 'schedules',
+    component: SchedulePage
+})
+
 const routeTree = rootRoute.addChildren([
     localeRoute.addChildren([
         homeLayoutRoute
@@ -175,7 +194,10 @@ const routeTree = rootRoute.addChildren([
                     teachersRoute,
                     parentsRoute,
                     classesRoute,
-                    coursesRoute
+                    coursesRoute,
+                    teacherDetailRoute,
+                    parentDetailRoute,
+                    scheduleRoute
                 ]),
             ])
     ])
