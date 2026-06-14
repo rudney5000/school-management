@@ -71,6 +71,9 @@ export class ParentsService {
         lastName: input.lastName,
         email: input.email,
         phone: input.phone,
+        address: input.address,
+        gender: input.gender,
+        isActive: input.isActive,
         subSchoolId: input.subSchoolId,
       })
       .returning();

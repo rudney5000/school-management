@@ -10,6 +10,9 @@ export const createParentSchema = z.object({
   lastName: z.string().min(1, 'Last name is required').max(100),
   email: z.string().email('Invalid email address'),
   phone: z.string().max(20).optional(),
+  address: z.string().optional(),
+  gender: z.enum(['male', 'female']),
+  isActive: z.boolean().optional().default(true),
   subSchoolId: z.string().uuid('Invalid sub-school ID'),
 });
 

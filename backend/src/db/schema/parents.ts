@@ -1,7 +1,8 @@
-import { pgTable, uuid, varchar, timestamp, index, primaryKey } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, boolean, varchar, timestamp, index, primaryKey } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import {subSchools} from "@/db/schema/subSchool";
 import {students} from "@/db/schema/students";
+import {genderEnum} from "@/db/schema/enums";
 
 export const parents = pgTable('parents', {
     id: uuid('id').primaryKey().defaultRandom(),
@@ -10,6 +11,10 @@ export const parents = pgTable('parents', {
     lastName: varchar('last_name', { length: 100 }).notNull(),
     email: varchar('email', { length: 255 }).notNull().unique(),
     phone: varchar('phone', { length: 20 }),
+    gender: genderEnum('gender').notNull(),
+    image: text('image'),
+    address: text('address'),
+    isActive: boolean('is_active').default(true).notNull(),
     subSchoolId: uuid('sub_school_id').notNull().references(() => subSchools.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
 }, (table) => ({
