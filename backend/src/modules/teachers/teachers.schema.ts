@@ -12,6 +12,7 @@ export const createTeacherSchema = z.object({
   address: z.string().optional(),
   gender: z.enum(['male', 'female']),
   dateOfBirth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD'),
+  enrollmentDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD'),
 });
 
 export const assignTeacherSchema = z.object({
@@ -19,6 +20,7 @@ export const assignTeacherSchema = z.object({
   hireDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD'),
   qualification: z.string().optional(),
   specialization: z.string().optional(),
+  isActive: z.boolean().optional().default(true),
 });
 
 export const updateTeacherSchema = createTeacherSchema

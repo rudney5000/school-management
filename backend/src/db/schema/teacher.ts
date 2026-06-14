@@ -13,6 +13,7 @@ export const teachers = pgTable('teachers', {
     address: text('address'),
     gender: genderEnum('gender').notNull(),
     dateOfBirth: date('date_of_birth').notNull(),
+    enrollmentDate: date('enrollment_date').notNull(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
 }, (table) => ({

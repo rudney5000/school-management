@@ -4,7 +4,8 @@ import { respond } from '@/shared/utils/respond';
 import type {
   AssignTeacherDto,
   CreateTeacherWithAssignmentDto,
-  SubSchoolQueryDto, UpdateAssignmentDto,
+  SubSchoolQueryDto,
+  UpdateAssignmentDto,
   UpdateTeacherDto,
 } from '@/modules/teachers/teachers.schema';
 import { TeachersService } from '@/modules/teachers/teachers.service';

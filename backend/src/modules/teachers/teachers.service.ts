@@ -4,7 +4,8 @@ import {teachers, teacherSchools} from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
 import type {
     AssignTeacherDto,
-    CreateTeacherWithAssignmentDto, UpdateAssignmentDto,
+    CreateTeacherWithAssignmentDto,
+    UpdateAssignmentDto,
     UpdateTeacherDto
 } from './teachers.schema';
 
@@ -93,6 +94,7 @@ export class TeachersService {
                     address: input.address,
                     gender: input.gender,
                     dateOfBirth: input.dateOfBirth,
+                    enrollmentDate: input.enrollmentDate,
                 })
                 .returning();
 
@@ -102,6 +104,7 @@ export class TeachersService {
                 hireDate: input.hireDate,
                 qualification: input.qualification,
                 specialization: input.specialization,
+                isActive: input.isActive,
             });
         });
 
@@ -144,6 +147,7 @@ export class TeachersService {
                 hireDate: input.hireDate,
                 qualification: input.qualification,
                 specialization: input.specialization,
+                isActive: input.isActive,
             })
             .returning();
 
