@@ -118,6 +118,12 @@ export const errors = {
             ru: "Максимум 255 символов",
             ln: "Mikanda 255 koleka te",
         },
+        maxLength50: {
+            en: "Maximum 50 characters",
+            fr: "Maximum 50 caractères",
+            ru: "Максимум 50 символов",
+            ln: "Mikanda 50 koleka te",
+        },
         dateOfBirthRequired: {
             en: "Date of birth is required",
             fr: "La date de naissance est requise",
@@ -154,5 +160,29 @@ export const errors = {
             ru: "Кредиты обязательны",
             ln: "Kredita esengeli",
         },
+        invalidUuid: {
+            en: "Invalid UUID",
+            fr: "UUID invalide",
+            ru: "Неверный UUID",
+            ln: "UUID ezali malamu te",
+        },
+        dayOfWeekRequired: {
+            en: "Day of week is required",
+            fr: "Le jour de la semaine est requis",
+            ru: "День недели обязателен",
+            ln: "Mokolo ya mokolo esengeli",
+        },
+        timeFormat: {
+            en: "Time must be in HH:mm format",
+            fr: "Le temps doit être au format HH:mm",
+            ru: "Время должно быть в формате HH:mm",
+            ln: "Mokolo ya mokolo esengeli",
+        },
+        academicYearRequired: {
+            en: "Academic year is required",
+            fr: "L'année académique est requise",
+            ru: "Академический год обязателен",
+            ln: "Mokolo ya akademika esengeli",
+        }
     }
 };
