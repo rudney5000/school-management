@@ -225,13 +225,15 @@
       "columns": {
         "firstName": "Prénom",
         "lastName": "Nom",
+        "student": "Étudiant",
         "email": "Email",
         "phone": "Téléphone",
         "gender": "Genre",
         "image": "Photo",
         "dateOfBirth": "Date de naissance",
         "enrollmentDate": "Inscription",
-        "status": "Statut"
+        "status": "Statut",
+        "contact": "contact"
       },
       "status": {
         "active": "Actif",
@@ -247,8 +249,26 @@
       "loading": "Chargement...",
       "error": "Une erreur est survenue",
       "title": "Étudiants",
+      "subtitle": "Gérez et suivez tous les étudiants",
+      "searchPlaceholder": "Rechercher un étudiant...",
       "add": "Ajouter",
-      "add_student": "Ajouter un étudiant"
+      "add_student": "Ajouter un étudiant",
+      "stats": {
+        "total": "Total étudiants",
+        "active": "Étudiants actifs",
+        "inactive": "Étudiants inactifs",
+        "new": "Nouveaux étudiants",
+        "thisMonth": "Ce mois"
+      },
+      "overview": {
+        "emptyTitle": "Aucun étudiant sélectionné",
+        "emptyDescription": "Sélectionnez un étudiant dans le tableau pour voir son profil détaillé.",
+        "academicProgress": "Progression académique",
+        "completion": "Complétion",
+        "attendance": "Assiduité",
+        "thisMonth": "Ce mois-ci",
+        "quickActions": "Actions rapides"
+      }
     },
     "teachers": {
       "form": {
@@ -283,7 +303,8 @@
         "hireDate": "Embauche",
         "qualification": "Qualification",
         "specialization": "Spécialisation",
-        "status": "Statut"
+        "status": "Statut",
+        "contact": "contact"
       },
       "status": {
         "active": "Actif",
@@ -292,10 +313,31 @@
       "loading": "Chargement...",
       "error": "Une erreur est survenue",
       "title": "Enseignants",
-      "add_teacher": "Ajouter un prof"
+      "subtitle": "Gérez et suivez tous les enseignants",
+      "add_teacher": "Ajouter un Enseignant",
+      "searchPlaceholder": "Rechercher un enseignant...",
+      "stats": {
+        "total": "Total enseignants",
+        "active": "Enseignants actifs",
+        "inactive": "Enseignants inactifs",
+        "new": "Nouveaux enseignants",
+        "thisMonth": "Ce mois"
+      },
+      "overview": {
+        "emptyTitle": "Aucun enseignant sélectionné",
+        "emptyDescription": "Sélectionnez un enseignant dans le tableau pour voir son profil détaillé.",
+        "academicProgress": "Progression académique",
+        "completion": "Complétion",
+        "attendance": "Assiduité",
+        "thisMonth": "Ce mois-ci",
+        "quickActions": "Actions rapides"
+      }
     },
     "parents": {
       "title": "Parents",
+      "subtitle": "Gérez et suivez tous les parents",
+      "searchPlaceholder": "Rechercher un parent...",
+      "add": "Ajouter",
       "add_parent": "Ajouter un parent",
       "loading": "Chargement...",
       "error": "Une erreur est survenue.",
@@ -316,7 +358,44 @@
         "lastName": "Nom",
         "email": "Email",
         "phone": "Téléphone",
+        "gender": "Genre",
+        "dateOfBirth": "Date de naissance",
+        "image": "Photo",
+        "status": "Statut",
+        "parent": "Parent",
+        "contact": "contact",
         "createdAt": "Inscrit le"
+      },
+      "gender": {
+        "male": "Homme",
+        "female": "Femme"
+      },
+      "stats": {
+        "total": "Total parents",
+        "active": "Parents actifs",
+        "inactive": "Parents inactifs",
+        "new": "Nouveaux parents",
+        "thisMonth": "Ce mois"
+      },
+      "overview": {
+        "emptyTitle": "Aucun parent sélectionné",
+        "emptyDescription": "Sélectionnez un parent dans le tableau pour voir son profil détaillé.",
+        "academicProgress": "Progression académique",
+        "completion": "Complétion",
+        "attendance": "Assiduité",
+        "thisMonth": "Ce mois-ci",
+        "quickActions": "Actions rapides"
+      },
+      "status": {
+        "active": "Actif",
+        "inactive": "Inactif"
+      },
+      "details": {
+        "personalInfo": "Informations personnelles",
+        "dates": "Dates",
+        "parentId": "Identifiant",
+        "parents": "Parents associés",
+        "noParents": "Aucun parent associé"
       }
     },
     "classes": {
@@ -364,6 +443,49 @@
         "description": "Description"
       }
     },
+    "schedules": {
+      "title": "Emploi du temps",
+      "subtitle": "Gérez et visualisez tous les créneaux horaires",
+      "changeRoutine": "Modifier l'emploi du temps",
+      "loading": "Chargement...",
+      "error": "Une erreur est survenue",
+      "calendar": {
+        "today": "Aujourd'hui"
+      },
+      "list": {
+        "title": "Routine de classe",
+        "empty": "Aucun créneau horaire pour le moment"
+      },
+      "form": {
+        "addTitle": "Nouveau créneau horaire",
+        "addDescription": "Remplissez les informations requises.",
+        "editTitle": "Modifier le créneau horaire",
+        "editDescription": "Mettez à jour les informations du créneau."
+      },
+      "fields": {
+        "class": "Classe",
+        "course": "Cours",
+        "teacher": "Enseignant",
+        "day": "Jour de la semaine",
+        "startTime": "Heure de début",
+        "endTime": "Heure de fin",
+        "room": "Salle",
+        "academicYear": "Année académique",
+        "selectClass": "Sélectionner une classe",
+        "selectCourse": "Sélectionner un cours",
+        "selectTeacher": "Sélectionner un enseignant",
+        "selectDay": "Sélectionner un jour"
+      },
+      "days": {
+        "monday": "Lundi",
+        "tuesday": "Mardi",
+        "wednesday": "Mercredi",
+        "thursday": "Jeudi",
+        "friday": "Vendredi",
+        "saturday": "Samedi",
+        "sunday": "Dimanche"
+      }
+    },
     "common": {
       "cancel": "Annuler",
       "confirm": "Confirmer",
@@ -375,7 +497,17 @@
         "label": "Actions",
         "edit": "Modifier",
         "delete": "Supprimer",
-        "openMenu": "Ouvrir le menu"
+        "openMenu": "Ouvrir le menu",
+        "view": "preview"
+      },
+      "entityOverview": {
+        "emptyTitle": "Aucune donnée disponible",
+        "emptyDescription": "Aucun élément à afficher pour le moment.",
+        "idPrefix": "ID",
+        "quickActions": "Actions rapides",
+        "completion": "Progression",
+        "attendance": "Présence",
+        "attendancePeriod": "Période de présence"
       }
     }
   },

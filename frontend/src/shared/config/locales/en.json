@@ -207,7 +207,9 @@
     "students": {
       "form": {
         "addTitle": "New student",
-        "addDescription": "Fill in the required information."
+        "addDescription": "Fill in the required information.",
+        "editTitle": "Edit student",
+        "editDescription": "Update student information."
       },
       "fields": {
         "firstName": "First name",
@@ -228,13 +230,15 @@
       "columns": {
         "firstName": "First name",
         "lastName": "Last name",
+        "student": "Student",
         "email": "Email",
         "phone": "Phone",
         "gender": "Gender",
         "image": "Photo",
         "dateOfBirth": "Date of birth",
         "enrollmentDate": "Enrollment",
-        "status": "Status"
+        "status": "Status",
+        "contact": "contact"
       },
       "status": {
         "active": "Active",
@@ -250,8 +254,26 @@
       "loading": "Loading...",
       "error": "An error occurred",
       "title": "Students",
+      "subtitle": "Manage and monitor all students",
+      "searchPlaceholder": "Search for a student...",
       "add": "Add",
-      "add_student": "Add Student"
+      "add_student": "Add Student",
+      "stats": {
+        "total": "Total Students",
+        "active": "Active Students",
+        "inactive": "Inactive Students",
+        "new": "New Students",
+        "thisMonth": "This month"
+      },
+      "overview": {
+        "emptyTitle": "No student selected",
+        "emptyDescription": "Select a student from the table to view their detailed profile.",
+        "academicProgress": "Academic Progress",
+        "completion": "Completion",
+        "attendance": "Attendance",
+        "thisMonth": "This month",
+        "quickActions": "Quick Actions"
+      }
     },
     "teachers": {
       "form": {
@@ -286,7 +308,8 @@
         "hireDate": "Hire date",
         "qualification": "Qualification",
         "specialization": "Specialization",
-        "status": "Status"
+        "status": "Status",
+        "contact": "contact"
       },
       "status": {
         "active": "Active",
@@ -295,13 +318,34 @@
       "loading": "Loading...",
       "error": "An error occurred",
       "title": "Teachers",
-      "add_teacher": "Add Teacher"
+      "subtitle": "Manage and monitor all teachers",
+      "add_teacher": "Add Teacher",
+      "searchPlaceholder": "Search for a teacher...",
+      "stats": {
+        "total": "Total Teachers",
+        "active": "Active Teachers",
+        "inactive": "Inactive Teachers",
+        "new": "New Teachers",
+        "thisMonth": "This month"
+      },
+      "overview": {
+        "emptyTitle": "No teacher selected",
+        "emptyDescription": "Select a teacher from the table to view their detailed profile.",
+        "academicProgress": "Academic Progress",
+        "completion": "Completion",
+        "attendance": "Attendance",
+        "thisMonth": "This month",
+        "quickActions": "Quick Actions"
+      }
     },
     "parents": {
       "title": "Parents",
+      "subtitle": "Manage and monitor all parents",
       "add_parent": "Add parent",
       "loading": "Loading...",
       "error": "An error occurred.",
+      "searchPlaceholder": "Search for a parent...",
+      "add": "Add",
       "form": {
         "addTitle": "New parent",
         "addDescription": "Fill in the required information.",
@@ -312,14 +356,44 @@
         "firstName": "First name",
         "lastName": "Last name",
         "email": "Email",
-        "phone": "Phone"
+        "phone": "Phone",
+        "gender": "Gender",
+        "dateOfBirth": "Date of birth",
+        "address": "Address",
+        "image": "Image",
+        "isActive": "Active parent"
+      },
+      "gender": {
+        "male": "Male",
+        "female": "Female"
       },
       "columns": {
         "firstName": "First name",
         "lastName": "Last name",
+        "parent": "Parent",
         "email": "Email",
         "phone": "Phone",
-        "createdAt": "Registered"
+        "gender": "Gender",
+        "image": "Photo",
+        "dateOfBirth": "Date of birth",
+        "createdAt": "Registered",
+        "contact": "contact"
+      },
+      "stats": {
+        "total": "Total Parents",
+        "active": "Active Parents",
+        "inactive": "Inactive Parents",
+        "new": "New Parents",
+        "thisMonth": "This month"
+      },
+      "overview": {
+        "emptyTitle": "No parent selected",
+        "emptyDescription": "Select a parent from the table to view their detailed profile.",
+        "academicProgress": "Academic Progress",
+        "completion": "Completion",
+        "attendance": "Attendance",
+        "thisMonth": "This month",
+        "quickActions": "Quick Actions"
       }
     },
     "classes": {
@@ -367,6 +441,49 @@
         "credits": "Credits"
       }
     },
+    "schedules": {
+      "title": "Schedule",
+      "subtitle": "Manage and view all schedule slots",
+      "changeRoutine": "Change Routine",
+      "loading": "Loading...",
+      "error": "An error occurred",
+      "calendar": {
+        "today": "Today"
+      },
+      "list": {
+        "title": "Class Routine",
+        "empty": "No schedule slots at the moment"
+      },
+      "form": {
+        "addTitle": "New Schedule Slot",
+        "addDescription": "Fill in the required information.",
+        "editTitle": "Edit Schedule Slot",
+        "editDescription": "Update the schedule slot information."
+      },
+      "fields": {
+        "class": "Class",
+        "course": "Course",
+        "teacher": "Teacher",
+        "day": "Day of week",
+        "startTime": "Start time",
+        "endTime": "End time",
+        "room": "Room",
+        "academicYear": "Academic year",
+        "selectClass": "Select a class",
+        "selectCourse": "Select a course",
+        "selectTeacher": "Select a teacher",
+        "selectDay": "Select a day"
+      },
+      "days": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      }
+    },
     "common": {
       "cancel": "Cancel",
       "confirm": "Confirm",
@@ -379,7 +496,17 @@
         "label": "Actions",
         "edit": "Edit",
         "delete": "Delete",
-        "openMenu": "Open menu"
+        "openMenu": "Open menu",
+        "view": "preview"
+      },
+      "entityOverview": {
+        "emptyTitle": "No data available",
+        "emptyDescription": "There is nothing to display at the moment.",
+        "idPrefix": "ID",
+        "quickActions": "Quick actions",
+        "completion": "Completion",
+        "attendance": "Attendance",
+        "attendancePeriod": "Attendance period"
       }
     }
   },

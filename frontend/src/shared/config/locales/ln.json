@@ -190,7 +190,8 @@
         "image": "Photo",
         "dateOfBirth": "Mokolo ya kobotama",
         "enrollmentDate": "Kolekisama",
-        "status": "Etat"
+        "status": "Etat",
+        "contact": "Kontak"
       },
       "status": {
         "active": "Ya mosala",
@@ -205,8 +206,26 @@
       "loading": "Ezali kotonda...",
       "error": "Libunga moko esalemi",
       "title": "Bayekoli",
+      "subtitle": "Moyindami ya bayekoli",
       "add": "Bakisa",
-      "add_student": "Bakisa moyekoli"
+      "add_student": "Bakisa moyekoli",
+      "searchPlaceholder": "Tondela moyekoli...",
+      "stats": {
+        "total": "Motango nyonso ya bayekoli",
+        "active": "Bayekoli bazali kosala",
+        "inactive": "Bayekoli bazali kosala te",
+        "new": "Bayekoli ya sika",
+        "thisMonth": "Sanza oyo"
+      },
+      "overview": {
+        "emptyTitle": "Moyekoli aponami nanu te",
+        "emptyDescription": "Pona moyekoli moko na tableau mpo na komona profil na ye ya mobimba.",
+        "academicProgress": "Bokoli ya mayekoli",
+        "completion": "Bosilisi",
+        "attendance": "Bopesi ya bozali",
+        "thisMonth": "Sanza oyo",
+        "quickActions": "Misala ya mbangu"
+      }
     },
     "teachers": {
       "form": {
@@ -241,7 +260,8 @@
         "hireDate": "Kosalela",
         "qualification": "Bonsomi",
         "specialization": "Sujet",
-        "status": "Kondima"
+        "status": "Kondima",
+        "contact": "Kontak"
       },
       "status": {
         "active": "Azali kosala",
@@ -250,13 +270,33 @@
       "loading": "Ezali kotonda...",
       "error": "Libunga moko esalemi",
       "title": "Balakisi",
-      "add_teacher": "Bakisa molakisi"
+      "subtitle": "Kotambwisa mpe kolandela balakisi nyonso",
+      "add_teacher": "Bakisa molakisi",
+      "searchPlaceholder": "Misala ya kotambwisa...",
+      "stats": {
+        "total": "Motango nyonso ya balakisi",
+        "active": "Balakisi bazali kosala",
+        "inactive": "Balakisi bazali kosala te",
+        "new": "Balakisi ya sika",
+        "thisMonth": "Sanza oyo"
+      },
+      "overview": {
+        "emptyTitle": "Molakisi aponami nanu te",
+        "emptyDescription": "Pona molakisi moko na tableau mpo na komona profil na ye ya mobimba.",
+        "academicProgress": "Misala ya mateya",
+        "completion": "Bosilisi",
+        "attendance": "Bopesi ya bozali",
+        "thisMonth": "Sanza oyo",
+        "quickActions": "Misala ya mbangu"
+      }
     },
     "parents": {
       "title": "Baboti",
+      "subtitle": "Kotambwisa mpe kolandela moboti nyonso",
       "add_parent": "Kobakisa moboti",
       "loading": "Kozela...",
       "error": "Nzela ya malamu elongi.",
+      "searchPlaceholder": "Misala ya kotambwisa...",
       "form": {
         "addTitle": "Moboti ya sika",
         "addDescription": "Tondela bisaleli oyo esengami.",
@@ -267,14 +307,50 @@
         "firstName": "Nkombo ya liboso",
         "lastName": "Nkombo ya libota",
         "email": "Email",
-        "phone": "Telefone"
+        "phone": "Telefone",
+        "gender": "Bokolo",
+        "dateOfBirth": "Mokolo ya kobotama",
+        "address": "Adilesi",
+        "image": "Image",
+        "isActive": "Moyindami ya active"
       },
       "columns": {
         "firstName": "Nkombo ya liboso",
         "lastName": "Nkombo ya libota",
         "email": "Email",
         "phone": "Telefone",
+        "gender": "Bokolo",
+        "image": "Photo",
+        "dateOfBirth": "Mokolo ya kobotama",
+        "status": "Etat",
+        "contact": "Kontak",
         "createdAt": "Mokolo ya kotia"
+      },
+      "gender": {
+        "male": "Mobali",
+        "female": "Mwasi"
+      },
+      "details": {
+        "title": "Moyekoli ya sika",
+        "description": "Tondela bisaleli oyo basengeli.",
+        "confirm": "Kokima mpona kozwa moyekoli",
+        "cancel": "Kokima"
+      },
+      "stats": {
+        "total": "Motango nyonso ya moboti",
+        "active": "Moboti bazali kosala",
+        "inactive": "Moboti bazali kosala te",
+        "new": "Moboti ya sika",
+        "thisMonth": "Sanza oyo"
+      },
+      "overview": {
+        "emptyTitle": "Moboti aponami nanu te",
+        "emptyDescription": "Pona moboti moko na tableau mpo na komona profil na ye ya mobimba.",
+        "academicProgress": "Misala ya mateya",
+        "completion": "Bosilisi",
+        "attendance": "Bopesi ya bozali",
+        "thisMonth": "Sanza oyo",
+        "quickActions": "Misala ya mbangu"
       }
     },
     "classes": {
@@ -322,6 +398,49 @@
         "description": "Kotambola"
       }
     },
+    "schedules": {
+      "title": "Programme",
+      "subtitle": "Bokambi mbo mpe kotala bisika nyonso ya programme",
+      "changeRoutine": "Kobongola programme",
+      "loading": "Ezali kokoma...",
+      "error": "Libunga moko esalemi",
+      "calendar": {
+        "today": "Lelo"
+      },
+      "list": {
+        "title": "Programme ya ba leçons",
+        "empty": "Na tango oyo, ezali na bisika ya programme moko te"
+      },
+      "form": {
+        "addTitle": "Esika ya programme ya sika",
+        "addDescription": "Tondisa makambo oyo esengeli.",
+        "editTitle": "Kobongisa esika ya programme",
+        "editDescription": "Sesa makambo ya esika ya programme."
+      },
+      "fields": {
+        "class": "Classe",
+        "course": "Matière",
+        "teacher": "Molakisi",
+        "day": "Mokolo ya pɔ́sɔ",
+        "startTime": "Ngonga ya kobanda",
+        "endTime": "Ngonga ya kosuka",
+        "room": "Shambre ya kelasi",
+        "academicYear": "Mbula ya kelasi",
+        "selectClass": "Poná classe moko",
+        "selectCourse": "Poná matière moko",
+        "selectTeacher": "Poná molakisi moko",
+        "selectDay": "Poná mokolo moko"
+      },
+      "days": {
+        "monday": "Mokɔlɔ ya liboso",
+        "tuesday": "Mokɔlɔ ya mibale",
+        "wednesday": "Mokɔlɔ ya misato",
+        "thursday": "Mokɔlɔ ya minei",
+        "friday": "Mokɔlɔ ya mitano",
+        "saturday": "Mokɔlɔ ya motoba",
+        "sunday": "Lomposo"
+      }
+    },
     "common": {
       "cancel": "Koboya",
       "confirm": "Kokima",
@@ -333,7 +452,17 @@
         "label": "Misala",
         "edit": "Kobongola",
         "delete": "Koboma",
-        "openMenu": "Kofungola menu"
+        "openMenu": "Kofungola menu",
+        "view": "Komona liboso"
+      },
+      "entityOverview": {
+        "emptyTitle": "Ba données ezali te",
+        "emptyDescription": "Eloko ya kolakisa ezali te sikoyo.",
+        "idPrefix": "ID",
+        "quickActions": "Misala ya mbangu",
+        "completion": "Avancement",
+        "attendance": "Présence",
+        "attendancePeriod": "Période ya présence"
       }
     }
   },
