@@ -16,7 +16,7 @@ import {
     parents,
     classes,
     parentStudents,
-    courses,
+    courses, schedules,
 } from './schema';
 import {and, eq} from 'drizzle-orm';
 
@@ -276,6 +276,8 @@ async function seed() {
         lastName: 'Kabila',
         email: 'sophie.kabila@saintjoseph.cd',
         phone: '+243 81 111 2222',
+        gender: 'female',
+        address: 'Kinshasa, RDC',
         subSchoolId: subSchool.id,
     }).returning();
 
@@ -317,6 +319,8 @@ async function seed() {
             gender: 'male',
             dateOfBirth: '1985-03-15',
             phone: '+243 81 234 5678',
+            address: 'Kinshasa, DRC',
+            enrollmentDate: '2024-09-01',
         }).returning();
 
         await db.insert(teacherSchools).values({
@@ -338,6 +342,40 @@ async function seed() {
         console.log('✓ Teacher user: jean.muamba@saintjoseph.cd');
     } else {
         console.log('~ Teacher already exists');
+    }
+
+    const [existingSchedule] = await db.select().from(schedules)
+        .where(and(
+            eq(schedules.subSchoolId, subSchool.id),
+            eq(schedules.dayOfWeek, 'MONDAY'),
+            eq(schedules.startTime, '08:00')
+        ));
+
+    if (!existingSchedule) {
+        const [mathCourse] = await db.select().from(courses)
+            .where(and(eq(courses.code, 'MATH-01'), eq(courses.subSchoolId, subSchool.id)));
+
+        const [classA] = await db.select().from(classes)
+            .where(and(eq(classes.name, '1ère Année Secondaire A'), eq(classes.subSchoolId, subSchool.id)));
+
+        const [teacher] = await db.select().from(teachers)
+            .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'));
+
+        await db.insert(schedules).values({
+            subSchoolId: subSchool.id,
+            classId: classA.id,
+            courseId: mathCourse.id,
+            teacherId: teacher.id,
+            dayOfWeek: 'MONDAY',
+            startTime: '08:00',
+            endTime: '09:00',
+            room: 'Salle 12',
+            academicYear: '2024-2025',
+        });
+
+        console.log('✓ Schedule created: Math, Monday 08:00-09:00');
+    } else {
+        console.log('~ Schedule already exists');
     }
 
     console.log('\n✓ Seed completed. Test credentials (password: password123):');
