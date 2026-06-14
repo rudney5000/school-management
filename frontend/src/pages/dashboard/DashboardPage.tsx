@@ -5,7 +5,7 @@ import {AnnouncementsWidget} from "@/pages/dashboard/ui/";
 
 export function DashboardPage() {
     return (
-        <div className="space-y-6 p-6 bg-zinc-50 min-h-screen">
+        <div className="space-y-6">
 
             <StatsCards />
 
