@@ -4,7 +4,12 @@ export type Parent = {
     firstName: string
     lastName: string
     email: string
-    phone?: string | null
+    phone?: string
+    address?: string | null
+    gender: 'male' | 'female'
+    image?: string
+    isActive: boolean
+    dateOfBirth: string
     subSchoolId: string
     createdAt: string
     children: { id: string; firstName: string; lastName: string }[]
