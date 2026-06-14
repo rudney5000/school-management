@@ -36,7 +36,7 @@ export const adminNav: NavGroup[] = [
             { labelKey: 'nav.dashboard',     icon: LayoutDashboard, path: '/sub-schools/$subSchoolId/dashboard' },
             { labelKey: 'nav.schools',       icon: Building2,       path: '/sub-schools/$subSchoolId/schools' },
             { labelKey: 'nav.classes',       icon: DoorOpen,        path: '/sub-schools/$subSchoolId/classes' },
-            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/sub-schools/$subSchoolId/schedule' },
+            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/sub-schools/$subSchoolId/schedules' },
         ],
     },
     {
@@ -97,7 +97,7 @@ export const studentNav: NavGroup[] = [
         groupKey: 'nav.group.main',
         items: [
             { labelKey: 'nav.dashboard',     icon: LayoutDashboard, path: '/sub-schools/$subSchoolId/dashboard' },
-            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/sub-schools/$subSchoolId/schedule' },
+            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/sub-schools/$subSchoolId/schedules' },
             { labelKey: 'nav.courses',       icon: BookOpen,        path: '/sub-schools/$subSchoolId/courses' },
         ],
     },
@@ -125,7 +125,7 @@ export const directorNav: NavGroup[] = [
             { labelKey: 'nav.dashboard',     icon: LayoutDashboard, path: '/sub-schools/$subSchoolId/dashboard' },
             { labelKey: 'nav.schools',       icon: Building2,       path: '/sub-schools/$subSchoolId/schools' },
             { labelKey: 'nav.classes',       icon: DoorOpen,        path: '/sub-schools/$subSchoolId/classes' },
-            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/sub-schools/$subSchoolId/schedule' },
+            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/sub-schools/$subSchoolId/schedules' },
         ],
     },
     {
@@ -171,7 +171,7 @@ export const parentNav: NavGroup[] = [
             {
                 labelKey: 'nav.schedule',
                 icon: CalendarDays,
-                path: '/sub-schools/$subSchoolId/schedule',
+                path: '/sub-schools/$subSchoolId/schedules',
             },
         ],
     },
@@ -225,7 +225,7 @@ export const workerNav: NavGroup[] = [
             {
                 labelKey: 'nav.schedule',
                 icon: CalendarDays,
-                path: '/sub-schools/$subSchoolId/schedule',
+                path: '/sub-schools/$subSchoolId/schedules',
             },
         ],
     },
