@@ -3,8 +3,10 @@
 @variant dark (&:is(.dark *));
 
 @theme {
-    --color-primary: #4f46e5;
+    --color-primary: #1755ec;
     --color-primary-foreground: #ffffff;
+    --color-brand-start: #1755ec;
+    --color-brand-end: #4f46e5;
 
     --color-background: hsl(0 0% 100%);
     --color-foreground: hsl(240 10% 3.9%);
@@ -25,7 +27,7 @@
     --color-input: hsl(240 5.9% 90%);
     --color-ring: hsl(240 10% 3.9%);
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 }
 
 :root {
@@ -38,7 +40,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 239 84% 67%;
+    --primary: 223 85% 51%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 4.8% 95.9%;
@@ -57,7 +59,7 @@
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
