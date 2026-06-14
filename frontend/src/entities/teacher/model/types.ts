@@ -3,9 +3,10 @@ export type Teacher = {
     firstName: string
     lastName: string
     email: string
-    phone?: string | null
+    phone?: string
     address?: string | null
     gender: 'male' | 'female'
+    image?: string
     dateOfBirth: string
     hireDate: string
     qualification?: string | null
