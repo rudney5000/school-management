@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { db } from '@/db';
 import { schedules } from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
@@ -7,15 +7,24 @@ import type { CreateScheduleDto, UpdateScheduleDto } from './schedules.schema';
 export type ScheduleRecord = typeof schedules.$inferSelect;
 
 export class SchedulesService {
-  async findAll(): Promise<ScheduleRecord[]> {
-    return db.select().from(schedules);
+  async findAll(subSchoolId: string): Promise<ScheduleRecord[]> {
+    return db
+        .select()
+        .from(schedules)
+        .where(
+            and(
+                eq(schedules.subSchoolId, subSchoolId),
+            )
+        );
   }
 
-  async findById(id: string): Promise<ScheduleRecord> {
+  async findById(id: string, subSchoolId: string): Promise<ScheduleRecord> {
     const [schedule] = await db
       .select()
       .from(schedules)
-      .where(eq(schedules.id, id));
+      .where(
+        eq(schedules.id, id))
+        eq(schedules.subSchoolId, subSchoolId);
 
     if (!schedule) {
       throw new AppError('NOT_FOUND', 'Emploi du temps introuvable', 404);
@@ -28,6 +37,7 @@ export class SchedulesService {
     const [schedule] = await db
       .insert(schedules)
       .values({
+        subSchoolId: input.subSchoolId,
         classId: input.classId,
         courseId: input.courseId,
         teacherId: input.teacherId,
@@ -42,22 +52,39 @@ export class SchedulesService {
     return schedule;
   }
 
-  async update(id: string, input: UpdateScheduleDto): Promise<ScheduleRecord> {
-    await this.findById(id);
+  async update(
+      id: string,
+      subSchoolId: string,
+      input: UpdateScheduleDto
+  ): Promise<ScheduleRecord> {
+    await this.findById(id, subSchoolId);
 
     const [schedule] = await db
       .update(schedules)
       .set({
         ...input,
       })
-      .where(eq(schedules.id, id))
+      .where(
+          and(
+            eq(schedules.id, id),
+            eq(schedules.subSchoolId, subSchoolId)
+          ),
+      )
       .returning();
 
     return schedule;
   }
 
-  async remove(id: string): Promise<void> {
-    await this.findById(id);
-    await db.delete(schedules).where(eq(schedules.id, id));
+  async remove(id: string, subSchoolId: string): Promise<void> {
+    await this.findById(id, subSchoolId);
+
+    await db
+        .delete(schedules)
+        .where(
+            and(
+                eq(schedules.id, id),
+                eq(schedules.subSchoolId, subSchoolId)
+            )
+        );
   }
 }

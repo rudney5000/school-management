@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const createScheduleSchema = z.object({
+  subSchoolId: z.string().uuid('Invalid sub-school ID'),
   classId: z.string().uuid('Invalid class ID'),
   courseId: z.string().uuid('Invalid course ID'),
   teacherId: z.string().uuid('Invalid teacher ID'),

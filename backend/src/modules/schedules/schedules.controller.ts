@@ -6,17 +6,27 @@ import type {
   UpdateScheduleDto,
 } from '@/modules/schedules/schedules.schema';
 import { SchedulesService } from '@/modules/schedules/schedules.service';
+import type {SubSchoolQueryDto} from "@/modules/parents/parents.schema";
+
+function resolveSubSchoolId(req: Request): string {
+  if (req.user?.subSchoolId) {
+    return req.user.subSchoolId;
+  }
+  return (req.query as SubSchoolQueryDto).subSchoolId;
+}
 
 export class SchedulesController {
   private readonly service = new SchedulesService();
 
   getAll = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const data = await this.service.findAll();
+    const subSchoolId = resolveSubSchoolId(req);
+    const data = await this.service.findAll(subSchoolId);
     respond(res, data);
   });
 
   getById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const data = await this.service.findById(req.params.id);
+    const subSchoolId = resolveSubSchoolId(req);
+    const data = await this.service.findById(req.params.id, subSchoolId);
     respond(res, data);
   });
 
@@ -26,15 +36,18 @@ export class SchedulesController {
   });
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const subSchoolId = resolveSubSchoolId(req);
     const data = await this.service.update(
       req.params.id,
+      subSchoolId,
       req.body as UpdateScheduleDto,
     );
     respond(res, data);
   });
 
   remove = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    await this.service.remove(req.params.id);
+    const subSchoolId = resolveSubSchoolId(req);
+    await this.service.remove(req.params.id, subSchoolId);
     res.status(204).send();
   });
 }

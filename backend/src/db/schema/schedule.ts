@@ -4,6 +4,7 @@ import {classes} from "@/db/schema/classes";
 import {courses} from "@/db/schema/courses";
 import {dayOfWeekEnum} from "@/db/schema/enums";
 import {teachers} from "@/db/schema/teacher";
+import {subSchools} from "@/db/schema/subSchool";
 
 export const schedules = pgTable('schedules', {
     id: uuid('id').primaryKey().defaultRandom(),
@@ -15,6 +16,7 @@ export const schedules = pgTable('schedules', {
     endTime: time('end_time').notNull(),
     room: varchar('room', { length: 50 }),
     academicYear: varchar('academic_year', { length: 20 }).notNull(),
+    subSchoolId: uuid('sub_school_id').notNull().references(() => subSchools.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
 }, (table) => ({
     idx_schedule_no_overlap: uniqueIndex('idx_schedule_no_overlap').on(table.teacherId, table.classId, table.dayOfWeek, table.startTime),
