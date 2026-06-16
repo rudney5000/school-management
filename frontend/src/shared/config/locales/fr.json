@@ -181,6 +181,11 @@
   "dashboard": {
     "title":          "Tableau de bord",
     "subtitle":       "Vue d'ensemble",
+    "greeting": {
+      "morning": "Bonjour",
+      "afternoon": "Bon apres midi",
+      "evening": "Bonsoir"
+    },
     "stats": {
       "schools":  "Établissements",
       "classes":  "Classes",

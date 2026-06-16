@@ -137,6 +137,11 @@
   "dashboard": {
     "title": "Tableau de bord",
     "subtitle": "Vue d'ensemble",
+    "greeting": {
+      "morning": "Mbote na ntɔngɔ",
+      "afternoon": "Mbote na moi",
+      "evening": "Mbote na pokwa"
+    },
     "stats": {
       "schools": "Établissements",
       "classes": "Classes",

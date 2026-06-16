@@ -160,19 +160,13 @@
       "other": "Other"
     },
     "dashboard": "Dashboard",
-    "schools": "Schools",
-    "classes": "Classes",
-    "schedule": "Schedule",
-    "courses": "Courses",
-    "exams": "Exams",
-    "assessments": "Assessments",
-    "reports": "Reports",
-    "teachers": "Teachers",
     "students": "Students",
-    "parents": "Parents",
-    "attendance": "Attendance",
-    "messages": "Messages",
-    "settings": "Settings"
+    "teachers": "Teachers",
+    "events": "Events",
+    "finance": "Finance",
+    "calendar": "Calendar",
+    "chat": "Chat",
+    "notifications": "Notifications"
   },
   "header": {
     "search": "Search...",
@@ -181,6 +175,11 @@
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "Overview",
+    "greeting": {
+      "morning": "morning",
+      "afternoon": "afternoon",
+      "evening": "evening"
+    },
     "stats": {
       "schools": "Schools",
       "classes": "Classes",
@@ -482,6 +481,66 @@
         "friday": "Friday",
         "saturday": "Saturday",
         "sunday": "Sunday"
+      }
+    },
+    "events": {
+      "title": "Events",
+      "subtitle": "Manage and view all school events",
+      "addEvent": "Add Event",
+      "loading": "Loading...",
+      "error": "An error occurred",
+      "calendar": {
+        "today": "Today"
+      },
+      "list": {
+        "title": "Events List",
+        "empty": "No events at the moment"
+      },
+      "form": {
+        "addTitle": "New Event",
+        "addDescription": "Fill in the required information.",
+        "editTitle": "Edit Event",
+        "editDescription": "Update the event information."
+      },
+      "fields": {
+        "title": "Title",
+        "description": "Description",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "location": "Location",
+        "type": "Type"
+      },
+      "types": {
+        "academic": "Academic",
+        "social": "Social",
+        "sports": "Sports",
+        "meeting": "Meeting",
+        "other": "Other"
+      },
+      "header": {
+        "welcome": "Welcome back",
+        "searchPlaceholder": "Search events...",
+        "newest": "Newest",
+        "addEvent": "Add Events"
+      },
+      "cards": {
+        "schoolEvents": "School Events",
+        "schoolEventsDesc": "Discover and participate in upcoming school events",
+        "welcome": "Welcome to Events",
+        "welcomeDesc": "Stay connected with all school activities and never miss an important date"
+      },
+      "timeline": {
+        "title": "School Events",
+        "participants": "+{count} more"
+      },
+      "sidebar": {
+        "title": "Event List",
+        "ticketsRemaining": "Tickets remaining",
+        "free": "Free"
+      },
+      "recent": {
+        "title": "Recent Past Events",
+        "viewAll": "View All"
       }
     },
     "common": {

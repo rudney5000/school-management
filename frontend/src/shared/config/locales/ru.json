@@ -135,6 +135,11 @@
   "dashboard": {
     "title": "Панель управления",
     "subtitle": "Обзор",
+    "greeting": {
+      "morning": "Доброе утро",
+      "afternoon": "Добрый день",
+      "evening": "Добрый вечер"
+    },
     "stats": {
       "schools": "Учреждения",
       "classes": "Классы",
