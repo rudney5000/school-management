@@ -18,9 +18,9 @@ export function Header() {
 
     const getGreeting = () => {
         const hour = new Date().getHours()
-        if (hour < 12) return t('greeting.morning')
-        if (hour < 18) return t('greeting.afternoon')
-        return t('greeting.evening')
+        if (hour < 12) return t('dashboard.greeting.morning')
+        if (hour < 18) return t('dashboard.greeting.afternoon')
+        return t('dashboard.greeting.evening')
     }
 
     return (
