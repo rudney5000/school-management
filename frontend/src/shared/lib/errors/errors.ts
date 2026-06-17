@@ -183,6 +183,12 @@ export const errors = {
             fr: "L'année académique est requise",
             ru: "Академический год обязателен",
             ln: "Mokolo ya akademika esengeli",
+        },
+        invalidType: {
+            en: "Invalid type",
+            fr: "Type invalide",
+            ru: "Неверный тип",
+            ln: "Mokolo ya mokolo esengeli",
         }
     }
 };
