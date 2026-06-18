@@ -21,6 +21,7 @@ import {enrollmentsRouter} from "@/modules/enrollments/enrollments.router";
 import {parentsRouter} from "@/modules/parents/parents.router";
 import {paymentsRouter} from "@/modules/payments/payments.router";
 import {subSchoolsRouter} from "@/modules/sub-schools/sub-schools.router";
+import {eventsRouter} from "@/modules/events/events.router";
 
 export function createApp(): express.Application {
   const app = express();
@@ -54,6 +55,7 @@ export function createApp(): express.Application {
   app.use('/api/parents', parentsRouter);
   app.use('/api/payments', paymentsRouter);
   app.use('/api/sub-schools', subSchoolsRouter)
+  app.use('/api/events', eventsRouter)
 
   app.use(errorHandler);
 

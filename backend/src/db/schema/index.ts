@@ -9,6 +9,7 @@ export * from './parents';
 export * from './courses';
 export * from './classes';
 export * from './enrollments';
+export * from './events';
 export * from './schedule';
 export * from './attendances';
 export * from './finance';

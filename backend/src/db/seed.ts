@@ -16,7 +16,7 @@ import {
     parents,
     classes,
     parentStudents,
-    courses, schedules,
+    courses, schedules, events,
 } from './schema';
 import {and, eq} from 'drizzle-orm';
 
@@ -174,7 +174,6 @@ async function seed() {
             console.log(`~ Course already exists: ${course.name}`);
         }
     }
-
 
     const sampleClasses = [
         { name: '1ère Année Secondaire A', gradeLevel: 'Secondaire 1', capacity: 35, subSchoolId: subSchool.id },
@@ -377,6 +376,65 @@ async function seed() {
     } else {
         console.log('~ Schedule already exists');
     }
+    const adminUser = await db.query.users.findFirst({
+        where: eq(users.email, 'admin@saintjoseph.cd')
+    });
+
+    if (adminUser) {
+        const sampleEvents = [
+            {
+                title: 'Cérémonie de Rentrée Scolaire 2024-2025',
+                description: 'Accueil des élèves, discours de la direction et présentation du corps professoral.',
+                type: 'MEETING',
+                startDate: new Date('2024-09-02T08:00:00Z'),
+                endDate: new Date('2024-09-02T12:00:00Z'),
+                location: 'Cour principale',
+                isPublic: true,
+                subSchoolId: subSchool.id,
+                createdBy: adminUser.id,
+            },
+            {
+                title: 'Examens du Premier Trimestre',
+                description: 'Période d\'évaluations pour toutes les classes du secondaire. Présence obligatoire.',
+                type: 'EXAM',
+                startDate: new Date('2024-11-18T07:30:00Z'),
+                endDate: new Date('2024-11-29T16:00:00Z'),
+                location: 'Salles de classe habituelles',
+                isPublic: false,
+                subSchoolId: subSchool.id,
+                createdBy: adminUser.id,
+            },
+            {
+                title: 'Tournoi Inter-Classes de Football',
+                description: 'Compétition sportive amicale entre les classes de 1ère et 2ème année secondaire.',
+                type: 'SPORT' as any,
+                startDate: new Date('2024-10-15T14:00:00Z'),
+                endDate: new Date('2024-10-15T17:00:00Z'),
+                location: 'Terrain de sport de l\'école',
+                isPublic: true,
+                subSchoolId: subSchool.id,
+                createdBy: adminUser.id,
+            }
+        ];
+
+        for (const event of sampleEvents) {
+            const [existingEvent] = await db.select().from(events)
+                .where(and(
+                    eq(events.title, event.title),
+                    eq(events.subSchoolId, event.subSchoolId)
+                ));
+
+            if (!existingEvent) {
+                await db.insert(events).values(event);
+                console.log(`✓ Event created: ${event.title}`);
+            } else {
+                console.log(`~ Event already exists: ${event.title}`);
+            }
+        }
+    } else {
+        console.log('⚠ Admin user not found, skipping events creation.');
+    }
+
 
     console.log('\n✓ Seed completed. Test credentials (password: password123):');
     console.log('  Admin   → admin@saintjoseph.cd');

@@ -1,5 +1,5 @@
 {
-  "id": "c08d3ed7-cc86-4cb2-9a53-a187b0b155f0",
+  "id": "27a50411-5ae1-429b-b252-55fca485bb6d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1128,6 +1128,120 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.events": {
+      "name": "events",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "event_type": {
+          "name": "event_type",
+          "type": "event_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start_date": {
+          "name": "start_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "end_date": {
+          "name": "end_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location": {
+          "name": "location",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_public": {
+          "name": "is_public",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "sub_school_id": {
+          "name": "sub_school_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "events_sub_school_id_sub_schools_id_fk": {
+          "name": "events_sub_school_id_sub_schools_id_fk",
+          "tableFrom": "events",
+          "tableTo": "sub_schools",
+          "columnsFrom": [
+            "sub_school_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "events_created_by_users_id_fk": {
+          "name": "events_created_by_users_id_fk",
+          "tableFrom": "events",
+          "tableTo": "users",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.schedules": {
       "name": "schedules",
       "schema": "",
@@ -1185,6 +1299,12 @@
         "academic_year": {
           "name": "academic_year",
           "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sub_school_id": {
+          "name": "sub_school_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -1264,6 +1384,19 @@
           "tableTo": "teachers",
           "columnsFrom": [
             "teacher_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "schedules_sub_school_id_sub_schools_id_fk": {
+          "name": "schedules_sub_school_id_sub_schools_id_fk",
+          "tableFrom": "schedules",
+          "tableTo": "sub_schools",
+          "columnsFrom": [
+            "sub_school_id"
           ],
           "columnsTo": [
             "id"
@@ -2218,6 +2351,20 @@
     }
   },
   "enums": {
+    "public.event_type": {
+      "name": "event_type",
+      "schema": "public",
+      "values": [
+        "EXAM",
+        "MEETING",
+        "SPORT",
+        "CULTURAL",
+        "TRIP",
+        "HOLIDAY",
+        "COMPETITION",
+        "OTHER"
+      ]
+    },
     "public.attendance_status": {
       "name": "attendance_status",
       "schema": "public",

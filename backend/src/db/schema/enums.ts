@@ -50,3 +50,14 @@ export const roleEnum = pgEnum('role', [
     'parent',
     'student',
 ]);
+
+export const EventTypeEnum = pgEnum('event_type', [
+    'EXAM',
+    'MEETING',
+    'SPORT',
+    'CULTURAL',
+    'TRIP',
+    'HOLIDAY',
+    'COMPETITION',
+    'OTHER',
+]);
