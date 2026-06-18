@@ -17,14 +17,20 @@ type CustomDrawerProps = {
 const CustomDrawer: React.FC<CustomDrawerProps> = ({ drawerTitle, drawerDescription, children, isOpen, handleOpen, direction }) => {
     return (
         <Sheet open={isOpen} onOpenChange={handleOpen}>
-            <SheetContent className="z-50 bg-white border-0" side={direction}>
-                <SheetHeader>
-                    <SheetTitle>{drawerTitle}</SheetTitle>
-                    <SheetDescription>
+            <SheetContent 
+                className="z-50 bg-white border-l border-gray-100 shadow-2xl rounded-l-2xl" 
+                side={direction}
+                style={{
+                    boxShadow: '-4px 0 24px rgba(23, 85, 236, 0.08)'
+                }}
+            >
+                <SheetHeader className="pb-4 border-b border-gray-100">
+                    <SheetTitle className="text-xl font-semibold text-gray-900">{drawerTitle}</SheetTitle>
+                    <SheetDescription className="text-sm text-gray-500 mt-1">
                         {drawerDescription}
                     </SheetDescription>
                 </SheetHeader>
-                <div className="overflow-y-auto flex-1 pr-1">
+                <div className="overflow-y-auto flex-1 pr-2 py-4">
                     {children}
                 </div>
             </SheetContent>
