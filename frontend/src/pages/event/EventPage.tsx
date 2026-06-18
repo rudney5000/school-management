@@ -161,8 +161,8 @@ export default function EventsPage() {
     return (
         <div className="flex h-screen overflow-hidden bg-muted/30">
             <div className="flex-1 flex overflow-hidden">
-                <main className="flex-1 overflow-auto p-6">
-                    <div className="flex items-start justify-between mb-5">
+                <main className="flex-1 overflow-auto p-4 md:p-6">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-5">
                         <div>
                             <h1 className="text-2xl font-bold tracking-tight">{t('dashboard.events.title')}</h1>
                             <p className="text-sm text-muted-foreground mt-0.5">
@@ -188,12 +188,12 @@ export default function EventsPage() {
                                 onClick={() => setDrawerOpen(true)}
                             >
                                 <Plus className="size-4" />
-                                {t('dashboard.events.addEvent')}
+                                <span className="hidden sm:inline">{t('dashboard.events.addEvent')}</span>
                             </Button>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div className="relative overflow-hidden rounded-2xl bg-sky-50 border border-sky-100 p-5 flex items-center gap-5 min-h-[100px]">
                             <div>
                                 <p className="text-xs text-sky-500 font-semibold uppercase tracking-wide mb-1">
@@ -244,8 +244,8 @@ export default function EventsPage() {
                         </div>
                     </div>
 
-                    <div className="bg-background rounded-2xl border p-5 mb-6">
-                        <div className="flex items-center justify-between mb-4">
+                    <div className="bg-background rounded-2xl border p-5 mb-6 overflow-x-auto">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                             <h2
                                 className="font-semibold text-base"
                                 style={{ color: "oklch(0.45 0.18 280)" }}
@@ -274,72 +274,74 @@ export default function EventsPage() {
                             </div>
                         </div>
 
-                        <div
-                            className="grid mb-2"
-                            style={{ gridTemplateColumns: `repeat(${WEEK_COUNT}, 1fr)` }}
-                        >
-                            {weekHeaders.map((w, i) => (
-                                <div key={i} className="text-center">
-                                    <p className="text-sm font-semibold">{w.label}</p>
-                                    <p className="text-[11px] text-muted-foreground">{w.sub}</p>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="relative">
+                        <div className="min-w-[600px]">
                             <div
-                                className="absolute inset-0 grid pointer-events-none"
+                                className="grid mb-2"
                                 style={{ gridTemplateColumns: `repeat(${WEEK_COUNT}, 1fr)` }}
                             >
-                                {Array.from({ length: WEEK_COUNT }).map((_, i) => (
-                                    <div key={i} className="border-l border-border/40 h-full" />
+                                {weekHeaders.map((w, i) => (
+                                    <div key={i} className="text-center">
+                                        <p className="text-sm font-semibold">{w.label}</p>
+                                        <p className="text-[11px] text-muted-foreground">{w.sub}</p>
+                                    </div>
                                 ))}
                             </div>
 
-                            {loading ? (
-                                <div className="space-y-2 py-2">
-                                    {[1, 2, 3].map((i) => (
-                                        <Skeleton key={i} className="h-10 w-full rounded-lg" />
+                            <div className="relative">
+                                <div
+                                    className="absolute inset-0 grid pointer-events-none"
+                                    style={{ gridTemplateColumns: `repeat(${WEEK_COUNT}, 1fr)` }}
+                                >
+                                    {Array.from({ length: WEEK_COUNT }).map((_, i) => (
+                                        <div key={i} className="border-l border-border/40 h-full" />
                                     ))}
                                 </div>
-                            ) : ganttItems.length === 0 ? (
-                                <div className="h-24 flex items-center justify-center text-sm text-muted-foreground">
-                                    {t('dashboard.events.noEventsInPeriod')}.
-                                </div>
-                            ) : (
-                                Array.from({ length: ganttRowCount }).map((_, rowIdx) => {
-                                    const row = rowIdx + 1
-                                    const rowEvts = ganttItems.filter((it) => it.row === row)
-                                    return (
-                                        <div key={rowIdx} className="relative h-11 mb-1.5">
-                                            {rowEvts.map((it) => {
-                                                const cfg = TYPE_CONFIG[it.event.type] ?? TYPE_CONFIG.OTHER
-                                                return (
-                                                    <div
-                                                        key={it.event.id}
-                                                        className={cn(
-                                                            "absolute inset-y-0 flex items-center gap-1.5 px-2.5 rounded-lg text-xs font-medium overflow-hidden cursor-pointer",
-                                                            cfg.colorClasses
-                                                        )}
-                                                        style={{
-                                                            left: `calc(${(it.startCol / WEEK_COUNT) * 100}% + 3px)`,
-                                                            width: `calc(${(it.span / WEEK_COUNT) * 100}% - 6px)`,
-                                                        }}
-                                                        title={`${it.event.title} — ${format(new Date(it.event.startDate), "dd MMM HH:mm")} → ${format(new Date(it.event.endDate), "HH:mm")}`}
-                                                    >
-                                                      <span className="flex-1 min-w-0 truncate">
-                                                        {it.event.title}
-                                                      </span>
-                                                      <span className="shrink-0 flex items-center gap-1">
-                                                        <AvatarStack seed={it.event.id} />
-                                                      </span>
-                                                    </div>
-                                                )
-                                            })}
-                                        </div>
-                                    )
-                                })
-                            )}
+
+                                {loading ? (
+                                    <div className="space-y-2 py-2">
+                                        {[1, 2, 3].map((i) => (
+                                            <Skeleton key={i} className="h-10 w-full rounded-lg" />
+                                        ))}
+                                    </div>
+                                ) : ganttItems.length === 0 ? (
+                                    <div className="h-24 flex items-center justify-center text-sm text-muted-foreground">
+                                        {t('dashboard.events.noEventsInPeriod')}.
+                                    </div>
+                                ) : (
+                                    Array.from({ length: ganttRowCount }).map((_, rowIdx) => {
+                                        const row = rowIdx + 1
+                                        const rowEvts = ganttItems.filter((it) => it.row === row)
+                                        return (
+                                            <div key={rowIdx} className="relative h-11 mb-1.5">
+                                                {rowEvts.map((it) => {
+                                                    const cfg = TYPE_CONFIG[it.event.type] ?? TYPE_CONFIG.OTHER
+                                                    return (
+                                                        <div
+                                                            key={it.event.id}
+                                                            className={cn(
+                                                                "absolute inset-y-0 flex items-center gap-1.5 px-2.5 rounded-lg text-xs font-medium overflow-hidden cursor-pointer",
+                                                                cfg.colorClasses
+                                                            )}
+                                                            style={{
+                                                                left: `calc(${(it.startCol / WEEK_COUNT) * 100}% + 3px)`,
+                                                                width: `calc(${(it.span / WEEK_COUNT) * 100}% - 6px)`,
+                                                            }}
+                                                            title={`${it.event.title} — ${format(new Date(it.event.startDate), "dd MMM HH:mm")} → ${format(new Date(it.event.endDate), "HH:mm")}`}
+                                                        >
+                                                          <span className="flex-1 min-w-0 truncate">
+                                                            {it.event.title}
+                                                          </span>
+                                                          <span className="shrink-0 flex items-center gap-1">
+                                                            <AvatarStack seed={it.event.id} />
+                                                          </span>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        )
+                                    })
+                                )}
+                            </div>
                         </div>
                     </div>
 
@@ -357,7 +359,7 @@ export default function EventsPage() {
                         </div>
 
                         {loading ? (
-                            <div className="grid grid-cols-4 gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                                 {[1, 2, 3, 4].map((i) => (
                                     <Skeleton key={i} className="h-28 rounded-xl" />
                                 ))}
@@ -367,7 +369,7 @@ export default function EventsPage() {
                                 {t('dashboard.events.noPastEvents')}.
                             </p>
                         ) : (
-                            <div className="grid grid-cols-4 gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                                 {pastEvents.map((ev) => {
                                     const cfg = TYPE_CONFIG[ev.type] ?? TYPE_CONFIG.OTHER
                                     return (
@@ -401,7 +403,7 @@ export default function EventsPage() {
                     </div>
                 </main>
 
-                <aside className="w-60 shrink-0 border-l bg-background overflow-auto p-4">
+                <aside className="hidden lg:block w-60 shrink-0 border-l bg-background overflow-auto p-4">
                     <div className="mb-4">
                         <h3 className="font-semibold">{t('dashboard.events.eventList')}</h3>
                         <p className="text-xs text-muted-foreground mt-0.5">
