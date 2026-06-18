@@ -1,5 +1,4 @@
 import {
-    useEffect,
     useState
 } from "react"
 import {
@@ -10,12 +9,11 @@ import {
     isBefore
 } from "date-fns"
 import {
-    EventType,
-    EVENT_TYPES,
     TYPE_CONFIG,
     useEvents,
     useCreateEvent,
-    useDeleteEvent
+    useDeleteEvent,
+    type Event
 } from "@entities/event";
 import {
     AvatarStack,
@@ -33,8 +31,6 @@ import {
 import {
     Badge,
     Button,
-    Input,
-    Label,
     Select,
     SelectContent,
     SelectItem,
@@ -42,42 +38,22 @@ import {
     SelectValue,
     Separator,
     Skeleton,
-    Switch,
-    Textarea,
 } from "@/shared/ui"
 import CustomDrawer from "@shared/ui/custom-drawer/custom-drawer"
 import { useAppSelector } from "@shared/store/hooks"
 import {cn, useTranslation} from "@shared/lib";
 import {useDateLocale} from "@shared/lib/date";
-
-interface EventFormState {
-    title: string
-    description: string
-    type: EventType
-    startDate: string
-    endDate: string
-    location: string
-    isPublic: boolean
-    subSchoolId: string
-}
-
-const EMPTY_FORM: EventFormState = {
-    title: "",
-    description: "",
-    type: EventType.OTHER,
-    startDate: "",
-    endDate: "",
-    location: "",
-    isPublic: true,
-    subSchoolId: "",
-}
+import {AddEventForm, DeleteAlertEvent, EditEventForm} from "@features/event";
 
 export default function EventsPage() {
     const [search, _setSearch] = useState("")
     const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest")
     const [windowOffset, setWindowOffset] = useState(0)
     const [drawerOpen, setDrawerOpen] = useState(false)
-    const [form, setForm] = useState<EventFormState>(EMPTY_FORM)
+    const [editDrawerOpen, setEditDrawerOpen] = useState(false)
+    const [editingEvent, setEditingEvent] = useState<Event | null>(null)
+    const [deleteAlertOpen, setDeleteAlertOpen] = useState(false)
+    const [deletingEventId, setDeletingEventId] = useState<string | null>(null)
     const { t } = useTranslation()
     const dateLocale = useDateLocale()
 
@@ -87,11 +63,6 @@ export default function EventsPage() {
     const createEventMutation = useCreateEvent()
     const deleteEventMutation = useDeleteEvent()
 
-    useEffect(() => {
-        if (selectedSubSchoolId) {
-            setForm((prev) => ({ ...prev, subSchoolId: selectedSubSchoolId }))
-        }
-    }, [selectedSubSchoolId])
 
     const ganttWindowStart = (() => {
         const base =
@@ -137,29 +108,54 @@ export default function EventsPage() {
         .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
         .slice(0, 5)
 
-    const handleAddEvent = async () => {
-        if (!form.title || !form.startDate || !form.endDate || !form.subSchoolId) return
+    const handleAddEvent = async (data: any) => {
         try {
             await createEventMutation.mutateAsync({
-                title: form.title,
-                description: form.description || "",
-                type: form.type,
-                startDate: new Date(form.startDate).toISOString(),
-                endDate: new Date(form.endDate).toISOString(),
-                location: form.location || "",
-                isPublic: form.isPublic,
-                subSchoolId: form.subSchoolId,
+                title: data.title,
+                description: data.description || "",
+                type: data.type,
+                startDate: new Date(data.startDate).toISOString(),
+                endDate: new Date(data.endDate).toISOString(),
+                location: data.location || "",
+                isPublic: data.isPublic,
+                subSchoolId: data.subSchoolId,
             })
-            setForm(EMPTY_FORM)
             setDrawerOpen(false)
         } catch (e) {
             console.error(e)
         }
     }
 
-    const handleDelete = async (id: string) => {
-        if (!selectedSubSchoolId) return
-        await deleteEventMutation.mutateAsync({ id, subSchoolId: selectedSubSchoolId })
+    const handleEditEvent = async (data: any) => {
+        if (!editingEvent) return
+        try {
+            await createEventMutation.mutateAsync({
+                title: data.title,
+                description: data.description || "",
+                type: data.type,
+                startDate: new Date(data.startDate).toISOString(),
+                endDate: new Date(data.endDate).toISOString(),
+                location: data.location || "",
+                isPublic: data.isPublic,
+                subSchoolId: data.subSchoolId,
+            })
+            setEditDrawerOpen(false)
+            setEditingEvent(null)
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    const handleDeleteClick = (id: string) => {
+        setDeletingEventId(id)
+        setDeleteAlertOpen(true)
+    }
+
+    const handleDeleteConfirm = async () => {
+        if (!deletingEventId || !selectedSubSchoolId) return
+        await deleteEventMutation.mutateAsync({ id: deletingEventId, subSchoolId: selectedSubSchoolId })
+        setDeleteAlertOpen(false)
+        setDeletingEventId(null)
     }
 
     return (
@@ -383,7 +379,7 @@ export default function EventsPage() {
                                                 </div>
                                                 <button
                                                     className="text-muted-foreground hover:text-destructive transition-colors"
-                                                    onClick={() => handleDelete(ev.id)}
+                                                    onClick={() => handleDeleteClick(ev.id)}
                                                 >
                                                     <Trash2 className="size-3" />
                                                 </button>
@@ -438,7 +434,7 @@ export default function EventsPage() {
                                             </p>
                                             <button
                                                 className="text-muted-foreground hover:text-destructive transition-colors shrink-0 mt-0.5"
-                                                onClick={() => handleDelete(ev.id)}
+                                                onClick={() => handleDeleteClick(ev.id)}
                                             >
                                                 <Trash2 className="size-3" />
                                             </button>
@@ -493,117 +489,42 @@ export default function EventsPage() {
         drawerDescription={`${t('dashboard.events.createEvent')}`}
         direction="right"
     >
-        <div className="grid gap-4 py-4">
-            <div className="grid gap-1.5">
-                <Label htmlFor="ev-title">Titre *</Label>
-                <Input
-                    id="ev-title"
-                    placeholder="Ex: Tournoi Inter-Classes de Football"
-                    value={form.title}
-                    onChange={(e) => setForm({ ...form, title: e.target.value })}
-                />
-            </div>
-
-            <div className="grid gap-1.5">
-                <Label htmlFor="ev-desc">Description</Label>
-                <Textarea
-                    id="ev-desc"
-                    placeholder={`${t('dashboard.events.descriptionPlaceholder')}`}
-                    rows={3}
-                    value={form.description}
-                    onChange={(e) => setForm({ ...form, description: e.target.value })}
-                />
-            </div>
-
-            <div className="grid gap-1.5">
-                <Label>{t('dashboard.events.type')}</Label>
-                <Select
-                    value={form.type}
-                    onValueChange={(v) => setForm({ ...form, type: v as EventType })}
-                >
-                    <SelectTrigger>
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {EVENT_TYPES.map((t) => (
-                            <SelectItem key={t} value={t}>
-                                {TYPE_CONFIG[t].label}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-                <div className="grid gap-1.5">
-                    <Label htmlFor="ev-start">{t('dashboard.events.start')}</Label>
-                    <Input
-                        id="ev-start"
-                        type="datetime-local"
-                        value={form.startDate}
-                        onChange={(e) => setForm({ ...form, startDate: e.target.value })}
-                    />
-                </div>
-                <div className="grid gap-1.5">
-                    <Label htmlFor="ev-end">{t('dashboard.events.end')}</Label>
-                    <Input
-                        id="ev-end"
-                        type="datetime-local"
-                        value={form.endDate}
-                        onChange={(e) => setForm({ ...form, endDate: e.target.value })}
-                    />
-                </div>
-            </div>
-
-            <div className="grid gap-1.5">
-                <Label htmlFor="ev-location">{t('dashboard.events.location')}</Label>
-                <Input
-                    id="ev-location"
-                    placeholder={`${t('dashboard.events.locationPlaceholder')}`}
-                    value={form.location}
-                    onChange={(e) => setForm({ ...form, location: e.target.value })}
-                />
-            </div>
-
-            <div className="flex items-center justify-between rounded-lg border p-3">
-                <div>
-                    <p className="text-sm font-medium">{t('dashboard.events.publicEvent')}</p>
-                    <p className="text-xs text-muted-foreground">
-                        {t('dashboard.events.publicEventDescription')}
-                    </p>
-                </div>
-                <Switch
-                    checked={form.isPublic}
-                    onCheckedChange={(v) => setForm({ ...form, isPublic: v })}
-                />
-            </div>
-
-            <div className="flex gap-2 mt-4">
-                <Button
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() => {
-                        setForm(EMPTY_FORM)
-                        setDrawerOpen(false)
-                    }}
-                >
-                    {t('dashboard.common.cancel')}
-                </Button>
-                <Button
-                    disabled={createEventMutation.isPending || !form.title || !form.startDate || !form.endDate || !form.subSchoolId}
-                    onClick={handleAddEvent}
-                    style={{ background: "oklch(0.50 0.22 275)" }}
-                    className="text-white flex-1"
-                >
-                    {
-                        createEventMutation.isPending
-                            ? `${t('dashboard.events.confirm')} : ${t('dashboard.events.addEvent')}`
-                            : t('dashboard.events.addEvent')
-                    }
-                </Button>
-            </div>
-        </div>
+        <AddEventForm
+            subSchoolId={selectedSubSchoolId || undefined}
+            onSubmit={handleAddEvent}
+            onCancel={() => setDrawerOpen(false)}
+            isPending={createEventMutation.isPending}
+        />
     </CustomDrawer>
+
+    <CustomDrawer
+        isOpen={editDrawerOpen}
+        handleOpen={(open) => setEditDrawerOpen(open)}
+        drawerTitle={`${t('dashboard.events.editEvent')}`}
+        drawerDescription={`${t('dashboard.events.editEventDescription')}`}
+        direction="right"
+    >
+        {editingEvent && (
+            <EditEventForm
+                event={editingEvent}
+                subSchoolId={selectedSubSchoolId || undefined}
+                onSubmit={handleEditEvent}
+                onCancel={() => {
+                    setEditDrawerOpen(false)
+                    setEditingEvent(null)
+                }}
+                isPending={createEventMutation.isPending}
+            />
+        )}
+    </CustomDrawer>
+
+    <DeleteAlertEvent
+        isOpen={deleteAlertOpen}
+        onOpenChange={setDeleteAlertOpen}
+        onClick={handleDeleteConfirm}
+        isLoading={deleteEventMutation.isPending}
+        eventName={deletingEventId ? events.find(e => e.id === deletingEventId)?.title : undefined}
+    />
 </div>
     )
 
