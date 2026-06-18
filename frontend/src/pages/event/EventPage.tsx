@@ -48,6 +48,7 @@ import {
 import CustomDrawer from "@shared/ui/custom-drawer/custom-drawer"
 import { useAppSelector } from "@shared/store/hooks"
 import {cn, useTranslation} from "@shared/lib";
+import {useDateLocale} from "@shared/lib/date";
 
 interface EventFormState {
     title: string
@@ -78,6 +79,7 @@ export default function EventsPage() {
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [form, setForm] = useState<EventFormState>(EMPTY_FORM)
     const { t } = useTranslation()
+    const dateLocale = useDateLocale()
 
     const selectedSubSchoolId = useAppSelector((state) => state.subSchool.selectedSubSchoolId)
     
@@ -101,7 +103,10 @@ export default function EventsPage() {
 
     const weekHeaders = Array.from({length: WEEK_COUNT}, (_, i) => {
         const d = addDays(ganttWindowStart, i * 7)
-        return {label: format(d, "dd"), sub: format(d, "EEE")}
+        return {
+            label: format(d, "dd", { locale: dateLocale }),
+            sub: format(d, "EEE", { locale: dateLocale }),
+        }
     })
 
     const filteredEvents = search
@@ -234,7 +239,7 @@ export default function EventsPage() {
                             <p className="font-bold text-lg leading-tight mb-1">{t('dashboard.events.hello')}</p>
                             <p className="text-sm leading-relaxed max-w-xs opacity-80">
                                 {upcomingEvents.length > 0
-                                    ? `${t('dashboard.events.nextEvent')} : ${upcomingEvents[0].title} le ${format(new Date(upcomingEvents[0].startDate), "dd MMM yyyy")}.`
+                                    ? `${t('dashboard.events.nextEvent')} : ${upcomingEvents[0].title} le ${format(new Date(upcomingEvents[0].startDate), "dd MMM yyyy", { locale: dateLocale })}.`
                                     : `${t('dashboard.events.noUpcomingEvents')}`}
                             </p>
                             <div className="absolute right-6 bottom-2 text-5xl select-none opacity-20">
@@ -249,7 +254,7 @@ export default function EventsPage() {
                                 className="font-semibold text-base"
                                 style={{ color: "oklch(0.45 0.18 280)" }}
                             >
-                                {t('dashboard.events.calendar.calendar')}
+                                {t('dashboard.events.calendar.title')}
                             </h2>
                             <div className="flex items-center gap-1">
                                 <Button
@@ -260,8 +265,8 @@ export default function EventsPage() {
                                     <ChevronLeft className="size-4" />
                                 </Button>
                                 <span className="text-xs text-muted-foreground px-2 min-w-[130px] text-center">
-                                    {format(ganttWindowStart, "dd MMM")} –{" "}
-                                                    {format(addDays(ganttWindowStart, WEEK_COUNT * 7 - 1), "dd MMM yyyy")}
+                                    {format(ganttWindowStart, "dd MMM", { locale: dateLocale })} –{" "}
+                                                    {format(addDays(ganttWindowStart, WEEK_COUNT * 7 - 1), "dd MMM yyyy", { locale: dateLocale })}
                                 </span>
                                 <Button
                                     variant="outline"
@@ -374,7 +379,7 @@ export default function EventsPage() {
                                             <div className="flex items-center justify-between mb-2">
                                                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                                                     <Clock className="size-3" />
-                                                    {format(new Date(ev.startDate), "dd MMM")}
+                                                    {format(new Date(ev.startDate), "dd MMM", { locale: dateLocale })}
                                                 </div>
                                                 <button
                                                     className="text-muted-foreground hover:text-destructive transition-colors"
@@ -425,7 +430,7 @@ export default function EventsPage() {
                                 return (
                                     <div key={ev.id}>
                                         <p className="text-[11px] font-semibold text-orange-500 mb-1">
-                                            {format(new Date(ev.startDate), "dd-MMMM, yyyy")}
+                                            {format(new Date(ev.startDate), "dd-MMMM, yyyy", { locale: dateLocale })}
                                         </p>
                                         <div className="flex items-start justify-between gap-1">
                                             <p className="font-semibold text-sm leading-tight line-clamp-1">
@@ -440,9 +445,9 @@ export default function EventsPage() {
                                         </div>
                                         <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
                                             <Clock className="size-3 shrink-0" />
-                                            {format(new Date(ev.startDate), "HH:mm")}
+                                            {format(new Date(ev.startDate), "HH:mm", { locale: dateLocale })}
                                             {" – "}
-                                            {format(new Date(ev.endDate), "HH:mm")}
+                                            {format(new Date(ev.endDate), "HH:mm", { locale: dateLocale })}
                                         </div>
                                         {ev.location && (
                                             <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
