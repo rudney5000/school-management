@@ -187,7 +187,8 @@
       "courses": "Courses",
       "exams": "Exams",
       "students": "Students",
-      "teachers": "Teachers"
+      "teachers": "Teachers",
+      "events": "Events"
     },
     "schedule": {
       "title": "Today's Classes",
@@ -487,42 +488,40 @@
       "title": "Events",
       "titleWithoutS": "Event",
       "subtitle": "Manage and view all school events",
-      "addEvent": "Add Event",
       "loading": "Loading...",
       "error": "An error occurred",
-      "welcome": "Welcome to Edu-Center dashboard",
+      "eventCount": "{count} event(s)",
+      "addEvent": "Add Event",
+      "newEvent": "New Event",
+      "createEvent": "Create a new event",
+      "hello": "Hello!",
+      "welcome": "Welcome back",
       "newest": "Newest",
       "oldest": "Oldest",
       "schoolEvents": "School Events",
-      "eventCount": "{count} event(s)",
-      "hello": "Hello!",
       "nextEvent": "Next event: {title} on {date}",
       "nextEvents": "Next event",
       "noUpcomingEvents": "No upcoming events for now",
       "noEventsInPeriod": "No events in this period",
-      "recentPastEvents": "Recent Past Events",
-      "viewAll": "View all",
       "noPastEvents": "No past events",
+      "recentPastEvents": "Recent Past Events",
       "eventList": "Event List",
-      "upcomingEvents": "Upcoming events",
-      "noUpcomingEventsList": "No upcoming events",
-      "public": "Public",
-      "newEvent": "New Event",
-      "createEvent": "Create a new event",
+      "viewAll": "View all",
       "descriptionPlaceholder": "Describe the event...",
       "type": "Type",
       "start": "Start *",
       "end": "End *",
       "location": "Location",
       "locationPlaceholder": "Ex: School sports field",
+      "public": "Public",
       "publicEvent": "Public event",
       "publicEventDescription": "Visible to all students and parents",
       "calendar": {
         "today": "Today",
-        "calendar": "Events Calendar"
+        "title": "Events Calendar"
       },
       "list": {
-        "title": "Events List",
+        "title": "Event List",
         "empty": "No events at the moment"
       },
       "form": {
@@ -547,30 +546,20 @@
         "other": "Other"
       },
       "header": {
-        "welcome": "Welcome back",
-        "searchPlaceholder": "Search events...",
-        "newest": "Newest",
-        "addEvent": "Add Events"
+        "searchPlaceholder": "Search events..."
       },
       "cards": {
-        "schoolEvents": "School Events",
         "schoolEventsDesc": "Discover and participate in upcoming school events",
-        "welcome": "Welcome to Events",
         "welcomeDesc": "Stay connected with all school activities and never miss an important date"
       },
       "timeline": {
-        "title": "School Events",
         "participants": "+{count} more"
       },
       "sidebar": {
-        "title": "Event List",
         "ticketsRemaining": "Tickets remaining",
         "free": "Free"
-      },
-      "recent": {
-        "title": "Recent Past Events",
-        "viewAll": "View All"
-      },
+      }
+    },
     "common": {
       "cancel": "Cancel",
       "confirm": "Confirm",

@@ -514,6 +514,82 @@
         "attendance": "Présence",
         "attendancePeriod": "Période de présence"
       }
+    },
+    "events": {
+      "title": "Événements",
+      "titleWithoutS": "Événement",
+      "subtitle": "Gérer et consulter tous les événements de l'école",
+      "loading": "Chargement...",
+      "error": "Une erreur est survenue",
+      "eventCount": "{count} événement(s)",
+      "addEvent": "Ajouter un événement",
+      "newEvent": "Nouvel événement",
+      "createEvent": "Créer un nouvel événement",
+      "hello": "Bonjour !",
+      "welcome": "Bon retour",
+      "newest": "Plus récents",
+      "oldest": "Plus anciens",
+      "schoolEvents": "Événements scolaires",
+      "nextEvent": "Prochain événement : {title} le {date}",
+      "nextEvents": "Prochain événement",
+      "noUpcomingEvents": "Aucun événement à venir pour le moment",
+      "noEventsInPeriod": "Aucun événement pour cette période",
+      "noPastEvents": "Aucun événement passé",
+      "recentPastEvents": "Événements récents",
+      "eventList": "Liste des événements",
+      "viewAll": "Voir tout",
+      "descriptionPlaceholder": "Décrivez l'événement...",
+      "type": "Type",
+      "start": "Début *",
+      "end": "Fin *",
+      "location": "Lieu",
+      "locationPlaceholder": "Ex : Terrain de sport de l'école",
+      "public": "Public",
+      "publicEvent": "Événement public",
+      "publicEventDescription": "Visible par tous les élèves et parents",
+      "calendar": {
+        "today": "Aujourd'hui",
+        "title": "Calendrier des événements"
+      },
+      "list": {
+        "title": "Liste des événements",
+        "empty": "Aucun événement pour le moment"
+      },
+      "form": {
+        "addTitle": "Nouvel événement",
+        "addDescription": "Remplissez les informations requises.",
+        "editTitle": "Modifier l'événement",
+        "editDescription": "Mettez à jour les informations de l'événement."
+      },
+      "fields": {
+        "title": "Titre",
+        "description": "Description",
+        "startDate": "Date de début",
+        "endDate": "Date de fin",
+        "location": "Lieu",
+        "type": "Type"
+      },
+      "types": {
+        "academic": "Académique",
+        "social": "Social",
+        "sports": "Sportif",
+        "meeting": "Réunion",
+        "other": "Autre"
+      },
+      "header": {
+        "searchPlaceholder": "Rechercher un événement..."
+      },
+      "cards": {
+        "schoolEventsDesc": "Découvrez et participez aux prochains événements scolaires",
+        "welcomeDesc": "Restez informé de toutes les activités scolaires et ne manquez aucune date importante"
+      },
+      "timeline": {
+        "participants": "+{count} de plus"
+      },
+      "sidebar": {
+        "ticketsRemaining": "Places restantes",
+        "free": "Gratuit"
+      }
     }
   },
   "theme": {

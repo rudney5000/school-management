@@ -492,6 +492,82 @@
         "attendance": "Посещаемость",
         "attendancePeriod": "Период посещаемости"
       }
+    },
+    "events": {
+      "title": "События",
+      "titleWithoutS": "Событие",
+      "subtitle": "Управление и просмотр всех школьных мероприятий",
+      "loading": "Загрузка...",
+      "error": "Произошла ошибка",
+      "eventCount": "{count} событие(й)",
+      "addEvent": "Добавить событие",
+      "newEvent": "Новое событие",
+      "createEvent": "Создать новое событие",
+      "hello": "Здравствуйте!",
+      "welcome": "С возвращением",
+      "newest": "Сначала новые",
+      "oldest": "Сначала старые",
+      "schoolEvents": "Школьные мероприятия",
+      "nextEvent": "Следующее событие: {title}, {date}",
+      "nextEvents": "Следующее событие",
+      "noUpcomingEvents": "Предстоящих мероприятий нет",
+      "noEventsInPeriod": "Нет мероприятий за этот период",
+      "noPastEvents": "Нет прошедших мероприятий",
+      "recentPastEvents": "Недавние прошедшие события",
+      "eventList": "список события",
+      "viewAll": "Показать все",
+      "descriptionPlaceholder": "Опишите событие...",
+      "type": "Тип",
+      "start": "Начало *",
+      "end": "Окончание *",
+      "location": "Место",
+      "locationPlaceholder": "Например: школьная спортивная площадка",
+      "public": "Публичное",
+      "publicEvent": "Публичное мероприятие",
+      "publicEventDescription": "Доступно всем ученикам и родителям",
+      "calendar": {
+        "today": "Сегодня",
+        "title": "Календарь событий"
+      },
+      "list": {
+        "title": "Список событий",
+        "empty": "На данный момент событий нет"
+      },
+      "form": {
+        "addTitle": "Новое событие",
+        "addDescription": "Заполните необходимую информацию.",
+        "editTitle": "Редактировать событие",
+        "editDescription": "Обновите информацию о событии."
+      },
+      "fields": {
+        "title": "Название",
+        "description": "Описание",
+        "startDate": "Дата начала",
+        "endDate": "Дата окончания",
+        "location": "Место",
+        "type": "Тип"
+      },
+      "types": {
+        "academic": "Учебное",
+        "social": "Социальное",
+        "sports": "Спортивное",
+        "meeting": "Собрание",
+        "other": "Другое"
+      },
+      "header": {
+        "searchPlaceholder": "Поиск события..."
+      },
+      "cards": {
+        "schoolEventsDesc": "Узнавайте о предстоящих школьных мероприятиях и участвуйте в них",
+        "welcomeDesc": "Будьте в курсе всех школьных мероприятий и не пропускайте важные даты"
+      },
+      "timeline": {
+        "participants": "+ ещё {count}"
+      },
+      "sidebar": {
+        "ticketsRemaining": "Осталось мест",
+        "free": "Бесплатно"
+      }
     }
   },
   "theme": {

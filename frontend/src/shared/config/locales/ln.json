@@ -469,6 +469,82 @@
         "attendance": "Présence",
         "attendancePeriod": "Période ya présence"
       }
+    },
+    "events": {
+      "title": "Makambo ya Kelasi",
+      "titleWithoutS": "Makambo ya Kelasi",
+      "subtitle": "Kotambwisa mpe komona makambo nyonso ya kelasi",
+      "loading": "Ezali kocharger...",
+      "error": "Libunga moko esalemi",
+      "eventCount": "{count} likambo(bo)",
+      "addEvent": "Bakisa likambo",
+      "newEvent": "Likambo ya sika",
+      "createEvent": "Sala likambo ya sika",
+      "hello": "Mbote!",
+      "welcome": "Boyei lisusu malamu",
+      "newest": "Ya sika liboso",
+      "oldest": "Ya kala liboso",
+      "schoolEvents": "Makambo ya kelasi",
+      "nextEvent": "Likambo oyo ezali koya: {title} na {date}",
+      "nextEvents": "Likambo oyo ezali koya",
+      "noUpcomingEvents": "Likambo moko te ezali koya sikoyo",
+      "noEventsInPeriod": "Likambo moko te na eleko oyo",
+      "noPastEvents": "Likambo ya kala ezali te",
+      "recentPastEvents": "Likambo ya kala ezali koya",
+      "eventList": "Liste ya makambo",
+      "viewAll": "Tala nyonso",
+      "descriptionPlaceholder": "Limbola likambo...",
+      "type": "Lolenge",
+      "start": "Ebandeli *",
+      "end": "Nsuka *",
+      "location": "Esika",
+      "locationPlaceholder": "Ndakisa: terrain ya masano ya kelasi",
+      "public": "Ya bato nyonso",
+      "publicEvent": "Likambo ya bato nyonso",
+      "publicEventDescription": "Emonanaka na bayekoli mpe baboti nyonso",
+      "calendar": {
+        "today": "Lelo",
+        "title": "Kalandriye ya makambo"
+      },
+      "list": {
+        "title": "Liste ya makambo",
+        "empty": "Likambo moko te mpo na sikoyo"
+      },
+      "form": {
+        "addTitle": "Likambo ya sika",
+        "addDescription": "Tondisa makambo oyo esengeli.",
+        "editTitle": "Bongisa likambo",
+        "editDescription": "Bongisa makambo ya likambo."
+      },
+      "fields": {
+        "title": "Motó ya likambo",
+        "description": "Ndimbola",
+        "startDate": "Mokolo ya ebandeli",
+        "endDate": "Mokolo ya nsuka",
+        "location": "Esika",
+        "type": "Lolenge"
+      },
+      "types": {
+        "academic": "Boyekoli",
+        "social": "Bomoi ya bato",
+        "sports": "Masano",
+        "meeting": "Likita",
+        "other": "Mosusu"
+      },
+      "header": {
+        "searchPlaceholder": "Luka likambo..."
+      },
+      "cards": {
+        "schoolEventsDesc": "Yeba mpe sangana na makambo ya kelasi oyo ezali koya",
+        "welcomeDesc": "Zala na sango ya misala nyonso ya kelasi mpe kozanga mokolo ya ntina te"
+      },
+      "timeline": {
+        "participants": "+ bato mosusu {count}"
+      },
+      "sidebar": {
+        "ticketsRemaining": "Bisika etikali",
+        "free": "Mpamba"
+      }
     }
   },
   "theme": {
