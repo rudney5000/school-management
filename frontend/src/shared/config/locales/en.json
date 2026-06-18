@@ -485,12 +485,41 @@
     },
     "events": {
       "title": "Events",
+      "titleWithoutS": "Event",
       "subtitle": "Manage and view all school events",
       "addEvent": "Add Event",
       "loading": "Loading...",
       "error": "An error occurred",
+      "welcome": "Welcome to Edu-Center dashboard",
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "schoolEvents": "School Events",
+      "eventCount": "{count} event(s)",
+      "hello": "Hello!",
+      "nextEvent": "Next event: {title} on {date}",
+      "nextEvents": "Next event",
+      "noUpcomingEvents": "No upcoming events for now",
+      "noEventsInPeriod": "No events in this period",
+      "recentPastEvents": "Recent Past Events",
+      "viewAll": "View all",
+      "noPastEvents": "No past events",
+      "eventList": "Event List",
+      "upcomingEvents": "Upcoming events",
+      "noUpcomingEventsList": "No upcoming events",
+      "public": "Public",
+      "newEvent": "New Event",
+      "createEvent": "Create a new event",
+      "descriptionPlaceholder": "Describe the event...",
+      "type": "Type",
+      "start": "Start *",
+      "end": "End *",
+      "location": "Location",
+      "locationPlaceholder": "Ex: School sports field",
+      "publicEvent": "Public event",
+      "publicEventDescription": "Visible to all students and parents",
       "calendar": {
-        "today": "Today"
+        "today": "Today",
+        "calendar": "Events Calendar"
       },
       "list": {
         "title": "Events List",
@@ -541,8 +570,7 @@
       "recent": {
         "title": "Recent Past Events",
         "viewAll": "View All"
-      }
-    },
+      },
     "common": {
       "cancel": "Cancel",
       "confirm": "Confirm",
