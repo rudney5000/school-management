@@ -3,6 +3,16 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useParams } from '@tanstack/react-router'
 import {
+    BookOpen,
+    Ruler,
+    Palette,
+    Lightbulb,
+    Smartphone,
+    Pencil,
+    Zap,
+    GraduationCap,
+} from 'lucide-react'
+import {
     Button,
     Input,
     Form,
@@ -11,14 +21,47 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from '@shared/ui'
 import {
     createCourseSchema,
     type CreateCourseDto,
-    useCreateCourse
+    useCreateCourse,
+    COURSE_COLORS,
+    COURSE_ICONS,
+    COURSE_STATUSES,
+    type CourseColor,
+    type CourseIcon
 } from '@entities/courses'
 import CustomDrawer from "@shared/ui/custom-drawer/custom-drawer"
 import { useTranslation } from "@shared/lib"
+import { cn } from '@/shared/lib'
+
+const iconMap: Record<CourseIcon, React.ReactNode> = {
+    'book-open': <BookOpen size={15} />,
+    'ruler': <Ruler size={15} />,
+    'palette': <Palette size={15} />,
+    'lightbulb': <Lightbulb size={15} />,
+    'smartphone': <Smartphone size={15} />,
+    'pencil': <Pencil size={15} />,
+    'zap': <Zap size={15} />,
+    'graduation-cap': <GraduationCap size={15} />,
+};
+
+const colorDots: Record<CourseColor, string> = {
+    orange: 'bg-orange-400',
+    violet: 'bg-violet-500',
+    blue:   'bg-blue-500',
+    green:  'bg-emerald-500',
+    purple: 'bg-purple-500',
+    pink:   'bg-pink-400',
+    teal:   'bg-teal-500',
+    amber:  'bg-amber-400',
+};
 
 type Props = {
     isOpen?: boolean
@@ -107,19 +150,137 @@ export const AddCourseForm: React.FC<Props> = ({
                         )}
                     />
 
+                    <div className="grid grid-cols-3 gap-4">
+                        <FormField
+                            control={form.control}
+                            name="credits"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{t('dashboard.courses.fields.credits')}</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            type="number"
+                                            onChange={(e) => field.onChange(e.target.value === '' ? '' : Number(e.target.value))}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="totalLessons"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Leçons</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            type="number"
+                                            onChange={(e) => field.onChange(e.target.value === '' ? '' : Number(e.target.value))}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="totalHours"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Heures</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            type="number"
+                                            onChange={(e) => field.onChange(e.target.value === '' ? '' : Number(e.target.value))}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
                     <FormField
                         control={form.control}
-                        name="credits"
+                        name="icon"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>{t('dashboard.courses.fields.credits')}</FormLabel>
+                                <FormLabel>Icône</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        type="number"
-                                        onChange={(e) => field.onChange(e.target.value === '' ? '' : Number(e.target.value))}
-                                    />
+                                    <div className="flex flex-wrap gap-2">
+                                        {COURSE_ICONS.map(ic => (
+                                            <button
+                                                key={ic}
+                                                type="button"
+                                                onClick={() => field.onChange(ic)}
+                                                className={cn(
+                                                    'w-9 h-9 rounded-lg flex items-center justify-center transition-all border',
+                                                    field.value === ic
+                                                        ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+                                                        : 'bg-secondary text-muted-foreground border-transparent hover:bg-muted'
+                                                )}
+                                            >
+                                                {iconMap[ic]}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="color"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Couleur</FormLabel>
+                                <FormControl>
+                                    <div className="flex flex-wrap gap-2.5">
+                                        {COURSE_COLORS.map(c => (
+                                            <button
+                                                key={c}
+                                                type="button"
+                                                onClick={() => field.onChange(c)}
+                                                className={cn(
+                                                    'w-6 h-6 rounded-full transition-all',
+                                                    colorDots[c],
+                                                    field.value === c ? 'ring-2 ring-offset-2 ring-muted-foreground scale-110' : 'hover:scale-105'
+                                                )}
+                                            />
+                                        ))}
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="status"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Statut</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {COURSE_STATUSES.map(s => (
+                                            <SelectItem key={s} value={s}>
+                                                {s === 'active' ? 'Actif' : s === 'completed' ? 'Terminé' : 'Archivé'}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                                 <FormMessage />
                             </FormItem>
                         )}

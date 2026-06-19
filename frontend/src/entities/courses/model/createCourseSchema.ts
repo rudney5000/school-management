@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { getErrorMessage } from '@shared/lib'
+import {COURSE_COLORS, COURSE_ICONS, COURSE_STATUSES} from "@entities/courses/model/constants";
 
 export const createCourseSchema = z.object({
     name: z
@@ -23,10 +24,42 @@ export const createCourseSchema = z.object({
         .coerce
         .number( { invalid_type_error: getErrorMessage('validation.credits')})
         .int()
-        .positive()
+        .positive(),
+
+    icon: z
+        .enum(COURSE_ICONS)
         .optional(),
 
-    subSchoolId: z.string().uuid('Invalid sub-school ID'),
+    color: z
+        .enum(COURSE_COLORS)
+        .optional(),
+
+    teacherId: z
+        .string()
+        .uuid()
+        .optional(),
+
+    totalLessons: z
+        .coerce
+        .number({ invalid_type_error: getErrorMessage('validation.capacityInvalid') })
+        .int()
+        .nonnegative()
+        .optional(),
+
+    totalHours: z
+        .coerce
+        .number({ invalid_type_error: getErrorMessage('validation.capacityInvalid') })
+        .int()
+        .nonnegative()
+        .optional(),
+
+    status: z
+        .enum(COURSE_STATUSES)
+        .optional(),
+
+    subSchoolId: z
+        .string()
+        .uuid('Invalid sub-school ID'),
 })
 
 export const updateCourseSchema = createCourseSchema
