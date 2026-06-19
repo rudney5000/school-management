@@ -152,15 +152,156 @@ async function seed() {
 
     console.log('✓ SubSchool:', subSchool.name);
 
+    const hashedPassword = await bcrypt.hash('password123', 10);
+
+    await db.delete(users).where(eq(users.email, 'jean.muamba@saintjoseph.cd')).catch(() => {});
+    await db.delete(teacherSchools).where(
+        eq(teacherSchools.teacherId,
+            db.select({ id: teachers.id })
+                .from(teachers)
+                .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'))
+                .limit(1)
+        )
+    ).catch(() => {});
+    await db.delete(teachers).where(eq(teachers.email, 'jean.muamba@saintjoseph.cd')).catch(() => {});
+
+    let teacher;
+    const [existingTeacher] = await db.select().from(teachers)
+        .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'));
+
+    if (!existingTeacher) {
+        const [newTeacher] = await db.insert(teachers).values({
+            firstName: 'Jean',
+            lastName: 'Muamba',
+            email: 'jean.muamba@saintjoseph.cd',
+            gender: 'male',
+            dateOfBirth: '1985-03-15',
+            phone: '+243 81 234 5678',
+            address: 'Kinshasa, DRC',
+            enrollmentDate: '2024-09-01',
+        }).returning();
+
+        await db.insert(teacherSchools).values({
+            teacherId: newTeacher.id,
+            subSchoolId: subSchool.id,
+            hireDate: '2020-09-01',
+            qualification: 'Licence en Mathématiques',
+            specialization: 'Mathématiques',
+            isActive: true,
+        });
+
+        await db.insert(users).values({
+            email: 'jean.muamba@saintjoseph.cd',
+            password: hashedPassword,
+            role: 'teacher',
+            teacherId: newTeacher.id,
+        });
+
+        teacher = newTeacher;
+        console.log('✓ Teacher user: jean.muamba@saintjoseph.cd');
+    } else {
+        teacher = existingTeacher;
+        console.log('~ Teacher already exists');
+    }
+
     const sampleCourses = [
-        { name: 'Mathématiques', code: 'MATH-01', description: 'Algèbre, géométrie et analyse', credits: 4, subSchoolId: subSchool.id },
-        { name: 'Français', code: 'FR-01', description: 'Grammaire, littérature et expression écrite', credits: 4, subSchoolId: subSchool.id },
-        { name: 'Physique-Chimie', code: 'PC-01', description: 'Mécanique, thermodynamique et chimie générale', credits: 3, subSchoolId: subSchool.id },
-        { name: 'Biologie', code: 'BIO-01', description: 'Sciences de la vie et de la terre', credits: 3, subSchoolId: subSchool.id },
-        { name: 'Histoire-Géographie', code: 'HG-01', description: 'Histoire du Congo et géographie mondiale', credits: 2, subSchoolId: subSchool.id },
-        { name: 'Anglais', code: 'EN-01', description: 'Langue anglaise niveau secondaire', credits: 2, subSchoolId: subSchool.id },
-        { name: 'Éducation Civique', code: 'EC-01', description: 'Citoyenneté et institutions', credits: 1, subSchoolId: subSchool.id },
-        { name: 'Informatique', code: 'INFO-01', description: 'Bureautique et initiation à la programmation', credits: 2, subSchoolId: subSchool.id },
+        {
+            name: 'Mathématiques',
+            code: 'MATH-01',
+            description: 'Algèbre, géométrie et analyse',
+            credits: 4,
+            icon: 'ruler' as const,
+            color: 'blue' as const,
+            status: 'active' as const,
+            totalLessons: 0,
+            totalHours: 0,
+            teacherId: teacher.id,
+            subSchoolId: subSchool.id
+        },
+        {
+            name: 'Français',
+            code: 'FR-01',
+            description: 'Grammaire, littérature et expression écrite',
+            credits: 4,
+            icon: 'pencil' as const,
+            color: 'violet' as const,
+            status: 'active' as const,
+            totalLessons: 0,
+            totalHours: 0,
+            subSchoolId: subSchool.id
+        },
+        {
+            name: 'Physique-Chimie',
+            code: 'PC-01',
+            description: 'Mécanique, thermodynamique et chimie générale',
+            credits: 3,
+            icon: 'zap' as const,
+            color: 'orange' as const,
+            status: 'active' as const,
+            totalLessons: 0,
+            totalHours: 0,
+            subSchoolId: subSchool.id
+        },
+        {
+            name: 'Biologie',
+            code: 'BIO-01',
+            description: 'Sciences de la vie et de la terre',
+            credits: 3,
+            icon: 'book-open' as const,
+            color: 'green' as const,
+            status: 'active' as const,
+            totalLessons: 0,
+            totalHours: 0,
+            subSchoolId: subSchool.id
+        },
+        {
+            name: 'Histoire-Géographie',
+            code: 'HG-01',
+            description: 'Histoire du Congo et géographie mondiale',
+            credits: 2,
+            icon: 'graduation-cap' as const,
+            color: 'amber' as const,
+            status: 'active' as const,
+            totalLessons: 0,
+            totalHours: 0,
+            subSchoolId: subSchool.id
+        },
+        {
+            name: 'Anglais',
+            code: 'EN-01',
+            description: 'Langue anglaise niveau secondaire',
+            credits: 2,
+            icon: 'lightbulb' as const,
+            color: 'teal' as const,
+            status: 'active' as const,
+            totalLessons: 0,
+            totalHours: 0,
+            subSchoolId: subSchool.id
+        },
+        {
+            name: 'Éducation Civique',
+            code: 'EC-01',
+            description: 'Citoyenneté et institutions',
+            credits: 1,
+            icon: 'book-open' as const,
+            color: 'pink' as const,
+            status: 'active' as const,
+            totalLessons: 0,
+            totalHours: 0,
+            subSchoolId: subSchool.id
+        },
+        {
+            name: 'Informatique',
+            code: 'INFO-01',
+            description: 'Bureautique et initiation à la programmation',
+            credits: 2,
+            icon: 'smartphone' as const,
+            color: 'purple' as const,
+            status: 'active' as const,
+            totalLessons: 0,
+            totalHours: 0,
+            subSchoolId: subSchool.id
+        },
     ];
 
     for (const course of sampleCourses) {
@@ -192,8 +333,6 @@ async function seed() {
             console.log(`✓ Class created: ${cls.name}`);
         }
     }
-
-    const hashedPassword = await bcrypt.hash('password123', 10);
 
     const [existingAdmin] = await db.select().from(users)
         .where(eq(users.email, 'admin@saintjoseph.cd'));
@@ -296,52 +435,6 @@ async function seed() {
         .onConflictDoNothing();
     console.log('✓ Parent-students links created');
 
-    await db.delete(users).where(eq(users.email, 'jean.muamba@saintjoseph.cd')).catch(() => {});
-    await db.delete(teacherSchools).where(
-        eq(teacherSchools.teacherId,
-            db.select({ id: teachers.id })
-                .from(teachers)
-                .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'))
-                .limit(1)
-        )
-    ).catch(() => {});
-    await db.delete(teachers).where(eq(teachers.email, 'jean.muamba@saintjoseph.cd')).catch(() => {});
-
-    const [existingTeacher] = await db.select().from(teachers)
-        .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'));
-
-    if (!existingTeacher) {
-        const [teacher] = await db.insert(teachers).values({
-            firstName: 'Jean',
-            lastName: 'Muamba',
-            email: 'jean.muamba@saintjoseph.cd',
-            gender: 'male',
-            dateOfBirth: '1985-03-15',
-            phone: '+243 81 234 5678',
-            address: 'Kinshasa, DRC',
-            enrollmentDate: '2024-09-01',
-        }).returning();
-
-        await db.insert(teacherSchools).values({
-            teacherId: teacher.id,
-            subSchoolId: subSchool.id,
-            hireDate: '2020-09-01',
-            qualification: 'Licence en Mathématiques',
-            specialization: 'Mathématiques',
-            isActive: true,
-        });
-
-        await db.insert(users).values({
-            email: 'jean.muamba@saintjoseph.cd',
-            password: hashedPassword,
-            role: 'teacher',
-            teacherId: teacher.id,
-        });
-
-        console.log('✓ Teacher user: jean.muamba@saintjoseph.cd');
-    } else {
-        console.log('~ Teacher already exists');
-    }
 
     const [existingSchedule] = await db.select().from(schedules)
         .where(and(
