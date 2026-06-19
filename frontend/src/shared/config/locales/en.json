@@ -166,6 +166,7 @@
     "events": "Events",
     "finance": "Finance",
     "calendar": "Calendar",
+    "attendance": "Attendance",
     "chat": "Chat",
     "notifications": "Notifications"
   },

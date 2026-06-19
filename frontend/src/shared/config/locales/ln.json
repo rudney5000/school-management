@@ -54,7 +54,8 @@
     "parents": "Baboti",
     "attendance": "Présence",
     "messages": "Ba message",
-    "settings": "Ba paramètre"
+    "settings": "Ba paramètre",
+    "events": "Ba évenement"
   },
   "home": {
     "hero_section": {
@@ -149,7 +150,8 @@
       "courses": "Cours",
       "exams": "Examens",
       "students": "Élèves",
-      "teachers": "Enseignants"
+      "teachers": "Ba Enseignant",
+      "events": "Ba évenement"
     },
     "schedule": {
       "title": "Cours du jour",
