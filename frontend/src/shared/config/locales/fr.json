@@ -172,7 +172,8 @@
     "parents":     "Parents",
     "attendance":  "Présences",
     "messages":    "Messages",
-    "settings":    "Paramètres"
+    "settings":    "Paramètres",
+    "events":       "Événements"
   },
   "header": {
     "search":        "Rechercher...",
@@ -193,7 +194,8 @@
       "courses":  "Cours",
       "exams":    "Examens",
       "students": "Élèves",
-      "teachers": "Enseignants"
+      "teachers": "Enseignants",
+      "events":   "Événements"
     },
     "schedule": {
       "title":   "Cours du jour",
