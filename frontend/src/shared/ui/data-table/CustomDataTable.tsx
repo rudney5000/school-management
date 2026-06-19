@@ -27,13 +27,23 @@ import {
 } from '@/shared/ui'
 import { ChevronLeft, ChevronRight, Filter, Search, SlidersHorizontal } from 'lucide-react'
 import { cn } from '@shared/lib/utils'
-import { StatCardsRow, type StatCardItem } from './StatCardsRow'
+import { StatCardsRow, type StatCardItem } from '@shared/ui'
+
+type DataTableFilter<TData, TValue = unknown> = {
+    id: string;
+    label: string;
+    value: TValue;
+    field?: keyof TData;
+};
 
 interface CustomDataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     searchKey?: string
     searchPlaceholder?: string
+    filters?: DataTableFilter<TData, unknown>[];
+    activeFilterId?: string;
+    onFilterChange?: (id: string) => void;
     title: string
     subtitle?: string
     stats?: StatCardItem[]
@@ -52,6 +62,9 @@ export function CustomDataTable<TData, TValue>({
     data,
     searchKey = 'name',
     searchPlaceholder,
+    filters,
+    activeFilterId,
+    onFilterChange,
     title,
     subtitle,
     stats,
@@ -70,8 +83,20 @@ export function CustomDataTable<TData, TValue>({
     const [rowSelection, setRowSelection] = React.useState<Record<string, boolean>>({})
     const [showFilters, setShowFilters] = React.useState(false)
 
+    const filteredData = React.useMemo(() => {
+        const active = filters?.find(f => f.id === activeFilterId);
+
+        if (!active || active.value === 'all') return data;
+
+        return data.filter((row) => {
+            if (!active.field) return true;
+
+            return row[active.field] === active.value;
+        });
+    }, [data, filters, activeFilterId]);
+
     const table = useReactTable({
-        data,
+        data: filteredData,
         columns,
         getRowId: getRowId ? (row) => getRowId(row) : undefined,
         onSortingChange: setSorting,
@@ -97,9 +122,9 @@ export function CustomDataTable<TData, TValue>({
     React.useEffect(() => {
         onRowSelect?.(selectedRow)
     }, [selectedRow, onRowSelect])
-
     const handleRowClick = (row: Row<TData>) => {
         table.setRowSelection({ [row.id]: true })
+
     }
 
     if (isLoading) {
@@ -157,44 +182,36 @@ export function CustomDataTable<TData, TValue>({
 
             {stats && stats.length > 0 && <StatCardsRow stats={stats} />}
 
-            {showFilters && (
+            {filters?.length ? (
                 <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-white border border-zinc-100 p-3 shadow-sm animate-in fade-in slide-in-from-top-1 duration-200">
                     <SlidersHorizontal className="h-4 w-4 text-zinc-400 ml-1" />
-                    <span className="text-xs text-zinc-500 mr-2">Statut :</span>
-                    {(['all', 'active', 'inactive'] as const).map((filter) => (
-                        <Button
-                            key={filter}
-                            variant="outline"
-                            size="sm"
-                            className={cn(
-                                'h-7 rounded-full text-xs border-zinc-200',
-                                (filter === 'all' && !columnFilters.length) ||
-                                    (filter === 'active' &&
-                                        columnFilters.find((f) => f.id === 'isActive')?.value === true) ||
-                                    (filter === 'inactive' &&
-                                        columnFilters.find((f) => f.id === 'isActive')?.value === false)
-                                    ? 'bg-[#1755EC] text-white border-[#1755EC] hover:bg-[#1755EC]/90 hover:text-white'
-                                    : 'bg-white text-zinc-600 hover:bg-zinc-50'
-                            )}
-                            onClick={() => {
-                                if (filter === 'all') {
-                                    setColumnFilters([])
-                                } else {
-                                    setColumnFilters([
-                                        { id: 'isActive', value: filter === 'active' },
-                                    ])
-                                }
-                            }}
-                        >
-                            {filter === 'all'
-                                ? 'Tous'
-                                : filter === 'active'
-                                  ? 'Actifs'
-                                  : 'Inactifs'}
-                        </Button>
-                    ))}
+
+                    <span className="text-xs text-zinc-500 mr-2">
+                        Statut :
+                    </span>
+
+                    {filters.map((filter) => {
+                        const isActive = activeFilterId === filter.id;
+
+                        return (
+                            <Button
+                                key={filter.id}
+                                variant="outline"
+                                size="sm"
+                                className={cn(
+                                    'h-7 rounded-full text-xs border-zinc-200',
+                                    isActive
+                                        ? 'bg-[#1755EC] text-white border-[#1755EC] hover:bg-[#1755EC]/90 hover:text-white'
+                                        : 'bg-white text-zinc-600 hover:bg-zinc-50'
+                                )}
+                                onClick={() => onFilterChange?.(filter.id)}
+                            >
+                                {filter.label}
+                            </Button>
+                        );
+                    })}
                 </div>
-            )}
+            ) : null}
 
             <div className="flex flex-col xl:flex-row gap-5">
                 <div className="flex-[7] min-w-0">
