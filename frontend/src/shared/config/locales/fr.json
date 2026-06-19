@@ -431,6 +431,8 @@
       "add_course": "Ajouter un cours",
       "loading": "Chargement...",
       "error": "Une erreur est survenue.",
+      "search": "Rechercher un cours...",
+      "add": "Ajouter",
       "form": {
         "addTitle": "Nouveau cours",
         "addDescription": "Remplissez les informations requises.",
@@ -440,12 +442,49 @@
       "fields": {
         "name": "Nom",
         "code": "Code",
-        "description": "Description"
+        "description": "Description",
+        "credits": "Crédits"
       },
       "columns": {
         "name": "Nom",
         "code": "Code",
-        "description": "Description"
+        "description": "Description",
+        "credits": "Crédits"
+      },
+      "actions": {
+        "title": "Actions",
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "stats": {
+        "lessons_one": "{{count}} leçon",
+        "lessons_other": "{{count}} leçons",
+        "total": "Cours total",
+        "hours": "Heures",
+        "creditsShort": "cr.",
+        "active": "Cours actifs",
+        "completed": "Cours terminés"
+      },
+      "tabs": {
+        "all": "Tous",
+        "active": "Actifs",
+        "completed": "Terminés",
+        "archived": "Archivés"
+      },
+
+      "results": {
+        "results_one": "{{count}} résultat",
+        "results_few": "{{count}} résultats"
+      },
+
+      "empty": {
+        "title": "Aucun cours trouvé",
+        "description": "Essayez une autre recherche ou créez un nouveau cours."
+      },
+      "status": {
+        "active": "Actif",
+        "completed": "Terminé",
+        "archived": "Archivé"
       }
     },
     "schedules": {

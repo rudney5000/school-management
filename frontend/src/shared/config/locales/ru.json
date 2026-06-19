@@ -407,6 +407,8 @@
       "add_course": "Добавить курс",
       "loading": "Загрузка...",
       "error": "Произошла ошибка.",
+      "search": "Поиск курса ...",
+      "add": "Добавить",
       "form": {
         "addTitle": "Новый курс",
         "addDescription": "Заполните необходимую информацию.",
@@ -424,6 +426,42 @@
         "description": "Описание",
         "teacher": "Учитель",
         "credits": "Кредиты"
+      },
+      "actions": {
+        "title": "Действия",
+        "edit": "Редактировать",
+        "delete": "Удалить"
+      },
+      "stats": {
+        "lessons_one": "{{count}} урок",
+        "lessons_few": "{{count}} урока",
+        "lessons_many": "{{count}} уроков",
+        "hours": "Часы",
+        "creditsShort": "кр.",
+        "total": "Всего курсы",
+        "active": "Активные курсы",
+        "completed": "Завершённые курсы"
+      },
+      "tabs": {
+        "all": "Все",
+        "active": "Активные",
+        "completed": "Завершённые",
+        "archived": "Архивные"
+      },
+      "results": {
+        "results_one": "{{count}} результат",
+        "results_few": "{{count}} результата",
+        "results_many": "{{count}} результатов"
+      },
+
+      "empty": {
+        "title": "Курсы не найдены",
+        "description": "Попробуйте другой запрос или создайте новый курс."
+      },
+      "status": {
+        "active": "Активный",
+        "completed": "Завершён",
+        "archived": "Архивирован"
       }
     },
     "schedules": {

@@ -386,6 +386,8 @@
       "add_course": "Kobakisa mateya",
       "loading": "Kozela...",
       "error": "Nzela ya malamu elongi.",
+      "search": "Misala ...",
+      "add": "Kobakisa",
       "form": {
         "addTitle": "Mateya ya sika",
         "addDescription": "Tondela bisaleli oyo esengami.",
@@ -395,12 +397,47 @@
       "fields": {
         "name": "Nkombo",
         "code": "Kode",
-        "description": "Kotambola"
+        "description": "Kotambola",
+        "credits": "Bonsomi"
       },
       "columns": {
         "name": "Nkombo",
         "code": "Kode",
-        "description": "Kotambola"
+        "description": "Kotambola",
+        "credits": "Bonsomi"
+      },
+      "actions": {
+        "title": "Misala",
+        "edit": "Bongisa",
+        "delete": "Longola"
+      },
+      "stats": {
+        "lessons_one": "{{count}} liteya",
+        "lessons_other": "{{count}} mateya",
+        "hours": "Bangonga",
+        "creditsShort": "kr.",
+        "total": "Motango ya mateya nyonso",
+        "active": "Mateya ezali kosala",
+        "completed": "Mateya esili"
+      },
+      "tabs": {
+        "all": "Nyonso",
+        "active": "Ezali kosala",
+        "completed": "Esili",
+        "archived": "Ebatelami"
+      },
+      "results": {
+        "results_one": "{{count}} mbano",
+        "results_few": "{{count}} bambano"
+      },
+      "empty": {
+        "title": "Liteya moko te emonani",
+        "description": "Meka boluki mosusu to sala liteya ya sika."
+      },
+      "status": {
+        "active": "Ezali kosala",
+        "completed": "Esilisi",
+        "archived": "Ebatelami"
       }
     },
     "schedules": {

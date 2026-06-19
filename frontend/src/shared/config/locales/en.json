@@ -422,7 +422,9 @@
     "courses": {
       "title": "Courses",
       "add_course": "Add course",
+      "add": "Add",
       "loading": "Loading...",
+      "search": "Search for a course...",
       "error": "An error occurred.",
       "form": {
         "addTitle": "New course",
@@ -439,6 +441,39 @@
         "name": "Name",
         "description": "Description",
         "credits": "Credits"
+      },
+      "actions": {
+        "title": "Actions",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "stats": {
+        "lessons_one": "{{count}} Lesson",
+        "lessons_other": "{{count}} Lessons",
+        "total": "Total Courses",
+        "active": "Active courses",
+        "complete": "Completed courses",
+        "hours": "Hours",
+        "creditsShort": "cr."
+      },
+      "tabs": {
+        "all": "All",
+        "active": "Active",
+        "completed": "Completed",
+        "archived": "Archived"
+      },
+      "results": {
+        "results_one": "{{count}} result",
+        "results_few": "{{count}} results"
+      },
+      "empty": {
+        "title": "No courses found",
+        "description": "Try another search or create a new course."
+      },
+      "status": {
+        "active": "Active",
+        "completed": "Completed",
+        "archived": "Archived"
       }
     },
     "schedules": {
