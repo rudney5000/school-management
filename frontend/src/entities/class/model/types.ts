@@ -4,4 +4,7 @@ export type Class = {
     gradeLevel?: string | undefined
     capacity: number
     subSchoolId: string
+    studentsCount?: number
+    teacher?: string[]
+    isActive?: boolean
 }
