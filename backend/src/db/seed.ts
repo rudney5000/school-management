@@ -16,7 +16,7 @@ import {
     parents,
     classes,
     parentStudents,
-    courses, schedules, events,
+    courses, schedules, events, studentAttendances, teacherAttendances,
 } from './schema';
 import {and, eq} from 'drizzle-orm';
 
@@ -527,6 +527,70 @@ async function seed() {
     } else {
         console.log('⚠ Admin user not found, skipping events creation.');
     }
+
+    const STATUS = ['PRESENT', 'ABSENT', 'LATE', 'EXCUSED'] as const;
+    type AttStatus = typeof STATUS[number];
+
+    function randomStatus(weights = [75, 10, 10, 5]): AttStatus {
+        const total = weights.reduce((a, b) => a + b, 0);
+        const rand  = Math.random() * total;
+        let cumul   = 0;
+        for (let i = 0; i < weights.length; i++) {
+            cumul += weights[i];
+            if (rand < cumul) return STATUS[i];
+        }
+        return 'PRESENT';
+    }
+
+    function getLast14SchoolDays(): string[] {
+        const days: string[] = [];
+        const cursor = new Date();
+        while (days.length < 14) {
+            const dow = cursor.getDay();
+            if (dow !== 0 && dow !== 6) {
+                days.push(cursor.toISOString().slice(0, 10));
+            }
+            cursor.setDate(cursor.getDate() - 1);
+        }
+        return days.reverse();
+    }
+
+    const schoolDays = getLast14SchoolDays();
+
+    const allStudentsForAtt = [student, student2];
+
+    const studentAttRows = allStudentsForAtt.flatMap((s) =>
+        schoolDays.map((date) => ({
+            subSchoolId: subSchool.id,
+            studentId:   s.id,
+            date,
+            status:      randomStatus([75, 10, 10, 5]),
+            reason:      null as string | null,
+            note:        null as string | null,
+        })),
+    );
+
+    await db
+        .insert(studentAttendances)
+        .values(studentAttRows)
+        .onConflictDoNothing();
+
+    console.log(`✓ ${studentAttRows.length} student attendances insérées`);
+
+    const teacherAttRows = schoolDays.map((date) => ({
+        subSchoolId: subSchool.id,
+        teacherId:   teacher.id,
+        date,
+        status:      randomStatus([85, 5, 7, 3]),
+        reason:      null as string | null,
+    }));
+
+    await db
+        .insert(teacherAttendances)
+        .values(teacherAttRows)
+        .onConflictDoNothing();
+
+    console.log(`✓ ${teacherAttRows.length} teacher attendances insérées`);
 
 
     console.log('\n✓ Seed completed. Test credentials (password: password123):');
