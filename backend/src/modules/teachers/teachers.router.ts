@@ -18,28 +18,35 @@ const controller = new TeachersController();
 router.get(
   '/',
   authenticate,
-  authorize('admin', 'director'),
-  validate({ query: subSchoolQuerySchema }),
+  authorize('admin', 'director', 'teacher', 'super_admin'),
+  validate({
+      query: subSchoolQuerySchema
+  }),
   controller.getAll,
 );
 router.get(
   '/:id',
   authenticate,
-  authorize('admin', 'director', 'teacher'),
-  validate({ params: teacherParamsSchema, query: subSchoolQuerySchema }),
+  authorize('admin', 'director', 'teacher', 'super_admin'),
+  validate({
+      params: teacherParamsSchema,
+      query: subSchoolQuerySchema
+  }),
   controller.getById,
 );
 router.post(
   '/',
   authenticate,
-  authorize('admin'),
-  validate({ body: createTeacherWithAssignmentSchema  }),
+  authorize('admin', 'director', 'super_admin'),
+  validate({
+      body: createTeacherWithAssignmentSchema
+  }),
   controller.create,
 );
 router.patch(
   '/:id',
   authenticate,
-  authorize('admin'),
+  authorize('admin', 'director', 'super_admin'),
   validate({
     params: teacherParamsSchema,
     query: subSchoolQuerySchema,
@@ -51,16 +58,30 @@ router.delete(
   '/:id',
   authenticate,
   authorize('admin'),
-  validate({ params: teacherParamsSchema, query: subSchoolQuerySchema }),
+  validate({
+      params: teacherParamsSchema,
+      query: subSchoolQuerySchema
+  }),
   controller.remove,
 );
 
-router.post('/:id/assign', authenticate, authorize('admin'),
-    validate({ params: teacherParamsSchema, body: assignTeacherSchema }),
+router.post('/:id/assign',
+    authenticate,
+    authorize('admin', 'director', 'super_admin'),
+    validate({
+        params: teacherParamsSchema,
+        body: assignTeacherSchema
+    }),
     controller.assign);
 
-router.patch('/:id/assignment', authenticate, authorize('admin'),
-    validate({ params: teacherParamsSchema, query: subSchoolQuerySchema, body: updateAssignmentSchema }),
+router.patch('/:id/assignment',
+    authenticate,
+    authorize('admin', 'super_admin', 'director'),
+    validate({
+        params: teacherParamsSchema,
+        query: subSchoolQuerySchema,
+        body: updateAssignmentSchema
+    }),
     controller.updateAssignment);
 
 export { router as teachersRouter };

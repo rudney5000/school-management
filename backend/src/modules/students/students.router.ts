@@ -16,28 +16,28 @@ const controller = new StudentsController();
 router.get(
   '/',
   authenticate,
-  authorize('admin', 'director'),
+  authorize('admin', 'director', 'teacher', 'student', 'super_admin'),
   validate({ query: subSchoolQuerySchema }),
   controller.getAll,
 );
 router.get(
   '/:id',
   authenticate,
-  authorize('admin', 'director', 'teacher', 'parent'),
+  authorize('admin', 'director', 'teacher', 'parent', 'student', 'super_admin'),
   validate({ params: studentParamsSchema, query: subSchoolQuerySchema }),
   controller.getById,
 );
 router.post(
   '/',
   authenticate,
-  authorize('admin'),
+  authorize('admin', 'director', 'super_admin'),
   validate({ body: createStudentSchema }),
   controller.create,
 );
 router.patch(
   '/:id',
   authenticate,
-  authorize('admin'),
+  authorize('admin', 'director', 'super_admin'),
   validate({
     params: studentParamsSchema,
     query: subSchoolQuerySchema,
@@ -48,7 +48,7 @@ router.patch(
 router.delete(
   '/:id',
   authenticate,
-  authorize('admin'),
+  authorize('admin', 'director', 'super_admin'),
   validate({ params: studentParamsSchema, query: subSchoolQuerySchema }),
   controller.remove,
 );

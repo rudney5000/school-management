@@ -16,28 +16,35 @@ const controller = new WorkersController();
 router.get(
   '/',
   authenticate,
-  authorize('admin', 'director'),
-  validate({ query: subSchoolQuerySchema }),
+  authorize('admin', 'director', 'super_admin', 'teacher'),
+  validate({
+      query: subSchoolQuerySchema
+  }),
   controller.getAll,
 );
 router.get(
   '/:id',
   authenticate,
-  authorize('admin', 'director'),
-  validate({ params: workerParamsSchema, query: subSchoolQuerySchema }),
+  authorize('admin', 'director', 'teacher', 'super_admin'),
+  validate({
+      params: workerParamsSchema,
+      query: subSchoolQuerySchema
+  }),
   controller.getById,
 );
 router.post(
   '/',
   authenticate,
-  authorize('admin'),
-  validate({ body: createWorkerSchema }),
+  authorize('admin', 'director', 'super_admin'),
+  validate({
+      body: createWorkerSchema
+  }),
   controller.create,
 );
 router.patch(
   '/:id',
   authenticate,
-  authorize('admin'),
+  authorize('admin', 'director', 'super_admin'),
   validate({
     params: workerParamsSchema,
     query: subSchoolQuerySchema,
@@ -48,8 +55,11 @@ router.patch(
 router.delete(
   '/:id',
   authenticate,
-  authorize('admin'),
-  validate({ params: workerParamsSchema, query: subSchoolQuerySchema }),
+  authorize('admin', 'director', 'super_admin'),
+  validate({
+      params: workerParamsSchema,
+      query: subSchoolQuerySchema
+  }),
   controller.remove,
 );
 

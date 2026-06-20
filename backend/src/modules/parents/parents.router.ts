@@ -16,28 +16,35 @@ const controller = new ParentsController();
 router.get(
   '/',
   authenticate,
-  authorize('admin', 'director'),
-  validate({ query: subSchoolQuerySchema }),
+  authorize('admin', 'director', 'super_admin', 'teacher'),
+  validate({
+      query: subSchoolQuerySchema
+  }),
   controller.getAll,
 );
 router.get(
   '/:id',
   authenticate,
-  authorize('admin', 'director', 'parent'),
-  validate({ params: parentParamsSchema, query: subSchoolQuerySchema }),
+  authorize('admin', 'director', 'parent', 'super_admin', 'teacher', 'student'),
+  validate({
+      params: parentParamsSchema,
+      query: subSchoolQuerySchema
+  }),
   controller.getById,
 );
 router.post(
   '/',
   authenticate,
-  authorize('admin'),
-  validate({ body: createParentSchema }),
+  authorize('admin', 'director', 'super_admin'),
+  validate({
+      body: createParentSchema
+  }),
   controller.create,
 );
 router.patch(
   '/:id',
   authenticate,
-  authorize('admin'),
+  authorize('admin', 'director', 'super_admin'),
   validate({
     params: parentParamsSchema,
     query: subSchoolQuerySchema,
@@ -48,8 +55,11 @@ router.patch(
 router.delete(
   '/:id',
   authenticate,
-  authorize('admin'),
-  validate({ params: parentParamsSchema, query: subSchoolQuerySchema }),
+  authorize('admin', 'director', 'super_admin'),
+  validate({
+      params: parentParamsSchema,
+      query: subSchoolQuerySchema
+  }),
   controller.remove,
 );
 

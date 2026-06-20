@@ -15,7 +15,7 @@ const controller = new SchedulesController();
 router.get(
   '/',
   authenticate,
-  authorize('admin', 'director', 'teacher', 'parent'),
+  authorize('admin', 'director', 'teacher', 'parent', 'student', 'super_admin'),
   controller.getAll,
 );
 router.get(

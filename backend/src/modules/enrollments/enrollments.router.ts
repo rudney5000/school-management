@@ -14,7 +14,7 @@ const controller = new EnrollmentsController();
 router.get(
   '/',
   authenticate,
-  authorize('admin', 'director'),
+  authorize('admin', 'director', 'super_admin'),
   controller.getAll,
 );
 router.get(
@@ -27,14 +27,14 @@ router.get(
 router.post(
   '/',
   authenticate,
-  authorize('admin'),
+  authorize('admin', 'director', 'super_admin'),
   validate({ body: createEnrollmentSchema }),
   controller.create,
 );
 router.delete(
   '/:id',
   authenticate,
-  authorize('admin'),
+  authorize('admin', 'director', 'super_admin'),
   validate({ params: enrollmentParamsSchema }),
   controller.remove,
 );

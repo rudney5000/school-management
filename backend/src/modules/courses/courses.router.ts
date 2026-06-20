@@ -16,28 +16,35 @@ const controller = new CoursesController();
 router.get(
   '/',
   authenticate,
-  authorize('admin', 'director'),
-  validate({ query: subSchoolQuerySchema }),
+  authorize('admin', 'director', 'teacher', 'super_admin'),
+  validate({
+      query: subSchoolQuerySchema
+  }),
   controller.getAll,
 );
 router.get(
   '/:id',
   authenticate,
-  authorize('admin', 'director', 'teacher'),
-  validate({ params: courseParamsSchema, query: subSchoolQuerySchema }),
+  authorize('admin', 'director', 'teacher', 'super_admin'),
+  validate({
+      params: courseParamsSchema,
+      query: subSchoolQuerySchema
+  }),
   controller.getById,
 );
 router.post(
   '/',
   authenticate,
-  authorize('admin'),
-  validate({ body: createCourseSchema }),
+  authorize('admin', 'director', 'teacher', 'super_admin'),
+  validate({
+      body: createCourseSchema
+  }),
   controller.create,
 );
 router.patch(
   '/:id',
   authenticate,
-  authorize('admin'),
+  authorize('admin', 'director', 'teacher', 'super_admin'),
   validate({
     params: courseParamsSchema,
     query: subSchoolQuerySchema,
@@ -48,7 +55,7 @@ router.patch(
 router.delete(
   '/:id',
   authenticate,
-  authorize('admin'),
+  authorize('admin', 'director', 'teacher', 'super_admin'),
   validate({ params: courseParamsSchema, query: subSchoolQuerySchema }),
   controller.remove,
 );
