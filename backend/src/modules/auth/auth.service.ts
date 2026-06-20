@@ -154,18 +154,28 @@ export class AuthService {
         }
 
         if (user.teacherId) {
-            const [teacher] = await db
-                .select({ schoolId: teachers.schoolId })
-                .from(teachers)
-                .where(eq(teachers.id, user.teacherId))
+            const { teacherSchools, subSchools } = await import('@/db/schema');
+
+            const [ts] = await db
+                .select({ subSchoolId: teacherSchools.subSchoolId })
+                .from(teacherSchools)
+                .where(eq(teacherSchools.teacherId, user.teacherId))
                 .limit(1);
 
-            return { schoolId: teacher.schoolId };
+            if (!ts) return { schoolId: '' };
+
+            const [sub] = await db
+                .select({ schoolId: subSchools.schoolId })
+                .from(subSchools)
+                .where(eq(subSchools.id, ts.subSchoolId))
+                .limit(1);
+
+            return { schoolId: sub.schoolId, subSchoolId: ts.subSchoolId };
         }
 
         if (user.studentId) {
             const [student] = await db
-                .select({ schoolId: students.schoolId })
+                .select({ schoolId: students.subSchoolId })
                 .from(students)
                 .where(eq(students.id, user.studentId))
                 .limit(1);

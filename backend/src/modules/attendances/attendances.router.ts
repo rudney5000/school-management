@@ -5,13 +5,15 @@ import { authorize } from '@/middleware/authorize';
 import {StudentAttendanceController, TeacherAttendanceController} from "@/modules/attendances/attendances.controller";
 import {
     attendanceQuerySchema,
-    bulkUpsertStudentAttendanceSchema, bulkUpsertTeacherAttendanceSchema,
+    bulkUpsertStudentAttendanceSchema,
+    bulkUpsertTeacherAttendanceSchema,
     createStudentAttendanceSchema,
     createTeacherAttendanceSchema,
     studentAttendanceParamsSchema,
     subSchoolQuerySchema,
     teacherAttendanceParamsSchema,
-    updateStudentAttendanceSchema, updateTeacherAttendanceSchema
+    updateStudentAttendanceSchema,
+    updateTeacherAttendanceSchema
 } from "@/modules/attendances/attendances.schema";
 
 const studentRouter = Router();
@@ -20,39 +22,48 @@ const studentController = new StudentAttendanceController();
 studentRouter.get(
     '/',
     authenticate,
-    authorize('admin', 'director', 'teacher'),
-    validate({ query: attendanceQuerySchema }),
+    authorize('admin', 'director', 'teacher', 'student', 'super_admin'),
+    validate({
+        query: attendanceQuerySchema
+    }),
     studentController.getAll,
 );
 
 studentRouter.get(
     '/:id',
     authenticate,
-    authorize('admin', 'director', 'teacher'),
-    validate({ params: studentAttendanceParamsSchema, query: subSchoolQuerySchema }),
+    authorize('admin', 'director', 'teacher', 'student', 'super_admin'),
+    validate({
+        params: studentAttendanceParamsSchema,
+        query: subSchoolQuerySchema
+    }),
     studentController.getById,
 );
 
 studentRouter.post(
     '/',
     authenticate,
-    authorize('admin', 'teacher'),
-    validate({ body: createStudentAttendanceSchema }),
+    authorize('admin', 'teacher', 'super_admin'),
+    validate({
+        body: createStudentAttendanceSchema
+    }),
     studentController.create,
 );
 
 studentRouter.post(
     '/bulk',
     authenticate,
-    authorize('admin', 'teacher'),
-    validate({ body: bulkUpsertStudentAttendanceSchema }),
+    authorize('admin', 'teacher', 'super_admin'),
+    validate({
+        body: bulkUpsertStudentAttendanceSchema
+    }),
     studentController.bulkUpsert,
 );
 
 studentRouter.patch(
     '/:id',
     authenticate,
-    authorize('admin', 'teacher'),
+    authorize('admin', 'teacher', 'super_admin'),
     validate({
         params: studentAttendanceParamsSchema,
         query:  subSchoolQuerySchema,
@@ -64,8 +75,11 @@ studentRouter.patch(
 studentRouter.delete(
     '/:id',
     authenticate,
-    authorize('admin'),
-    validate({ params: studentAttendanceParamsSchema, query: subSchoolQuerySchema }),
+    authorize('admin', 'super_admin'),
+    validate({
+        params: studentAttendanceParamsSchema,
+        query: subSchoolQuerySchema
+    }),
     studentController.remove,
 );
 
@@ -75,23 +89,28 @@ const teacherController = new TeacherAttendanceController();
 teacherRouter.get(
     '/',
     authenticate,
-    authorize('admin', 'director'),
-    validate({ query: attendanceQuerySchema }),
+    authorize('admin', 'director', 'teacher', 'super_admin'),
+    validate({
+        query: attendanceQuerySchema
+    }),
     teacherController.getAll,
 );
 
 teacherRouter.get(
     '/:id',
     authenticate,
-    authorize('admin', 'director'),
-    validate({ params: teacherAttendanceParamsSchema, query: subSchoolQuerySchema }),
+    authorize('admin', 'director', 'teacher', 'super_admin'),
+    validate({
+        params: teacherAttendanceParamsSchema,
+        query: subSchoolQuerySchema
+    }),
     teacherController.getById,
 );
 
 teacherRouter.post(
     '/',
     authenticate,
-    authorize('admin', 'director'),
+    authorize('admin', 'director', 'super_admin'),
     validate({ body: createTeacherAttendanceSchema }),
     teacherController.create,
 );
@@ -99,15 +118,17 @@ teacherRouter.post(
 teacherRouter.post(
     '/bulk',
     authenticate,
-    authorize('admin', 'director'),
-    validate({ body: bulkUpsertTeacherAttendanceSchema }),
+    authorize('admin', 'director', 'super_admin'),
+    validate({
+        body: bulkUpsertTeacherAttendanceSchema
+    }),
     teacherController.bulkUpsert,
 );
 
 teacherRouter.patch(
     '/:id',
     authenticate,
-    authorize('admin', 'director'),
+    authorize('admin', 'director', 'super_admin'),
     validate({
         params: teacherAttendanceParamsSchema,
         query:  subSchoolQuerySchema,
@@ -119,8 +140,11 @@ teacherRouter.patch(
 teacherRouter.delete(
     '/:id',
     authenticate,
-    authorize('admin'),
-    validate({ params: teacherAttendanceParamsSchema, query: subSchoolQuerySchema }),
+    authorize('admin', 'director', 'super_admin'),
+    validate({
+        params: teacherAttendanceParamsSchema,
+        query: subSchoolQuerySchema
+    }),
     teacherController.remove,
 );
 

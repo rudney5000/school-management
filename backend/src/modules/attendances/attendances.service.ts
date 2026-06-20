@@ -1,16 +1,6 @@
-import {
-    and,
-    between,
-    eq,
-    gte,
-    lte,
-    sql
-} from 'drizzle-orm';
+import {and, between, eq, gte, lte, sql} from 'drizzle-orm';
 import {db} from '@/db';
-import {
-    studentAttendances,
-    teacherAttendances
-} from '@/db/schema';
+import {studentAttendances, teacherAttendances} from '@/db/schema';
 import {AppError} from '@/shared/errors/app-error';
 import {
     AttendanceQueryDto,
@@ -100,32 +90,50 @@ export class StudentAttendanceService {
     async bulkUpsert(input: BulkUpsertStudentAttendanceDto): Promise<StudentAttendanceRecord[]> {
         const { subSchoolId, date, records } = input;
 
-        const rows = await db
-            .insert(studentAttendances)
-            .values(
-                records.map((r) => ({
-                    subSchoolId,
-                    date,
-                    studentId: r.studentId,
-                    classId:   r.classId,
-                    courseId:  r.courseId,
-                    teacherId: r.teacherId,
-                    status:    r.status,
-                    reason:    r.reason ?? null,
-                    note:      r.note ?? null,
-                })),
-            )
-            .onConflictDoUpdate({
-                target: [studentAttendances.studentId, studentAttendances.date],
-                set: {
-                    status:  sql`excluded.status`,
-                    reason:  sql`excluded.reason`,
-                    notedAt: new Date(),
-                },
-            })
-            .returning();
+        const globalRecords = records.filter(r => !r.courseId)
+        const courseRecords = records.filter(r => !!r.courseId)
 
-        return rows;
+        const results: StudentAttendanceRecord[] = []
+
+        if (globalRecords.length > 0) {
+            const rows = await db
+                .insert(studentAttendances)
+                .values(globalRecords.map(r => ({ subSchoolId, date, ...r, courseId: null })))
+                .onConflictDoUpdate({
+                    target: [studentAttendances.studentId, studentAttendances.date],
+                    targetWhere: sql`${studentAttendances.courseId} IS NULL`,
+                    set: {
+                        status:  sql`excluded.status`,
+                        reason:  sql`excluded.reason`,
+                        notedAt: new Date(),
+                    },
+                })
+                .returning()
+            results.push(...rows)
+        }
+
+        if (courseRecords.length > 0) {
+            const rows = await db
+                .insert(studentAttendances)
+                .values(courseRecords.map(r => ({ subSchoolId, date, ...r })))
+                .onConflictDoUpdate({
+                    target: [
+                        studentAttendances.studentId,
+                        studentAttendances.date,
+                        studentAttendances.courseId,
+                    ],
+                    targetWhere: sql`${studentAttendances.courseId} IS NOT NULL`,
+                    set: {
+                        status:  sql`excluded.status`,
+                        reason:  sql`excluded.reason`,
+                        notedAt: new Date(),
+                    },
+                })
+                .returning()
+            results.push(...rows)
+        }
+
+        return results
     }
 
     async update(
