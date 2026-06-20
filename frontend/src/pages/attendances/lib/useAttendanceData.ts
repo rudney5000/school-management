@@ -25,7 +25,7 @@ export function useAttendanceData(subSchoolId: string | undefined, fromDate: str
         from: fromDate,
         to: toDate,
         page: 1,
-        limit: 1000,
+        limit: 100,
     })
 
     const { data: teacherAttendances, isLoading: loadingTeachers } = useTeacherAttendances({
@@ -33,7 +33,7 @@ export function useAttendanceData(subSchoolId: string | undefined, fromDate: str
         from: fromDate,
         to: toDate,
         page: 1,
-        limit: 1000,
+        limit: 100,
     })
 
     const attendanceMap = useMemo(() => {
