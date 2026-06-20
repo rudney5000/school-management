@@ -585,6 +585,52 @@
         "ticketsRemaining": "Bisika etikali",
         "free": "Mpamba"
       }
+    },
+    "attendance": {
+      "title": "Bozali",
+      "table": {
+        "tabs": {
+          "students": "Bayekoli",
+          "teachers": "Balakisi",
+          "staff": "Basali"
+        },
+        "columns": {
+          "students": "Moyekoli",
+          "teachers": "Molakisi",
+          "staff": "Moboti"
+        },
+        "actions": {
+          "edit": "Kobongisa",
+          "cancel": "Kotika",
+          "schedule": "Kokana"
+        },
+        "pagination": {
+          "show": "Kolakisa",
+          "of": "ya",
+          "results": "biyano"
+        }
+      },
+      "summary": {
+        "title": "Mwango ya bozali",
+        "periods": {
+          "today": "Lelo",
+          "week": "Poso oyo",
+          "month": "Sanza oyo"
+        },
+        "stats": {
+          "totalPresent": "Bazali nyonso",
+          "onTime": "Na ngonga",
+          "late": "Bawei",
+          "absent": "Bazangi"
+        }
+      },
+      "overview": {
+        "title": "Botali ya bozali",
+        "periods": {
+          "lastSemester": "Semestre eleki",
+          "thisYear": "Mobu oyo"
+        }
+      }
     }
   },
   "theme": {

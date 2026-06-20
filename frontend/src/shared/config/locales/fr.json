@@ -208,9 +208,6 @@
     "enrollment": {
       "title": "Inscriptions par niveau"
     },
-    "attendance": {
-      "title": "Taux de présence"
-    },
     "students": {
       "form": {
         "addTitle": "Nouvel étudiant",
@@ -530,6 +527,52 @@
         "friday": "Vendredi",
         "saturday": "Samedi",
         "sunday": "Dimanche"
+      }
+    },
+    "attendance": {
+      "table": {
+        "tabs": {
+          "students": "Élèves",
+          "teachers": "Enseignants",
+          "staff": "Personnel"
+        },
+        "columns": {
+          "students": "Élève",
+          "teachers": "Enseignant",
+          "staff": "Parent"
+        },
+        "actions": {
+          "edit": "Modifier",
+          "cancel": "Annuler",
+          "schedule": "Planifier"
+        },
+        "pagination": {
+          "show": "Afficher",
+          "of": "sur",
+          "results": "résultats"
+        }
+      },
+      "title": "Résumé des Présences",
+      "overview": {
+        "title": "Aperçu des présences",
+        "periods": {
+          "lastSemester": "Dernier semestre",
+          "thisYear": "Cette année"
+        }
+      },
+      "summary": {
+        "title": "Résumé des présences",
+        "periods": {
+          "today": "Aujourd'hui",
+          "week": "Cette semaine",
+          "month": "Ce mois-ci"
+        },
+        "stats": {
+          "totalPresent": "Total présents",
+          "onTime": "À l'heure",
+          "late": "En retard",
+          "absent": "Absents"
+        }
       }
     },
     "common": {

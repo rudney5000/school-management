@@ -170,9 +170,6 @@
     "enrollment": {
       "title": "Зачисление по уровням"
     },
-    "attendance": {
-      "title": "Посещаемость"
-    },
     "charts": {
       "studentEnrollment": "Зачисление учеников",
       "totalStudents": "Всего учеников",
@@ -507,6 +504,52 @@
         "friday": "Пятница",
         "saturday": "Суббота",
         "sunday": "Воскресенье"
+      }
+    },
+    "attendance": {
+      "title": "Посещаемость",
+      "table": {
+        "tabs": {
+          "students": "Ученики",
+          "teachers": "Учителя",
+          "staff": "Персонал"
+        },
+        "columns": {
+          "students": "Ученик",
+          "teachers": "Учитель",
+          "staff": "Родитель"
+        },
+        "actions": {
+          "edit": "Изменить",
+          "cancel": "Отмена",
+          "schedule": "Запланировать"
+        },
+        "pagination": {
+          "show": "Показать",
+          "of": "из",
+          "results": "результатов"
+        }
+      },
+      "summary": {
+        "title": "Сводка посещаемости",
+        "periods": {
+          "today": "Сегодня",
+          "week": "Эта неделя",
+          "month": "Этот месяц"
+        },
+        "stats": {
+          "totalPresent": "Всего присутствует",
+          "onTime": "Вовремя",
+          "late": "Опоздания",
+          "absent": "Отсутствуют"
+        }
+      },
+      "overview": {
+        "title": "Обзор посещаемости",
+        "periods": {
+          "lastSemester": "Прошлый семестр",
+          "thisYear": "Этот год"
+        }
       }
     },
     "common": {

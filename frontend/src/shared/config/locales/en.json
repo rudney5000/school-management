@@ -203,9 +203,6 @@
     "enrollment": {
       "title": "Enrollment by Level"
     },
-    "attendance": {
-      "title": "Attendance Rate"
-    },
     "students": {
       "form": {
         "addTitle": "New student",
@@ -595,6 +592,52 @@
       "sidebar": {
         "ticketsRemaining": "Tickets remaining",
         "free": "Free"
+      }
+    },
+    "attendance": {
+      "title": "Attendance",
+      "table": {
+        "tabs": {
+          "students": "Students",
+          "teachers": "Teachers",
+          "staff": "Staff"
+        },
+        "columns": {
+          "students": "Student",
+          "teachers": "Teacher",
+          "staff": "Parent"
+        },
+        "actions": {
+          "edit": "Edit",
+          "cancel": "Cancel",
+          "schedule": "Schedule"
+        },
+        "pagination": {
+          "show": "Show",
+          "of": "of",
+          "results": "results"
+        }
+      },
+      "summary": {
+        "title": "Attendance Summary",
+        "periods": {
+          "today": "Today",
+          "week": "This Week",
+          "month": "This Month"
+        },
+        "stats": {
+          "totalPresent": "Total Present",
+          "onTime": "On-Time",
+          "late": "Late",
+          "absent": "Absent"
+        }
+      },
+      "overview": {
+        "title": "Attendance Overview",
+        "periods": {
+          "lastSemester": "Last Semester",
+          "thisYear": "This Year"
+        }
       }
     },
     "common": {
