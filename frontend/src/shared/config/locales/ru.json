@@ -125,7 +125,7 @@
     "teachers": "Учителя",
     "students": "Ученики",
     "parents": "Родители",
-    "attendance": "Посещаемость",
+    "attendances": "Посещаемость",
     "messages": "Сообщения",
     "settings": "Настройки"
   },
@@ -152,7 +152,7 @@
       "teachers": "Учителя",
       "totalStudents": "Всего учеников",
       "totalCourses": "Всего курсов",
-      "attendance": "Посещаемость",
+      "attendances": "Посещаемость",
       "upcomingEvents": "Предстоящие события"
     },
     "schedule": {

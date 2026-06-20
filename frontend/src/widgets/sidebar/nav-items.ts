@@ -47,7 +47,7 @@ export const adminNav: NavGroup[] = [
             { labelKey: 'nav.courses',       icon: BookOpen,        path: '/sub-schools/$subSchoolId/courses' },
             { labelKey: 'nav.exams',         icon: PenLine,         path: '/sub-schools/$subSchoolId/exams' },
             { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/sub-schools/$subSchoolId/assessments' },
-            { labelKey: 'nav.attendance',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendance' },
+            { labelKey: 'nav.attendances',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendances' },
             { labelKey: 'nav.reports',       icon: BarChart3,       path: '/sub-schools/$subSchoolId/reports' },
         ],
     },
@@ -83,7 +83,7 @@ export const teacherNav: NavGroup[] = [
         items: [
             { labelKey: 'nav.exams',         icon: PenLine,         path: '/sub-schools/$subSchoolId/exams' },
             { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/sub-schools/$subSchoolId/assessments' },
-            { labelKey: 'nav.attendance',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendance' },
+            { labelKey: 'nav.attendances',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendances' },
         ],
     },
     {
@@ -111,7 +111,7 @@ export const studentNav: NavGroup[] = [
         items: [
             { labelKey: 'nav.exams',         icon: PenLine,         path: '/sub-schools/$subSchoolId/exams' },
             { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/sub-schools/$subSchoolId/assessments' },
-            { labelKey: 'nav.attendance',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendance' },
+            { labelKey: 'nav.attendances',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendances' },
         ],
     },
     {
@@ -140,7 +140,7 @@ export const directorNav: NavGroup[] = [
             { labelKey: 'nav.courses',       icon: BookOpen,        path: '/sub-schools/$subSchoolId/courses' },
             { labelKey: 'nav.exams',         icon: PenLine,         path: '/sub-schools/$subSchoolId/exams' },
             { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/sub-schools/$subSchoolId/assessments' },
-            { labelKey: 'nav.attendance',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendance' },
+            { labelKey: 'nav.attendances',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendances' },
             { labelKey: 'nav.reports',       icon: BarChart3,       path: '/sub-schools/$subSchoolId/reports' },
         ],
     },
@@ -192,9 +192,9 @@ export const parentNav: NavGroup[] = [
                 path: '/sub-schools/$subSchoolId/assessments',
             },
             {
-                labelKey: 'nav.attendance',
+                labelKey: 'nav.attendances',
                 icon: ClipboardList,
-                path: '/sub-schools/$subSchoolId/attendance',
+                path: '/sub-schools/$subSchoolId/attendances',
             },
             {
                 labelKey: 'nav.reports',

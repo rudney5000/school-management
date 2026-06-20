@@ -151,7 +151,8 @@
       "exams": "Examens",
       "students": "Élèves",
       "teachers": "Ba Enseignant",
-      "events": "Ba évenement"
+      "events": "Ba évenement",
+      "attendances": "Présences"
     },
     "schedule": {
       "title": "Cours du jour",
@@ -164,7 +165,7 @@
     "enrollment": {
       "title": "Inscriptions par niveau"
     },
-    "attendance": {
+    "attendances": {
       "title": "Taux de présence"
     },
     "students": {
