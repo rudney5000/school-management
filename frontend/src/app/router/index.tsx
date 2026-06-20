@@ -1,4 +1,11 @@
-import {createRootRoute, createRoute, createRouter, Outlet, redirect, RouterProvider} from "@tanstack/react-router";
+import {
+    createRootRoute,
+    createRoute,
+    createRouter,
+    Outlet,
+    redirect,
+    RouterProvider
+} from "@tanstack/react-router";
 import {HomeLayout} from "@app/router/layouts/HomeLayout";
 import {HomePage} from "@/pages/home/HomePage";
 import {NotFoundPage} from "@/pages/404/NotFoundPage";
@@ -16,9 +23,10 @@ import TeachersPage from "@/pages/teacher/TeachersPage";
 import ParentsPage from "@/pages/parent/ParentsPage";
 import ClassesPage from "@/pages/class/ClassPage";
 import StudentDetailsPage from "@/pages/student/StudentDetailsPage";
-import CoursesPage from "@/pages/courses/CoursesPage.tsx";
-import SchedulePage from "@/pages/schedule/SchedulePage.tsx";
-import EventPage from "@/pages/event/EventPage.tsx";
+import CoursesPage from "@/pages/courses/CoursesPage";
+import SchedulePage from "@/pages/schedule/SchedulePage";
+import EventPage from "@/pages/event/EventPage";
+import AttendancePage from "@/pages/attendances/AttendancesPage";
 
 type RouterContext = {
     isAuthenticated: () => boolean;
@@ -180,6 +188,12 @@ const eventsRoute = createRoute({
     component: EventPage
 })
 
+const attendancesRoute = createRoute({
+    getParentRoute: () => subSchoolRoute,
+    path: 'attendances',
+    component: AttendancePage
+})
+
 const routeTree = rootRoute.addChildren([
     localeRoute.addChildren([
         homeLayoutRoute
@@ -205,7 +219,8 @@ const routeTree = rootRoute.addChildren([
                     teacherDetailRoute,
                     parentDetailRoute,
                     scheduleRoute,
-                    eventsRoute
+                    eventsRoute,
+                    attendancesRoute
                 ]),
             ])
     ])
