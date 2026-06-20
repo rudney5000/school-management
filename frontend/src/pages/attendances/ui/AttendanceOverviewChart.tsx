@@ -8,6 +8,7 @@ import {
     Legend,
     ResponsiveContainer
 } from "recharts"
+import { useTranslation } from "@shared/lib"
 
 interface ChartData {
     month: string
@@ -21,6 +22,8 @@ interface AttendanceOverviewChartProps {
 }
 
 export function AttendanceOverviewChart({ data }: AttendanceOverviewChartProps) {
+    const { t } = useTranslation()
+
     return (
         <ResponsiveContainer width="100%" height={160}>
             <AreaChart data={data} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
@@ -62,9 +65,9 @@ export function AttendanceOverviewChart({ data }: AttendanceOverviewChartProps) 
                     iconType="circle"
                     iconSize={8}
                 />
-                <Area type="monotone" dataKey="students" name="Students" stroke="#f472b6" strokeWidth={2} fill="url(#colorStudents)" dot={false} />
-                <Area type="monotone" dataKey="teachers" name="Teachers" stroke="#22d3ee" strokeWidth={2} fill="url(#colorTeachers)" dot={false} />
-                <Area type="monotone" dataKey="staff" name="Staff" stroke="#1755EC" strokeWidth={2} fill="url(#colorStaff)" dot={false} />
+                <Area type="monotone" dataKey="students" name={t('dashboard.attendance.table.tabs.students')} stroke="#f472b6" strokeWidth={2} fill="url(#colorStudents)" dot={false} />
+                <Area type="monotone" dataKey="teachers" name={t('dashboard.attendance.table.tabs.teachers')} stroke="#22d3ee" strokeWidth={2} fill="url(#colorTeachers)" dot={false} />
+                <Area type="monotone" dataKey="staff" name={t('dashboard.attendance.table.tabs.staff')} stroke="#1755EC" strokeWidth={2} fill="url(#colorStaff)" dot={false} />
             </AreaChart>
         </ResponsiveContainer>
     )
