@@ -53,7 +53,10 @@ export const bulkUpsertStudentAttendanceSchema = z.object({
             status:    z.enum(attendanceStatus),
             reason:    z.string().max(500).optional(),
             note:      z.string().max(500).optional(),
-        })
+        }).refine(
+            (r) => !r.courseId || !!r.classId,
+            { message: 'classId est requis si courseId est fourni', path: ['classId'] }
+        )
     ).min(1).max(200),
 });
 
