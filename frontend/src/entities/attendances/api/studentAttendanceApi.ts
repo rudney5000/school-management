@@ -16,7 +16,7 @@ export class StudentAttendanceApi extends ApiWrapper {
 
     getAll(params: AttendanceQueryDto) {
         return this.handleRequest<PaginatedAttendance<StudentAttendance>>(
-            this._baseApi.get('/attendances/students', { params }),
+            this._baseApi.get('/attendances/students', params ),
             (raw) => raw as PaginatedAttendance<StudentAttendance>,
         );
     }

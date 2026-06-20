@@ -3,6 +3,13 @@ import type { AttendanceStatus } from '@entities/attendances';
 
 type AttendanceTab = 'students' | 'teachers' | 'staff';
 
+type PendingChange = {
+    personId: string
+    date: string
+    status: AttendanceStatus
+    courseId?: string
+}
+
 type AttendanceFilters = {
     from:   string | null;
     to:     string | null;
@@ -16,6 +23,8 @@ type AttendanceState = {
     selectedStudentAttendanceId: string | null;
     selectedTeacherAttendanceId: string | null;
     filters:                     AttendanceFilters;
+    pendingChanges:              PendingChange[];
+    editingDate:                 string | null
 };
 
 const initialState: AttendanceState = {
@@ -29,6 +38,8 @@ const initialState: AttendanceState = {
         page:   1,
         limit:  20,
     },
+    pendingChanges: [],
+    editingDate: null
 };
 
 export const attendanceSlice: Slice<AttendanceState> = createSlice({
@@ -56,6 +67,25 @@ export const attendanceSlice: Slice<AttendanceState> = createSlice({
         resetFilters: (state) => {
             state.filters = initialState.filters;
         },
+        markPendingAttendance: (state, action: PayloadAction<PendingChange>) => {
+            const { personId, date, courseId } = action.payload
+            const idx = state.pendingChanges.findIndex(
+                (c) => c.personId === personId && c.date === date && c.courseId === courseId
+            )
+            if (idx !== -1) {
+                state.pendingChanges[idx] = action.payload
+            } else {
+                state.pendingChanges.push(action.payload)
+            }
+        },
+
+        clearPendingChanges: (state) => {
+            state.pendingChanges = []
+        },
+        setEditingDate: (state, action: PayloadAction<string | null>) => {
+            state.editingDate = action.payload
+            state.pendingChanges = []
+        },
     },
 });
 
@@ -65,4 +95,7 @@ export const {
     setSelectedTeacherAttendanceId,
     setFilters,
     resetFilters,
+    markPendingAttendance,
+    clearPendingChanges,
+    setEditingDate
 } = attendanceSlice.actions;

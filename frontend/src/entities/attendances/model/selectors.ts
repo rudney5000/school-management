@@ -4,3 +4,4 @@ export const selectActiveTab                   = (state: RootState) => state.att
 export const selectSelectedStudentAttendanceId = (state: RootState) => state.attendance.selectedStudentAttendanceId;
 export const selectSelectedTeacherAttendanceId = (state: RootState) => state.attendance.selectedTeacherAttendanceId;
 export const selectAttendanceFilters           = (state: RootState) => state.attendance.filters;
+export const selectEditingDate                 = (state: RootState) => state.attendance.editingDate
