@@ -20,6 +20,7 @@ export type UserRole =
     | 'director'
     | 'teacher'
     | 'parent'
-    | 'student';
+    | 'student'
+    | 'worker'
 
 export {};

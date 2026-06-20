@@ -9,7 +9,7 @@ export function authorize(...roles: UserRole[]) {
       return;
     }
 
-    if (!roles.includes(<"super_admin" | "admin" | "director" | "teacher" | "parent" | "student">req.user.role)) {
+    if (!roles.includes(<"super_admin" | "admin" | "director" | "teacher" | "parent" | "student" | "worker">req.user.role)) {
       next(new AppError('FORBIDDEN', 'Access denied', 403));
       return;
     }
