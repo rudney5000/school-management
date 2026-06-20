@@ -14,6 +14,7 @@ import {classSlice} from "@entities/class";
 import {courseSlice} from "@entities/courses";
 import {scheduleSlice} from "@entities/schedule";
 import {eventSlice} from "@entities/event";
+import {attendanceSlice} from "@entities/attendances";
 
 export const store = configureStore({
     reducer: {
@@ -30,7 +31,8 @@ export const store = configureStore({
         class: classSlice.reducer,
         course: courseSlice.reducer,
         schedule: scheduleSlice.reducer,
-        event: eventSlice.reducer
+        event: eventSlice.reducer,
+        attendance: attendanceSlice.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 })
