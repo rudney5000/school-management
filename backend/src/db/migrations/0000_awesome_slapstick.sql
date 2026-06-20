@@ -11,6 +11,12 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ CREATE TYPE "public"."attendance_target" AS ENUM('student', 'teacher');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "public"."day_of_week" AS ENUM('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -157,12 +163,28 @@ CREATE TABLE IF NOT EXISTS "parents" (
 	CONSTRAINT "parents_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "course_resources" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"course_id" uuid NOT NULL,
+	"type" varchar(20) NOT NULL,
+	"title" varchar(150) NOT NULL,
+	"url" text NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "courses" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(100) NOT NULL,
 	"code" varchar(20) NOT NULL,
 	"description" text,
 	"credits" integer DEFAULT 0,
+	"icon" varchar(30) DEFAULT 'book-open' NOT NULL,
+	"color" varchar(20) DEFAULT 'blue' NOT NULL,
+	"thumbnail_url" text,
+	"teacher_id" uuid,
+	"total_lessons" integer DEFAULT 0 NOT NULL,
+	"total_hours" integer DEFAULT 0 NOT NULL,
+	"status" varchar(20) DEFAULT 'active' NOT NULL,
 	"sub_school_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
@@ -213,19 +235,37 @@ CREATE TABLE IF NOT EXISTS "schedules" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "student_attendances" (
+CREATE TABLE IF NOT EXISTS "attendances" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"student_id" uuid NOT NULL,
+	"target_type" "attendance_target" NOT NULL,
+	"student_id" uuid,
+	"teacher_id" uuid,
 	"date" date NOT NULL,
 	"status" "attendance_status" NOT NULL,
 	"noted_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "student_attendances" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"sub_school_id" uuid NOT NULL,
+	"student_id" uuid NOT NULL,
+	"class_id" uuid,
+	"course_id" uuid,
+	"teacher_id" uuid,
+	"date" date NOT NULL,
+	"status" "attendance_status" NOT NULL,
+	"reason" text,
+	"note" varchar(255),
+	"noted_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "teacher_attendances" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"sub_school_id" uuid NOT NULL,
 	"teacher_id" uuid NOT NULL,
 	"date" date NOT NULL,
-	"status" varchar(20) NOT NULL,
+	"status" "attendance_status" NOT NULL,
+	"reason" text,
 	"noted_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
@@ -358,6 +398,18 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "course_resources" ADD CONSTRAINT "course_resources_course_id_courses_id_fk" FOREIGN KEY ("course_id") REFERENCES "public"."courses"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "courses" ADD CONSTRAINT "courses_teacher_id_teachers_id_fk" FOREIGN KEY ("teacher_id") REFERENCES "public"."teachers"("id") ON DELETE set null ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "courses" ADD CONSTRAINT "courses_sub_school_id_sub_schools_id_fk" FOREIGN KEY ("sub_school_id") REFERENCES "public"."sub_schools"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -418,7 +470,49 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "attendances" ADD CONSTRAINT "attendances_student_id_students_id_fk" FOREIGN KEY ("student_id") REFERENCES "public"."students"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "attendances" ADD CONSTRAINT "attendances_teacher_id_teachers_id_fk" FOREIGN KEY ("teacher_id") REFERENCES "public"."teachers"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "student_attendances" ADD CONSTRAINT "student_attendances_sub_school_id_sub_schools_id_fk" FOREIGN KEY ("sub_school_id") REFERENCES "public"."sub_schools"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "student_attendances" ADD CONSTRAINT "student_attendances_student_id_students_id_fk" FOREIGN KEY ("student_id") REFERENCES "public"."students"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "student_attendances" ADD CONSTRAINT "student_attendances_class_id_classes_id_fk" FOREIGN KEY ("class_id") REFERENCES "public"."classes"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "student_attendances" ADD CONSTRAINT "student_attendances_course_id_courses_id_fk" FOREIGN KEY ("course_id") REFERENCES "public"."courses"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "student_attendances" ADD CONSTRAINT "student_attendances_teacher_id_teachers_id_fk" FOREIGN KEY ("teacher_id") REFERENCES "public"."teachers"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "teacher_attendances" ADD CONSTRAINT "teacher_attendances_sub_school_id_sub_schools_id_fk" FOREIGN KEY ("sub_school_id") REFERENCES "public"."sub_schools"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -500,7 +594,6 @@ CREATE INDEX IF NOT EXISTS "idx_classes_sub_school" ON "classes" USING btree ("s
 CREATE INDEX IF NOT EXISTS "idx_classes_grade" ON "classes" USING btree ("grade_level");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "idx_enrollment_unique" ON "enrollments" USING btree ("student_id","class_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "idx_schedule_no_overlap" ON "schedules" USING btree ("teacher_id","class_id","day_of_week","start_time");--> statement-breakpoint
-CREATE UNIQUE INDEX IF NOT EXISTS "idx_student_attendance_unique" ON "student_attendances" USING btree ("student_id","date");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "idx_teacher_attendance_unique" ON "teacher_attendances" USING btree ("teacher_id","date");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_payments_student" ON "payments" USING btree ("student_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_payments_status" ON "payments" USING btree ("status");--> statement-breakpoint

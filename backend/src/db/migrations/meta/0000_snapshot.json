@@ -1,5 +1,5 @@
 {
-  "id": "27a50411-5ae1-429b-b252-55fca485bb6d",
+  "id": "aca5fa37-a840-4cde-b066-4a1b9454b533",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -873,6 +873,68 @@
         }
       }
     },
+    "public.course_resources": {
+      "name": "course_resources",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "course_id": {
+          "name": "course_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(150)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "course_resources_course_id_courses_id_fk": {
+          "name": "course_resources_course_id_courses_id_fk",
+          "tableFrom": "course_resources",
+          "tableTo": "courses",
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.courses": {
       "name": "courses",
       "schema": "",
@@ -909,6 +971,53 @@
           "notNull": false,
           "default": 0
         },
+        "icon": {
+          "name": "icon",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'book-open'"
+        },
+        "color": {
+          "name": "color",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'blue'"
+        },
+        "thumbnail_url": {
+          "name": "thumbnail_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "teacher_id": {
+          "name": "teacher_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "total_lessons": {
+          "name": "total_lessons",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "total_hours": {
+          "name": "total_hours",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
         "sub_school_id": {
           "name": "sub_school_id",
           "type": "uuid",
@@ -925,6 +1034,19 @@
       },
       "indexes": {},
       "foreignKeys": {
+        "courses_teacher_id_teachers_id_fk": {
+          "name": "courses_teacher_id_teachers_id_fk",
+          "tableFrom": "courses",
+          "tableTo": "teachers",
+          "columnsFrom": [
+            "teacher_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "courses_sub_school_id_sub_schools_id_fk": {
           "name": "courses_sub_school_id_sub_schools_id_fk",
           "tableFrom": "courses",
@@ -1408,8 +1530,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.student_attendances": {
-      "name": "student_attendances",
+    "public.attendances": {
+      "name": "attendances",
       "schema": "",
       "columns": {
         "id": {
@@ -1419,11 +1541,24 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+        "target_type": {
+          "name": "target_type",
+          "type": "attendance_target",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
         "student_id": {
           "name": "student_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "teacher_id": {
+          "name": "teacher_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
         },
         "date": {
           "name": "date",
@@ -1446,30 +1581,127 @@
           "default": "now()"
         }
       },
-      "indexes": {
-        "idx_student_attendance_unique": {
-          "name": "idx_student_attendance_unique",
-          "columns": [
-            {
-              "expression": "student_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "date",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
+      "indexes": {},
+      "foreignKeys": {
+        "attendances_student_id_students_id_fk": {
+          "name": "attendances_student_id_students_id_fk",
+          "tableFrom": "attendances",
+          "tableTo": "students",
+          "columnsFrom": [
+            "student_id"
           ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "attendances_teacher_id_teachers_id_fk": {
+          "name": "attendances_teacher_id_teachers_id_fk",
+          "tableFrom": "attendances",
+          "tableTo": "teachers",
+          "columnsFrom": [
+            "teacher_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.student_attendances": {
+      "name": "student_attendances",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "sub_school_id": {
+          "name": "sub_school_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_id": {
+          "name": "student_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "class_id": {
+          "name": "class_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "course_id": {
+          "name": "course_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "teacher_id": {
+          "name": "teacher_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "date": {
+          "name": "date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "attendance_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "note": {
+          "name": "note",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "noted_at": {
+          "name": "noted_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
       "foreignKeys": {
+        "student_attendances_sub_school_id_sub_schools_id_fk": {
+          "name": "student_attendances_sub_school_id_sub_schools_id_fk",
+          "tableFrom": "student_attendances",
+          "tableTo": "sub_schools",
+          "columnsFrom": [
+            "sub_school_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "student_attendances_student_id_students_id_fk": {
           "name": "student_attendances_student_id_students_id_fk",
           "tableFrom": "student_attendances",
@@ -1481,6 +1713,45 @@
             "id"
           ],
           "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "student_attendances_class_id_classes_id_fk": {
+          "name": "student_attendances_class_id_classes_id_fk",
+          "tableFrom": "student_attendances",
+          "tableTo": "classes",
+          "columnsFrom": [
+            "class_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "student_attendances_course_id_courses_id_fk": {
+          "name": "student_attendances_course_id_courses_id_fk",
+          "tableFrom": "student_attendances",
+          "tableTo": "courses",
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "student_attendances_teacher_id_teachers_id_fk": {
+          "name": "student_attendances_teacher_id_teachers_id_fk",
+          "tableFrom": "student_attendances",
+          "tableTo": "teachers",
+          "columnsFrom": [
+            "teacher_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
@@ -1498,6 +1769,12 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+        "sub_school_id": {
+          "name": "sub_school_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
         "teacher_id": {
           "name": "teacher_id",
           "type": "uuid",
@@ -1512,9 +1789,16 @@
         },
         "status": {
           "name": "status",
-          "type": "varchar(20)",
+          "type": "attendance_status",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "noted_at": {
           "name": "noted_at",
@@ -1548,6 +1832,19 @@
         }
       },
       "foreignKeys": {
+        "teacher_attendances_sub_school_id_sub_schools_id_fk": {
+          "name": "teacher_attendances_sub_school_id_sub_schools_id_fk",
+          "tableFrom": "teacher_attendances",
+          "tableTo": "sub_schools",
+          "columnsFrom": [
+            "sub_school_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "teacher_attendances_teacher_id_teachers_id_fk": {
           "name": "teacher_attendances_teacher_id_teachers_id_fk",
           "tableFrom": "teacher_attendances",
@@ -2373,6 +2670,14 @@
         "ABSENT",
         "LATE",
         "EXCUSED"
+      ]
+    },
+    "public.attendance_target": {
+      "name": "attendance_target",
+      "schema": "public",
+      "values": [
+        "student",
+        "teacher"
       ]
     },
     "public.day_of_week": {

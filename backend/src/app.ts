@@ -22,6 +22,10 @@ import {parentsRouter} from "@/modules/parents/parents.router";
 import {paymentsRouter} from "@/modules/payments/payments.router";
 import {subSchoolsRouter} from "@/modules/sub-schools/sub-schools.router";
 import {eventsRouter} from "@/modules/events/events.router";
+import {
+  studentAttendanceRouter,
+  teacherAttendanceRouter
+} from "@/modules/attendances/attendances.router";
 
 export function createApp(): express.Application {
   const app = express();
@@ -56,6 +60,8 @@ export function createApp(): express.Application {
   app.use('/api/payments', paymentsRouter);
   app.use('/api/sub-schools', subSchoolsRouter)
   app.use('/api/events', eventsRouter)
+  app.use('/api/attendances/students', studentAttendanceRouter);
+  app.use('/api/attendances/teachers', teacherAttendanceRouter);
 
   app.use(errorHandler);
 

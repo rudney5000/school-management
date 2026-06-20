@@ -61,3 +61,11 @@ export const EventTypeEnum = pgEnum('event_type', [
     'COMPETITION',
     'OTHER',
 ]);
+
+export const attendanceTargetEnum = pgEnum(
+    'attendance_target',
+    [
+        'student',
+        'teacher'
+    ]
+);
