@@ -357,6 +357,50 @@ async function seed() {
         console.log('~ Admin user already exists');
     }
 
+    const [existingDirector] = await db.select().from(users)
+        .where(eq(users.email, 'directeur@saintjoseph.cd'))
+
+    if (!existingDirector) {
+        const [directorWorker] = await db.insert(workers).values({
+            firstName: 'Emmanuel',
+            lastName: 'Tshisekedi',
+            email: 'directeur@saintjoseph.cd',
+            subSchoolId: subSchool.id,
+        }).returning()
+
+        await db.insert(users).values({
+            email: 'directeur@saintjoseph.cd',
+            password: hashedPassword,
+            role: 'director',
+            workerId: directorWorker.id,
+        })
+        console.log('✓ Director user: directeur@saintjoseph.cd')
+    } else {
+        console.log('~ Director already exists')
+    }
+
+    const [existingWorker] = await db.select().from(users)
+        .where(eq(users.email, 'secretaire@saintjoseph.cd'))
+
+    if (!existingWorker) {
+        const [staffWorker] = await db.insert(workers).values({
+            firstName: 'Cécile',
+            lastName: 'Mbuyi',
+            email: 'secretaire@saintjoseph.cd',
+            subSchoolId: subSchool.id,
+        }).returning()
+
+        await db.insert(users).values({
+            email: 'secretaire@saintjoseph.cd',
+            password: hashedPassword,
+            role: 'worker',
+            workerId: staffWorker.id,
+        })
+        console.log('✓ Worker user: secretaire@saintjoseph.cd')
+    } else {
+        console.log('~ Worker already exists')
+    }
+
     try {
         await db.delete(users).where(eq(users.email, 'marie.kabila@saintjoseph.cd'))
         console.log('✓ Deleted user')
@@ -595,6 +639,8 @@ async function seed() {
 
     console.log('\n✓ Seed completed. Test credentials (password: password123):');
     console.log('  Admin   → admin@saintjoseph.cd');
+    console.log('  Director   → directeur@saintjoseph.cd');
+    console.log('  Staff(Worker)      → secretaire@saintjoseph.cd');
     console.log('  Student → marie.kabila@saintjoseph.cd');
     console.log('  Teacher → jean.muamba@saintjoseph.cd');
 

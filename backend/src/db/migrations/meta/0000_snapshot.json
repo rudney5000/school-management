@@ -1,5 +1,5 @@
 {
-  "id": "aca5fa37-a840-4cde-b066-4a1b9454b533",
+  "id": "6a72e7bf-cda9-40f2-90d2-1646939d8a1d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1687,7 +1687,58 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "idx_student_attendance_course": {
+          "name": "idx_student_attendance_course",
+          "columns": [
+            {
+              "expression": "student_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "date",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "course_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"student_attendances\".\"course_id\" IS NOT NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_student_attendance_global": {
+          "name": "idx_student_attendance_global",
+          "columns": [
+            {
+              "expression": "student_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "date",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"student_attendances\".\"course_id\" IS NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "student_attendances_sub_school_id_sub_schools_id_fk": {
           "name": "student_attendances_sub_school_id_sub_schools_id_fk",

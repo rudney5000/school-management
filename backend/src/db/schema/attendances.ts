@@ -7,7 +7,7 @@ import {
     uniqueIndex,
     text
 } from 'drizzle-orm/pg-core';
-import { relations } from 'drizzle-orm';
+import {relations, sql} from 'drizzle-orm';
 import {students} from "./students";
 import {teachers} from "./teacher";
 import {
@@ -69,7 +69,15 @@ export const studentAttendances = pgTable('student_attendances', {
     notedAt: timestamp('noted_at')
         .defaultNow()
         .notNull(),
-});
+}, (table) => ({
+    idx_student_attendance_course: uniqueIndex('idx_student_attendance_course')
+        .on(table.studentId, table.date, table.courseId)
+        .where(sql`${table.courseId} IS NOT NULL`),
+
+    idx_student_attendance_global: uniqueIndex('idx_student_attendance_global')
+        .on(table.studentId, table.date)
+        .where(sql`${table.courseId} IS NULL`),
+}));
 
 export const teacherAttendances = pgTable('teacher_attendances', {
     id: uuid('id')

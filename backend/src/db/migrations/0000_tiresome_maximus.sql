@@ -594,6 +594,8 @@ CREATE INDEX IF NOT EXISTS "idx_classes_sub_school" ON "classes" USING btree ("s
 CREATE INDEX IF NOT EXISTS "idx_classes_grade" ON "classes" USING btree ("grade_level");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "idx_enrollment_unique" ON "enrollments" USING btree ("student_id","class_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "idx_schedule_no_overlap" ON "schedules" USING btree ("teacher_id","class_id","day_of_week","start_time");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "idx_student_attendance_course" ON "student_attendances" USING btree ("student_id","date","course_id") WHERE "student_attendances"."course_id" IS NOT NULL;--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "idx_student_attendance_global" ON "student_attendances" USING btree ("student_id","date") WHERE "student_attendances"."course_id" IS NULL;--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "idx_teacher_attendance_unique" ON "teacher_attendances" USING btree ("teacher_id","date");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_payments_student" ON "payments" USING btree ("student_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_payments_status" ON "payments" USING btree ("status");--> statement-breakpoint
