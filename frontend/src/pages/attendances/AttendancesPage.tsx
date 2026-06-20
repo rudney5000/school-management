@@ -14,11 +14,13 @@ import {selectActiveTab} from "@entities/attendances";
 import {format} from "date-fns";
 import {useDateLocale} from "@shared/lib/date";
 import {endOfMonth} from "date-fns/endOfMonth";
+import {useTranslation} from "@shared/lib";
 
 const ACCENT = "#1755EC"
 
 export default function AttendancePage() {
     const dateLocale = useDateLocale()
+    const { t } = useTranslation()
     const now = new Date()
     const dispatch = useDispatch()
     const { subSchoolId } = useParams({ strict: false })
@@ -91,18 +93,13 @@ export default function AttendancePage() {
             <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
                 <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 sm:px-6 py-4 border-b border-border shrink-0">
                     <div>
-                        <h1 className="text-lg sm:text-xl font-bold text-foreground">Attendance</h1>
-                        <nav className="flex items-center gap-1.5 text-xs text-muted-foreground mt-0.5">
-                            <span className="hover:text-foreground cursor-pointer">Dashboard</span>
-                            <span>/</span>
-                            <span style={{ color: ACCENT }}>Attendance</span>
-                        </nav>
+                        <h1 className="text-lg sm:text-xl font-bold text-foreground">{t('dashboard.attendance.title')}</h1>
                     </div>
 
                     <div className="flex items-center gap-3 w-full sm:w-auto">
                         <div className="flex items-center gap-2 bg-muted rounded-lg px-3 py-2 text-sm text-muted-foreground w-full sm:w-52">
                             <Search className="size-4 shrink-0" />
-                            <span>Search anything</span>
+                            <span>{t('dashboard.attendance.search')}</span>
                         </div>
                     </div>
                 </header>
