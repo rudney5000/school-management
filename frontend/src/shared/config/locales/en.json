@@ -596,6 +596,7 @@
     },
     "attendance": {
       "title": "Attendance",
+      "search": "Search ...",
       "table": {
         "tabs": {
           "students": "Students",

@@ -553,6 +553,7 @@
         }
       },
       "title": "Résumé des Présences",
+      "search": "Rechercher un ...",
       "overview": {
         "title": "Aperçu des présences",
         "periods": {

@@ -508,6 +508,7 @@
     },
     "attendance": {
       "title": "Посещаемость",
+      "search": "Поиск ...",
       "table": {
         "tabs": {
           "students": "Ученики",
