@@ -5,21 +5,23 @@ import { LanguageSwitcher } from '@/features/change-language'
 import { SchoolSwitcher } from '@/features/school/school-switcher/ui/SchoolSwitcher'
 import { UserNav } from '@/features/user/user-menu/ui/UserNav'
 import { ThemeToggle } from '@/features/theme-toggle/ui/ThemeToggle'
+import {useDateLocale} from "@shared/lib/date";
+import {format} from "date-fns";
 
 export function Header() {
     const { t } = useTranslation()
+    const dateLocale = useDateLocale()
 
-    const today = new Intl.DateTimeFormat(undefined, {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-    }).format(new Date())
+    const today = format(new Date(), 'PPPP', {
+        locale: dateLocale,
+    })
 
     const getGreeting = () => {
         const hour = new Date().getHours()
+
         if (hour < 12) return t('dashboard.greeting.morning')
         if (hour < 18) return t('dashboard.greeting.afternoon')
+
         return t('dashboard.greeting.evening')
     }
 
