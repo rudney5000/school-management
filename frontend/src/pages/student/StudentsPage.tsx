@@ -17,7 +17,6 @@ import {
 } from '@shared/ui'
 import {
     CustomDataTable,
-    SelectionCheckbox,
     type StatCardItem,
 } from '@shared/ui/data-table'
 import {
@@ -35,6 +34,7 @@ import { cn, useTranslation } from '@shared/lib'
 import { useNavigate, useParams } from '@tanstack/react-router'
 import i18n from '@app/i18n/i18n'
 import { getInitials } from '@shared/lib/getInitial'
+import {SelectionCheckbox} from "@shared/ui/data-table/SelectionCheckbox";
 
 const StudentsPage = () => {
     const [isCreateOpen, setIsCreateOpen] = React.useState(false)

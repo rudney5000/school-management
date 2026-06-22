@@ -1,4 +1,3 @@
-export * from './DataTable'
 export * from './CustomDataTable'
 export * from './panels/EntityOverviewPanel'
 export * from './StatCardsRow'

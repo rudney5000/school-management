@@ -10,7 +10,6 @@ import {
 } from 'lucide-react'
 import {
     CustomDataTable,
-    SelectionCheckbox,
     type StatCardItem
 } from '@shared/ui/data-table'
 import {
@@ -39,6 +38,7 @@ import {
     Button,
     Checkbox
 } from "@shared/ui";
+import {SelectionCheckbox} from "@shared/ui/data-table/SelectionCheckbox";
 
 const ParentsPage = () => {
     const [isCreateOpen, setIsCreateOpen] = React.useState(false)
