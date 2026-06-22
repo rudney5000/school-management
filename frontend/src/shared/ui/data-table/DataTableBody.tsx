@@ -16,6 +16,7 @@ import {
 } from '@/shared/ui'
 import { Button } from '@/shared/ui'
 import { cn } from '@shared/lib/utils'
+import {useTranslation} from "@shared/lib";
 
 interface DataTableBodyProps<TData, TValue> {
     table: Table<TData>
@@ -32,6 +33,8 @@ export function DataTableBody<TData, TValue>({
                                                  selectedRow,
                                                  renderDetailPanel,
 }: DataTableBodyProps<TData, TValue>) {
+    const { t } = useTranslation()
+
     return (
         <div className="flex flex-col xl:flex-row gap-5">
             <div className="flex-[7] min-w-0">
@@ -57,19 +60,25 @@ export function DataTableBody<TData, TValue>({
                                             key={row.id}
                                             data-state={isSelected ? 'selected' : undefined}
                                             className={cn(
-                                                'relative border-b border-zinc-50 cursor-pointer transition-colors h-[72px]',
+                                                'border-b border-zinc-50 cursor-pointer transition-colors h-[72px]',
                                                 isSelected
-                                                    ? 'bg-[#1755EC]/[0.04] hover:bg-[#1755EC]/[0.06] before:absolute before:left-0 before:top-3 before:bottom-3 before:w-1 before:rounded-r-full before:bg-[#1755EC]'
+                                                    ? 'bg-[#1755EC]/[0.04] hover:bg-[#1755EC]/[0.06]'
                                                     : 'hover:bg-zinc-50/80',
                                             )}
                                             onClick={() => onRowClick(row)}
                                         >
-                                            {row.getVisibleCells().map(cell => (
+                                            {row.getVisibleCells().map((cell, idx) => (
                                                 <TableCell
                                                     key={cell.id}
-                                                    className="px-4 py-3 align-middle"
+                                                    className={cn(
+                                                        'px-4 py-3 align-middle',
+                                                        idx === 0 && 'relative',
+                                                    )}
                                                     onClick={e => { if (cell.column.id === 'actions') e.stopPropagation() }}
                                                 >
+                                                    {idx === 0 && isSelected && (
+                                                        <span className="absolute left-0 top-3 bottom-3 w-1 rounded-r-full bg-[#1755EC]" />
+                                                    )}
                                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                                 </TableCell>
                                             ))}
@@ -79,7 +88,7 @@ export function DataTableBody<TData, TValue>({
                             ) : (
                                 <TableRow>
                                     <TableCell colSpan={columns.length} className="h-32 text-center text-zinc-400">
-                                        Aucun résultat trouvé.
+                                        {t('dashboard.common.dataTable.noResults')}
                                     </TableCell>
                                 </TableRow>
                             )}
@@ -87,10 +96,11 @@ export function DataTableBody<TData, TValue>({
                     </UiTable>
                 </div>
 
-                {/* Pagination */}
                 <div className="flex items-center justify-between mt-4 px-1">
                     <span className="text-xs text-zinc-400">
-                        {table.getFilteredRowModel().rows.length} résultat(s)
+                        {t('dashboard.common.dataTable.results', {
+                            count: table.getFilteredRowModel().rows.length,
+                        })}
                     </span>
                     <div className="flex items-center gap-1">
                         {Array.from({ length: table.getPageCount() }, (_, i) => i + 1)

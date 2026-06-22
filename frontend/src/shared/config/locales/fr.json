@@ -598,6 +598,15 @@
         "completion": "Progression",
         "attendance": "Présence",
         "attendancePeriod": "Période de présence"
+      },
+      "dataTable": {
+        "search": "Rechercher...",
+        "filter": "Filtrer",
+        "status": "Statut",
+        "noResults": "Aucun résultat trouvé.",
+        "results": "{{count}} résultat(s)",
+        "loading": "Chargement...",
+        "error": "Une erreur est survenue"
       }
     },
     "events": {

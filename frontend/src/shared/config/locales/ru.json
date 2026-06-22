@@ -575,6 +575,15 @@
         "completion": "Прогресс",
         "attendance": "Посещаемость",
         "attendancePeriod": "Период посещаемости"
+      },
+      "dataTable": {
+        "search": "Поиск...",
+        "filter": "Фильтр",
+        "status": "Статус",
+        "noResults": "Результатов не найдено.",
+        "results": "{{count}} результат(ов)",
+        "loading": "Загрузка...",
+        "error": "Произошла ошибка"
       }
     },
     "events": {

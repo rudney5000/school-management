@@ -1,6 +1,7 @@
 import { SlidersHorizontal } from 'lucide-react'
 import { Button } from '@/shared/ui'
 import { cn } from '@shared/lib/utils'
+import {useTranslation} from "@shared/lib";
 
 type DataTableFilter = { id: string; label: string; value: unknown }
 
@@ -16,11 +17,14 @@ export function DataTableFilters({
                                      onFilterChange
 }: DataTableFiltersProps) {
     if (!filters.length) return null
+    const { t } = useTranslation()
 
     return (
         <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-white border border-zinc-100 p-3 shadow-sm animate-in fade-in slide-in-from-top-1 duration-200">
             <SlidersHorizontal className="h-4 w-4 text-zinc-400 ml-1" />
-            <span className="text-xs text-zinc-500 mr-2">Statut :</span>
+            <span className="text-xs text-zinc-500 mr-2">
+                {t('dashboard.common.dataTable.status')} :
+            </span>
             {filters.map(filter => (
                 <Button
                     key={filter.id}

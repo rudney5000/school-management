@@ -664,6 +664,15 @@
         "completion": "Completion",
         "attendance": "Attendance",
         "attendancePeriod": "Attendance period"
+      },
+      "dataTable": {
+        "search": "Search...",
+        "filter": "Filter",
+        "status": "Status",
+        "noResults": "No results found.",
+        "results": "{{count}} result(s)",
+        "loading": "Loading...",
+        "error": "An error occurred"
       }
     }
   },

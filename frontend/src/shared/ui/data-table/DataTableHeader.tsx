@@ -2,6 +2,7 @@ import type {ReactNode} from "react";
 import { Search, Filter } from 'lucide-react'
 import { Button, Input } from '@/shared/ui'
 import type { Table } from '@tanstack/react-table'
+import {useTranslation} from "@shared/lib";
 
 interface DataTableHeaderProps<TData> {
     table: Table<TData>
@@ -22,6 +23,9 @@ export function DataTableHeader<TData>({
                                            onToggleFilters,
                                            children,
 }: DataTableHeaderProps<TData>) {
+
+    const { t } = useTranslation()
+
     return (
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div className="min-w-0">
@@ -32,7 +36,7 @@ export function DataTableHeader<TData>({
                 <div className="relative w-full sm:w-56 lg:w-64">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
                     <Input
-                        placeholder={searchPlaceholder ?? 'Rechercher...'}
+                        placeholder={searchPlaceholder ?? t('dashboard.common.dataTable.search')}
                         value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ''}
                         onChange={e => table.getColumn(searchKey)?.setFilterValue(e.target.value)}
                         className="pl-9 h-10 rounded-2xl bg-white border-zinc-200/80 shadow-sm focus-visible:ring-[#1755EC]/20"
@@ -44,7 +48,7 @@ export function DataTableHeader<TData>({
                     onClick={onToggleFilters}
                 >
                     <Filter className="h-4 w-4 text-zinc-500" />
-                    Filtrer
+                    {t('dashboard.common.dataTable.filter')}
                 </Button>
                 {children}
             </div>

@@ -508,6 +508,15 @@
         "completion": "Avancement",
         "attendance": "Présence",
         "attendancePeriod": "Période ya présence"
+      },
+      "dataTable": {
+        "search": "Koluka...",
+        "filter": "Kokata",
+        "status": "État",
+        "noResults": "Ezalí te.",
+        "results": "{{count}} résultat(s)",
+        "loading": "Kozela...",
+        "error": "Likambo ezalí"
       }
     },
     "events": {
