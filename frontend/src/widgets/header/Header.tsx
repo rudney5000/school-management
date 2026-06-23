@@ -1,4 +1,4 @@
-import { Bell, Calendar, Search } from 'lucide-react'
+import { Bell, Calendar, Menu, Search } from 'lucide-react'
 import { useTranslation } from '@/shared/lib/useTranslation'
 import { Button, Input } from '@/shared/ui'
 import { LanguageSwitcher } from '@/features/change-language'
@@ -8,7 +8,11 @@ import { ThemeToggle } from '@/features/theme-toggle/ui/ThemeToggle'
 import {useDateLocale} from "@shared/lib/date";
 import {format} from "date-fns";
 
-export function Header() {
+type HeaderProps = {
+    onMenuClick?: () => void
+}
+
+export function Header({ onMenuClick }: HeaderProps) {
     const { t } = useTranslation()
     const dateLocale = useDateLocale()
 
@@ -26,8 +30,17 @@ export function Header() {
     }
 
     return (
-        <header className="sticky top-0 z-20 flex items-center justify-between h-16 px-6 lg:px-8 bg-white/80 backdrop-blur-md border-b border-zinc-100/80">
-            <div className="flex items-center gap-5 min-w-0">
+        <header className="sticky top-0 z-20 flex items-center justify-between h-16 px-4 lg:px-6 lg:px-8 bg-white/80 backdrop-blur-md border-b border-zinc-100/80">
+            <div className="flex items-center gap-3 lg:gap-5 min-w-0">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="lg:hidden h-9 w-9 rounded-xl text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100"
+                    onClick={onMenuClick}
+                    aria-label="Menu"
+                >
+                    <Menu className="h-5 w-5" />
+                </Button>
                 <SchoolSwitcher />
 
                 <div className="hidden sm:block h-8 w-px bg-zinc-200 shrink-0" />

@@ -1,8 +1,7 @@
-import {useState} from "react";
 import { useRouterState } from '@tanstack/react-router'
 import { cn } from '@shared/lib/utils'
 import { navByRole, type NavGroup } from './nav-items'
-import {ChevronLeft, School} from 'lucide-react'
+import {ChevronLeft, School, X} from 'lucide-react'
 import { useTranslation } from '@shared/lib/useTranslation'
 import type { UserRole } from '@features/auth/model/dto/RegisterDto'
 import { getInitials } from '@shared/lib/getInitial'
@@ -11,7 +10,8 @@ import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
-    TooltipTrigger
+    TooltipTrigger,
+    Button
 } from '@shared/ui'
 
 type SidebarProps = {
@@ -28,6 +28,9 @@ type SidebarProps = {
         students: number
         term: string
     }
+    collapsed?: boolean
+    onToggle?: () => void
+    isMobile?: boolean
 }
 
 export function Sidebar({
@@ -36,11 +39,13 @@ export function Sidebar({
                             userEmail,
                             liveClass,
                             stats,
+                            collapsed = false,
+                            onToggle,
+                            isMobile = false,
                         }: SidebarProps) {
     const { t, locale } = useTranslation()
     const routerState = useRouterState()
     const currentPath = routerState.location.pathname
-    const [collapsed, setCollapsed] = useState(false)
 
     const groups: NavGroup[] = navByRole[role]
 
@@ -50,7 +55,9 @@ export function Sidebar({
                 className={cn(
                     'flex flex-col shrink-0 h-screen sticky top-0 bg-gradient-to-b from-[#1755EC] to-[#4F46E5]',
                     'transition-[width] duration-250 ease-in-out overflow-hidden',
-                    collapsed ? 'w-[64px]' : 'w-[260px]'
+                    'lg:relative z-30',
+                    isMobile ? (collapsed ? '-translate-x-full' : 'translate-x-0 fixed') : '',
+                    isMobile ? 'w-[260px]' : (collapsed ? 'w-[64px]' : 'w-[260px]')
                 )}
             >
                 <div className="relative flex items-center gap-3 px-4 h-16 shrink-0 border-b border-white/10">
@@ -72,23 +79,35 @@ export function Sidebar({
                         </span>
                     </div>
 
-                    <button
-                        onClick={() => setCollapsed((v) => !v)}
-                        className={cn(
-                            'absolute right-1 top-1/2 -translate-y-1/2 z-10',
-                            'w-6 h-6 rounded-full bg-[#1755EC] border border-white/30',
-                            'flex items-center justify-center',
-                            'hover:bg-[#1245cc] transition-colors'
-                        )}
-                        aria-label={collapsed ? 'Déplier la sidebar' : 'Réduire la sidebar'}
-                    >
-                        <ChevronLeft
+                    {isMobile ? (
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={onToggle}
+                            className="absolute right-1 top-1/2 -translate-y-1/2 z-10 h-6 w-6 rounded-full bg-[#1755EC] border border-white/30 text-white hover:bg-[#1245cc]"
+                            aria-label="Fermer la sidebar"
+                        >
+                            <X className="w-3.5 h-3.5" />
+                        </Button>
+                    ) : (
+                        <button
+                            onClick={onToggle}
                             className={cn(
-                                'w-3.5 h-3.5 text-white transition-transform duration-250',
-                                collapsed && 'rotate-180'
+                                'absolute right-1 top-1/2 -translate-y-1/2 z-10',
+                                'w-6 h-6 rounded-full bg-[#1755EC] border border-white/30',
+                                'flex items-center justify-center',
+                                'hover:bg-[#1245cc] transition-colors'
                             )}
-                        />
-                    </button>
+                            aria-label={collapsed ? 'Déplier la sidebar' : 'Réduire la sidebar'}
+                        >
+                            <ChevronLeft
+                                className={cn(
+                                    'w-3.5 h-3.5 text-white transition-transform duration-250',
+                                    collapsed && 'rotate-180'
+                                )}
+                            />
+                        </button>
+                    )}
                 </div>
 
                 <nav className="flex-1 overflow-y-auto px-2.5 py-2 space-y-5 scrollbar-thin">
