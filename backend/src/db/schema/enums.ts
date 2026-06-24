@@ -69,3 +69,19 @@ export const attendanceTargetEnum = pgEnum(
         'teacher'
     ]
 );
+
+export const examTypeEnum = pgEnum(
+    "exam_type",
+    ["quiz", "midterm", "final", "homework", "oral"
+    ])
+export const examStatusEnum = pgEnum(
+    "exam_status",
+    ["scheduled", "ongoing", "completed", "cancelled"
+    ])
+
+export const gradeTypeEnum = pgEnum('grade_type', [
+    'homework',
+    'participation',
+    'project',
+    'oral',
+])
