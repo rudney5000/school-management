@@ -1,7 +1,9 @@
 export * from './country';
 export * from './department';
 export * from './city';
+export * from './academicPeriod';
 export * from './district';
+export * from './grades'
 export * from './subSchool';
 export * from './teacher';
 export * from './workers';
@@ -10,6 +12,7 @@ export * from './courses';
 export * from './classes';
 export * from './enrollments';
 export * from './events';
+export * from './exam'
 export * from './schedule';
 export * from './attendances';
 export * from './finance';

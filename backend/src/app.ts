@@ -26,6 +26,9 @@ import {
   studentAttendanceRouter,
   teacherAttendanceRouter
 } from "@/modules/attendances/attendances.router";
+import {examsRouter} from "@/modules/exams/exams.router";
+import {academicPeriodsRouter} from "@/modules/academic-periods/academic-periods.router";
+import {gradesRouter} from "@/modules/grades/grades.router";
 
 export function createApp(): express.Application {
   const app = express();
@@ -62,6 +65,10 @@ export function createApp(): express.Application {
   app.use('/api/events', eventsRouter)
   app.use('/api/attendances/students', studentAttendanceRouter);
   app.use('/api/attendances/teachers', teacherAttendanceRouter);
+  app.use('/api/exams', examsRouter);
+  app.use('/api/academic-periods', academicPeriodsRouter)
+  app.use('/api/grades', gradesRouter)
+
 
   app.use(errorHandler);
 
