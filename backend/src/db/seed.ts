@@ -16,9 +16,10 @@ import {
     parents,
     classes,
     parentStudents,
-    courses, schedules, events, studentAttendances, teacherAttendances,
+    courses, schedules, events, studentAttendances, teacherAttendances, grades, academicPeriods,
 } from './schema';
 import {and, eq} from 'drizzle-orm';
+import {examResults, exams} from "@/db/schema/exam";
 
 async function seed() {
     console.log('Seeding...');
@@ -636,6 +637,266 @@ async function seed() {
 
     console.log(`✓ ${teacherAttRows.length} teacher attendances insérées`);
 
+    const [mathCourseForExam] = await db.select().from(courses)
+        .where(and(eq(courses.code, 'MATH-01'), eq(courses.subSchoolId, subSchool.id)))
+
+    const [frCourse] = await db.select().from(courses)
+        .where(and(eq(courses.code, 'FR-01'), eq(courses.subSchoolId, subSchool.id)))
+
+    const [pcCourse] = await db.select().from(courses)
+        .where(and(eq(courses.code, 'PC-01'), eq(courses.subSchoolId, subSchool.id)))
+
+    const [classA] = await db.select().from(classes)
+        .where(and(eq(classes.name, '1ère Année Secondaire A'), eq(classes.subSchoolId, subSchool.id)))
+
+    const [classB] = await db.select().from(classes)
+        .where(and(eq(classes.name, '1ère Année Secondaire B'), eq(classes.subSchoolId, subSchool.id)))
+
+    const [teacherForExam] = await db.select().from(teachers)
+        .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'))
+
+    const [teacherUser] = await db.select().from(users)
+        .where(eq(users.email, 'jean.muamba@saintjoseph.cd'))
+
+    const sampleExams = [
+        {
+            title: 'Interrogation — Algèbre linéaire',
+            type: 'quiz' as const,
+            status: 'completed' as const,
+            courseId: mathCourseForExam.id,
+            classId: classA.id,
+            subSchoolId: subSchool.id,
+            examDate: new Date('2024-10-10T08:00:00Z'),
+            durationMinutes: 30,
+            maxScore: '10',
+            coefficient: '1',
+            createdBy: teacherUser.id,
+        },
+        {
+            title: 'Examen mi-trimestre — Mathématiques',
+            type: 'midterm' as const,
+            status: 'completed' as const,
+            courseId: mathCourseForExam.id,
+            classId: classA.id,
+            subSchoolId: subSchool.id,
+            examDate: new Date('2024-10-28T08:00:00Z'),
+            durationMinutes: 120,
+            maxScore: '20',
+            coefficient: '2',
+            createdBy: teacherUser.id,
+        },
+        {
+            title: 'Examen final — Mathématiques',
+            type: 'final' as const,
+            status: 'scheduled' as const,
+            courseId: mathCourseForExam.id,
+            classId: classA.id,
+            subSchoolId: subSchool.id,
+            examDate: new Date('2024-11-20T08:00:00Z'),
+            durationMinutes: 180,
+            maxScore: '20',
+            coefficient: '3',
+            createdBy: teacherUser.id,
+        },
+        {
+            title: 'Interrogation — Expression écrite',
+            type: 'quiz' as const,
+            status: 'completed' as const,
+            courseId: frCourse.id,
+            classId: classA.id,
+            subSchoolId: subSchool.id,
+            examDate: new Date('2024-10-08T10:00:00Z'),
+            durationMinutes: 45,
+            maxScore: '10',
+            coefficient: '1',
+            createdBy: teacherUser.id,
+        },
+        {
+            title: 'Devoir maison — Littérature',
+            type: 'homework' as const,
+            status: 'completed' as const,
+            courseId: frCourse.id,
+            classId: classB.id,
+            subSchoolId: subSchool.id,
+            examDate: new Date('2024-10-15T00:00:00Z'),
+            durationMinutes: 60,
+            maxScore: '20',
+            coefficient: '1',
+            createdBy: teacherUser.id,
+        },
+        {
+            title: 'Interrogation orale — Physique',
+            type: 'oral' as const,
+            status: 'ongoing' as const,
+            courseId: pcCourse.id,
+            classId: classA.id,
+            subSchoolId: subSchool.id,
+            examDate: new Date('2024-11-05T09:00:00Z'),
+            durationMinutes: 20,
+            maxScore: '10',
+            coefficient: '1',
+            createdBy: teacherUser.id,
+        },
+    ]
+
+    const insertedExams: (typeof exams.$inferSelect)[] = []
+
+    for (const exam of sampleExams) {
+        const [existing] = await db.select().from(exams)
+            .where(and(
+                eq(exams.title, exam.title),
+                eq(exams.subSchoolId, exam.subSchoolId),
+            ))
+
+        if (!existing) {
+            const [inserted] = await db.insert(exams).values(exam).returning()
+            insertedExams.push(inserted)
+            console.log(`✓ Exam created: ${exam.title}`)
+        } else {
+            insertedExams.push(existing)
+            console.log(`~ Exam already exists: ${exam.title}`)
+        }
+    }
+
+    const completedExams = insertedExams.filter(e => e.status === 'completed')
+    const allStudentsForResults = [student, student2]
+
+    function randomScore(max: number): string {
+        const percent = 0.4 + Math.random() * 0.6
+        return (Math.round(percent * max * 10) / 10).toFixed(1)
+    }
+
+    for (const exam of completedExams) {
+        for (const s of allStudentsForResults) {
+            const [existing] = await db.select().from(examResults)
+                .where(and(
+                    eq(examResults.examId, exam.id),
+                    eq(examResults.studentId, s.id),
+                ))
+
+            if (!existing) {
+                await db.insert(examResults).values({
+                    examId: exam.id,
+                    studentId: s.id,
+                    score: randomScore(Number(exam.maxScore)),
+                    comment: null,
+                    gradedBy: teacherUser.id,
+                    gradedAt: new Date(),
+                })
+                console.log(`✓ Result: ${s.firstName} ${s.lastName} → ${exam.title}`)
+            } else {
+                console.log(`~ Result already exists: ${s.firstName} ${s.lastName} → ${exam.title}`)
+            }
+        }
+    }
+
+    const samplePeriods = [
+        {
+            subSchoolId: subSchool.id,
+            name: 'Trimestre 1',
+            type: 'trimester' as const,
+            startDate: new Date('2024-09-02'),
+            endDate: new Date('2024-11-30'),
+            isCurrent: false,
+        },
+        {
+            subSchoolId: subSchool.id,
+            name: 'Trimestre 2',
+            type: 'trimester' as const,
+            startDate: new Date('2024-12-01'),
+            endDate: new Date('2025-02-28'),
+            isCurrent: true,
+        },
+        {
+            subSchoolId: subSchool.id,
+            name: 'Trimestre 3',
+            type: 'trimester' as const,
+            startDate: new Date('2025-03-01'),
+            endDate: new Date('2025-06-30'),
+            isCurrent: false,
+        },
+    ]
+
+    const insertedPeriods: (typeof academicPeriods.$inferSelect)[] = []
+
+    for (const period of samplePeriods) {
+        const [existing] = await db.select().from(academicPeriods)
+            .where(and(
+                eq(academicPeriods.name, period.name),
+                eq(academicPeriods.subSchoolId, period.subSchoolId),
+            ))
+
+        if (!existing) {
+            const [inserted] = await db.insert(academicPeriods).values(period).returning()
+            insertedPeriods.push(inserted)
+            console.log(`✓ Academic period created: ${period.name}`)
+        } else {
+            insertedPeriods.push(existing)
+            console.log(`~ Academic period already exists: ${period.name}`)
+        }
+    }
+
+    const trimestre1 = insertedPeriods.find(p => p.name === 'Trimestre 1')!
+
+    const [frCourseForGrade] = await db.select().from(courses)
+        .where(and(eq(courses.code, 'FR-01'), eq(courses.subSchoolId, subSchool.id)))
+
+    const [classAForGrade] = await db.select().from(classes)
+        .where(and(eq(classes.name, '1ère Année Secondaire A'), eq(classes.subSchoolId, subSchool.id)))
+
+    const allStudentsForGrades = [student, student2]
+
+    const gradeTypes = ['homework', 'participation', 'project', 'oral'] as const
+
+    const sampleGrades = allStudentsForGrades.flatMap(s =>
+        gradeTypes.flatMap(gradeType => [
+            {
+                subSchoolId: subSchool.id,
+                studentId:        s.id,
+                courseId:         mathCourseForExam.id,
+                classId:          classAForGrade.id,
+                academicPeriodId: trimestre1.id,
+                gradeType,
+                score:            String((Math.round((8 + Math.random() * 12) * 10) / 10).toFixed(1)),
+                maxScore:         '20',
+                coefficient:      '1',
+                comment:          null,
+                gradedBy:         teacherUser.id,
+                gradedAt:         new Date(),
+            },
+            {
+                subSchoolId: subSchool.id,
+                studentId:        s.id,
+                courseId:         frCourseForGrade.id,
+                classId:          classAForGrade.id,
+                academicPeriodId: trimestre1.id,
+                gradeType,
+                score:            String((Math.round((8 + Math.random() * 12) * 10) / 10).toFixed(1)),
+                maxScore:         '20',
+                coefficient:      '1',
+                comment:          null,
+                gradedBy:         teacherUser.id,
+                gradedAt:         new Date(),
+            },
+        ])
+    )
+
+    for (const g of sampleGrades) {
+        const [existing] = await db.select().from(grades)
+            .where(and(
+                eq(grades.studentId, g.studentId),
+                eq(grades.courseId, g.courseId),
+                eq(grades.academicPeriodId, g.academicPeriodId),
+                eq(grades.gradeType, g.gradeType),
+            ))
+
+        if (!existing) {
+            await db.insert(grades).values(g)
+            console.log(`✓ Grade created: ${g.gradeType} → student ${g.studentId}`)
+        } else {
+            console.log(`~ Grade already exists: ${g.gradeType} → student ${g.studentId}`)
+        }
+    }
 
     console.log('\n✓ Seed completed. Test credentials (password: password123):');
     console.log('  Admin   → admin@saintjoseph.cd');
