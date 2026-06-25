@@ -9,7 +9,7 @@ import {
 type CustomDrawerProps = {
     drawerTitle?: string;
     drawerDescription?: string
-    handleOpen?: (e: any) => void;
+    handleOpen?: (open: boolean) => void;
     isOpen?: boolean
     children?: React.ReactNode
     direction?: "top" | "bottom" | "left" | "right"
