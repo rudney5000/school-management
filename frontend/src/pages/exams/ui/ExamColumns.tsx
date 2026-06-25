@@ -83,7 +83,6 @@ export function getExamColumns({
             id: "actions",
             header: "",
             cell: ({ row }) => {
-                // const exam = row.original
                 return (
                     <div className="flex items-center gap-1">
                         <ActionsComponent<Exam>
@@ -92,31 +91,6 @@ export function getExamColumns({
                             onDeleteAction={() => onDelete(row.original)}
                             onViewAction={() => onViewGrades(row.original)}
                         />
-                        {/*<Button*/}
-                        {/*    variant="ghost"*/}
-                        {/*    size="icon"*/}
-                        {/*    className="size-7"*/}
-                        {/*    onClick={(e) => { e.stopPropagation(); onViewGrades(exam) }}*/}
-                        {/*    disabled={exam.status === "scheduled"}*/}
-                        {/*>*/}
-                        {/*    <Eye className="size-3.5" />*/}
-                        {/*</Button>*/}
-                        {/*<Button*/}
-                        {/*    variant="ghost"*/}
-                        {/*    size="icon"*/}
-                        {/*    className="size-7"*/}
-                        {/*    onClick={(e) => { e.stopPropagation(); onEdit(exam) }}*/}
-                        {/*>*/}
-                        {/*    <Pencil className="size-3.5" />*/}
-                        {/*</Button>*/}
-                        {/*<Button*/}
-                        {/*    variant="ghost"*/}
-                        {/*    size="icon"*/}
-                        {/*    className="size-7 text-destructive hover:text-destructive"*/}
-                        {/*    onClick={(e) => { e.stopPropagation(); onDelete(exam) }}*/}
-                        {/*>*/}
-                        {/*    <Trash2 className="size-3.5" />*/}
-                        {/*</Button>*/}
                     </div>
                 )
             },

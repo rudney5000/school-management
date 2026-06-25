@@ -29,6 +29,10 @@ import {getExamColumns} from "@/pages/exams/ui/ExamColumns";
 import {ExamTable} from "@/pages/exams/ui/ExamTable";
 import {ExamTableToolbar} from "@/pages/exams/ui/ExamTableToolbar";
 import {useCourses} from "@entities/courses";
+import {
+    AddExamForm, DeleteExamAlert,
+    EditExamForm
+} from "@features/exams";
 
 const tabs = [
     { value: 'exams', label: 'Examens', icon: CalendarDays },
@@ -131,16 +135,38 @@ export function ExamPage() {
                                     activeFilter={activeFilter}
                                     onFilterChange={setActiveFilter}
                                     statusFilters={statusFilters}
+                                    onNew={() => setFormOpen(true)}
                                 />
                             )}
                         />
+                        <AddExamForm
+                            isOpen={formOpen}
+                            handleOpen={setFormOpen}
+                            handleSuccess={() => setFormOpen(false)}
+                            submitButtonLabel={t('common.add')}
+                        />
+
+                        <EditExamForm
+                            exam={examToEdit}
+                            isOpen={!!examToEdit}
+                            handleOpen={(open) => { if (!open) setExamToEdit(undefined) }}
+                            handleSuccess={() => setExamToEdit(undefined)}
+                        />
+                        {examToDelete && (
+                            <DeleteExamAlert
+                                exam={examToDelete}
+                                isOpen={!!examToDelete}
+                                onOpenChange={(open) => { if (!open) setExamToDelete(undefined) }}
+                                handleSuccess={() => setExamToDelete(undefined)}
+                            />
+                        )}
                     </TabsContent>
 
                     <TabsContent value="grade-entry">
                         {examToGrade ? (
                             <GradeEntryGrid
                                 examId={examToGrade.id}
-                                onClose={() => setExamToGrade(null)}
+                                onClose={() => setExamToGrade(undefined)}
                             />
                         ) : (
                             <div

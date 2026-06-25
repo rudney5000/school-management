@@ -26,6 +26,7 @@ export function ExamTableToolbar({
                                      onSearchChange,
                                      activeFilter,
                                      onFilterChange,
+                                     onNew,
                                      statusFilters
 }: ExamTableToolbarProps) {
     const [search, setSearch] = useState('')
@@ -62,7 +63,7 @@ export function ExamTableToolbar({
                         </Button>
                     ))}
                 </div>
-                <Button size="sm" className="h-9">
+                <Button size="sm" onClick={onNew} className="h-9">
                     <Plus className="size-4"/>
                     Nouvel examen
                 </Button>
