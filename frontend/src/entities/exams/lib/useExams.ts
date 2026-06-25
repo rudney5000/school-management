@@ -10,7 +10,6 @@ export const useExams = (subSchoolId?: string) => {
         queryKey: ['exams', subSchoolId],
         enabled: !!subSchoolId,
         queryFn: async (): Promise<Exam[]> => {
-            console.log('subSchoolId:', subSchoolId)
             const response = await examApi.getAll(subSchoolId ? { subSchoolId } : undefined)
 
             if(!response.IsSuccess) {

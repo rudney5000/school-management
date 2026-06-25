@@ -11,9 +11,9 @@ export const createExamSchema = z.object({
     classId: z.string().uuid(getErrorMessage('validation.invalidUuid')),
     subSchoolId: z.string().uuid(getErrorMessage('validation.invalidUuid')),
     examDate: z.string().min(1, getErrorMessage('validation.enrollmentDateRequired')),
-    durationMinutes: z.coerce.number().int().positive().default(60),
-    maxScore: z.coerce.number().positive().default(20).transform(v => String(v)),
-    coefficient: z.coerce.number().positive().default(1).transform(v => String(v)),
+    durationMinutes: z.coerce.number().int().positive(),
+    maxScore: z.coerce.number().positive(),
+    coefficient: z.coerce.number().positive(),
 })
 
 export const updateExamSchema = createExamSchema
