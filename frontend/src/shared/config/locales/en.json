@@ -641,6 +641,43 @@
         }
       }
     },
+    "exams": {
+      "title": "Exams",
+      "subtitle": "Manage your exams and grades",
+      "searchPlaceholder": "Search an exam...",
+      "filters": {
+        "all": "All"
+      },
+      "columns": {
+        "title": "Exam",
+        "course": "Course",
+        "date": "Date",
+        "type": "Type",
+        "status": "Status"
+      },
+      "types": {
+        "quiz": "Quiz",
+        "midterm": "Midterm",
+        "final": "Final",
+        "homework": "Homework",
+        "oral": "Oral"
+      },
+      "statuses": {
+        "scheduled": "Scheduled",
+        "ongoing": "Ongoing",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "stats": {
+        "total": "Total",
+        "completed": "Completed",
+        "scheduled": "Scheduled",
+        "average": "Class average"
+      },
+      "actions": {
+        "new": "New exam"
+      }
+    },
     "common": {
       "cancel": "Cancel",
       "confirm": "Confirm",
@@ -687,5 +724,4 @@
     "settings": "Settings",
     "logout": "Logout"
   }
-
 }

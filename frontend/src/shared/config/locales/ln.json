@@ -641,6 +641,43 @@
           "thisYear": "Mobu oyo"
         }
       }
+    },
+    "exams": {
+      "title": "Bilembo ya masomo",
+      "subtitle": "Talela bilembo na manota ya bana",
+      "searchPlaceholder": "Koluka examen...",
+      "filters": {
+        "all": "Nyonso"
+      },
+      "columns": {
+        "title": "Examen",
+        "course": "Cours",
+        "date": "Mokolo",
+        "type": "Lolenge",
+        "status": "État"
+      },
+      "types": {
+        "quiz": "Motuna",
+        "midterm": "Ya kati",
+        "final": "Ya suka",
+        "homework": "Mosala ya ndako",
+        "oral": "Ya monoko"
+      },
+      "statuses": {
+        "scheduled": "Etiamé",
+        "ongoing": "Ezali kokende",
+        "completed": "Esili",
+        "cancelled": "Esilisami"
+      },
+      "stats": {
+        "total": "Nyonso",
+        "completed": "Esili",
+        "scheduled": "Etiamé",
+        "average": "Note ya mombongo"
+      },
+      "actions": {
+        "new": "Examen ya sika"
+      }
     }
   },
   "theme": {

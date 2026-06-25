@@ -553,6 +553,43 @@
         }
       }
     },
+    "exams": {
+      "title": "Экзамены",
+      "subtitle": "Управляйте экзаменами и оценками",
+      "searchPlaceholder": "Найти экзамен...",
+      "filters": {
+        "all": "Все"
+      },
+      "columns": {
+        "title": "Экзамен",
+        "course": "Курс",
+        "date": "Дата",
+        "type": "Тип",
+        "status": "Статус"
+      },
+      "types": {
+        "quiz": "Тест",
+        "midterm": "Промежуточный",
+        "final": "Финальный",
+        "homework": "Домашнее задание",
+        "oral": "Устный"
+      },
+      "statuses": {
+        "scheduled": "Запланирован",
+        "ongoing": "Идёт",
+        "completed": "Завершён",
+        "cancelled": "Отменён"
+      },
+      "stats": {
+        "total": "Всего",
+        "completed": "Завершено",
+        "scheduled": "Запланировано",
+        "average": "Средний балл"
+      },
+      "actions": {
+        "new": "Новый экзамен"
+      }
+    },
     "common": {
       "cancel": "Отмена",
       "confirm": "Подтвердить",

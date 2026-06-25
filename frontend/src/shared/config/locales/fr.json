@@ -576,6 +576,129 @@
         }
       }
     },
+    "exams": {
+      "title": "Examens",
+      "subtitle": "Gérez vos examens et les notes",
+      "searchPlaceholder": "Rechercher un examen...",
+      "filters": {
+        "all": "Tous"
+      },
+      "columns": {
+        "title": "Examen",
+        "course": "Cours",
+        "date": "Date",
+        "type": "Type",
+        "status": "Statut"
+      },
+      "types": {
+        "quiz": "Quiz",
+        "midterm": "Partiel",
+        "final": "Final",
+        "homework": "Devoir",
+        "oral": "Oral"
+      },
+      "statuses": {
+        "scheduled": "Planifié",
+        "ongoing": "En cours",
+        "completed": "Terminé",
+        "cancelled": "Annulé"
+      },
+      "stats": {
+        "total": "Total",
+        "completed": "Terminés",
+        "scheduled": "Planifiés",
+        "average": "Moyenne de classe"
+      },
+      "actions": {
+        "new": "Nouvel examen"
+      },
+      "tabs": {
+        "exams": "Examens",
+        "gradeEntry": "Saisie des notes",
+        "results": "Résultats / Bulletins",
+        "statistics": "Statistiques"
+      },
+      "gradeEntry": {
+        "title": "Saisie des notes",
+        "selectExam": "Sélectionnez un examen dans l'onglet \"Examens\" pour saisir les notes",
+        "unsavedChanges": "Modifications non sauvegardées",
+        "save": "Sauvegarder",
+        "close": "Fermer",
+        "student": "Élève",
+        "score": "Note",
+        "percentage": "%",
+        "status": "Statut",
+        "comment": "Commentaire",
+        "pass": "Admis",
+        "fail": "Échoué",
+        "gradedOn": "Noté le",
+        "addComment": "Ajouter un commentaire...",
+        "studentsGraded": "élèves notés",
+        "average": "Moyenne",
+        "loading": "Chargement...",
+        "examNotFound": "Examen non trouvé"
+      },
+      "results": {
+        "title": "Bulletin de résultats",
+        "subtitle": "Aperçu des notes et moyennes par élève",
+        "period": "Période",
+        "allPeriods": "Toutes périodes",
+        "trimester1": "Trimestre 1",
+        "trimester2": "Trimestre 2",
+        "trimester3": "Trimestre 3",
+        "export": "Exporter",
+        "sortBy": "Trier par",
+        "weightedAverage": "Moyenne pondérée",
+        "simpleAverage": "Moyenne simple",
+        "name": "Nom",
+        "rank": "Rang",
+        "student": "Élève",
+        "grades": "Notes",
+        "totalCoefficient": "Coeff. total",
+        "average": "Moyenne",
+        "weightedAvg": "Moy. pond.",
+        "trend": "Tendance",
+        "classAverage": "Moyenne de classe",
+        "bestAverage": "Meilleure moyenne",
+        "passRate": "Taux de réussite",
+        "students": "Élèves",
+        "gradesCount": "notes"
+      },
+      "statistics": {
+        "title": "Statistiques des résultats",
+        "subtitle": "Analyse des performances et distribution des notes",
+        "allExams": "Tous les examens",
+        "comparison": "Comparaison",
+        "none": "Aucune",
+        "byClass": "Par classe",
+        "byPeriod": "Par période",
+        "average": "Moyenne",
+        "median": "Médiane",
+        "passRate": "Taux de réussite",
+        "bestGrade": "Meilleure note",
+        "evaluations": "Évaluations",
+        "distribution": "Distribution des notes",
+        "distributionSubtitle": "Répartition des notes par tranche",
+        "performanceLevels": "Niveaux de performance",
+        "performanceLevelsSubtitle": "Répartition par niveau d'appréciation",
+        "excellent": "Excellent",
+        "veryGood": "Très bien",
+        "good": "Bien",
+        "fair": "Assez bien",
+        "insufficient": "Insuffisant",
+        "examComparison": "Comparaison par examen",
+        "examComparisonSubtitle": "Analyse comparative des performances par examen",
+        "analysis": "Analyse et recommandations",
+        "excellentPerformance": "Performance excellente",
+        "excellentPerformanceDesc": "Le taux de réussite indique une très bonne maîtrise du sujet par les élèves.",
+        "attentionRequired": "Attention requise",
+        "attentionRequiredDesc": "Le taux de réussite suggère des difficultés. Un soutien supplémentaire pourrait être nécessaire.",
+        "goodProgress": "Bonne progression",
+        "goodProgressDesc": "La moyenne avec un bon taux de réussite montre une progression positive.",
+        "noData": "Aucune donnée disponible",
+        "noDataDesc": "Les statistiques seront disponibles après la saisie des notes"
+      }
+    },
     "common": {
       "cancel": "Annuler",
       "confirm": "Confirmer",
