@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import {useParams} from "@tanstack/react-router";
 import { useTranslation } from "@shared/lib"
 import {
     Button,
@@ -17,7 +18,10 @@ import {
     X,
     AlertCircle
 } from "lucide-react"
-import {ExamType, useExam} from "@entities/exams"
+import {
+    ExamType,
+    useExam
+} from "@entities/exams"
 import { useStudents } from "@entities/student"
 import {
     useGrades,
@@ -26,7 +30,6 @@ import {
     GradeType,
     type Grade
 } from "@entities/grades"
-import {useParams} from "@tanstack/react-router";
 
 interface GradeEntryGridProps {
     examId: string
@@ -57,7 +60,6 @@ export function GradeEntryGrid({ examId, onClose }: GradeEntryGridProps) {
     const [studentGrades, setStudentGrades] = useState<StudentGrade[]>([])
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
 
-    // Initialize student grades when data loads
     useEffect(() => {
         if (students.length > 0 && existingGrades.length >= 0) {
             const gradesMap = new Map(existingGrades.map(g => [g.studentId, g]))
@@ -186,7 +188,6 @@ export function GradeEntryGrid({ examId, onClose }: GradeEntryGridProps) {
 
     return (
         <div className="space-y-6">
-            {/* Exam Info Header */}
             <Card>
                 <CardHeader>
                     <div className="flex items-start justify-between">
@@ -224,11 +225,9 @@ export function GradeEntryGrid({ examId, onClose }: GradeEntryGridProps) {
                 </CardHeader>
             </Card>
 
-            {/* Grade Entry Grid */}
             <Card>
                 <CardContent className="p-6">
                     <div className="space-y-4">
-                        {/* Header Row */}
                         <div className="grid grid-cols-12 gap-4 px-4 py-2 bg-muted rounded-lg text-sm font-medium text-muted-foreground">
                             <div className="col-span-4">{t("dashboard.exams.gradeEntry.student")}</div>
                             <div className="col-span-2">{t("dashboard.exams.gradeEntry.score")} / {exam.maxScore}</div>
@@ -237,7 +236,6 @@ export function GradeEntryGrid({ examId, onClose }: GradeEntryGridProps) {
                             <div className="col-span-2">{t("dashboard.exams.gradeEntry.comment")}</div>
                                 </div>
 
-                        {/* Student Rows */}
                         {studentGrades.map((studentGrade) => (
                             <div
                                 key={studentGrade.studentId}
@@ -245,7 +243,6 @@ export function GradeEntryGrid({ examId, onClose }: GradeEntryGridProps) {
                                     studentGrade.isDirty ? "bg-amber-50 border-amber-200" : "bg-card"
                                 }`}
                             >
-                                {/* Student Name */}
                                 <div className="col-span-4 flex items-center">
                                     <div>
                                         <div className="font-medium text-sm">{studentGrade.studentName}</div>
@@ -257,7 +254,6 @@ export function GradeEntryGrid({ examId, onClose }: GradeEntryGridProps) {
                                     </div>
                                 </div>
 
-                                {/* Score Input */}
                                 <div className="col-span-2">
                                     <Input
                                         type="number"
@@ -271,7 +267,6 @@ export function GradeEntryGrid({ examId, onClose }: GradeEntryGridProps) {
                                     />
                                 </div>
 
-                                {/* Percentage */}
                                 <div className="col-span-2 flex items-center text-sm">
                                     {studentGrade.score ? (
                                         <span className={getScoreColor(studentGrade.score, exam.maxScore)}>
@@ -282,12 +277,10 @@ export function GradeEntryGrid({ examId, onClose }: GradeEntryGridProps) {
                                     )}
                                 </div>
 
-                                {/* Status Badge */}
                                 <div className="col-span-2 flex items-center">
                                     {getScoreBadge(studentGrade.score, exam.maxScore)}
                                 </div>
 
-                                {/* Comment */}
                                 <div className="col-span-2">
                                     <Textarea
                                         value={studentGrade.comment}
@@ -301,7 +294,6 @@ export function GradeEntryGrid({ examId, onClose }: GradeEntryGridProps) {
                         ))}
                     </div>
 
-                    {/* Summary Footer */}
                     <div className="mt-6 pt-4 border-t">
                         <div className="flex items-center justify-between text-sm">
                             <div className="text-muted-foreground">
