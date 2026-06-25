@@ -1,6 +1,7 @@
 import {
     useState,
-    useMemo, useEffect
+    useMemo,
+    useEffect
 } from "react"
 import { useTranslation } from "@shared/lib"
 import {
@@ -29,7 +30,10 @@ import {
     TrendingDown,
     Medal
 } from "lucide-react"
-import { useGrades, type Grade } from "@entities/grades"
+import {
+    useGrades,
+    type Grade
+} from "@entities/grades"
 import { useParams } from "@tanstack/react-router"
 import {useClasses} from "@entities/class";
 import {useStudents} from "@entities/student";
@@ -65,8 +69,7 @@ export function ResultsBulletin() {
     })
 
     const { data: students = [] } = useStudents(subSchoolId)
-    // const { data: exams = [], isLoading: examsLoading } = useExams(subSchoolId)
-    
+
     const [selectedPeriod, setSelectedPeriod] = useState("all")
     const [sortBy, setSortBy] = useState<"average" | "weighted" | "name">("weighted")
 
@@ -128,13 +131,11 @@ export function ResultsBulletin() {
             }
         })
 
-        // Calculate ranks
         const sorted = [...results].sort((a, b) => b.weightedAverage - a.weightedAverage)
         sorted.forEach((result, index) => { result.rank = index + 1 })
         return sorted
     }, [grades])
 
-    // Sort results
     const sortedResults = useMemo(() => {
         const sorted = [...studentResults]
         switch (sortBy) {
@@ -149,7 +150,6 @@ export function ResultsBulletin() {
         }
     }, [studentResults, sortBy])
 
-    // Calculate class statistics
     const classStats = useMemo(() => {
         if (studentResults.length === 0) return null
 
@@ -201,7 +201,6 @@ export function ResultsBulletin() {
 
     return (
         <div className="space-y-6">
-            {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
                     <h2 className="text-2xl font-bold">{t("dashboard.exams.results.title")}</h2>
@@ -242,7 +241,6 @@ export function ResultsBulletin() {
                 </div>
             </div>
 
-            {/* Class Statistics Cards */}
             {classStats && (
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <Card>
@@ -272,7 +270,6 @@ export function ResultsBulletin() {
                 </div>
             )}
 
-            {/* Results Table */}
             <Card>
                 <CardHeader>
                     <div className="flex items-center justify-between">
