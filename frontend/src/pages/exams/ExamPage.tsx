@@ -1,4 +1,7 @@
-import { useState } from "react"
+import {
+    useMemo,
+    useState
+} from "react"
 import {useParams} from "@tanstack/react-router";
 import {
     BarChart3,
@@ -13,16 +16,19 @@ import {
     Tabs,
     TabsContent
 } from "@/shared/ui"
-import {ExamsTable} from "@/pages/exams/ui/ExamsTable";
 import {GradeEntryGrid} from "@/pages/exams/ui/GradeEntryGrid";
 import {ResultsBulletin} from "@/pages/exams/ui/ResultsBulletin";
 import {StatisticsDashboard} from "@/pages/exams/ui/StatisticsDashboard";
 import {
     type Exam,
-    useDeleteExam,
+    ExamStatus,
     useExams
 } from "@entities/exams";
 import {ExamStats} from "@/pages/exams/ui/ExamStats";
+import {getExamColumns} from "@/pages/exams/ui/ExamColumns";
+import {ExamTable} from "@/pages/exams/ui/ExamTable";
+import {ExamTableToolbar} from "@/pages/exams/ui/ExamTableToolbar";
+import {useCourses} from "@entities/courses";
 
 const tabs = [
     { value: 'exams', label: 'Examens', icon: CalendarDays },
@@ -31,15 +37,43 @@ const tabs = [
     { value: 'statistics', label: 'Statistiques', icon: BarChart3 },
 ] as const
 
+const statusFilters: { id: ExamStatus | 'all'; label: string }[] = [
+    { id: 'all',                  label: 'Tous' },
+    { id: ExamStatus.Scheduled,   label: 'Planifiés' },
+    { id: ExamStatus.Ongoing,     label: 'En cours' },
+    { id: ExamStatus.Completed,   label: 'Terminés' },
+    { id: ExamStatus.Cancelled,   label: 'Annulés' },
+]
+
 export function ExamPage() {
     const { subSchoolId } = useParams({ strict: false })
     const { t } = useTranslation()
-    const { data: exams = [] } = useExams(subSchoolId)
-    const removeExam = useDeleteExam()
+    const { data,  isLoading, isError } = useExams(subSchoolId)
     const [activeTab, setActiveTab] = useState("exams")
-    const [examToEdit, setExamToEdit] = useState<Exam | null>(null)
-    const [examToGrade, setExamToGrade] = useState<Exam | null>(null)
+    const [examToEdit, setExamToEdit] = useState<Exam>()
+    const [examToDelete, setExamToDelete] = useState<Exam>()
+    const [examToGrade, setExamToGrade] = useState<Exam>()
     const [formOpen, setFormOpen] = useState(false)
+    const [activeFilter, setActiveFilter] = useState('all')
+
+    const { data: courses } = useCourses(subSchoolId)
+
+    const courseMap = useMemo(
+        () => new Map(courses?.map(c => [c.id, c.name]) ?? []),
+        [courses]
+    )
+
+    const columns = useMemo(() => getExamColumns({
+        t,
+        examToEdit,
+        courseMap,
+        onEdit: setExamToEdit,
+        onDelete: setExamToDelete,
+        onViewGrades: (exam) => {
+            setExamToGrade(exam);
+            setActiveTab("grade-entry")
+        }
+    }), [t, examToEdit, courseMap])
 
     return (
         <div className="min-h-screen bg-background">
@@ -84,22 +118,21 @@ export function ExamPage() {
                     </div>
 
                     <TabsContent value="exams" className="space-y-6">
-                        <ExamStats exams={exams}/>
-                        <ExamsTable
-                            exams={exams}
-                            onViewGrades={(exam) => {
-                                setExamToGrade(exam);
-                                setActiveTab("grade-entry")
-                            }}
-                            onEdit={(exam) => {
-                                setExamToEdit(exam);
-                                setFormOpen(true)
-                            }}
-                            onDelete={(exam) => removeExam.mutate({id: exam.id, subSchoolId: exam.subSchoolId})}
-                            onNew={() => {
-                                setExamToEdit(null);
-                                setFormOpen(true)
-                            }}
+                        <ExamStats exams={data ?? []}/>
+                        <ExamTable
+                            columns={columns}
+                            isLoading={isLoading}
+                            isError={isError}
+                            data={data ?? []}
+                            title="exam table"
+                            toolbar={({ onSearchChange }) => (
+                                <ExamTableToolbar
+                                    onSearchChange={onSearchChange}
+                                    activeFilter={activeFilter}
+                                    onFilterChange={setActiveFilter}
+                                    statusFilters={statusFilters}
+                                />
+                            )}
                         />
                     </TabsContent>
 

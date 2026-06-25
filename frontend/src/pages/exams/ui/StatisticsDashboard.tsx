@@ -57,7 +57,6 @@ export function StatisticsDashboard() {
     const { data: grades = [], isLoading: gradesLoading } = useGrades({ classId: selectedClassId, subSchoolId })
     const { data: exams = [], isLoading: examsLoading } = useExams(subSchoolId)
     
-    const [selectedExamId, setSelectedExamId] = useState<string>("all")
     const [comparisonMode, setComparisonMode] = useState<"none" | "class" | "period">("none")
 
     const overallStats = useMemo(() => {
@@ -132,13 +131,13 @@ export function StatisticsDashboard() {
     //     }
     // }
 
-    const getGradeLevel = (score: number) => {
-        if (score >= 16) return { label: "Excellent", color: "text-green-600 bg-green-50" }
-        if (score >= 14) return { label: "Très bien", color: "text-blue-600 bg-blue-50" }
-        if (score >= 12) return { label: "Bien", color: "text-cyan-600 bg-cyan-50" }
-        if (score >= 10) return { label: "Assez bien", color: "text-yellow-600 bg-yellow-50" }
-        return { label: "Insuffisant", color: "text-red-600 bg-red-50" }
-    }
+    // const getGradeLevel = (score: number) => {
+    //     if (score >= 16) return { label: "Excellent", color: "text-green-600 bg-green-50" }
+    //     if (score >= 14) return { label: "Très bien", color: "text-blue-600 bg-blue-50" }
+    //     if (score >= 12) return { label: "Bien", color: "text-cyan-600 bg-cyan-50" }
+    //     if (score >= 10) return { label: "Assez bien", color: "text-yellow-600 bg-yellow-50" }
+    //     return { label: "Insuffisant", color: "text-red-600 bg-red-50" }
+    // }
 
     if (gradesLoading || examsLoading) {
         return (

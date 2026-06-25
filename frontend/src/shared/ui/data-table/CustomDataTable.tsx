@@ -1,4 +1,8 @@
-import {type ReactNode, useState} from "react";
+import {
+    type ReactNode,
+    useCallback,
+    useState
+} from "react";
 import type { ColumnDef } from '@tanstack/react-table'
 import {
     StatCardsRow,
@@ -29,6 +33,7 @@ export interface CustomDataTableProps<TData, TValue> {
     title: string
     subtitle?: string
     stats?: StatCardItem[]
+    toolbar?: (helpers: { onSearchChange: (v: string) => void }) => ReactNode
     children?: ReactNode
     renderDetailPanel?: (selected: TData | null) => ReactNode
     isLoading?: boolean
@@ -49,6 +54,7 @@ export function CustomDataTable<TData, TValue>({
                                                    onFilterChange,
                                                    title,
                                                    subtitle,
+                                                   toolbar,
                                                    stats,
                                                    children,
                                                    renderDetailPanel,
@@ -65,6 +71,15 @@ export function CustomDataTable<TData, TValue>({
     const { table, selectedRow, handleRowClick } = useDataTableState({
         data: filteredData, columns, getRowId, onRowSelect,
     })
+
+    const handleSearch = useCallback((value: string) => {
+        table.getColumn(searchKey)?.setFilterValue(value)
+    }, [table, searchKey])
+
+    const resolvedToolbar = typeof toolbar === 'function'
+        ? toolbar({ onSearchChange: handleSearch })
+        : toolbar
+
     const { t } = useTranslation()
 
     if (isLoading) return (
@@ -84,6 +99,7 @@ export function CustomDataTable<TData, TValue>({
                 table={table} title={title} subtitle={subtitle}
                 searchKey={searchKey} searchPlaceholder={searchPlaceholder}
                 onToggleFilters={() => setShowFilters(p => !p)}
+                toolbar={resolvedToolbar}
             >
                 {children}
             </DataTableHeader>
