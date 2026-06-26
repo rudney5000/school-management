@@ -114,7 +114,7 @@ export const EditExamForm: React.FC<EditExamFormProps> = ({
                                 <Select onValueChange={field.onChange} value={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder={t('common.select')} />
+                                            <SelectValue placeholder={t('dashboard.exams.fields.select')} />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -139,7 +139,7 @@ export const EditExamForm: React.FC<EditExamFormProps> = ({
                                 <Select onValueChange={field.onChange} value={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder={t('common.select')} />
+                                            <SelectValue placeholder={t('dashboard.exams.fields.select')} />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -164,7 +164,7 @@ export const EditExamForm: React.FC<EditExamFormProps> = ({
                                 <Select onValueChange={field.onChange} value={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder={t('common.select')} />
+                                            <SelectValue placeholder={t('dashboard.exams.fields.select')} />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -189,7 +189,7 @@ export const EditExamForm: React.FC<EditExamFormProps> = ({
                                 <Select onValueChange={field.onChange} value={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder={t('common.select')} />
+                                            <SelectValue placeholder={t('dashboard.exams.fields.select')} />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -255,7 +255,10 @@ export const EditExamForm: React.FC<EditExamFormProps> = ({
 
                     <div className="flex justify-end pt-2">
                         <Button type="submit" disabled={isPending}>
-                            {isPending ? t('common.loading') : (submitButtonLabel ?? t('common.save'))}
+                            {isPending
+                                ? t('dashboard.exams.fields.loading')
+                                : (submitButtonLabel ?? t('dashboard.exams.fields.save'))
+                            }
                         </Button>
                     </div>
                 </form>

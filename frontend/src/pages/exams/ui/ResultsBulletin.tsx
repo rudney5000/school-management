@@ -28,27 +28,17 @@ import {
     Download,
     TrendingUp,
     TrendingDown,
-    Medal
+    Medal, Eye
 } from "lucide-react"
 import {
     useGrades,
-    type Grade
+    type StudentBulletin
 } from "@entities/grades"
 import { useParams } from "@tanstack/react-router"
 import {useClasses} from "@entities/class";
 import {useStudents} from "@entities/student";
+import {downloadStudentPdf, openStudentPdf} from "@features/exams/ui/generateStudentPdf.ts";
 
-interface StudentResult {
-    studentId: string
-    studentName: string
-    studentFirstName: string
-    studentLastName: string
-    grades: Grade[]
-    average: number
-    weightedAverage: number
-    totalCoefficient: number
-    rank: number
-}
 
 export function ResultsBulletin() {
     const { t } = useTranslation()
@@ -78,7 +68,7 @@ export function ResultsBulletin() {
     }, [students])
 
     const studentResults = useMemo(() => {
-        const studentMap = new Map<string, StudentResult>()
+        const studentMap = new Map<string, StudentBulletin>()
 
         grades.forEach(grade => {
             const student = studentLookup.get(grade.studentId)
@@ -98,7 +88,8 @@ export function ResultsBulletin() {
                     average:          0,
                     weightedAverage:  0,
                     totalCoefficient: 0,
-                    rank:             0
+                    rank:             0,
+                    classAverage:     0
                 })
             }
         })
@@ -170,10 +161,13 @@ export function ResultsBulletin() {
         }
     }, [studentResults])
 
-    const getRankIcon = (rank: number) => {
+    const getRankIcon = (rank?: number) => {
+        if (!rank) return null
+
         if (rank === 1) return <Medal className="w-4 h-4 text-yellow-500" />
         if (rank === 2) return <Medal className="w-4 h-4 text-gray-400" />
         if (rank === 3) return <Medal className="w-4 h-4 text-amber-600" />
+
         return null
     }
 
@@ -297,6 +291,7 @@ export function ResultsBulletin() {
                                 <TableHead className="text-center">{t("dashboard.exams.results.average")}</TableHead>
                                 <TableHead className="text-center">{t("dashboard.exams.results.weightedAvg")}</TableHead>
                                 <TableHead className="text-center">{t("dashboard.exams.results.trend")}</TableHead>
+                                <TableHead className="text-center">PDF</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -305,7 +300,7 @@ export function ResultsBulletin() {
                                     <TableCell className="font-medium">
                                         <div className="flex items-center justify-center">
                                             {result.rank}
-                                            {getRankIcon(result.rank)}
+                                            {result.rank != null && getRankIcon(result.rank)}
                                         </div>
                                     </TableCell>
                                     <TableCell>
@@ -341,6 +336,28 @@ export function ResultsBulletin() {
                                     </TableCell>
                                     <TableCell className="text-center">
                                         {classStats && getTrendIcon(result.weightedAverage, classStats.classAverage)}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                        <div className="flex items-center justify-center gap-1">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="size-7"
+                                                onClick={() => openStudentPdf(result)}
+                                                title="Aperçu"
+                                            >
+                                                <Eye className="size-3.5" />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="size-7"
+                                                onClick={() => downloadStudentPdf(result)}
+                                                title="Télécharger"
+                                            >
+                                                <Download className="size-3.5" />
+                                            </Button>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))}

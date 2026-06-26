@@ -690,7 +690,8 @@
         "subtitle": "Analyse des performances et distribution des notes",
         "allExams": "Tous les examens",
         "comparison": "Comparaison",
-        "none": "Aucune",
+        "none": "Aucune Comparaison",
+        "mode": "Mode de comparaison",
         "byClass": "Par classe",
         "byPeriod": "Par période",
         "average": "Moyenne",
@@ -711,13 +712,15 @@
         "examComparisonSubtitle": "Analyse comparative des performances par examen",
         "analysis": "Analyse et recommandations",
         "excellentPerformance": "Performance excellente",
-        "excellentPerformanceDesc": "Le taux de réussite indique une très bonne maîtrise du sujet par les élèves.",
+        "excellentPerformanceDesc": "Le taux de réussite de {{rate}}% dépasse le seuil cible. Continuez sur cette lancée.",
         "attentionRequired": "Attention requise",
-        "attentionRequiredDesc": "Le taux de réussite suggère des difficultés. Un soutien supplémentaire pourrait être nécessaire.",
+        "attentionRequiredDesc": "Le taux de réussite {{rate}}% suggère des difficultés. Un soutien supplémentaire pourrait être nécessaire.",
         "goodProgress": "Bonne progression",
-        "goodProgressDesc": "La moyenne avec un bon taux de réussite montre une progression positive.",
+        "goodProgressDesc": "La moyenne de {{rate}}% avec un bon taux de réussite montre une progression positive.",
         "noData": "Aucune donnée disponible",
-        "noDataDesc": "Les statistiques seront disponibles après la saisie des notes"
+        "noDataDesc": "Les statistiques seront disponibles après la saisie des notes",
+        "student": "Élève",
+        "success": "Réussite"
       }
     },
     "common": {

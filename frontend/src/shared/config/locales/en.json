@@ -755,7 +755,8 @@
         "subtitle": "Performance analysis and grade distribution",
         "allExams": "All exams",
         "comparison": "Comparison",
-        "none": "None",
+        "none": "None Comparison",
+        "mode": "Comparison mode",
         "byClass": "By class",
         "byPeriod": "By period",
         "average": "Average",
@@ -782,7 +783,9 @@
         "goodProgress": "Good progress",
         "goodProgressDesc": "The average with a good pass rate shows positive progress.",
         "noData": "No data available",
-        "noDataDesc": "Statistics will be available after grades are entered"
+        "noDataDesc": "Statistics will be available after grades are entered",
+        "student": "student",
+        "success": "success"
       }
     },
     "common": {

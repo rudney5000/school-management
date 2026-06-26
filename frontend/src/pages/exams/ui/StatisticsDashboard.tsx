@@ -53,7 +53,7 @@ function gradeLevel(score: number) {
 export function StatisticsDashboard() {
     const { t } = useTranslation()
     const { subSchoolId } = useParams({ strict: false })
-    const [selectedClassId, setSelectedClassId] = useState<string>("")
+    const [selectedClassId, _setSelectedClassId] = useState<string>("")
     const { data: grades = [], isLoading: gradesLoading } = useGrades({ classId: selectedClassId, subSchoolId })
     const { data: exams = [], isLoading: examsLoading } = useExams(subSchoolId)
     
@@ -119,30 +119,12 @@ export function StatisticsDashboard() {
         }[]
     }, [exams, grades])
 
-    // const getDistributionColor = (range: string) => {
-    //     switch (range) {
-    //         case "0-5": return "bg-red-500"
-    //         case "5-10": return "bg-orange-500"
-    //         case "10-12": return "bg-yellow-500"
-    //         case "12-14": return "bg-blue-400"
-    //         case "14-16": return "bg-blue-600"
-    //         case "16-20": return "bg-green-500"
-    //         default: return "bg-gray-500"
-    //     }
-    // }
-
-    // const getGradeLevel = (score: number) => {
-    //     if (score >= 16) return { label: "Excellent", color: "text-green-600 bg-green-50" }
-    //     if (score >= 14) return { label: "Très bien", color: "text-blue-600 bg-blue-50" }
-    //     if (score >= 12) return { label: "Bien", color: "text-cyan-600 bg-cyan-50" }
-    //     if (score >= 10) return { label: "Assez bien", color: "text-yellow-600 bg-yellow-50" }
-    //     return { label: "Insuffisant", color: "text-red-600 bg-red-50" }
-    // }
-
     if (gradesLoading || examsLoading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <div className="text-muted-foreground">{t("dashboard.exams.gradeEntry.loading")}</div>
+                <div className="text-muted-foreground">
+                    {t("dashboard.exams.gradeEntry.loading")}
+                </div>
             </div>
         )
     }
@@ -151,46 +133,90 @@ export function StatisticsDashboard() {
 
     return (
         <div className="space-y-5">
-            {/* Header */}
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                    <h2 className="text-xl font-bold tracking-tight">Statistiques & analyse</h2>
-                    <p className="mt-1 text-sm text-muted-foreground">Vue d'ensemble des performances académiques.</p>
+                    <h2 className="text-xl font-bold tracking-tight">
+                        {t("dashboard.exams.statistics.title")}
+                    </h2>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                        {t("dashboard.exams.statistics.subtitle")}.
+                    </p>
                 </div>
-                <Select value={comparisonMode} onValueChange={(v) => setComparisonMode(v as typeof comparisonMode)}>
+                <Select
+                    value={comparisonMode}
+                    onValueChange={(v) => setComparisonMode(v as typeof comparisonMode)}>
                     <SelectTrigger className="w-[200px]">
-                        <SelectValue placeholder="Mode de comparaison" />
+                        <SelectValue
+                            placeholder={t("dashboard.exams.statistics.mode")}
+                        />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="none">Aucune comparaison</SelectItem>
-                        <SelectItem value="class">Par classe</SelectItem>
-                        <SelectItem value="period">Par période</SelectItem>
+                        <SelectItem value="none">
+                            {t("dashboard.exams.statistics.none")}
+                        </SelectItem>
+                        <SelectItem value="class">
+                            {t("dashboard.exams.statistics.byClass")}
+                        </SelectItem>
+                        <SelectItem value="period">
+                            {t("dashboard.exams.statistics.byPeriod")}
+                        </SelectItem>
                     </SelectContent>
                 </Select>
             </div>
 
-            {/* Key metrics */}
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-                <StatCard label="Moyenne" value={`${currentStats?.average.toFixed(2)}/20`} icon={BarChart3} accent="primary" />
-                <StatCard label="Médiane" value={`${currentStats?.median.toFixed(2)}/20`} icon={Target} accent="blue" />
-                <StatCard label="Taux de réussite" value={`${currentStats?.passRate.toFixed(1)}%`} icon={TrendingUp} accent="emerald" />
-                <StatCard label="Meilleure note" value={`${currentStats?.max.toFixed(2)}/20`} icon={Award} accent="emerald" />
-                <StatCard label="Évaluations" value={currentStats?.totalGrades} icon={Users} accent="amber" />
+                <StatCard
+                    label={t("dashboard.exams.statistics.average")}
+                    value={`${currentStats?.average.toFixed(2)}/20`}
+                    icon={BarChart3}
+                    accent="primary"
+                />
+                <StatCard
+                    label={t("dashboard.exams.statistics.median")}
+                    value={`${currentStats?.median.toFixed(2)}/20`}
+                    icon={Target}
+                    accent="blue"
+                />
+                <StatCard
+                    label={t("dashboard.exams.statistics.passRate")}
+                    value={`${currentStats?.passRate.toFixed(1)}%`}
+                    icon={TrendingUp}
+                    accent="emerald"
+                />
+                <StatCard
+                    label={t("dashboard.exams.statistics.bestGrade")}
+                    value={`${currentStats?.max.toFixed(2)}/20`}
+                    icon={Award}
+                    accent="emerald"
+                />
+                <StatCard
+                    label={t("dashboard.exams.statistics.evaluations")}
+                    value={currentStats?.totalGrades ?? 0}
+                    icon={Users}
+                    accent="amber"
+                />
             </div>
 
-            {/* Distribution + Performance levels */}
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Distribution des notes</CardTitle>
-                        <CardDescription>Répartition des élèves par tranche de score</CardDescription>
+                        <CardTitle>
+                            {t("dashboard.exams.statistics.distribution")}
+                        </CardTitle>
+                        <CardDescription>
+                            {t("dashboard.exams.statistics.performanceLevelsSubtitle")}
+                        </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         {currentStats?.distribution.map((item) => (
                             <div key={item.range} className="space-y-1.5">
                                 <div className="flex items-center justify-between text-sm">
                                     <span className="font-medium text-foreground">{item.range}/20</span>
-                                    <span className="text-muted-foreground">{item.count} élèves · {item.percentage.toFixed(1)}%</span>
+                                    <span className="text-muted-foreground">
+                                        {item.count}
+                                        {t("dashboard.exams.statistics.student")}·
+                                        {item.percentage.toFixed(1)}%
+                                    </span>
                                 </div>
                                 <div className="h-3 w-full overflow-hidden rounded-full bg-muted">
                                     <div
@@ -205,16 +231,45 @@ export function StatisticsDashboard() {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Niveaux de performance</CardTitle>
-                        <CardDescription>Classification des résultats</CardDescription>
+                        <CardTitle>
+                            {t("dashboard.exams.statistics.performanceLevels")}
+                        </CardTitle>
+                        <CardDescription>
+                            {t("dashboard.exams.statistics.distributionSubtitle")}
+                        </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-2.5">
                         {[
-                            { label: 'Excellent', range: '16-20', min: 16, max: 20 },
-                            { label: 'Très bien', range: '14-16', min: 14, max: 16 },
-                            { label: 'Bien', range: '12-14', min: 12, max: 14 },
-                            { label: 'Assez bien', range: '10-12', min: 10, max: 12 },
-                            { label: 'Insuffisant', range: '0-10', min: 0, max: 10 },
+                            {
+                                label: t("dashboard.exams.statistics.excellent"),
+                                range: '16-20',
+                                min: 16,
+                                max: 20
+                            },
+                            {
+                                label: t("dashboard.exams.statistics.veryGood"),
+                                range: '14-16',
+                                min: 14,
+                                max: 16
+                            },
+                            {
+                                label: t("dashboard.exams.statistics.good"),
+                                range: '12-14',
+                                min: 12,
+                                max: 14
+                            },
+                            {
+                                label: t("dashboard.exams.statistics.fair"),
+                                range: '10-12',
+                                min: 10,
+                                max: 12
+                            },
+                            {
+                                label: t("dashboard.exams.statistics.insufficient"),
+                                range: '0-10',
+                                min: 0,
+                                max: 10
+                            },
                         ].map((level) => {
                             const count = currentStats?.distribution
                                 .filter((d) => {
@@ -239,12 +294,15 @@ export function StatisticsDashboard() {
                 </Card>
             </div>
 
-            {/* Exam comparison */}
             {comparisonMode !== 'none' && examComparison.length > 0 && (
                 <Card>
                     <CardHeader>
-                        <CardTitle>Comparaison par examen</CardTitle>
-                        <CardDescription>Performance moyenne pour chaque évaluation</CardDescription>
+                        <CardTitle>
+                            {t("dashboard.exams.statistics.examComparison")}
+                        </CardTitle>
+                        <CardDescription>
+                            {t("dashboard.exams.statistics.examComparisonSubtitle")}
+                        </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-3">
                         {examComparison.map((exam) => {
@@ -257,22 +315,32 @@ export function StatisticsDashboard() {
                                     </div>
                                     <div className="flex items-center gap-6">
                                         <div className="text-center">
-                                            <div className="text-xs text-muted-foreground">Moyenne</div>
-                                            <Badge className={gl.color}>{exam.average.toFixed(2)}/20</Badge>
+                                            <div className="text-xs text-muted-foreground">
+                                                {t("dashboard.exams.statistics.average")}
+                                            </div>
+                                            <Badge className={gl.color}>
+                                                {exam.average.toFixed(2)}/20
+                                            </Badge>
                                         </div>
                                         <div className="text-center">
-                                            <div className="text-xs text-muted-foreground">Réussite</div>
+                                            <div className="text-xs text-muted-foreground">
+                                                {t("dashboard.exams.statistics.success")}
+                                            </div>
                                             <div className="flex items-center gap-1">
                                                 {exam.passRate >= 50 ? (
                                                     <ArrowUp className="size-4 text-emerald-600" />
                                                 ) : (
                                                     <ArrowDown className="size-4 text-red-600" />
                                                 )}
-                                                <span className="text-sm font-medium">{exam.passRate.toFixed(1)}%</span>
+                                                <span className="text-sm font-medium">
+                                                    {exam.passRate.toFixed(1)}%
+                                                </span>
                                             </div>
                                         </div>
                                         <div className="text-center">
-                                            <div className="text-xs text-muted-foreground">Élèves</div>
+                                            <div className="text-xs text-muted-foreground">
+                                                {t("dashboard.exams.statistics.student")}
+                                            </div>
                                             <div className="text-sm font-medium">{exam.studentCount}</div>
                                         </div>
                                     </div>
@@ -283,18 +351,25 @@ export function StatisticsDashboard() {
                 </Card>
             )}
 
-            {/* Insights */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Analyse & recommandations</CardTitle>
+                    <CardTitle>
+                        {t("dashboard.exams.statistics.analysis")}
+                    </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                     {currentStats && currentStats.passRate >= 70 && (
                         <div className="flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
                             <Sparkles className="mt-0.5 size-5 shrink-0 text-emerald-600" />
                             <div>
-                                <div className="text-sm font-semibold text-emerald-900">Excellente performance</div>
-                                <div className="text-sm text-emerald-700">Le taux de réussite de {currentStats.passRate.toFixed(1)}% dépasse le seuil cible. Continuez sur cette lancée.</div>
+                                <div className="text-sm font-semibold text-emerald-900">
+                                    {t("dashboard.exams.statistics.excellentPerformance")}
+                                </div>
+                                <div className="text-sm text-emerald-700">
+                                    {t('dashboard.exams.statistics.excellentPerformanceDesc', {
+                                        rate: Number(currentStats.passRate).toFixed(1),
+                                    })}
+                                </div>
                             </div>
                         </div>
                     )}
@@ -302,8 +377,14 @@ export function StatisticsDashboard() {
                         <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4">
                             <AlertTriangle className="mt-0.5 size-5 shrink-0 text-red-600" />
                             <div>
-                                <div className="text-sm font-semibold text-red-900">Attention requise</div>
-                                <div className="text-sm text-red-700">Le taux de réussite est de {currentStats.passRate.toFixed(1)}%. Un soutien pédagogique est recommandé.</div>
+                                <div className="text-sm font-semibold text-red-900">
+                                    {t("dashboard.exams.statistics.attentionRequired")}
+                                </div>
+                                <div className="text-sm text-red-700">
+                                    {t('dashboard.exams.statistics.attentionRequiredDesc', {
+                                        rate: Number(currentStats.passRate).toFixed(1),
+                                    })}
+                                </div>
                             </div>
                         </div>
                     )}
@@ -311,8 +392,14 @@ export function StatisticsDashboard() {
                         <div className="flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4">
                             <Lightbulb className="mt-0.5 size-5 shrink-0 text-blue-600" />
                             <div>
-                                <div className="text-sm font-semibold text-blue-900">Bonne progression</div>
-                                <div className="text-sm text-blue-700">La moyenne générale ({currentStats.average.toFixed(2)}/20) et le taux de réussite sont au-dessus des attentes.</div>
+                                <div className="text-sm font-semibold text-blue-900">
+                                    {t("dashboard.exams.statistics.goodProgress")}
+                                </div>
+                                <div className="text-sm text-blue-700">
+                                    {t('dashboard.exams.statistics.goodProgressDesc', {
+                                        rate: (Number(currentStats.passRate) / 20).toFixed(2),
+                                    })}.
+                                </div>
                             </div>
                         </div>
                     )}
