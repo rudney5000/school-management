@@ -146,7 +146,7 @@ export function ExamPage() {
                             isOpen={formOpen}
                             handleOpen={setFormOpen}
                             handleSuccess={() => setFormOpen(false)}
-                            submitButtonLabel={t('common.add')}
+                            submitButtonLabel={t('dashboard.exams.fields.add')}
                         />
 
                         <EditExamForm

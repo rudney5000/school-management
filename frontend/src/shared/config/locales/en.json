@@ -696,7 +696,10 @@
         "examDate": "Exam date",
         "durationMinutes": "Duration (minutes)",
         "maxScore": "Max score",
-        "coefficient": "Coefficient"
+        "coefficient": "Coefficient",
+        "select": "Select",
+        "loading": "Loading...",
+        "add": "Add"
       },
       "tabs": {
         "exams": "Exams",

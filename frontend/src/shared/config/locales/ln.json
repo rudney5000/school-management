@@ -697,7 +697,10 @@
         "examDate": "Mokolo ya esálisi",
         "durationMinutes": "Ntango (miniti)",
         "maxScore": "Note ya mpenza",
-        "coefficient": "Koefisiyán"
+        "coefficient": "Koefisiyán",
+        "select": "Pona kosálí",
+        "loading": "Kozela...",
+        "add": "Sala"
       },
       "tabs": {
         "exams": "Masálisi",
