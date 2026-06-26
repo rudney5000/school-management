@@ -34,21 +34,6 @@ import {
     EditExamForm
 } from "@features/exams";
 
-const tabs = [
-    { value: 'exams', label: 'Examens', icon: CalendarDays },
-    { value: 'grade-entry', label: 'Saisie des notes', icon: PencilLine },
-    { value: 'results', label: 'Résultats', icon: ClipboardList },
-    { value: 'statistics', label: 'Statistiques', icon: BarChart3 },
-] as const
-
-const statusFilters: { id: ExamStatus | 'all'; label: string }[] = [
-    { id: 'all',                  label: 'Tous' },
-    { id: ExamStatus.Scheduled,   label: 'Planifiés' },
-    { id: ExamStatus.Ongoing,     label: 'En cours' },
-    { id: ExamStatus.Completed,   label: 'Terminés' },
-    { id: ExamStatus.Cancelled,   label: 'Annulés' },
-]
-
 export function ExamPage() {
     const { subSchoolId } = useParams({ strict: false })
     const { t } = useTranslation()
@@ -59,6 +44,21 @@ export function ExamPage() {
     const [examToGrade, setExamToGrade] = useState<Exam>()
     const [formOpen, setFormOpen] = useState(false)
     const [activeFilter, setActiveFilter] = useState('all')
+
+    const tabs = [
+        { value: 'exams',       label: t('dashboard.exams.tabs.exams'),      icon: CalendarDays },
+        { value: 'grade-entry', label: t('dashboard.exams.tabs.gradeEntry'), icon: PencilLine },
+        { value: 'results',     label: t('dashboard.exams.tabs.results'),    icon: ClipboardList },
+        { value: 'statistics',  label: t('dashboard.exams.tabs.statistics'), icon: BarChart3 },
+    ] as const
+
+    const statusFilters = [
+        { id: 'all',                label: t('dashboard.exams.filters.all') },
+        { id: ExamStatus.Scheduled, label: t('dashboard.exams.filters.scheduled') },
+        { id: ExamStatus.Ongoing,   label: t('dashboard.exams.filters.ongoing') },
+        { id: ExamStatus.Completed, label: t('dashboard.exams.filters.completed') },
+        { id: ExamStatus.Cancelled, label: t('dashboard.exams.filters.cancelled') },
+    ]
 
     const { data: courses } = useCourses(subSchoolId)
 
@@ -89,9 +89,12 @@ export function ExamPage() {
                             <GraduationCap className="size-6" strokeWidth={2.2}/>
                         </div>
                         <div>
-                            <h1 className="text-2xl font-bold tracking-tight text-foreground">Centre d'examens</h1>
-                            <p className="text-sm text-muted-foreground">Gérez les examens, la saisie des notes et
-                                l'analyse des résultats.</p>
+                            <h1 className="text-2xl font-bold tracking-tight text-foreground">
+                                {t('dashboard.exams.title')}
+                            </h1>
+                            <p className="text-sm text-muted-foreground">
+                                {t('dashboard.exams.subtitle')}
+                            </p>
                         </div>
                     </div>
                 </div>

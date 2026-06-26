@@ -8,6 +8,7 @@ import {
     Button,
     Input
 } from "@shared/ui";
+import {useTranslation} from "@shared/lib";
 
 interface StatusFilter {
     id: string
@@ -30,13 +31,13 @@ export function ExamTableToolbar({
                                      statusFilters
 }: ExamTableToolbarProps) {
     const [search, setSearch] = useState('')
-
+    const { t } = useTranslation()
     return (
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="relative w-full max-w-sm">
                 <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"/>
                 <Input
-                    placeholder="Rechercher un examen, un cours…"
+                    placeholder={t('dashboard.exams.searchPlaceholder')}
                     value={search}
                     onChange={(e) => {
                         setSearch(e.target.value)
@@ -65,7 +66,7 @@ export function ExamTableToolbar({
                 </div>
                 <Button size="sm" onClick={onNew} className="h-9">
                     <Plus className="size-4"/>
-                    Nouvel examen
+                    {t('dashboard.exams.actions.new')}
                 </Button>
             </div>
         </div>

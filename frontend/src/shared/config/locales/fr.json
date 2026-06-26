@@ -581,7 +581,11 @@
       "subtitle": "Gérez vos examens et les notes",
       "searchPlaceholder": "Rechercher un examen...",
       "filters": {
-        "all": "Tous"
+        "all": "Tous",
+        "scheduled": "Planifiés",
+        "ongoing": "En cours",
+        "completed": "Terminés",
+        "cancelled": "Annulés"
       },
       "columns": {
         "title": "Examen",
@@ -617,6 +621,23 @@
         "gradeEntry": "Saisie des notes",
         "results": "Résultats / Bulletins",
         "statistics": "Statistiques"
+      },
+      "form": {
+        "addTitle": "Nouvel examen",
+        "addDescription": "Remplissez les détails pour créer un nouvel examen.",
+        "editTitle": "Modifier l'examen",
+        "editDescription": "Mettez à jour les détails de l'examen ci-dessous."
+      },
+      "fields": {
+        "title": "Titre",
+        "type": "Type",
+        "status": "Statut",
+        "course": "Cours",
+        "class": "Classe",
+        "examDate": "Date de l'examen",
+        "durationMinutes": "Durée (minutes)",
+        "maxScore": "Note maximale",
+        "coefficient": "Coefficient"
       },
       "gradeEntry": {
         "title": "Saisie des notes",
