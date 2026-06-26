@@ -1,5 +1,5 @@
 import {QueryClient} from "@tanstack/react-query";
-import {handleApiError} from "@shared/lib/errors/handleApiError.ts";
+import {handleApiError} from "@shared/lib/errors/handleApiError";
 
 export const queryClient = new QueryClient({
     defaultOptions: {
@@ -12,3 +12,7 @@ export const queryClient = new QueryClient({
         }
     },
 })
+
+if (import.meta.env.DEV && typeof window !== "undefined") {
+    window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+}
