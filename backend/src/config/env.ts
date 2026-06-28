@@ -12,6 +12,8 @@ const envSchema = z.object({
     .string()
     .min(1)
     .transform((value) => value.split(',').map((origin) => origin.trim())),
+  REDIS_HOST: z.string().default('localhost'),
+  REDIS_PORT: z.coerce.number().default(6379),
 });
 
 export type Env = z.infer<typeof envSchema>;
