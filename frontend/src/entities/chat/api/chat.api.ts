@@ -1,0 +1,105 @@
+import { ApiWrapper } from '@shared/api/ApiWrapper'
+import { baseApi } from '@shared/api/instance'
+import type {
+    Conversation,
+    Message
+} from '@entities/chat/model/types'
+import type {
+    AddMembersInput,
+    AddReactionInput,
+    CreateConversationInput,
+    EditMessageInput,
+    SendMessageInput
+} from "@entities/chat/model/createConversationSchema";
+
+export class ChatApi extends ApiWrapper {
+    constructor() {
+        super(baseApi)
+    }
+
+    getConversations(subSchoolId: string) {
+        return this.handleRequest<Conversation[]>(
+            this._baseApi.get('/chat', { subSchoolId }),
+            (raw) => raw as Conversation[],
+        )
+    }
+
+    getConversation(id: string) {
+        return this.handleRequest<Conversation>(
+            this._baseApi.get(`/chat/${id}`),
+            (raw) => raw as Conversation,
+        )
+    }
+
+    createConversation(payload: CreateConversationInput) {
+        return this.handleRequest<Conversation>(
+            this._baseApi.post('/chat', payload),
+            (raw) => raw as Conversation,
+        )
+    }
+
+    addMembers(id: string, payload: AddMembersInput) {
+        return this.handleRequest<{ success: boolean }>(
+            this._baseApi.post(`/chat/${id}/members`, payload),
+            (raw) => raw as { success: boolean },
+        )
+    }
+
+    removeMember(id: string, userId: string) {
+        return this.handleRequest(
+            this._baseApi.delete(`/chat/${id}/members/${userId}`),
+            undefined,
+        )
+    }
+
+    getMessages(conversationId: string, params?: { limit?: number; before?: string }) {
+        return this.handleRequest<Message[]>(
+            this._baseApi.get(`/chat/${conversationId}/messages`, params ? { params } : undefined),
+            (raw) => raw as Message[],
+        )
+    }
+
+    sendMessage(conversationId: string, payload: SendMessageInput) {
+        return this.handleRequest<Message>(
+            this._baseApi.post(`/chat/${conversationId}/messages`, payload),
+            (raw) => raw as Message,
+        )
+    }
+
+    editMessage(conversationId: string, messageId: string, payload: EditMessageInput) {
+        return this.handleRequest<Message>(
+            this._baseApi.patch(`/chat/${conversationId}/messages/${messageId}`, payload),
+            (raw) => raw as Message,
+        )
+    }
+
+    deleteMessage(conversationId: string, messageId: string) {
+        return this.handleRequest(
+            this._baseApi.delete(`/chat/${conversationId}/messages/${messageId}`),
+            undefined,
+        )
+    }
+
+    markAsRead(conversationId: string, messageId: string) {
+        return this.handleRequest<{ success: boolean }>(
+            this._baseApi.post(`/chat/${conversationId}/messages/${messageId}/read`, {}),
+            (raw) => raw as { success: boolean },
+        )
+    }
+
+    addReaction(conversationId: string, messageId: string, payload: AddReactionInput) {
+        return this.handleRequest<{ success: boolean }>(
+            this._baseApi.post(`/chat/${conversationId}/messages/${messageId}/reactions`, payload),
+            (raw) => raw as { success: boolean },
+        )
+    }
+
+    removeReaction(conversationId: string, messageId: string, emoji: string) {
+        return this.handleRequest(
+            this._baseApi.delete(`/chat/${conversationId}/messages/${messageId}/reactions/${encodeURIComponent(emoji)}`),
+            undefined,
+        )
+    }
+}
+
+export const chatApi = new ChatApi()
