@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit'
 import type { RootState } from "@shared/store";
-import type { UserRole } from "@features/auth/model/dto/RegisterDto.ts";
+import type { UserRole } from "@features/auth/model/dto/RegisterDto";
 
 export const selectRole = (state: RootState) => state.auth.role
 
@@ -21,3 +21,6 @@ export const selectAttendancePermission: (state: RootState) => {
         ).includes(role),
     })
 )
+
+export const selectAccessToken = (state: RootState) => state.auth.accessToken
+export const selectUserId = (state: RootState) => state.auth.userId
