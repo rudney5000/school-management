@@ -85,3 +85,22 @@ export const gradeTypeEnum = pgEnum('grade_type', [
     'project',
     'oral',
 ])
+
+export const conversationTypeEnum = pgEnum('conversation_type', [
+    'dm',
+    'group',
+    'class',
+    'course',
+])
+
+export const memberRoleEnum = pgEnum('member_role', [
+    'admin',
+    'member',
+])
+
+export const messageTypeEnum = pgEnum('message_type', [
+    'text',
+    'image',
+    'file',
+    'system',
+])

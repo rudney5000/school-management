@@ -1,6 +1,7 @@
 export * from './country';
 export * from './department';
 export * from './city';
+export * from './chat'
 export * from './academicPeriod';
 export * from './district';
 export * from './grades'
