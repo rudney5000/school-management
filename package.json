@@ -11,7 +11,7 @@
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
     "typecheck": "pnpm -r typecheck",
-    "prepare": "node -e \"if(process.env.NODE_ENV !== 'production') require('child_process').execSync('husky install')\""
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
