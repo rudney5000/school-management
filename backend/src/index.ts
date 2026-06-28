@@ -4,6 +4,8 @@ import { env } from './config/env';
 import { db } from './db';
 import { sql } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
+import {createServer} from "node:http";
+import {initSocketServer} from "@/socket/socket";
 
 async function bootstrap(): Promise<void> {
 
@@ -17,8 +19,12 @@ async function bootstrap(): Promise<void> {
   console.log('✓ Database connected');
 
   const app = createApp();
+  const httpServer = createServer(app)
 
-  app.listen(env.PORT_BACKEND, () => {
+  initSocketServer(httpServer)
+  console.log('✓ Socket server initialized')
+
+  httpServer.listen(env.PORT_BACKEND, () => {
     console.log(`✓ Server running on port ${env.PORT_BACKEND}`);
     console.log(`  Health  → http://localhost:${env.PORT_BACKEND}/health`);
     console.log(`  API     → http://localhost:${env.PORT_BACKEND}/api`);

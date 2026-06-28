@@ -29,6 +29,7 @@ import {
 import {examsRouter} from "@/modules/exams/exams.router";
 import {academicPeriodsRouter} from "@/modules/academic-periods/academic-periods.router";
 import {gradesRouter} from "@/modules/grades/grades.router";
+import {chatRouter} from "@/modules/chat/chat.router";
 
 export function createApp(): express.Application {
   const app = express();
@@ -68,6 +69,7 @@ export function createApp(): express.Application {
   app.use('/api/exams', examsRouter);
   app.use('/api/academic-periods', academicPeriodsRouter)
   app.use('/api/grades', gradesRouter)
+  app.use('/api/chat', chatRouter)
 
 
   app.use(errorHandler);

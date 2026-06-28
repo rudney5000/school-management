@@ -16,10 +16,25 @@ import {
     parents,
     classes,
     parentStudents,
-    courses, schedules, events, studentAttendances, teacherAttendances, grades, academicPeriods,
+    courses,
+    schedules,
+    events,
+    studentAttendances,
+    teacherAttendances,
+    grades,
+    academicPeriods,
+    conversations,
+    messages, 
+    conversationMembers,
 } from './schema';
-import {and, eq} from 'drizzle-orm';
-import {examResults, exams} from "@/db/schema/exam";
+import {
+    and,
+    eq
+} from 'drizzle-orm';
+import {
+    examResults,
+    exams
+} from "@/db/schema/exam";
 
 async function seed() {
     console.log('Seeding...');
@@ -896,6 +911,219 @@ async function seed() {
         } else {
             console.log(`~ Grade already exists: ${g.gradeType} → student ${g.studentId}`)
         }
+    }
+
+    const teacherUserForChat = await db.query.users.findFirst({
+        where: eq(users.email, 'jean.muamba@saintjoseph.cd')
+    })
+    const studentUserForChat = await db.query.users.findFirst({
+        where: eq(users.email, 'marie.kabila@saintjoseph.cd')
+    })
+    const student2UserForChat = await db.query.users.findFirst({
+        where: eq(users.email, 'paul.kabila@saintjoseph.cd')
+    })
+    const adminUserForChat = await db.query.users.findFirst({
+        where: eq(users.email, 'admin@saintjoseph.cd')
+    })
+
+    if (teacherUserForChat && studentUserForChat && student2UserForChat && adminUserForChat) {
+
+        const [existingDm] = await db.select().from(conversations)
+            .where(and(
+                eq(conversations.type, 'dm'),
+                eq(conversations.createdBy, teacherUserForChat.id),
+                eq(conversations.subSchoolId, subSchool.id),
+            ))
+
+        const dm = existingDm ?? (await db.insert(conversations).values({
+            type: 'dm',
+            subSchoolId: subSchool.id,
+            createdBy: teacherUserForChat.id,
+        }).returning())[0]
+
+        await db.insert(conversationMembers).values([
+            { conversationId: dm.id, userId: teacherUserForChat.id, role: 'admin' },
+            { conversationId: dm.id, userId: studentUserForChat.id, role: 'member' },
+        ]).onConflictDoNothing()
+
+        await db.insert(messages).values([
+            {
+                conversationId: dm.id,
+                senderId: teacherUserForChat.id,
+                type: 'text',
+                content: 'Bonjour Marie, as-tu terminé les exercices du chapitre 3 ?',
+            },
+            {
+                conversationId: dm.id,
+                senderId: studentUserForChat.id,
+                type: 'text',
+                content: 'Oui professeur, je les ai finis hier soir !',
+            },
+            {
+                conversationId: dm.id,
+                senderId: teacherUserForChat.id,
+                type: 'text',
+                content: 'Parfait, apporte-les demain en classe.',
+            },
+        ]).onConflictDoNothing()
+
+        console.log('✓ DM conversation créée: Prof → Marie')
+
+        const [existingClassGroup] = await db.select().from(conversations)
+            .where(and(
+                eq(conversations.type, 'class'),
+                eq(conversations.name, '1ère Année Secondaire A'),
+                eq(conversations.subSchoolId, subSchool.id),
+            ))
+
+        const classGroup = existingClassGroup ?? (await db.insert(conversations).values({
+            type: 'class',
+            name: '1ère Année Secondaire A',
+            description: 'Groupe officiel de la classe 1ère Secondaire A',
+            classId: classA.id,
+            subSchoolId: subSchool.id,
+            createdBy: teacherUserForChat.id,
+        }).returning())[0]
+
+        await db.insert(conversationMembers).values([
+            { conversationId: classGroup.id, userId: teacherUserForChat.id, role: 'admin' },
+            { conversationId: classGroup.id, userId: studentUserForChat.id, role: 'member' },
+            { conversationId: classGroup.id, userId: student2UserForChat.id, role: 'member' },
+        ]).onConflictDoNothing()
+
+        await db.insert(messages).values([
+            {
+                conversationId: classGroup.id,
+                senderId: teacherUserForChat.id,
+                type: 'text',
+                content: 'Bienvenue dans le groupe de la 1ère Secondaire A 🎓',
+            },
+            {
+                conversationId: classGroup.id,
+                senderId: teacherUserForChat.id,
+                type: 'text',
+                content: 'L\'examen de mathématiques aura lieu le 20 novembre. Préparez-vous bien !',
+            },
+            {
+                conversationId: classGroup.id,
+                senderId: studentUserForChat.id,
+                type: 'text',
+                content: 'Merci professeur, on va bien réviser.',
+            },
+            {
+                conversationId: classGroup.id,
+                senderId: student2UserForChat.id,
+                type: 'text',
+                content: 'Est-ce que les exercices du chapitre 4 sont inclus ?',
+            },
+            {
+                conversationId: classGroup.id,
+                senderId: teacherUserForChat.id,
+                type: 'text',
+                content: 'Oui, chapitres 3 et 4 sont au programme.',
+            },
+        ]).onConflictDoNothing()
+
+        console.log('✓ Groupe classe créé: 1ère Secondaire A')
+
+        const [existingCourseGroup] = await db.select().from(conversations)
+            .where(and(
+                eq(conversations.type, 'course'),
+                eq(conversations.name, 'Mathématiques'),
+                eq(conversations.subSchoolId, subSchool.id),
+            ))
+
+        const courseGroup = existingCourseGroup ?? (await db.insert(conversations).values({
+            type: 'course',
+            name: 'Mathématiques',
+            description: 'Groupe du cours de Mathématiques',
+            courseId: mathCourseForExam.id,
+            subSchoolId: subSchool.id,
+            createdBy: teacherUserForChat.id,
+        }).returning())[0]
+
+        await db.insert(conversationMembers).values([
+            { conversationId: courseGroup.id, userId: teacherUserForChat.id, role: 'admin' },
+            { conversationId: courseGroup.id, userId: studentUserForChat.id, role: 'member' },
+            { conversationId: courseGroup.id, userId: student2UserForChat.id, role: 'member' },
+        ]).onConflictDoNothing()
+
+        await db.insert(messages).values([
+            {
+                conversationId: courseGroup.id,
+                senderId: teacherUserForChat.id,
+                type: 'text',
+                content: 'Voici le groupe dédié au cours de Mathématiques.',
+            },
+            {
+                conversationId: courseGroup.id,
+                senderId: teacherUserForChat.id,
+                type: 'text',
+                content: 'Posez vos questions ici, je répondrai dès que possible.',
+            },
+            {
+                conversationId: courseGroup.id,
+                senderId: studentUserForChat.id,
+                type: 'text',
+                content: 'Professeur, je ne comprends pas l\'exercice 5 du chapitre 3.',
+            },
+            {
+                conversationId: courseGroup.id,
+                senderId: teacherUserForChat.id,
+                type: 'text',
+                content: 'Je vais t\'expliquer demain avant le cours. Viens 15 min avant.',
+            },
+        ]).onConflictDoNothing()
+
+        console.log('✓ Groupe cours créé: Mathématiques')
+
+        const [existingGeneralGroup] = await db.select().from(conversations)
+            .where(and(
+                eq(conversations.type, 'group'),
+                eq(conversations.name, 'Annonces — Saint-Joseph'),
+                eq(conversations.subSchoolId, subSchool.id),
+            ))
+
+        const generalGroup = existingGeneralGroup ?? (await db.insert(conversations).values({
+            type: 'group',
+            name: 'Annonces — Saint-Joseph',
+            description: 'Annonces officielles de l\'école',
+            subSchoolId: subSchool.id,
+            createdBy: adminUserForChat.id,
+        }).returning())[0]
+
+        await db.insert(conversationMembers).values([
+            { conversationId: generalGroup.id, userId: adminUserForChat.id,      role: 'admin' },
+            { conversationId: generalGroup.id, userId: teacherUserForChat.id,    role: 'member' },
+            { conversationId: generalGroup.id, userId: studentUserForChat.id,    role: 'member' },
+            { conversationId: generalGroup.id, userId: student2UserForChat.id,   role: 'member' },
+        ]).onConflictDoNothing()
+
+        await db.insert(messages).values([
+            {
+                conversationId: generalGroup.id,
+                senderId: adminUserForChat.id,
+                type: 'text',
+                content: 'Bienvenue sur la plateforme de communication du Groupe Scolaire Saint-Joseph ! 🏫',
+            },
+            {
+                conversationId: generalGroup.id,
+                senderId: adminUserForChat.id,
+                type: 'text',
+                content: 'Les cours du lundi 11 novembre sont suspendus en raison de la fête nationale.',
+            },
+            {
+                conversationId: generalGroup.id,
+                senderId: teacherUserForChat.id,
+                type: 'text',
+                content: 'Merci pour l\'information !',
+            },
+        ]).onConflictDoNothing()
+
+        console.log('✓ Groupe général créé: Annonces Saint-Joseph')
+
+    } else {
+        console.log('⚠ Users manquants, skip chat seed')
     }
 
     console.log('\n✓ Seed completed. Test credentials (password: password123):');
