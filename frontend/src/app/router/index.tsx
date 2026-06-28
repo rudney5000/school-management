@@ -27,7 +27,8 @@ import CoursesPage from "@/pages/courses/CoursesPage";
 import SchedulePage from "@/pages/schedule/SchedulePage";
 import EventPage from "@/pages/event/EventPage";
 import AttendancePage from "@/pages/attendances/AttendancesPage";
-import {ExamPage} from "@/pages/exams/ExamPage.tsx";
+import {ExamPage} from "@/pages/exams/ExamPage";
+import {ChatPage} from "@/pages/chat/ChatPage";
 
 type RouterContext = {
     isAuthenticated: () => boolean;
@@ -201,6 +202,12 @@ const examsRoute = createRoute({
     component: ExamPage
 })
 
+const chatRoute = createRoute({
+    getParentRoute: () => subSchoolRoute,
+    path: 'messages',
+    component: ChatPage
+})
+
 const routeTree = rootRoute.addChildren([
     localeRoute.addChildren([
         homeLayoutRoute
@@ -228,7 +235,8 @@ const routeTree = rootRoute.addChildren([
                     scheduleRoute,
                     eventsRoute,
                     attendancesRoute,
-                    examsRoute
+                    examsRoute,
+                    chatRoute,
                 ]),
             ])
     ])
