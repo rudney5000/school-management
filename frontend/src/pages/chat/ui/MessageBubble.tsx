@@ -1,0 +1,45 @@
+import {
+    Avatar,
+    AvatarFallback
+} from '@shared/ui'
+import { cn } from '@shared/lib'
+import type { Message } from '@entities/chat'
+
+interface MessageBubbleProps {
+    message: Message
+    isOwn: boolean
+}
+
+export function MessageBubble({
+                                  message,
+                                  isOwn
+}: MessageBubbleProps) {
+    return (
+        <div className={cn('flex gap-3', isOwn ? 'flex-row-reverse' : 'flex-row')}>
+            <Avatar size="sm">
+                <AvatarFallback className={cn(
+                    'text-xs font-semibold',
+                    isOwn ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                )}>
+                    {message.sender.email?.split('@')[0].slice(0, 2).toUpperCase() || '??'}
+                </AvatarFallback>
+            </Avatar>
+            <div className={cn(
+                'max-w-[70%] rounded-lg px-4 py-2 text-sm',
+                isOwn ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground'
+            )}>
+                <p className="font-semibold text-xs mb-1">{message.sender.email}</p>
+                {message.isDeleted
+                    ? <p className="italic opacity-60">Message supprimé</p>
+                    : <p>{message.content}</p>
+                }
+                {message.isEdited && !message.isDeleted && (
+                    <p className="text-[9px] opacity-50 mt-0.5">modifié</p>
+                )}
+                <p className="text-[10px] opacity-70 mt-1">
+                    {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </p>
+            </div>
+        </div>
+    )
+}
