@@ -46,6 +46,15 @@ export function useSocket(): RefObject<Socket | null> {
             if (isTyping) dispatch(chatActions.typingStarted({ conversationId, userId }))
             else dispatch(chatActions.typingStopped({ conversationId, userId }))
         })
+        socket.on('message:starred', (data) =>
+            dispatch(chatActions.messageStarred(data))
+        )
+        socket.on('message:unstarred', (data) =>
+            dispatch(chatActions.messageUnstarred(data))
+        )
+        socket.on('message:archived', (data) =>
+            dispatch(chatActions.messageArchived(data))
+        )
 
         return () => {
             socket.off('message:new')

@@ -54,6 +54,22 @@ export function useChatActions(socketRef: RefObject<Socket | null>) {
         socketRef.current?.emit('typing:stop', conversationId)
     }, [socketRef])
 
+    const starMessage = useCallback((conversationId: string, messageId: string) => {
+        socketRef.current?.emit('message:star', { conversationId, messageId })
+    }, [socketRef])
+
+    const unstarMessage = useCallback((conversationId: string, messageId: string) => {
+        socketRef.current?.emit('message:unstar', { conversationId, messageId })
+    }, [socketRef])
+
+    const archiveMessage = useCallback((conversationId: string, messageId: string) => {
+        socketRef.current?.emit('message:archive', { conversationId, messageId })
+    }, [socketRef])
+
+    const forwardMessage = useCallback((conversationId: string, messageId: string, targetConversationId: string) => {
+        socketRef.current?.emit('message:forward', { conversationId, messageId, targetConversationId })
+    }, [socketRef])
+
     return {
         joinConversation,
         sendMessage,
@@ -64,5 +80,9 @@ export function useChatActions(socketRef: RefObject<Socket | null>) {
         removeReaction,
         startTyping,
         stopTyping,
+        starMessage,
+        unstarMessage,
+        archiveMessage,
+        forwardMessage,
     }
 }

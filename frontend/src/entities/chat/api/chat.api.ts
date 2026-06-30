@@ -54,7 +54,7 @@ export class ChatApi extends ApiWrapper {
 
     getMessages(conversationId: string, params?: { limit?: number; before?: string }) {
         return this.handleRequest<Message[]>(
-            this._baseApi.get(`/chat/${conversationId}/messages`, params ? { params } : undefined),
+            this._baseApi.get(`/chat/${conversationId}/messages`, params),
             (raw) => raw as Message[],
         )
     }
@@ -98,6 +98,57 @@ export class ChatApi extends ApiWrapper {
         return this.handleRequest(
             this._baseApi.delete(`/chat/${conversationId}/messages/${messageId}/reactions/${encodeURIComponent(emoji)}`),
             undefined,
+        )
+    }
+
+    starMessage(conversationId: string, messageId: string) {
+        return this.handleRequest<{ success: boolean }>(
+            this._baseApi.post(`/chat/${conversationId}/messages/${messageId}/star`, {}),
+            (raw) => raw as { success: boolean },
+        )
+    }
+
+    unstarMessage(conversationId: string, messageId: string) {
+        return this.handleRequest(
+            this._baseApi.delete(`/chat/${conversationId}/messages/${messageId}/star`),
+            undefined,
+        )
+    }
+
+    archiveMessage(conversationId: string, messageId: string) {
+        return this.handleRequest<{ success: boolean }>(
+            this._baseApi.post(`/chat/${conversationId}/messages/${messageId}/archive`, {}),
+            (raw) => raw as { success: boolean },
+        )
+    }
+
+    unarchiveMessage(conversationId: string, messageId: string) {
+        return this.handleRequest(
+            this._baseApi.delete(`/chat/${conversationId}/messages/${messageId}/archive`),
+            undefined,
+        )
+    }
+
+    forwardMessage(conversationId: string, messageId: string, targetConversationId: string) {
+        return this.handleRequest<Message>(
+            this._baseApi.post(`/chat/${conversationId}/messages/${messageId}/forward`, {
+                targetConversationId,
+            }),
+            (raw) => raw as Message,
+        )
+    }
+
+    getThreadReplies(conversationId: string, messageId: string) {
+        return this.handleRequest<Message[]>(
+            this._baseApi.get(`/chat/${conversationId}/messages/${messageId}/thread`),
+            (raw) => raw as Message[],
+        )
+    }
+
+    replyToThread(conversationId: string, messageId: string, payload: SendMessageInput) {
+        return this.handleRequest<Message>(
+            this._baseApi.post(`/chat/${conversationId}/messages/${messageId}/thread`, payload),
+            (raw) => raw as Message,
         )
     }
 }

@@ -100,6 +100,26 @@ export const chatSlice: Slice<ChatState> = createSlice({
             state.typingUsers[conversationId] = (state.typingUsers[conversationId] ?? [])
                 .filter(id => id !== userId)
         },
+
+        messageStarred(state, action: PayloadAction<{ messageId: string; conversationId: string; userId: string }>) {
+            const { messageId, conversationId } = action.payload
+            const list = state.messages[conversationId] ?? []
+            const msg = list.find(m => m.id === messageId)
+            if (msg) msg.isStarred = true
+        },
+
+        messageUnstarred(state, action: PayloadAction<{ messageId: string; conversationId: string }>) {
+            const { messageId, conversationId } = action.payload
+            const list = state.messages[conversationId] ?? []
+            const msg = list.find(m => m.id === messageId)
+            if (msg) msg.isStarred = false
+        },
+
+        messageArchived(state, action: PayloadAction<{ messageId: string; conversationId: string }>) {
+            const { messageId, conversationId } = action.payload
+            const list = state.messages[conversationId] ?? []
+            state.messages[conversationId] = list.filter(m => m.id !== messageId)
+        },
     },
 })
 

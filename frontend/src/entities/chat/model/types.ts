@@ -37,6 +37,11 @@ export type Message = {
     replyToId: string | null
     replyTo?: { id: string; content: string | null; senderId: string } | null
     isDeleted: boolean
+    threadId:      string | null
+    forwardedFrom: string | null
+    subject:       string | null
+    isStarred:     boolean
+    isArchived:    boolean
     isEdited: boolean
     deletedAt: string | null
     editedAt: string | null
