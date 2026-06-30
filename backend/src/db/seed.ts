@@ -24,8 +24,10 @@ import {
     grades,
     academicPeriods,
     conversations,
-    messages, 
+    messages,
     conversationMembers,
+    messageStars,
+    messageArchives,
 } from './schema';
 import {
     and,
@@ -1124,6 +1126,156 @@ async function seed() {
 
     } else {
         console.log('⚠ Users manquants, skip chat seed')
+    }
+
+    if (teacherUserForChat && studentUserForChat && student2UserForChat && adminUserForChat) {
+
+        const [mathGroup] = await db.select().from(conversations)
+            .where(and(
+                eq(conversations.type, 'course'),
+                eq(conversations.name, 'Mathématiques'),
+                eq(conversations.subSchoolId, subSchool.id),
+            ))
+
+        if (mathGroup) {
+            const [existingSubjectMsg] = await db.select().from(messages)
+                .where(and(
+                    eq(messages.conversationId, mathGroup.id),
+                    eq(messages.subject, 'Rappel — Examen du 20 novembre'),
+                ))
+
+            let rootMessage
+            if (!existingSubjectMsg) {
+                const [inserted] = await db.insert(messages).values({
+                    conversationId: mathGroup.id,
+                    senderId:       teacherUserForChat.id,
+                    type:           'text',
+                    subject:        'Rappel — Examen du 20 novembre',
+                    content:        'Bonjour à tous, je vous rappelle que l\'examen final de mathématiques aura lieu le 20 novembre. Les chapitres 3 et 4 sont au programme. Préparez-vous bien et n\'hésitez pas à poser vos questions ici.',
+                }).returning()
+                rootMessage = inserted
+                console.log('✓ Message avec subject créé')
+            } else {
+                rootMessage = existingSubjectMsg
+                console.log('~ Message avec subject déjà existant')
+            }
+
+            if (rootMessage) {
+                const threadReplies = [
+                    {
+                        conversationId: mathGroup.id,
+                        senderId:       studentUserForChat.id,
+                        type:           'text' as const,
+                        content:        'Merci professeur ! Est-ce que les exercices du chapitre 4.3 sont inclus ?',
+                        threadId:       rootMessage.id,
+                    },
+                    {
+                        conversationId: mathGroup.id,
+                        senderId:       teacherUserForChat.id,
+                        type:           'text' as const,
+                        content:        'Oui Marie, tout le chapitre 4 est au programme y compris le 4.3.',
+                        threadId:       rootMessage.id,
+                    },
+                    {
+                        conversationId: mathGroup.id,
+                        senderId:       student2UserForChat.id,
+                        type:           'text' as const,
+                        content:        'Est-ce qu\'on peut utiliser la calculatrice ?',
+                        threadId:       rootMessage.id,
+                    },
+                    {
+                        conversationId: mathGroup.id,
+                        senderId:       teacherUserForChat.id,
+                        type:           'text' as const,
+                        content:        'Non Paul, l\'examen se fait sans calculatrice.',
+                        threadId:       rootMessage.id,
+                    },
+                ]
+
+                for (const reply of threadReplies) {
+                    const [existing] = await db.select().from(messages)
+                        .where(and(
+                            eq(messages.threadId, rootMessage.id),
+                            eq(messages.senderId, reply.senderId),
+                            eq(messages.content, reply.content!),
+                        ))
+
+                    if (!existing) {
+                        await db.insert(messages).values(reply)
+                        console.log(`✓ Thread reply créée`)
+                    } else {
+                        console.log(`~ Thread reply déjà existante`)
+                    }
+                }
+
+                await db.insert(messageStars)
+                    .values({ messageId: rootMessage.id, userId: teacherUserForChat.id })
+                    .onConflictDoNothing()
+                console.log('✓ Message starré par le prof')
+
+                await db.insert(messageArchives)
+                    .values({ messageId: rootMessage.id, userId: adminUserForChat.id })
+                    .onConflictDoNothing()
+                console.log('✓ Message archivé par l\'admin')
+            }
+
+            const [announcesGroup] = await db.select().from(conversations)
+                .where(and(
+                    eq(conversations.type, 'group'),
+                    eq(conversations.name, 'Annonces — Saint-Joseph'),
+                    eq(conversations.subSchoolId, subSchool.id),
+                ))
+
+            if (announcesGroup) {
+                const [originalMsg] = await db.select().from(messages)
+                    .where(eq(messages.conversationId, announcesGroup.id))
+                    .limit(1)
+
+                if (originalMsg) {
+                    const [existingForward] = await db.select().from(messages)
+                        .where(and(
+                            eq(messages.forwardedFrom, originalMsg.id),
+                            eq(messages.conversationId, mathGroup.id),
+                        ))
+
+                    if (!existingForward) {
+                        await db.insert(messages).values({
+                            conversationId: mathGroup.id,
+                            senderId:       teacherUserForChat.id,
+                            type:           'text',
+                            content:        originalMsg.content,
+                            forwardedFrom:  originalMsg.id,
+                        })
+                        console.log('✓ Message forwardé créé')
+                    } else {
+                        console.log('~ Message forwardé déjà existant')
+                    }
+                }
+            }
+        }
+
+        const [dmConv] = await db.select().from(conversations)
+            .where(and(
+                eq(conversations.type, 'dm'),
+                eq(conversations.createdBy, teacherUserForChat.id),
+                eq(conversations.subSchoolId, subSchool.id),
+            ))
+
+        if (dmConv) {
+            const [firstDmMsg] = await db.select().from(messages)
+                .where(eq(messages.conversationId, dmConv.id))
+                .limit(1)
+
+            if (firstDmMsg) {
+                await db.insert(messageStars)
+                    .values({ messageId: firstDmMsg.id, userId: studentUserForChat.id })
+                    .onConflictDoNothing()
+                console.log('✓ DM message starré par l\'élève')
+            }
+        }
+
+    } else {
+        console.log('⚠ Users manquants, skip thread/stars/archives seed')
     }
 
     console.log('\n✓ Seed completed. Test credentials (password: password123):');

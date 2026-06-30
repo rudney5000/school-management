@@ -2,19 +2,20 @@ import type { Request, Response } from 'express'
 import { asyncHandler } from '@/shared/utils/async-handler'
 import { respond } from '@/shared/utils/respond'
 import { ChatService } from './chat.service'
-import type {
+import {
     CreateConversationInput,
     UpdateConversationInput,
     SendMessageInput,
     AddReactionInput,
     AddMembersInput,
+    editMessageSchema,
+    ForwardMessageInput,
 } from './chat.schema'
 
 function resolveSubSchoolId(req: Request): string {
     if (req.user?.subSchoolId) return req.user.subSchoolId
     return (req.query as { subSchoolId: string }).subSchoolId
 }
-
 
 export class ChatController {
     private readonly service = new ChatService()
@@ -75,7 +76,13 @@ export class ChatController {
     })
 
     editMessage = asyncHandler(async (req: Request, res: Response) => {
-        const data = await this.service.editMessage(req.params.messageId, req.user!.id)
+        const input = editMessageSchema.parse(req.body)
+
+        const data = await this.service.editMessage(
+            req.params.messageId,
+            req.user!.id,
+            input
+        )
         respond(res, data)
     })
 
@@ -105,5 +112,52 @@ export class ChatController {
             req.params.emoji,
         )
         res.status(204).send()
+    })
+
+    starMessage = asyncHandler(async (req: Request, res: Response) => {
+        await this.service.starMessage(req.params.messageId, req.user!.id)
+        respond(res, { success: true })
+    })
+
+    unstarMessage = asyncHandler(async (req: Request, res: Response) => {
+        await this.service.unstarMessage(req.params.messageId, req.user!.id)
+        res.status(204).send()
+    })
+
+    archiveMessage = asyncHandler(async (req: Request, res: Response) => {
+        await this.service.archiveMessage(req.params.messageId, req.user!.id)
+        respond(res, { success: true })
+    })
+
+    unarchiveMessage = asyncHandler(async (req: Request, res: Response) => {
+        await this.service.unarchiveMessage(req.params.messageId, req.user!.id)
+        res.status(204).send()
+    })
+
+    forwardMessage = asyncHandler(async (req: Request, res: Response) => {
+        const { targetConversationId } = req.body as ForwardMessageInput
+        const data = await this.service.forwardMessage(
+            req.params.messageId,
+            targetConversationId,
+            req.user!.id,
+        )
+        respond(res, data, 201)
+    })
+
+    getThreadReplies = asyncHandler(async (req: Request, res: Response) => {
+        const data = await this.service.findThreadReplies(
+            req.params.messageId,
+            req.user!.id,
+        )
+        respond(res, data)
+    })
+
+    replyToThread = asyncHandler(async (req: Request, res: Response) => {
+        const data = await this.service.replyToThread(
+            req.params.messageId,
+            req.user!.id,
+            req.body as SendMessageInput,
+        )
+        respond(res, data, 201)
     })
 }

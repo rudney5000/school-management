@@ -14,6 +14,8 @@ import {
     messages,
     messageReactions,
     messageReadReceipts,
+    messageStars,
+    messageArchives,
 } from '@/db/schema/chat'
 import type {
     CreateConversationInput,
@@ -232,6 +234,80 @@ export class ChatService {
                 eq(messageReactions.userId, userId),
                 eq(messageReactions.emoji, emoji),
             ))
+    }
+
+    async starMessage(messageId: string, userId: string) {
+        await db
+            .insert(messageStars)
+            .values({ messageId, userId })
+            .onConflictDoNothing()
+    }
+
+    async unstarMessage(messageId: string, userId: string) {
+        await db
+            .delete(messageStars)
+            .where(and(
+                eq(messageStars.messageId, messageId),
+                eq(messageStars.userId, userId),
+            ))
+    }
+
+    async archiveMessage(messageId: string, userId: string) {
+        await db.insert(messageArchives)
+            .values({ messageId, userId })
+            .onConflictDoNothing()
+    }
+
+    async unarchiveMessage(messageId: string, userId: string) {
+        await db.delete(messageArchives)
+            .where(and(
+                eq(messageArchives.messageId, messageId),
+                eq(messageArchives.userId, userId),
+            ))
+    }
+
+    async forwardMessage(messageId: string, targetConversationId: string, senderId: string) {
+        const original = await this.findMessageOrFail(messageId)
+        await this.assertMember(targetConversationId, senderId)
+
+        const [forwarded] = await db.insert(messages).values({
+            conversationId: targetConversationId,
+            senderId,
+            type:          original.type,
+            content:       original.content,
+            forwardedFrom: original.id,
+        }).returning()
+
+        return forwarded
+    }
+
+    async findThreadReplies(threadId: string, userId: string) {
+        const root = await this.findMessageOrFail(threadId)
+        await this.assertMember(root.conversationId, userId)
+
+        return db.query.messages.findMany({
+            where: eq(messages.threadId, threadId),
+            with: {
+                sender:    { columns: { id: true, email: true, role: true } },
+                reactions: true,
+            },
+            orderBy: messages.createdAt,
+        })
+    }
+
+    async replyToThread(threadId: string, senderId: string, input: SendMessageInput) {
+        const root = await this.findMessageOrFail(threadId)
+        await this.assertMember(root.conversationId, senderId)
+
+        const [reply] = await db.insert(messages).values({
+            conversationId: root.conversationId,
+            senderId,
+            type:     input.type,
+            content:  input.content,
+            threadId: threadId,
+        }).returning()
+
+        return reply
     }
 
     private async findExistingDm(userA: string, userB: string) {

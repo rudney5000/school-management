@@ -165,6 +165,23 @@ CREATE TABLE IF NOT EXISTS "messages" (
 	"edited_at" timestamp,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
+
+-- Table message_stars
+CREATE TABLE IF NOT EXISTS "message_stars" (
+    "message_id" uuid NOT NULL,
+    "user_id"    uuid NOT NULL,
+    "starred_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+
+-- Table message_archives
+CREATE TABLE IF NOT EXISTS "message_archives" (
+    "message_id"  uuid NOT NULL,
+    "user_id"     uuid NOT NULL,
+    "archived_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "academic_periods" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
@@ -556,6 +573,66 @@ DO $$ BEGIN
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
+
+--> statement-breakpoint
+ALTER TABLE "messages" ADD COLUMN IF NOT EXISTS "thread_id" uuid;
+--> statement-breakpoint
+ALTER TABLE "messages" ADD COLUMN IF NOT EXISTS "forwarded_from" uuid;
+--> statement-breakpoint
+ALTER TABLE "messages" ADD COLUMN IF NOT EXISTS "subject" text;
+--> statement-breakpoint
+
+-- FK thread_id → messages.id
+DO $$ BEGIN
+ ALTER TABLE "messages" ADD CONSTRAINT "messages_thread_id_messages_id_fk"
+ FOREIGN KEY ("thread_id") REFERENCES "public"."messages"("id")
+ ON DELETE set null ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+
+DO $$ BEGIN
+ ALTER TABLE "message_stars" ADD CONSTRAINT "message_stars_message_id_messages_id_fk"
+ FOREIGN KEY ("message_id") REFERENCES "public"."messages"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+
+DO $$ BEGIN
+ ALTER TABLE "message_stars" ADD CONSTRAINT "message_stars_user_id_users_id_fk"
+ FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+
+-- FK forwarded_from → messages.id
+DO $$ BEGIN
+ ALTER TABLE "messages" ADD CONSTRAINT "messages_forwarded_from_messages_id_fk"
+ FOREIGN KEY ("forwarded_from") REFERENCES "public"."messages"("id")
+ ON DELETE set null ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+
+DO $$ BEGIN
+ ALTER TABLE "message_archives" ADD CONSTRAINT "message_archives_message_id_messages_id_fk"
+ FOREIGN KEY ("message_id") REFERENCES "public"."messages"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+
+DO $$ BEGIN
+ ALTER TABLE "message_archives" ADD CONSTRAINT "message_archives_user_id_users_id_fk"
+ FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "academic_periods" ADD CONSTRAINT "academic_periods_sub_school_id_sub_schools_id_fk" FOREIGN KEY ("sub_school_id") REFERENCES "public"."sub_schools"("id") ON DELETE no action ON UPDATE no action;
@@ -878,6 +955,8 @@ END $$;
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_conversation_member" ON "conversation_members" USING btree ("conversation_id","user_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_reaction" ON "message_reactions" USING btree ("message_id","user_id","emoji");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_read_receipt" ON "message_read_receipts" USING btree ("message_id","user_id");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_star" ON "message_stars" USING btree ("message_id", "user_id");
+CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_archive" ON "message_archives" USING btree ("message_id", "user_id");
 CREATE UNIQUE INDEX IF NOT EXISTS "unique_grade_idx" ON "grades" USING btree ("student_id","course_id","academic_period_id","grade_type");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_sub_schools_school" ON "sub_schools" USING btree ("school_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_sub_schools_code" ON "sub_schools" USING btree ("code");--> statement-breakpoint

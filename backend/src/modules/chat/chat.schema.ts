@@ -30,6 +30,10 @@ export const editMessageSchema = z.object({
     content: z.string().min(1).max(5000),
 })
 
+export const forwardMessageSchema = z.object({
+    targetConversationId: z.string().uuid('Invalid conversation ID'),
+})
+
 export const addReactionSchema = z.object({
     emoji: z.string().min(1).max(10),
 })
@@ -52,6 +56,7 @@ export const messagesQuerySchema = z.object({
     before: z.string().uuid().optional(),
 })
 
+export type ForwardMessageInput = z.infer<typeof forwardMessageSchema>
 export type CreateConversationInput = z.infer<typeof createConversationSchema>
 export type UpdateConversationInput = z.infer<typeof updateConversationSchema>
 export type SendMessageInput        = z.infer<typeof sendMessageSchema>

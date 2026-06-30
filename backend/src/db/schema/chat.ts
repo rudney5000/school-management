@@ -4,8 +4,7 @@ import {
     timestamp,
     text,
     boolean,
-    primaryKey,
-    uniqueIndex
+    uniqueIndex,
 } from 'drizzle-orm/pg-core';
 import {relations} from 'drizzle-orm';
 import {
@@ -50,7 +49,10 @@ export const messages = pgTable('messages', {
     senderId:       uuid('sender_id').notNull().references(() => users.id),
     type:           messageTypeEnum('type').notNull().default('text'),
     content:        text('content'),
+    subject:        text('subject'),
     replyToId:      uuid('reply_to_id'),
+    threadId:       uuid('thread_id'),
+    forwardedFrom:  uuid('forwarded_from'),
     isDeleted:      boolean('is_deleted').default(false).notNull(),
     deletedAt:      timestamp('deleted_at'),
     isEdited:       boolean('is_edited').default(false).notNull(),
@@ -83,6 +85,28 @@ export const messageReadReceipts = pgTable('message_read_receipts', {
     ),
 }))
 
+export const messageStars = pgTable('message_stars', {
+    messageId: uuid('message_id').notNull().references(() => messages.id, { onDelete: 'cascade' }),
+    userId:    uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+    starredAt: timestamp('starred_at').defaultNow().notNull(),
+}, (table) => ({
+   uniq: uniqueIndex('uniq_message_star').on(
+       table.messageId,
+       table.userId
+   ),
+}))
+
+export const messageArchives = pgTable('message_archives', {
+    messageId:  uuid('message_id').notNull().references(() => messages.id, { onDelete: 'cascade' }),
+    userId:     uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+    archivedAt: timestamp('archived_at').defaultNow().notNull(),
+}, (table) => ({
+    uniq: uniqueIndex('uniq_message_archive').on(
+        table.messageId,
+        table.userId
+    ),
+}))
+
 export const conversationsRelations = relations(conversations, ({ many, one }) => ({
     members:  many(conversationMembers),
     messages: many(messages),
@@ -95,13 +119,27 @@ export const conversationMembersRelations = relations(conversationMembers, ({ on
 }))
 
 export const messagesRelations = relations(messages, ({ one, many }) => ({
-    conversation: one(conversations, { fields: [messages.conversationId], references: [conversations.id] }),
-    sender:       one(users, { fields: [messages.senderId], references: [users.id] }),
-    replyTo:      one(messages, { fields: [messages.replyToId], references: [messages.id] }),
-    reactions:    many(messageReactions),
-    readReceipts: many(messageReadReceipts),
+    conversation:  one(conversations, { fields: [messages.conversationId], references: [conversations.id] }),
+    sender:        one(users, { fields: [messages.senderId], references: [users.id] }),
+    replyTo:       one(messages, { fields: [messages.replyToId], references: [messages.id], relationName: 'reply' }),
+    thread:        one(messages, { fields: [messages.threadId], references: [messages.id], relationName: 'thread' }),
+    threadReplies: many(messages, { relationName: 'thread' }),
+    forwardOrigin: one(messages, { fields: [messages.forwardedFrom], references: [messages.id], relationName: 'forward' }),
+    reactions:     many(messageReactions),
+    readReceipts:  many(messageReadReceipts),
+    stars:         many(messageStars),
+    archives:      many(messageArchives),
 }))
 
+export const messageStarsRelations = relations(messageStars, ({ one }) => ({
+    message: one(messages, { fields: [messageStars.messageId], references: [messages.id] }),
+    user:    one(users,    { fields: [messageStars.userId],    references: [users.id] }),
+}))
+
+export const messageArchivesRelations = relations(messageArchives, ({ one }) => ({
+    message: one(messages, { fields: [messageArchives.messageId], references: [messages.id] }),
+    user:    one(users,    { fields: [messageArchives.userId],    references: [users.id] }),
+}))
 export const messageReactionsRelations = relations(messageReactions, ({ one }) => ({
     message: one(messages, { fields: [messageReactions.messageId], references: [messages.id] }),
     user:    one(users, { fields: [messageReactions.userId], references: [users.id] }),
