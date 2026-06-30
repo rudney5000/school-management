@@ -127,4 +127,59 @@ export function registerChatHandlers(io: Server, socket: Socket, redis: Redis) {
         await redis.del(`typing:${conversationId}:${userId}`)
         socket.to(conversationId).emit('user:typing', { userId, conversationId, isTyping: false })
     })
+
+    socket.on('message:star', async (data: { conversationId: string; messageId: string }) => {
+        try {
+            await chatService.starMessage(data.messageId, userId)
+            io.to(data.conversationId).emit('message:starred', {
+                messageId:      data.messageId,
+                conversationId: data.conversationId,
+                userId,
+            })
+        } catch {
+            socket.emit('error', { message: 'Erreur star message' })
+        }
+    })
+
+    socket.on('message:unstar', async (data: { conversationId: string; messageId: string }) => {
+        try {
+            await chatService.unstarMessage(data.messageId, userId)
+            io.to(data.conversationId).emit('message:unstarred', {
+                messageId:      data.messageId,
+                conversationId: data.conversationId,
+                userId,
+            })
+        } catch {
+            socket.emit('error', { message: 'Erreur unstar message' })
+        }
+    })
+
+    socket.on('message:archive', async (data: { conversationId: string; messageId: string }) => {
+        try {
+            await chatService.archiveMessage(data.messageId, userId)
+            socket.emit('message:archived', {
+                messageId:      data.messageId,
+                conversationId: data.conversationId,
+            })
+        } catch {
+            socket.emit('error', { message: 'Erreur archive message' })
+        }
+    })
+
+    socket.on('message:forward', async (data: {
+        conversationId: string
+        messageId: string
+        targetConversationId: string
+    }) => {
+        try {
+            const forwarded = await chatService.forwardMessage(
+                data.messageId,
+                data.targetConversationId,
+                userId,
+            )
+            io.to(data.targetConversationId).emit('message:new', forwarded)
+        } catch {
+            socket.emit('error', { message: 'Erreur forward message' })
+        }
+    })
 }
