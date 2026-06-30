@@ -1,17 +1,6 @@
-import {
-    ChevronLeft,
-    ChevronRight,
-    Download,
-    Reply,
-    MoreHorizontal,
-    Trash2 } from 'lucide-react'
-import { Button } from '@shared/ui'
-import { MessageList } from './MessageList'
-import { MessageInput } from './MessageInput'
-import type {
-    Conversation,
-    Message
-} from '@entities/chat'
+import { DmWindow } from './dm/DmWindow'
+import { InboxWindow } from './inbox/InboxWindow'
+import type { Conversation, Message } from '@entities/chat'
 
 interface ChatWindowProps {
     activeConversation: Conversation | null
@@ -32,55 +21,37 @@ export function ChatWindow({
                                isLoadingMessages,
                                messageText,
                                onMessageChange,
-                               onSend
-}: ChatWindowProps) {
-    return (
-        <div className="flex flex-1 flex-col overflow-hidden bg-card">
-            <div className="flex items-center justify-between border-b border-border px-5 py-3">
-                <div className="flex items-center gap-1">
-                    <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
-                        <ChevronLeft className="size-4" />
-                    </Button>
-                    <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
-                        <Download className="size-4" />
-                    </Button>
-                    <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
-                        <Trash2 className="size-4" />
-                    </Button>
-                </div>
-                <div className="flex items-center gap-1">
-                    <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
-                        <ChevronLeft className="size-4" />
-                    </Button>
-                    <span className="px-1 text-sm text-muted-foreground">{messages.length} messages</span>
-                    <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
-                        <ChevronRight className="size-4" />
-                    </Button>
-                </div>
-                <div className="flex items-center gap-1">
-                    <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
-                        <Reply className="size-4" />
-                    </Button>
-                    <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
-                        <MoreHorizontal className="size-4" />
-                    </Button>
-                </div>
+                               onSend,
+                           }: ChatWindowProps) {
+    if (!activeConversation) {
+        return (
+            <div className="flex flex-1 items-center justify-center bg-card">
+                <p className="text-sm text-muted-foreground">Select a conversation</p>
             </div>
+        )
+    }
 
-            <MessageList
-                activeConversation={activeConversation}
-                messages={messages}
-                currentUserId={currentUserId}
-                isLoading={isLoadingMessages}
-            />
-
-            <MessageInput
-                messageText={messageText}
+    if (activeConversation.type === 'dm') {
+        return (
+            <DmWindow
                 activeConversation={activeConversation}
                 activeConversationId={activeConversationId}
-                onChange={onMessageChange}
+                messages={messages}
+                currentUserId={currentUserId}
+                isLoadingMessages={isLoadingMessages}
+                messageText={messageText}
+                onMessageChange={onMessageChange}
                 onSend={onSend}
             />
-        </div>
+        )
+    }
+
+    return (
+        <InboxWindow
+            activeConversation={activeConversation}
+            messages={messages}
+            currentUserId={currentUserId}
+            isLoadingMessages={isLoadingMessages}
+        />
     )
 }
