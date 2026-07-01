@@ -69,7 +69,7 @@ export function createApp(): express.Application {
   app.use('/api/exams', examsRouter);
   app.use('/api/academic-periods', academicPeriodsRouter)
   app.use('/api/grades', gradesRouter)
-  app.use('/api/chat', chatRouter)
+  app.use('/api/chats', chatRouter)
 
 
   app.use(errorHandler);
