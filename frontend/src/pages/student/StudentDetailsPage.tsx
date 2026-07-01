@@ -19,7 +19,8 @@ import {
     CardContent,
     CardHeader,
     CardTitle,
-    Separator
+    Separator,
+    Spinner
 } from '@shared/ui'
 import { useStudent } from '@entities/student'
 import { useParents } from '@entities/parent'
@@ -36,7 +37,10 @@ const StudentDetailsPage = () => {
     const { data: student, isLoading, isError } = useStudent(studentId, subSchoolId)
     const { data: parents, isLoading: isParentsLoading } = useParents(subSchoolId)
 
-    if (isLoading) return <div className="p-8 text-muted-foreground">{t('common.loading')}</div>
+    if (isLoading) return <div className="p-8 text-muted-foreground">
+        <Spinner/>
+        {t('common.loading')}
+    </div>
     if (isError || !student) return <div className="p-8 text-destructive">{t('common.error')}</div>
 
     const avatar = student.image ?? `https://i.pravatar.cc/150?u=${student.id}`

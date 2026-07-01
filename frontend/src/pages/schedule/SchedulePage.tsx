@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams } from '@tanstack/react-router'
-import { Button } from '@shared/ui'
+import {Button, Spinner} from '@shared/ui'
 import { useTranslation } from '@shared/lib'
 import {
     useSchedules,
@@ -47,7 +47,10 @@ const SchedulePage = () => {
         setScheduleToDelete(schedule)
     }
 
-    if (isLoading) return <div className="p-8">{t('dashboard.schedules.loading')}</div>
+    if (isLoading) return <div className="p-8">
+        <Spinner/>
+        {t('dashboard.schedules.loading')}
+    </div>
     if (isError) return <div className="p-8">{t('dashboard.schedules.error')}</div>
 
     const schedulesWithRelations: ScheduleWithRelations[] = (schedules ?? []).map((s) => ({

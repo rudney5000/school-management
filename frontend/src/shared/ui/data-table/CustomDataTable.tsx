@@ -6,7 +6,8 @@ import {
 import type { ColumnDef } from '@tanstack/react-table'
 import {
     StatCardsRow,
-    type StatCardItem
+    type StatCardItem,
+    Spinner
 } from '@shared/ui'
 import {useFilteredData} from "@shared/ui/data-table/useFilteredData";
 import {useDataTableState} from "@shared/ui/data-table/useDataTableState";
@@ -84,6 +85,7 @@ export function CustomDataTable<TData, TValue>({
 
     if (isLoading) return (
         <div className="flex items-center justify-center min-h-[400px] text-zinc-500">
+            <Spinner/>
             {loadingMessage ?? t('dashboard.common.dataTable.loading')}
         </div>
     )

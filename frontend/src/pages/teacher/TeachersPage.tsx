@@ -14,7 +14,7 @@ import {
     AvatarFallback,
     AvatarImage,
     Button,
-    Input
+    Input, Spinner
 } from '@shared/ui'
 import {
     type StatCardItem
@@ -119,7 +119,10 @@ const TeachersPage = () => {
             .slice(0, 5)
     }, [data, selectedTeacher])
 
-    if (isLoading) return <div>{t('dashboard.teachers.loading')}</div>
+    if (isLoading) return <div>
+        <Spinner/>
+        {t('dashboard.teachers.loading')}
+    </div>
     if (isError) return <div>{t('dashboard.teachers.error')}</div>
 
     return (

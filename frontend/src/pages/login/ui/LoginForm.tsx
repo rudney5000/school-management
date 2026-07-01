@@ -16,6 +16,7 @@ import {
     Alert,
     AlertDescription,
     LocaleLink,
+    Spinner,
 } from '@/shared/ui';
 import {cn} from "@shared/lib";
 
@@ -95,6 +96,7 @@ export function LoginForm() {
                     {isLoading ? (
                         <>
                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            <Spinner/>
                             Signing in...
                         </>
                     ) : (

@@ -17,6 +17,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
+    Spinner,
     Table,
     TableBody,
     TableCell,
@@ -188,7 +189,10 @@ export function ResultsBulletin() {
     if (gradesLoading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <div className="text-muted-foreground">{t("dashboard.exams.gradeEntry.loading")}</div>
+                <div className="text-muted-foreground">
+                    <Spinner/>
+                    {t("dashboard.exams.gradeEntry.loading")}
+                </div>
             </div>
         )
     }

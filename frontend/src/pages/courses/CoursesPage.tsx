@@ -1,4 +1,7 @@
-import { useState, useMemo } from 'react';
+import {
+    useState,
+    useMemo
+} from 'react';
 import { useParams } from '@tanstack/react-router';
 import {
     Plus,
@@ -10,11 +13,16 @@ import {
     Badge,
     Button,
     Input,
-    Separator
+    Separator,
+    Spinner
 } from '@/shared/ui';
 import type {Course} from "@entities/courses";
 import { useCourses } from "@entities/courses";
-import { AddCourseForm, EditCourseForm, DeleteCourseAlert} from "@features/courses";
+import {
+    AddCourseForm,
+    EditCourseForm,
+    DeleteCourseAlert
+} from "@features/courses";
 import type {CourseStatus} from "@entities/courses/model/constants";
 import {useTranslation} from "@shared/lib";
 import CourseCard from "@/pages/courses/ui/CourseCard";
@@ -155,6 +163,7 @@ export default function CoursesPage() {
 
                 {isLoading ? (
                     <div className="text-center py-24 text-muted-foreground">
+                        <Spinner/>
                         <p>{t('dashboard.courses.loading')}</p>
                     </div>
                 ) : filtered.length === 0 ? (

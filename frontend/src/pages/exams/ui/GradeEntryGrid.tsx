@@ -10,7 +10,8 @@ import {
     CardHeader,
     CardTitle,
     Input,
-    Textarea
+    Textarea,
+    Spinner
 } from "@/shared/ui"
 import {
     Save,
@@ -173,7 +174,10 @@ export function GradeEntryGrid({ examId, onClose }: GradeEntryGridProps) {
     if (examLoading || studentsLoading || gradesLoading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <div className="text-muted-foreground">{t("dashboard.exams.gradeEntry.loading")}</div>
+                <div className="text-muted-foreground">
+                    <Spinner/>
+                    {t("dashboard.exams.gradeEntry.loading")}
+                </div>
             </div>
         )
     }

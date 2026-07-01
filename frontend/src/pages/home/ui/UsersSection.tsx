@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {type ReactNode} from 'react';
 import {BarChart3, BookOpen, GraduationCap, Users} from "lucide-react";
 import { useTranslation } from '@/shared/lib/useTranslation';
 
 interface UserType {
   title: string;
   desc: string;
-  icon: Node.icon;
+  icon: ReactNode;
   color: string;
 }
 

@@ -19,7 +19,12 @@ interface DeleteProps {
     onClick: () => void
 }
 
-export const DeleteAlert: React.FC<DeleteProps> = ({ isOpen, onClick, isLoading, onOpenChange }) => {
+export const DeleteAlert: React.FC<DeleteProps> = ({
+                                                       isOpen,
+                                                       onClick,
+                                                       isLoading,
+                                                       onOpenChange
+}) => {
     const { t } = useTranslation()
 
     return (

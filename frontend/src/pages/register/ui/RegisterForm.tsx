@@ -10,7 +10,7 @@ import {
     SelectGroup,
     SelectItem,
     SelectTrigger,
-    SelectValue
+    SelectValue, Spinner
 } from "@shared/ui";
 import {type RegisterFormData, registerSchema} from "@features/auth/model/auth.schema";
 import {Eye, EyeOff, Loader2} from "lucide-react";
@@ -134,6 +134,7 @@ export function RegisterForm() {
                     {isLoading ? (
                         <>
                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            <Spinner/>
                             Creating account...
                         </>
                     ) : (

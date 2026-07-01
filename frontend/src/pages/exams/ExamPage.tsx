@@ -30,7 +30,8 @@ import {ExamTable} from "@/pages/exams/ui/ExamTable";
 import {ExamTableToolbar} from "@/pages/exams/ui/ExamTableToolbar";
 import {useCourses} from "@entities/courses";
 import {
-    AddExamForm, DeleteExamAlert,
+    AddExamForm,
+    DeleteExamAlert,
     EditExamForm
 } from "@features/exams";
 

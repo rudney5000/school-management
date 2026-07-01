@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {type ReactNode} from 'react';
 import {Card} from "@shared/ui/card.tsx";
 import {Layers3, LayoutGrid, Puzzle, Sparkles} from "lucide-react";
 import { useTranslation } from '@/shared/lib/useTranslation';
 
 interface Feature {
-  icon: Node.icon;
+  icon: ReactNode;
   title: string;
   desc: string;
 }
