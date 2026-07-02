@@ -4,7 +4,10 @@ import { authApi } from '../api/auth.api'
 import { setCredentials } from '@features/auth/store/auth-slice'
 import { useAppDispatch } from '@/shared/store/hooks'
 import { baseApi } from '@/shared/api/instance'
-import type { LoginFormData, RegisterFormData } from './auth.schema'
+import type {
+    LoginFormData,
+    RegisterFormData
+} from './auth.schema'
 import type {CommonError} from "@shared/helperClass/CommonError";
 import type {AuthTokensDto} from "@features/auth/model/dto/AuthTokensDto";
 import i18n from "@app/i18n/i18n";
@@ -31,7 +34,6 @@ export function useAuth() {
             subSchoolId: payload.subSchoolId ?? null,
         }))
 
-        console.log('JWT payload:', payload)
         const locale = i18n.language
         const subSchoolId = payload.subSchoolId
             ?? store.getState().subSchool?.selectedSubSchoolId
