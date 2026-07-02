@@ -6,7 +6,8 @@ import {
 import {
     Button,
     Input,
-    ScrollArea
+    ScrollArea,
+    Spinner
 } from '@shared/ui'
 import { ConversationItem } from './ConversationItem'
 import type {
@@ -72,6 +73,7 @@ export function ConversationList({
                     })}
                     {isLoading && (
                         <div className="p-4 text-center text-sm text-muted-foreground">
+                            <Spinner/>
                             Loading conversations...
                         </div>
                     )}

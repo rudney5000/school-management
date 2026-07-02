@@ -1,7 +1,8 @@
 import {
     useState,
     useEffect,
-    useMemo } from 'react'
+    useMemo
+} from 'react'
 import {
     useAppDispatch,
     useAppSelector
@@ -62,7 +63,9 @@ export function useChatPage() {
 
     useEffect(() => {
         if (conversations.length > 0 && !activeConversationId) {
-            dispatch(chatActions.setActiveConversation(conversations[0].id))
+            const first = conversations.find(c => c.type === 'course' || c.type === 'class' || c.type === 'dm')
+                ?? conversations[0]
+            dispatch(chatActions.setActiveConversation(first.id))
         }
     }, [conversations, activeConversationId, dispatch])
 
@@ -83,12 +86,20 @@ export function useChatPage() {
     }
 
     return {
-        selectedCategory, setSelectedCategory,
-        messageText, setMessageText,
-        conversations, activeConversation, activeConversationId,
-        messages, onlineUsers, currentUserId,
-        unreadByConv, counts,
-        isLoadingConversations, isLoadingMessages,
+        selectedCategory,
+        setSelectedCategory,
+        messageText,
+        setMessageText,
+        conversations,
+        activeConversation,
+        activeConversationId,
+        messages,
+        onlineUsers,
+        currentUserId,
+        unreadByConv,
+        counts,
+        isLoadingConversations,
+        isLoadingMessages,
         chatActionsHook,
         handleSendMessage,
         handleSelectConversation,

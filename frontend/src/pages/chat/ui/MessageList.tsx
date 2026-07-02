@@ -3,11 +3,11 @@ import {
     Avatar,
     AvatarFallback,
     AvatarImage,
-    ScrollArea
+    ScrollArea, Spinner
 } from '@shared/ui'
 import type {
     Conversation,
-    Message 
+    Message
 } from '@entities/chat'
 
 interface MessageListProps {
@@ -51,7 +51,10 @@ export function MessageList({
 
                     <div className="space-y-4">
                         {isLoading && (
-                            <div className="text-center text-sm text-muted-foreground">Loading messages...</div>
+                            <div className="text-center text-sm text-muted-foreground">
+                                <Spinner/>
+                                Loading messages...
+                            </div>
                         )}
                         {messages.length === 0 && !isLoading && (
                             <div className="text-center text-sm text-muted-foreground">

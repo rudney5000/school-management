@@ -1,6 +1,9 @@
 import { DmWindow } from './dm/DmWindow'
 import { InboxWindow } from './inbox/InboxWindow'
-import type { Conversation, Message } from '@entities/chat'
+import type {
+    Conversation,
+    Message
+} from '@entities/chat'
 
 interface ChatWindowProps {
     activeConversation: Conversation | null

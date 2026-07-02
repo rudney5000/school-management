@@ -26,10 +26,12 @@ export function useAuth() {
             refreshToken: tokens.refreshToken,
             role: payload.role,
             email: payload.email,
+            userId: payload.id ?? payload.userId ?? payload.sub,
             schoolId: payload.schoolId,
             subSchoolId: payload.subSchoolId ?? null,
         }))
 
+        console.log('JWT payload:', payload)
         const locale = i18n.language
         const subSchoolId = payload.subSchoolId
             ?? store.getState().subSchool?.selectedSubSchoolId

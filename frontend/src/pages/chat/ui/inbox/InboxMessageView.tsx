@@ -50,7 +50,6 @@ export function InboxMessageView({
 
     return (
         <div className="flex flex-1 flex-col overflow-hidden">
-            {/* Actions toolbar */}
             <div className="flex items-center justify-between border-b border-border px-5 py-2.5">
                 <div className="flex items-center gap-1">
                     <Button
@@ -137,22 +136,23 @@ export function InboxMessageView({
                     </div>
 
                     <div className="mt-6">
-                        <button
-                            onClick={() => setThreadOpen(p => !p)}
-                            className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                                setThreadOpen(p => !p)
+                            }}
+                            className="flex items-center gap-2 text-xs text-muted-foreground"
                         >
-                            {threadOpen
-                                ? <ChevronUp className="size-3.5" />
-                                : <ChevronDown className="size-3.5" />
-                            }
+                            {threadOpen ? <ChevronUp className="size-3.5" /> : <ChevronDown className="size-3.5" />}
                             {threadOpen ? 'Hide replies' : 'Show replies'}
-                        </button>
+                        </Button>
 
                         {threadOpen && (
                             <InboxThreadReplies
                                 threadId={message.id}
-                                currentUserId={currentUserId}
                                 conversationId={conversation.id}
+                                currentUserId={currentUserId}
                             />
                         )}
                     </div>

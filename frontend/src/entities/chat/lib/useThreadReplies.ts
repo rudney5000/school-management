@@ -1,4 +1,8 @@
-import { useState, useEffect, useCallback } from 'react'
+import {
+    useState,
+    useEffect,
+    useCallback
+} from 'react'
 import { chatApi } from '@entities/chat/api/chat.api'
 import { handleApiError } from '@shared/lib'
 import type { Message } from '@entities/chat'

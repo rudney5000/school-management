@@ -2,7 +2,8 @@ import { useState } from 'react'
 import {
     Avatar,
     AvatarFallback,
-    Button
+    Button,
+    Spinner
 } from '@shared/ui'
 import { cn } from '@shared/lib'
 import {Send} from "lucide-react";
@@ -23,7 +24,12 @@ export function InboxThreadReplies({
     const [replyText, setReplyText] = useState('')
 
     if (isLoading) {
-        return <div className="mt-3 text-xs text-muted-foreground">Loading replies...</div>
+        return (
+            <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
+                <Spinner />
+                Loading replies...
+            </div>
+        )
     }
 
     if (replies.length === 0) {

@@ -46,6 +46,7 @@ export const authSlice: Slice<AuthState> = createSlice({
             localStorage.setItem('role', role!)
             localStorage.setItem('email', email!)
             localStorage.setItem('schoolId', schoolId!)
+            if (userId) localStorage.setItem('userId', userId)
             if (subSchoolId) localStorage.setItem('subSchoolId', subSchoolId)
         },
         logout: (state, _action: PayloadAction<undefined>) => {
@@ -56,6 +57,14 @@ export const authSlice: Slice<AuthState> = createSlice({
             state.schoolId        = null
             state.subSchoolId     = null
             state.isAuthenticated = false
+
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('refreshToken')
+            localStorage.removeItem('role')
+            localStorage.removeItem('email')
+            localStorage.removeItem('userId')
+            localStorage.removeItem('schoolId')
+            localStorage.removeItem('subSchoolId')
         },
     },
 })
