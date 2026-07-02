@@ -175,12 +175,20 @@ export class AuthService {
 
         if (user.studentId) {
             const [student] = await db
-                .select({ schoolId: students.subSchoolId })
+                .select({ subSchoolId: students.subSchoolId })
                 .from(students)
                 .where(eq(students.id, user.studentId))
                 .limit(1);
 
-            return { schoolId: student.schoolId };
+            if (!student) return { schoolId: '' };
+
+            const [sub] = await db
+                .select({ schoolId: subSchools.schoolId })
+                .from(subSchools)
+                .where(eq(subSchools.id, student.subSchoolId))
+                .limit(1);
+
+            return { schoolId: sub.schoolId, subSchoolId: student.subSchoolId };
         }
 
         return { schoolId: '' };
