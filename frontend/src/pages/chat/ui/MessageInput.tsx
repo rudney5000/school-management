@@ -17,7 +17,6 @@ import {
     Image,
     Video,
     Trash2,
-    MoreHorizontal,
     Send,
 } from 'lucide-react'
 import {
@@ -60,6 +59,10 @@ export function MessageInput({
     }
 
     const handleSend = async () => {
+        if (!activeConversationId) {
+            console.warn('No active conversation')
+            return
+        }
         if (!messageText.trim() && pendingFiles.length === 0) return
 
         const uploaded: UploadedFile[] = []
@@ -73,15 +76,15 @@ export function MessageInput({
     }
 
     return (
-        <div className="border-t border-border bg-background m-4 rounded-xl overflow-hidden shadow-sm">
-            <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
+        <div className="border-t border-border bg-background rounded-xl shadow-sm p-4">
+            <div className="flex items-center gap-2 border-b border-border pb-2 mb-3">
                 <span className="shrink-0 text-sm font-medium text-muted-foreground">
                     {activeConversation?.name || 'Select a conversation'}
                 </span>
             </div>
 
             {pendingFiles.length > 0 && (
-                <div className="flex flex-wrap gap-2 px-4 pt-3">
+                <div className="flex flex-wrap gap-2 mb-3">
                     {pendingFiles.map((file, i) => (
                         <FilePreview
                             key={i}
@@ -91,6 +94,19 @@ export function MessageInput({
                     ))}
                 </div>
             )}
+
+            <textarea
+                className="min-h-[80px] w-full resize-none bg-transparent px-4 py-3 text-sm text-foreground focus:outline-none border border-border rounded-lg mb-3"
+                placeholder="Type a message..."
+                value={messageText}
+                onChange={(e) => onChange(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault()
+                        handleSend()
+                    }
+                }}
+            />
 
             <div className="flex items-center gap-1 border-t border-border px-3 py-2">
                 <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
@@ -118,7 +134,7 @@ export function MessageInput({
                 </Button>
             </div>
 
-            <div className="flex items-center justify-between border-t border-border px-3 py-2">
+            <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1">
                     <input
                         ref={fileInputRef}
@@ -140,27 +156,31 @@ export function MessageInput({
                     <Button
                         variant="ghost" size="icon-sm"
                         className="text-muted-foreground"
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={!activeConversationId}
+                        onClick={() => {
+                            if (!activeConversationId) return
+                            fileInputRef.current?.click()
+                        }}
                     >
-                        <Paperclip className="size-3.5"/>
+                        <Paperclip className="size-4"/>
                     </Button>
                     <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
-                        <Link2 className="size-3.5"/>
+                        <Link2 className="size-4"/>
                     </Button>
                     <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
-                        <Smile className="size-3.5"/>
+                        <Smile className="size-4"/>
                     </Button>
                     <Button
                         variant="ghost" size="icon-sm"
                         className="text-muted-foreground"
-                        onClick={() => imageInputRef.current?.click()}
-                        disabled={!activeConversationId}
+                        onClick={() => {
+                            if (!activeConversationId) return
+                            imageInputRef.current?.click()
+                        }}
                     >
-                        <Image className="size-3.5"/>
+                        <Image className="size-4"/>
                     </Button>
                     <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
-                        <Video className="size-3.5"/>
+                        <Video className="size-4"/>
                     </Button>
                 </div>
                 <div className="flex items-center gap-1">
@@ -170,10 +190,7 @@ export function MessageInput({
                         onClick={() => setPendingFiles([])}
                         disabled={pendingFiles.length === 0}
                     >
-                        <Trash2 className="size-3.5"/>
-                    </Button>
-                    <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
-                        <MoreHorizontal className="size-3.5"/>
+                        <Trash2 className="size-4"/>
                     </Button>
                     <Button
                         size="sm"
@@ -186,8 +203,8 @@ export function MessageInput({
                         }
                     >
                         {isUploading
-                            ? <><Spinner className="size-3.5"/> Uploading...</>
-                            : <><Send className="size-3.5"/> Send</>
+                            ? <><Spinner className="size-4"/> Uploading...</>
+                            : <><Send className="size-4"/> Send</>
                         }
                     </Button>
                 </div>

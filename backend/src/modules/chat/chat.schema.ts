@@ -63,3 +63,14 @@ export type SendMessageInput        = z.infer<typeof sendMessageSchema>
 export type EditMessageInput        = z.infer<typeof editMessageSchema>
 export type AddReactionInput        = z.infer<typeof addReactionSchema>
 export type AddMembersInput         = z.infer<typeof addMembersSchema>
+
+export type UploadedFile = {
+    key:       string
+    publicUrl: string
+    bucketName: string
+    filename:  string
+    mimeType:  string
+    size:      number
+    width?:    number
+    height?:   number
+}

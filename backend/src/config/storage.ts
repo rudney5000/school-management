@@ -1,5 +1,9 @@
 import { env } from './env'
-import { S3Client, HeadBucketCommand, CreateBucketCommand } from '@aws-sdk/client-s3'
+import {
+    S3Client,
+    HeadBucketCommand,
+    CreateBucketCommand
+} from '@aws-sdk/client-s3'
 
 export const s3Client = new S3Client({
     region: 'us-east-1',
@@ -11,14 +15,20 @@ export const s3Client = new S3Client({
     },
 })
 
-export const BUCKET_NAME = env.MINIO_BUCKET_NAME
+export function getBucketName(subSchoolId: string): string {
+    return `school-${subSchoolId}`
+}
 
-export async function ensureBucketExists(): Promise<void> {
+export async function ensureBucketExists(subSchoolId: string): Promise<string> {
+    const bucketName = getBucketName(subSchoolId)
+
     try {
-        await s3Client.send(new HeadBucketCommand({ Bucket: BUCKET_NAME }))
-        console.log(`✓ Bucket "${BUCKET_NAME}" déjà présent`)
+        await s3Client.send(new HeadBucketCommand({ Bucket: bucketName }))
+        console.log(`✓ Bucket "${bucketName}" déjà présent`)
     } catch {
-        await s3Client.send(new CreateBucketCommand({ Bucket: BUCKET_NAME }))
-        console.log(`✓ Bucket "${BUCKET_NAME}" créé`)
+        await s3Client.send(new CreateBucketCommand({ Bucket: bucketName }))
+        console.log(`✓ Bucket "${bucketName}" créé`)
     }
+
+    return bucketName
 }

@@ -1,5 +1,5 @@
 {
-  "id": "e15edb8f-06b1-41f1-8457-2fed60813206",
+  "id": "bd277361-8a5c-4ea2-8cd5-bc15ff4a5c33",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -3959,9 +3959,21 @@
           "primaryKey": false,
           "notNull": true
         },
+        "bucket_name": {
+          "name": "bucket_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "key": {
           "name": "key",
           "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "url": {
+          "name": "url",
+          "type": "varchar(1024)",
           "primaryKey": false,
           "notNull": true
         },

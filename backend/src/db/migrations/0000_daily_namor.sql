@@ -509,7 +509,9 @@ CREATE TABLE IF NOT EXISTS "users" (
 CREATE TABLE IF NOT EXISTS "message_attachments" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"message_id" uuid NOT NULL,
+	"bucket_name" varchar(255) NOT NULL,
 	"key" varchar(512) NOT NULL,
+	"url" varchar(1024) NOT NULL,
 	"filename" varchar(255) NOT NULL,
 	"mime_type" varchar(100) NOT NULL,
 	"size" integer NOT NULL,

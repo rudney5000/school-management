@@ -11,7 +11,9 @@ import {messages} from "@/db/schema/chat";
 export const messageAttachments = pgTable('message_attachments', {
     id:          uuid('id').primaryKey().defaultRandom(),
     messageId:   uuid('message_id').notNull().references(() => messages.id, { onDelete: 'cascade' }),
+    bucketName:  varchar('bucket_name', { length: 255 }).notNull(),
     key:         varchar('key', { length: 512 }).notNull(),
+    url:         varchar('url', { length: 1024 }).notNull(),
     filename:    varchar('filename', { length: 255 }).notNull(),
     mimeType:    varchar('mime_type', { length: 100 }).notNull(),
     size:        integer('size').notNull(),
@@ -21,5 +23,8 @@ export const messageAttachments = pgTable('message_attachments', {
 })
 
 export const messageAttachmentsRelations = relations(messageAttachments, ({ one }) => ({
-    message: one(messages, { fields: [messageAttachments.messageId], references: [messages.id] }),
+    message: one(messages, {
+        fields: [messageAttachments.messageId],
+        references: [messages.id]
+    }),
 }))

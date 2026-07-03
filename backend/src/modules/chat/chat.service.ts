@@ -25,6 +25,7 @@ import type {
     AddMembersInput,
     EditMessageInput,
 } from './chat.schema'
+import {messageAttachments} from "@/db/schema";
 
 export class ChatService {
 
@@ -150,6 +151,7 @@ export class ChatService {
                 sender:    { columns: { id: true, email: true, role: true } },
                 reactions: { with: { user: { columns: { id: true, email: true, role: true } } } },
                 replyTo:   { columns: { id: true, content: true, senderId: true } },
+                attachments: true,
             },
             orderBy: desc(messages.createdAt),
             limit,
@@ -176,6 +178,18 @@ export class ChatService {
             .where(eq(conversations.id, conversationId))
 
         return message
+    }
+
+    async findMessageById(messageId: string) {
+        return db.query.messages.findFirst({
+            where: eq(messages.id, messageId),
+            with: {
+                sender:    { columns: { id: true, email: true, role: true } },
+                reactions: { with: { user: { columns: { id: true, email: true, role: true } } } },
+                replyTo:   { columns: { id: true, content: true, senderId: true } },
+                attachments: true,
+            },
+        })
     }
 
     async editMessage(messageId: string, userId: string, input: EditMessageInput) {
@@ -308,6 +322,22 @@ export class ChatService {
         }).returning()
 
         return reply
+    }
+
+    async saveAttachments(messageId: string, attachments: UploadedFile[]) {
+        await db.insert(messageAttachments).values(
+            attachments.map(a => ({
+                messageId,
+                bucketName: a.bucketName,
+                key:        a.key,
+                url:        a.publicUrl,
+                filename:   a.filename,
+                mimeType:   a.mimeType,
+                size:       a.size,
+                width:      a.width ?? null,
+                height:     a.height ?? null,
+            }))
+        )
     }
 
     private async findExistingDm(userA: string, userB: string) {

@@ -1288,9 +1288,12 @@ async function seed() {
             .where(eq(messageAttachments.messageId, mathMsg.id))
 
         if (!existingAttachment) {
+            const bucketName = `school-${subSchool.id}`
+
             await db.insert(messageAttachments).values([
                 {
                     messageId: mathMsg.id,
+                    bucketName,
                     key:       `chats/${mathMsg.conversationId}/sample-doc.pdf`,
                     url:       `http://localhost:9000/school-chat/chats/${mathMsg.conversationId}/sample-doc.pdf`,
                     filename:  'Programme-examen-novembre.pdf',
@@ -1299,11 +1302,12 @@ async function seed() {
                 },
                 {
                     messageId: mathMsg.id,
+                    bucketName,
                     key:       `chats/${mathMsg.conversationId}/sample-image.jpg`,
                     url:       `http://localhost:9000/school-chat/chats/${mathMsg.conversationId}/sample-image.jpg`,
                     filename:  'formules-mathematiques.jpg',
                     mimeType:  'image/jpeg',
-                    size:      204800,  // 200 KB
+                    size:      204800,
                     width:     1920,
                     height:    1080,
                 },
