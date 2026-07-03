@@ -21,3 +21,4 @@ export * from './school';
 export * from './enums'
 export * from './students';
 export * from './users';
+export * from './message-attachment'

@@ -28,6 +28,7 @@ import {
     conversationMembers,
     messageStars,
     messageArchives,
+    messageAttachments,
 } from './schema';
 import {
     and,
@@ -1276,6 +1277,41 @@ async function seed() {
 
     } else {
         console.log('⚠ Users manquants, skip thread/stars/archives seed')
+    }
+
+    const [mathMsg] = await db.select().from(messages)
+        .where(eq(messages.subject, 'Rappel — Examen du 20 novembre'))
+        .limit(1)
+
+    if (mathMsg) {
+        const [existingAttachment] = await db.select().from(messageAttachments)
+            .where(eq(messageAttachments.messageId, mathMsg.id))
+
+        if (!existingAttachment) {
+            await db.insert(messageAttachments).values([
+                {
+                    messageId: mathMsg.id,
+                    key:       `chats/${mathMsg.conversationId}/sample-doc.pdf`,
+                    url:       `http://localhost:9000/school-chat/chats/${mathMsg.conversationId}/sample-doc.pdf`,
+                    filename:  'Programme-examen-novembre.pdf',
+                    mimeType:  'application/pdf',
+                    size:      102400,
+                },
+                {
+                    messageId: mathMsg.id,
+                    key:       `chats/${mathMsg.conversationId}/sample-image.jpg`,
+                    url:       `http://localhost:9000/school-chat/chats/${mathMsg.conversationId}/sample-image.jpg`,
+                    filename:  'formules-mathematiques.jpg',
+                    mimeType:  'image/jpeg',
+                    size:      204800,  // 200 KB
+                    width:     1920,
+                    height:    1080,
+                },
+            ])
+            console.log('✓ Attachments créés pour le message Math')
+        } else {
+            console.log('~ Attachments déjà existants')
+        }
     }
 
     console.log('\n✓ Seed completed. Test credentials (password: password123):');

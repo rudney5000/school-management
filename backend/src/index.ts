@@ -6,6 +6,7 @@ import { sql } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import {createServer} from "node:http";
 import {initSocketServer} from "@/socket/socket";
+import {ensureBucketExists} from "@/config/storage";
 
 async function bootstrap(): Promise<void> {
 
@@ -17,6 +18,9 @@ async function bootstrap(): Promise<void> {
 
   await db.execute(sql`SELECT 1`);
   console.log('✓ Database connected');
+
+  await ensureBucketExists();
+  console.log('✓ MinIO bucket ready');
 
   const app = createApp();
   const httpServer = createServer(app)
