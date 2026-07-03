@@ -16,7 +16,7 @@ import {
     selectOnlineUsers,
     selectUnreadCountByConversation,
     chatActions,
-    type Message,
+    type Message, type UploadedFile,
 } from '@entities/chat'
 import { useConversations } from '@entities/chat'
 import { useMessages } from '@entities/chat'
@@ -75,9 +75,15 @@ export function useChatPage() {
         }
     }, [activeConversationId, chatActionsHook])
 
-    const handleSendMessage = () => {
-        if (!messageText.trim() || !activeConversationId) return
-        chatActionsHook.sendMessage(activeConversationId, { content: messageText, type: 'text' })
+    const handleSendMessage = (attachments?: UploadedFile[]) => {
+        if (!messageText.trim() && (!attachments || attachments.length === 0)) return
+        if (!activeConversationId) return
+
+        chatActionsHook.sendMessage(activeConversationId, {
+            content:     messageText || '',
+            type:        attachments?.length ? 'file' : 'text',
+            attachments,
+        })
         setMessageText('')
     }
 

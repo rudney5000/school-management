@@ -18,6 +18,7 @@ import type {
 interface ConversationListProps {
     conversations: Conversation[]
     activeConversationId: string | null
+    currentUserId: string | null
     onlineUsers: string[]
     unreadByConv: Record<string, number>
     messages: Message[]
@@ -28,6 +29,7 @@ interface ConversationListProps {
 export function ConversationList({
                                      conversations,
                                      activeConversationId,
+                                     currentUserId,
                                      onlineUsers,
                                      unreadByConv,
                                      messages,
@@ -63,6 +65,7 @@ export function ConversationList({
                             <ConversationItem
                                 key={conversation.id}
                                 conversation={conversation}
+                                currentUserId={currentUserId}
                                 isActive={activeConversationId === conversation.id}
                                 isOnline={isOnline}
                                 unread={unread}

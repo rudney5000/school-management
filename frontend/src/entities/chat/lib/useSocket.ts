@@ -55,6 +55,15 @@ export function useSocket(): RefObject<Socket | null> {
         socket.on('message:archived', (data) =>
             dispatch(chatActions.messageArchived(data))
         )
+        socket.on('connect', () => {
+            console.log('[socket] connecté, id =', socket.id)
+        })
+        socket.on('connect_error', (err) => {
+            console.error('[socket] échec de connexion:', err.message, err)
+        })
+        socket.on('disconnect', (reason) => {
+            console.warn('[socket] déconnecté:', reason)
+        })
 
         return () => {
             socket.off('message:new')

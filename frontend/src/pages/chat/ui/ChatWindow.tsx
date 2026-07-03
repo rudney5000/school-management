@@ -2,7 +2,7 @@ import { DmWindow } from './dm/DmWindow'
 import { InboxWindow } from './inbox/InboxWindow'
 import type {
     Conversation,
-    Message
+    Message, UploadedFile
 } from '@entities/chat'
 
 interface ChatWindowProps {
@@ -13,7 +13,7 @@ interface ChatWindowProps {
     isLoadingMessages: boolean
     messageText: string
     onMessageChange: (text: string) => void
-    onSend: () => void
+    onSend: (attachments?: UploadedFile[]) => void
 }
 
 export function ChatWindow({
@@ -38,7 +38,7 @@ export function ChatWindow({
         return (
             <DmWindow
                 activeConversation={activeConversation}
-                activeConversationId={activeConversationId}
+                activeConversationId={activeConversation.id}
                 messages={messages}
                 currentUserId={currentUserId}
                 isLoadingMessages={isLoadingMessages}
@@ -52,9 +52,13 @@ export function ChatWindow({
     return (
         <InboxWindow
             activeConversation={activeConversation}
+            activeConversationId={activeConversationId}
             messages={messages}
             currentUserId={currentUserId}
             isLoadingMessages={isLoadingMessages}
+            messageText={messageText}
+            onMessageChange={onMessageChange}
+            onSend={onSend}
         />
     )
 }

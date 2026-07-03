@@ -4,7 +4,7 @@ import {
 } from '@shared/ui'
 import { cn } from '@shared/lib'
 import type { Message } from '@entities/chat'
-import {AttachmentView} from "@/pages/chat/ui/AttachmentView.tsx";
+import {AttachmentView} from "@/pages/chat/ui/AttachmentView";
 
 interface MessageBubbleProps {
     message: Message
@@ -15,6 +15,11 @@ export function MessageBubble({
                                   message,
                                   isOwn
 }: MessageBubbleProps) {
+
+    const senderEmail = message.sender?.email ?? 'Utilisateur inconnu'
+    const initials =
+        senderEmail.split('@')[0].slice(0, 2).toUpperCase()
+
     return (
         <div className={cn('flex gap-3', isOwn ? 'flex-row-reverse' : 'flex-row')}>
             <Avatar size="sm">
@@ -22,14 +27,16 @@ export function MessageBubble({
                     'text-xs font-semibold',
                     isOwn ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
                 )}>
-                    {message.sender.email?.split('@')[0].slice(0, 2).toUpperCase() || '??'}
+                    {initials}
                 </AvatarFallback>
             </Avatar>
             <div className={cn(
                 'max-w-[70%] rounded-lg px-4 py-2 text-sm',
                 isOwn ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground'
             )}>
-                <p className="font-semibold text-xs mb-1">{message.sender.email}</p>
+                <p className="font-semibold text-xs mb-1">
+                    {senderEmail}
+                </p>
                 {message.isDeleted
                     ? <p className="italic opacity-60">Message supprimé</p>
                     : message.content

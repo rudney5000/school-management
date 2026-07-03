@@ -86,7 +86,7 @@ export function InboxMessageView({
                 </div>
             </div>
 
-            <ScrollArea className="flex-1">
+            <ScrollArea className="h-full">
                 <div className="px-6 py-5">
                     <div className="flex items-start justify-between mb-5">
                         <div className="flex items-center gap-3">

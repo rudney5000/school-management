@@ -7,8 +7,11 @@ import { MessageList } from '../MessageList'
 import { MessageInput } from '../MessageInput'
 import type {
     Conversation,
-    Message
+    Message, UploadedFile
 } from '@entities/chat'
+import {
+    getConversationDisplayName
+} from "@entities/chat/lib/getConversationDisplayName";
 
 interface DmWindowProps {
     activeConversation: Conversation
@@ -18,7 +21,7 @@ interface DmWindowProps {
     isLoadingMessages: boolean
     messageText: string
     onMessageChange: (text: string) => void
-    onSend: () => void
+    onSend: (attachments?: UploadedFile[]) => void
 }
 
 export function DmWindow({
@@ -32,11 +35,11 @@ export function DmWindow({
                              onSend
 }: DmWindowProps) {
     return (
-        <div className="flex flex-1 flex-col overflow-hidden bg-card">
+        <div className="flex flex-1 flex-col bg-card">
             <div className="flex items-center justify-between border-b border-border px-5 py-3">
                 <div className="flex items-center gap-3">
                     <span className="font-semibold text-sm text-foreground">
-                        {activeConversation.name || 'Direct Message'}
+                        {getConversationDisplayName(activeConversation, currentUserId)}
                     </span>
                 </div>
                 <div className="flex items-center gap-1">
@@ -49,12 +52,14 @@ export function DmWindow({
                 </div>
             </div>
 
-            <MessageList
-                activeConversation={activeConversation}
-                messages={messages}
-                currentUserId={currentUserId}
-                isLoading={isLoadingMessages}
-            />
+            <div className="flex-1 overflow-hidden min-h-0">
+                <MessageList
+                    activeConversation={activeConversation}
+                    messages={messages}
+                    currentUserId={currentUserId}
+                    isLoading={isLoadingMessages}
+                />
+            </div>
 
             <MessageInput
                 messageText={messageText}

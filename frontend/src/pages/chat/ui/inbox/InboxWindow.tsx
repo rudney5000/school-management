@@ -2,24 +2,33 @@ import { useState } from 'react'
 import { ScrollArea } from '@shared/ui'
 import type {
     Conversation,
-    Message
+    Message, UploadedFile
 } from '@entities/chat'
 import {InboxToolbar} from "@/pages/chat/ui/inbox/InboxToolbar";
 import {InboxMessageRow} from "@/pages/chat/ui/inbox/InboxMessageRow";
 import {InboxMessageView} from "@/pages/chat/ui/inbox/InboxMessageView";
+import {MessageInput} from "@/pages/chat/ui/MessageInput";
 
 interface InboxWindowProps {
     activeConversation: Conversation | null
+    activeConversationId: string | null
     messages: Message[]
     currentUserId: string | null
     isLoadingMessages: boolean
+    messageText: string
+    onMessageChange: (text: string) => void
+    onSend: (attachments?: UploadedFile[]) => void
 }
 
 export function InboxWindow({
                                 activeConversation,
+                                activeConversationId,
                                 messages,
                                 currentUserId,
-                                isLoadingMessages
+                                isLoadingMessages,
+                                messageText,
+                                onMessageChange,
+                                onSend
 }: InboxWindowProps) {
     const [selectedMessage, setSelectedMessage] = useState<Message | null>(null)
     const [replyOpen, setReplyOpen] = useState(false)
@@ -70,21 +79,30 @@ export function InboxWindow({
                 </ScrollArea>
             </div>
 
-            <div className="flex flex-1 flex-col overflow-hidden">
-                {selectedMessage ? (
-                    <InboxMessageView
-                        message={selectedMessage}
-                        conversation={activeConversation}
-                        currentUserId={currentUserId}
-                        replyOpen={replyOpen}
-                        onReplyOpen={() => setReplyOpen(true)}
-                        onReplyClose={() => setReplyOpen(false)}
-                    />
-                ) : (
-                    <div className="flex flex-1 items-center justify-center text-muted-foreground text-sm">
-                        Select a message to read
-                    </div>
-                )}
+            <div className="flex flex-1 flex-col min-h-0">
+                <div className="flex-1 overflow-hidden min-h-0">
+                    {selectedMessage ? (
+                        <InboxMessageView
+                            message={selectedMessage}
+                            conversation={activeConversation}
+                            currentUserId={currentUserId}
+                            replyOpen={replyOpen}
+                            onReplyOpen={() => setReplyOpen(true)}
+                            onReplyClose={() => setReplyOpen(false)}
+                        />
+                    ) : (
+                        <div className="flex flex-1 items-center justify-center text-muted-foreground text-sm">
+                            Select a message to read
+                        </div>
+                    )}
+                </div>
+                <MessageInput
+                    messageText={messageText}
+                    activeConversation={activeConversation}
+                    activeConversationId={activeConversationId}
+                    onChange={onMessageChange}
+                    onSend={onSend}
+                />
             </div>
         </div>
     )

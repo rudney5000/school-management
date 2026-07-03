@@ -24,7 +24,7 @@ export function MessageList({
                                 isLoading
 }: MessageListProps) {
     return (
-        <ScrollArea className="flex-1">
+        <ScrollArea className="h-full">
             {activeConversation && (
                 <div className="px-7 py-6">
                     <div className="mb-6 flex items-start justify-between">

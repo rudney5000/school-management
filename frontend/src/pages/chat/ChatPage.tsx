@@ -48,6 +48,7 @@ export function ChatPage() {
                     messages={messages}
                     isLoading={isLoadingConversations}
                     onSelect={handleSelectConversation}
+                    currentUserId={currentUserId}
                 />
                 <ChatWindow
                     activeConversation={activeConversation}

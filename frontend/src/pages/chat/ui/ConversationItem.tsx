@@ -9,9 +9,13 @@ import type {
     Conversation,
     Message
 } from '@entities/chat'
+import {
+    getConversationDisplayName
+} from "@entities/chat/lib/getConversationDisplayName";
 
 interface ConversationItemProps {
     conversation: Conversation
+    currentUserId: string | null
     isActive: boolean
     isOnline: boolean
     unread: number
@@ -21,14 +25,16 @@ interface ConversationItemProps {
 
 export function ConversationItem({
                                      conversation,
+                                     currentUserId,
                                      isActive,
                                      isOnline,
                                      unread,
                                      lastMessage,
                                      onClick
 }: ConversationItemProps) {
-    const initials = conversation.name
-        ? conversation.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+    const displayName = getConversationDisplayName(conversation, currentUserId)
+    const initials = displayName !== 'Unnamed Chat' && displayName !== 'Direct Message'
+        ? displayName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
         : '??'
 
     return (
@@ -57,7 +63,7 @@ export function ConversationItem({
             <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-1">
                     <span className="truncate text-sm font-semibold text-foreground">
-                        {conversation.name || 'Unnamed Chat'}
+                        {displayName}
                     </span>
                     <span className="shrink-0 text-[11px] text-muted-foreground">
                         {new Date(conversation.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

@@ -23,7 +23,7 @@ export function useFileUpload(conversationId: string) {
             })
 
             if (!res.IsSuccess) throw new Error('Presign failed')
-            const { uploadUrl, key, publicUrl } = res.result
+            const { uploadUrl, key, publicUrl, bucketName } = res.result
 
             await fetch(uploadUrl, {
                 method:  'PUT',
@@ -45,6 +45,7 @@ export function useFileUpload(conversationId: string) {
             return {
                 key,
                 publicUrl,
+                bucketName,
                 filename: file.name,
                 mimeType: file.type,
                 size: file.size,
