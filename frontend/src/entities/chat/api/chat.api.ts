@@ -11,6 +11,7 @@ import type {
     EditMessageInput,
     SendMessageInput
 } from "@entities/chat/model/createConversationSchema";
+import type {AttachmentUploadResult, PresignUploadInput} from "@entities/chat/model/dto.ts";
 
 export class ChatApi extends ApiWrapper {
     constructor() {
@@ -149,6 +150,13 @@ export class ChatApi extends ApiWrapper {
         return this.handleRequest<Message>(
             this._baseApi.post(`/chats/${conversationId}/messages/${messageId}/thread`, payload),
             (raw) => raw as Message,
+        )
+    }
+
+    presignUpload(payload: PresignUploadInput) {
+        return this.handleRequest<AttachmentUploadResult>(
+            this._baseApi.post('/attachments/presign', payload),
+            (raw) => raw as AttachmentUploadResult,
         )
     }
 }

@@ -4,6 +4,7 @@ import {
 } from '@shared/ui'
 import { cn } from '@shared/lib'
 import type { Message } from '@entities/chat'
+import {AttachmentView} from "@/pages/chat/ui/AttachmentView.tsx";
 
 interface MessageBubbleProps {
     message: Message
@@ -31,13 +32,30 @@ export function MessageBubble({
                 <p className="font-semibold text-xs mb-1">{message.sender.email}</p>
                 {message.isDeleted
                     ? <p className="italic opacity-60">Message supprimé</p>
-                    : <p>{message.content}</p>
+                    : message.content
+                        ? <p>{message.content}</p>
+                        : null
                 }
+
+                {message.attachments?.length > 0 && (
+                    <div className="mt-2 space-y-1.5">
+                        {message.attachments.map((attachment) => (
+                            <AttachmentView
+                                key={attachment.id}
+                                attachment={attachment}
+                                isOwn={isOwn}
+                            />
+                        ))}
+                    </div>
+                )}
+
                 {message.isEdited && !message.isDeleted && (
                     <p className="text-[9px] opacity-50 mt-0.5">modifié</p>
                 )}
                 <p className="text-[10px] opacity-70 mt-1">
-                    {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {new Date(message.createdAt).toLocaleTimeString([], {
+                        hour: '2-digit', minute: '2-digit'
+                    })}
                 </p>
             </div>
         </div>

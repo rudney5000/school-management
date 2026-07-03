@@ -48,6 +48,7 @@ export type Message = {
     createdAt: string
     sender: ChatUser
     reactions: MessageReaction[]
+    attachments: MessageAttachment[]
 }
 
 export type Conversation = {
@@ -63,4 +64,27 @@ export type Conversation = {
     createdAt: string
     updatedAt: string
     members: ConversationMember[]
+}
+
+export type UploadedFile = {
+    key:      string
+    publicUrl: string
+    filename: string
+    mimeType: string
+    size:     number
+    width?:   number
+    height?:  number
+}
+
+export type MessageAttachment = {
+    id:        string
+    messageId: string
+    key:       string
+    filename:  string
+    mimeType:  string
+    size:      number
+    width:     number | null
+    height:    number | null
+    createdAt: string
+    url:       string
 }
