@@ -1,7 +1,15 @@
-import { Server, Socket } from 'socket.io'
+import {
+    Server,
+    Socket
+} from 'socket.io'
 import type { Redis } from 'ioredis'
 import { ChatService } from '@/modules/chat/chat.service'
-import type { SendMessageInput, EditMessageInput, AddReactionInput } from '@/modules/chat/chat.schema'
+import type {
+    SendMessageInput,
+    EditMessageInput,
+    AddReactionInput,
+    UploadedFile
+} from '@/modules/chat/chat.schema'
 
 const chatService = new ChatService()
 
@@ -24,7 +32,7 @@ export function registerChatHandlers(io: Server, socket: Socket, redis: Redis) {
 
     socket.on('message:send', async (data: {
         conversationId: string
-        input: SendMessageInput
+        input: SendMessageInput & { attachments?: UploadedFile[]}
     }) => {
         try {
             const message = await chatService.sendMessage(
@@ -33,8 +41,19 @@ export function registerChatHandlers(io: Server, socket: Socket, redis: Redis) {
                 data.input,
             )
 
-            io.to(data.conversationId).emit('message:new', message)
+            if (data.input.attachments?.length) {
+                try {
+                    await chatService.saveAttachments(message.id, data.input.attachments)
+                } catch (attachErr) {
+                    console.error('✗ Erreur sauvegarde attachments:', attachErr)
+                    socket.emit('error', { message: 'Message envoyé mais fichier non attaché' })
+                }
+            }
+
+            const messageWithAttachments = await chatService.findMessageById(message.id)
+            io.to(data.conversationId).emit('message:new', messageWithAttachments)
         } catch (err) {
+            console.error('✗ Erreur message:send:', err)
             socket.emit('error', { message: 'Erreur envoi message' })
         }
     })
