@@ -16,7 +16,7 @@ const controller = new ParentsController();
 router.get(
   '/',
   authenticate,
-  authorize('admin', 'director', 'super_admin', 'teacher'),
+  authorize('admin', 'director', 'super_admin', 'teacher', 'student'),
   validate({
       query: subSchoolQuerySchema
   }),

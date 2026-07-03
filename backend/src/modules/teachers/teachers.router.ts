@@ -18,7 +18,7 @@ const controller = new TeachersController();
 router.get(
   '/',
   authenticate,
-  authorize('admin', 'director', 'teacher', 'super_admin'),
+  authorize('admin', 'director', 'teacher', 'super_admin', 'student'),
   validate({
       query: subSchoolQuerySchema
   }),
@@ -27,7 +27,7 @@ router.get(
 router.get(
   '/:id',
   authenticate,
-  authorize('admin', 'director', 'teacher', 'super_admin'),
+  authorize('admin', 'director', 'teacher', 'super_admin', 'student'),
   validate({
       params: teacherParamsSchema,
       query: subSchoolQuerySchema

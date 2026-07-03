@@ -89,7 +89,7 @@ const teacherController = new TeacherAttendanceController();
 teacherRouter.get(
     '/',
     authenticate,
-    authorize('admin', 'director', 'teacher', 'super_admin'),
+    authorize('admin', 'director', 'teacher', 'super_admin', 'student'),
     validate({
         query: attendanceQuerySchema
     }),
@@ -99,7 +99,7 @@ teacherRouter.get(
 teacherRouter.get(
     '/:id',
     authenticate,
-    authorize('admin', 'director', 'teacher', 'super_admin'),
+    authorize('admin', 'director', 'teacher', 'super_admin', 'student'),
     validate({
         params: teacherAttendanceParamsSchema,
         query: subSchoolQuerySchema
