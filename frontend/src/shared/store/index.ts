@@ -19,6 +19,8 @@ import {examSlice} from "@entities/exams";
 import {gradeSlice} from "@entities/grades/model/slice.ts";
 import {academicPeriodSlice} from "@entities/academic-period";
 import {chatSlice} from "@entities/chat";
+import {callUiSlice} from "@entities/video-call";
+import {liveSessionSlice} from "@entities/liveSession";
 
 export const store = configureStore({
     reducer: {
@@ -41,6 +43,8 @@ export const store = configureStore({
         grades: gradeSlice.reducer,
         academicPeriod: academicPeriodSlice.reducer,
         chat: chatSlice.reducer,
+        callUi: callUiSlice.reducer,
+        liveSession: liveSessionSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 })
