@@ -18,6 +18,9 @@ const envSchema = z.object({
   MINIO_ROOT_USER:     z.string().min(1),
   MINIO_ROOT_PASSWORD: z.string().min(1),
   MINIO_BUCKET_NAME:   z.string().min(1),
+  LIVEKIT_URL:         z.string().url(),
+  LIVEKIT_API_KEY:     z.string().min(1),
+  LIVEKIT_API_SECRET:  z.string().min(1),
 });
 
 export type Env = z.infer<typeof envSchema>;

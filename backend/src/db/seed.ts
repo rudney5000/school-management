@@ -29,6 +29,8 @@ import {
     messageStars,
     messageArchives,
     messageAttachments,
+    liveSessions,
+    liveSessionViewers,
 } from './schema';
 import {
     and,
@@ -38,6 +40,7 @@ import {
     examResults,
     exams
 } from "@/db/schema/exam";
+import {randomUUID} from "crypto";
 
 async function seed() {
     console.log('Seeding...');
@@ -1316,6 +1319,182 @@ async function seed() {
         } else {
             console.log('~ Attachments déjà existants')
         }
+    }
+
+    if (teacherUserForChat && studentUserForChat && student2UserForChat) {
+        const [mathScheduleForLive] = await db.select().from(schedules)
+            .where(and(
+                eq(schedules.subSchoolId, subSchool.id),
+                eq(schedules.dayOfWeek, 'MONDAY'),
+                eq(schedules.startTime, '08:00'),
+            ));
+
+        const [examEventForLive] = await db.select().from(events)
+            .where(and(
+                eq(events.title, 'Cérémonie de Rentrée Scolaire 2024-2025'),
+                eq(events.subSchoolId, subSchool.id),
+            ));
+
+        const [oralExamForLive] = await db.select().from(exams)
+            .where(and(
+                eq(exams.title, 'Interrogation orale — Physique'),
+                eq(exams.subSchoolId, subSchool.id),
+            ));
+
+        const [mathGroupForLive] = await db.select().from(conversations)
+            .where(and(
+                eq(conversations.type, 'course'),
+                eq(conversations.name, 'Mathématiques'),
+                eq(conversations.subSchoolId, subSchool.id),
+            ));
+
+        const sampleLiveSessions = [
+            {
+                subSchoolId: subSchool.id,
+                courseId: mathCourseForExam.id,
+                classId: null,
+                scheduleId: null,
+                eventId: null,
+                examId: null,
+                conversationId: null,
+                teacherId: teacherUser.id,
+                roomName: 'live_seed_course_math',
+                status: 'ended' as const,
+                scheduledAt: new Date('2024-10-01T08:00:00Z'),
+                startedAt: new Date('2024-10-01T08:02:00Z'),
+                endedAt: new Date('2024-10-01T09:00:00Z'),
+            },
+            {
+                subSchoolId: subSchool.id,
+                courseId: null,
+                classId: classA.id,
+                scheduleId: null,
+                eventId: null,
+                examId: null,
+                conversationId: null,
+                teacherId: teacherUser.id,
+                roomName: 'live_seed_class_1a',
+                status: 'scheduled' as const,
+                scheduledAt: new Date('2025-01-15T10:00:00Z'),
+                startedAt: null,
+                endedAt: null,
+            },
+            {
+                subSchoolId: subSchool.id,
+                courseId: null,
+                classId: null,
+                scheduleId: mathScheduleForLive?.id ?? null,
+                eventId: null,
+                examId: null,
+                conversationId: null,
+                teacherId: teacherUser.id,
+                roomName: 'live_seed_schedule_math_monday',
+                status: 'scheduled' as const,
+                scheduledAt: new Date('2025-01-20T08:00:00Z'),
+                startedAt: null,
+                endedAt: null,
+            },
+            {
+                subSchoolId: subSchool.id,
+                courseId: null,
+                classId: null,
+                scheduleId: null,
+                eventId: examEventForLive?.id ?? null,
+                examId: null,
+                conversationId: null,
+                teacherId: teacherUser.id,
+                roomName: 'live_seed_event_rentree',
+                status: 'ended' as const,
+                scheduledAt: new Date('2024-09-02T08:00:00Z'),
+                startedAt: new Date('2024-09-02T08:05:00Z'),
+                endedAt: new Date('2024-09-02T11:00:00Z'),
+            },
+            {
+                subSchoolId: subSchool.id,
+                courseId: null,
+                classId: null,
+                scheduleId: null,
+                eventId: null,
+                examId: oralExamForLive?.id ?? null,
+                conversationId: null,
+                teacherId: teacherUser.id,
+                roomName: 'live_seed_exam_oral_physique',
+                status: 'live' as const,
+                scheduledAt: new Date(),
+                startedAt: new Date(),
+                endedAt: null,
+            },
+            {
+                subSchoolId: subSchool.id,
+                courseId: null,
+                classId: null,
+                scheduleId: null,
+                eventId: null,
+                examId: null,
+                conversationId: mathGroupForLive?.id ?? null,
+                teacherId: teacherUser.id,
+                roomName: 'live_seed_conversation_math_group',
+                status: 'scheduled' as const,
+                scheduledAt: new Date('2025-01-18T14:00:00Z'),
+                startedAt: null,
+                endedAt: null,
+            },
+        ];
+
+        const insertedLiveSessions: (typeof liveSessions.$inferSelect)[] = [];
+
+        for (const session of sampleLiveSessions) {
+            const [existing] = await db.select().from(liveSessions)
+                .where(and(
+                    eq(liveSessions.subSchoolId, session.subSchoolId),
+                    eq(liveSessions.teacherId, session.teacherId),
+                    eq(liveSessions.status, session.status),
+                    session.courseId
+                        ? eq(liveSessions.courseId, session.courseId)
+                        : eq(liveSessions.classId, session.classId!),
+                ));
+
+            if (!existing) {
+                const [inserted] = await db.insert(liveSessions).values(session).returning();
+                insertedLiveSessions.push(inserted);
+                console.log(`✓ Live session created (${session.status})`);
+            } else {
+                insertedLiveSessions.push(existing);
+                console.log(`~ Live session already exists (${session.status})`);
+            }
+        }
+
+        const endedSession = insertedLiveSessions.find(s => s.status === 'ended');
+
+        if (endedSession) {
+            const [existingViewer] = await db.select().from(liveSessionViewers)
+                .where(and(
+                    eq(liveSessionViewers.sessionId, endedSession.id),
+                    eq(liveSessionViewers.userId, studentUserForChat.id),
+                ));
+
+            if (!existingViewer) {
+                await db.insert(liveSessionViewers).values([
+                    {
+                        sessionId: endedSession.id,
+                        userId: studentUserForChat.id,
+                        joinedAt: endedSession.startedAt!,
+                        leftAt: endedSession.endedAt,
+                    },
+                    {
+                        sessionId: endedSession.id,
+                        userId: student2UserForChat.id,
+                        joinedAt: endedSession.startedAt!,
+                        leftAt: endedSession.endedAt,
+                    },
+                ]);
+                console.log('✓ Live session viewers créés');
+            } else {
+                console.log('~ Live session viewers déjà existants');
+            }
+        }
+    } else {
+        console.log('⚠ Users manquants, skip live sessions seed');
     }
 
     console.log('\n✓ Seed completed. Test credentials (password: password123):');

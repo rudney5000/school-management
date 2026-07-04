@@ -31,6 +31,8 @@ import {academicPeriodsRouter} from "@/modules/academic-periods/academic-periods
 import {gradesRouter} from "@/modules/grades/grades.router";
 import {chatRouter} from "@/modules/chat/chat.router";
 import {attachmentsRouter} from "@/modules/attachments/attachments.router";
+import {videoCallsRouter} from "@/modules/videoCalls/videoCalls.router";
+import {liveSessionsRouter} from "@/modules/liveSessions/liveSessions.router";
 
 export function createApp(): express.Application {
   const app = express();
@@ -72,6 +74,8 @@ export function createApp(): express.Application {
   app.use('/api/grades', gradesRouter)
   app.use('/api/chats', chatRouter)
   app.use('/api/attachments', attachmentsRouter)
+  app.use('/api/video-calls', videoCallsRouter);
+  app.use('/api/live-sessions', liveSessionsRouter);
 
 
   app.use(errorHandler);

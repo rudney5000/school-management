@@ -5,7 +5,10 @@ export type ErrorCode =
   | 'FORBIDDEN'
   | 'CONFLICT'
   | 'BAD_REQUEST'
-  | 'INTERNAL_ERROR';
+  | 'INTERNAL_ERROR'
+  | 'CALL_ENDED'
+  | 'INVALID_STATE'
+  | 'NOT_LIVE';
 
 export class AppError extends Error {
   readonly code: ErrorCode;

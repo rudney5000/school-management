@@ -53,6 +53,12 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ CREATE TYPE "public"."live_session_status" AS ENUM('scheduled', 'live', 'ended');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "public"."member_role" AS ENUM('admin', 'member');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -84,6 +90,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  CREATE TYPE "public"."role" AS ENUM('super_admin', 'admin', 'director', 'teacher', 'worker', 'parent', 'student');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."video_call_status" AS ENUM('active', 'ended');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -520,6 +532,51 @@ CREATE TABLE IF NOT EXISTS "message_attachments" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "video_call_participants" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"session_id" uuid NOT NULL,
+	"user_id" uuid NOT NULL,
+	"joined_at" timestamp DEFAULT now() NOT NULL,
+	"left_at" timestamp
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "video_call_sessions" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"sub_school_id" uuid NOT NULL,
+	"conversation_id" uuid,
+	"room_name" varchar(255) NOT NULL,
+	"initiated_by" uuid NOT NULL,
+	"status" "video_call_status" DEFAULT 'active' NOT NULL,
+	"started_at" timestamp DEFAULT now() NOT NULL,
+	"ended_at" timestamp
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "live_session_viewers" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"session_id" uuid NOT NULL,
+	"user_id" uuid NOT NULL,
+	"joined_at" timestamp DEFAULT now() NOT NULL,
+	"left_at" timestamp
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "live_sessions" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"sub_school_id" uuid NOT NULL,
+	"course_id" uuid,
+	"class_id" uuid,
+	"schedule_id" uuid,
+	"event_id" uuid,
+	"exam_id" uuid,
+	"conversation_id" uuid,
+	"teacher_id" uuid NOT NULL,
+	"room_name" varchar(255) NOT NULL,
+	"status" "live_session_status" DEFAULT 'scheduled' NOT NULL,
+	"scheduled_at" timestamp,
+	"started_at" timestamp,
+	"ended_at" timestamp,
+	"created_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "departments" ADD CONSTRAINT "departments_country_id_countries_id_fk" FOREIGN KEY ("country_id") REFERENCES "public"."countries"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
@@ -934,6 +991,96 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "video_call_participants" ADD CONSTRAINT "video_call_participants_session_id_video_call_sessions_id_fk" FOREIGN KEY ("session_id") REFERENCES "public"."video_call_sessions"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "video_call_participants" ADD CONSTRAINT "video_call_participants_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "video_call_sessions" ADD CONSTRAINT "video_call_sessions_sub_school_id_sub_schools_id_fk" FOREIGN KEY ("sub_school_id") REFERENCES "public"."sub_schools"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "video_call_sessions" ADD CONSTRAINT "video_call_sessions_conversation_id_conversations_id_fk" FOREIGN KEY ("conversation_id") REFERENCES "public"."conversations"("id") ON DELETE set null ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "video_call_sessions" ADD CONSTRAINT "video_call_sessions_initiated_by_users_id_fk" FOREIGN KEY ("initiated_by") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "live_session_viewers" ADD CONSTRAINT "live_session_viewers_session_id_live_sessions_id_fk" FOREIGN KEY ("session_id") REFERENCES "public"."live_sessions"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "live_session_viewers" ADD CONSTRAINT "live_session_viewers_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "live_sessions" ADD CONSTRAINT "live_sessions_sub_school_id_sub_schools_id_fk" FOREIGN KEY ("sub_school_id") REFERENCES "public"."sub_schools"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "live_sessions" ADD CONSTRAINT "live_sessions_course_id_courses_id_fk" FOREIGN KEY ("course_id") REFERENCES "public"."courses"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "live_sessions" ADD CONSTRAINT "live_sessions_class_id_classes_id_fk" FOREIGN KEY ("class_id") REFERENCES "public"."classes"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "live_sessions" ADD CONSTRAINT "live_sessions_schedule_id_schedules_id_fk" FOREIGN KEY ("schedule_id") REFERENCES "public"."schedules"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "live_sessions" ADD CONSTRAINT "live_sessions_event_id_events_id_fk" FOREIGN KEY ("event_id") REFERENCES "public"."events"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "live_sessions" ADD CONSTRAINT "live_sessions_exam_id_exams_id_fk" FOREIGN KEY ("exam_id") REFERENCES "public"."exams"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "live_sessions" ADD CONSTRAINT "live_sessions_conversation_id_conversations_id_fk" FOREIGN KEY ("conversation_id") REFERENCES "public"."conversations"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "live_sessions" ADD CONSTRAINT "live_sessions_teacher_id_users_id_fk" FOREIGN KEY ("teacher_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_conversation_member" ON "conversation_members" USING btree ("conversation_id","user_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_archive" ON "message_archives" USING btree ("message_id","user_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_reaction" ON "message_reactions" USING btree ("message_id","user_id","emoji");--> statement-breakpoint
@@ -967,4 +1114,20 @@ CREATE INDEX IF NOT EXISTS "idx_students_email" ON "students" USING btree ("emai
 CREATE INDEX IF NOT EXISTS "idx_users_email" ON "users" USING btree ("email");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_users_worker" ON "users" USING btree ("worker_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_users_teacher" ON "users" USING btree ("teacher_id");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "idx_users_student" ON "users" USING btree ("student_id");
+CREATE INDEX IF NOT EXISTS "idx_users_student" ON "users" USING btree ("student_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_video_call_participants_session" ON "video_call_participants" USING btree ("session_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_video_call_participants_user" ON "video_call_participants" USING btree ("user_id");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "uniq_video_call_room_name" ON "video_call_sessions" USING btree ("room_name");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_video_calls_sub_school" ON "video_call_sessions" USING btree ("sub_school_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_video_calls_conversation" ON "video_call_sessions" USING btree ("conversation_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_live_session_viewers_session" ON "live_session_viewers" USING btree ("session_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_live_session_viewers_user" ON "live_session_viewers" USING btree ("user_id");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "uniq_live_session_room_name" ON "live_sessions" USING btree ("room_name");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_live_sessions_sub_school" ON "live_sessions" USING btree ("sub_school_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_live_sessions_course" ON "live_sessions" USING btree ("course_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_live_sessions_class" ON "live_sessions" USING btree ("class_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_live_sessions_schedule" ON "live_sessions" USING btree ("schedule_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_live_sessions_event" ON "live_sessions" USING btree ("event_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_live_sessions_exam" ON "live_sessions" USING btree ("exam_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_live_sessions_conversation" ON "live_sessions" USING btree ("conversation_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_live_sessions_teacher" ON "live_sessions" USING btree ("teacher_id");

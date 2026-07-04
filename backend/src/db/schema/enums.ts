@@ -104,3 +104,14 @@ export const messageTypeEnum = pgEnum('message_type', [
     'file',
     'system',
 ])
+
+export const videoCallStatusEnum = pgEnum('video_call_status', [
+    'active',
+    'ended'
+]);
+
+export const liveSessionStatusEnum = pgEnum('live_session_status', [
+    'scheduled',
+    'live',
+    'ended'
+]);
