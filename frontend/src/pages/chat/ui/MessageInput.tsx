@@ -30,11 +30,15 @@ import type {
 } from '@entities/chat'
 import {useFileUpload} from "@entities/chat/lib/useFileUpload";
 import {FilePreview} from "@/pages/chat/ui/FilePreview";
+import {
+    getConversationDisplayName
+} from "@entities/chat/lib/getConversationDisplayName";
 
 interface MessageInputProps {
     messageText: string
     activeConversation: Conversation | null
     activeConversationId: string | null
+    currentUserId: string | null
     onChange: (text: string) => void
     onSend: (attachments?: UploadedFile[]) => void
 }
@@ -43,6 +47,7 @@ export function MessageInput({
                                  messageText,
                                  activeConversation,
                                  activeConversationId,
+                                 currentUserId,
                                  onChange,
                                  onSend
 }: MessageInputProps) {
@@ -50,7 +55,10 @@ export function MessageInput({
     const fileInputRef = useRef<HTMLInputElement>(null)
     const imageInputRef = useRef<HTMLInputElement>(null)
     const [pendingFiles, setPendingFiles] = useState<File[]>([])
-    const { uploadFile, isUploading } = useFileUpload(activeConversationId ?? '')
+    const {
+        uploadFile,
+        isUploading
+    } = useFileUpload(activeConversationId ?? '')
 
     const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files ?? [])
@@ -79,7 +87,9 @@ export function MessageInput({
         <div className="border-t border-border bg-background rounded-xl shadow-sm p-4">
             <div className="flex items-center gap-2 border-b border-border pb-2 mb-3">
                 <span className="shrink-0 text-sm font-medium text-muted-foreground">
-                    {activeConversation?.name || 'Select a conversation'}
+                    {activeConversation
+                        ? getConversationDisplayName(activeConversation, currentUserId)
+                        : 'Select a conversation'}
                 </span>
             </div>
 
