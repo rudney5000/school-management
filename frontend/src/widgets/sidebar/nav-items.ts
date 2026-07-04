@@ -73,7 +73,7 @@ export const teacherNav: NavGroup[] = [
         groupKey: 'nav.group.main',
         items: [
             { labelKey: 'nav.dashboard',     icon: LayoutDashboard, path: '/sub-schools/$subSchoolId/dashboard' },
-            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/sub-schools/$subSchoolId/schedule' },
+            { labelKey: 'nav.schedule',      icon: CalendarDays,    path: '/sub-schools/$subSchoolId/schedules' },
             { labelKey: 'nav.courses',       icon: BookOpen,        path: '/sub-schools/$subSchoolId/courses' },
             { labelKey: 'nav.events',        icon: CalendarCheck,    path: '/sub-schools/$subSchoolId/events' },
         ],
