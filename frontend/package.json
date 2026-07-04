@@ -27,6 +27,7 @@
     "i18next": "^26.3.0",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.8",
+    "livekit-client": "^2.20.0",
     "lucide-react": "^0.378.0",
     "next-themes": "^0.4.6",
     "radix-ui": "^1.4.3",
