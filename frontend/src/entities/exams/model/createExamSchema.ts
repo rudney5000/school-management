@@ -14,6 +14,13 @@ export const createExamSchema = z.object({
     durationMinutes: z.coerce.number().int().positive(),
     maxScore: z.coerce.number().positive(),
     coefficient: z.coerce.number().positive(),
+    isLiveSession: z
+        .boolean()
+        .optional(),
+    liveUrl: z
+        .string()
+        .url(getErrorMessage('validation.invalidUrl'))
+        .optional(),
 })
 
 export const updateExamSchema = createExamSchema

@@ -32,4 +32,6 @@ export interface Exam {
     updatedAt: string
     courseName: string
     className: string
+    isLiveSession: boolean
+    liveUrl?: string
 }
