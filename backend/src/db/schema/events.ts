@@ -9,6 +9,9 @@ import {
 import {users} from "@/db/schema/users";
 import {subSchools} from "@/db/schema/subSchool";
 import {EventTypeEnum} from "@/db/schema/enums";
+import {
+    liveSessionColumns
+} from "@/db/schema/liveSessionColumns";
 
 export const events = pgTable("events", {
     id: uuid("id").primaryKey().defaultRandom(),
@@ -23,6 +26,7 @@ export const events = pgTable("events", {
     createdBy: uuid("created_by")
         .references(() => users.id)
         .notNull(),
+    ...liveSessionColumns,
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow(),
 });

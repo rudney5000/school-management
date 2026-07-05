@@ -16,6 +16,8 @@ export const createEventSchema = z.object({
   isPublic: z.boolean().default(true),
 
   subSchoolId: z.string().uuid(),
+  isLiveEvent: z.boolean().optional().default(false),
+  liveUrl: z.string().url('Invalid URL').optional(),
 });
 
 export const eventParamsSchema = z.object({
