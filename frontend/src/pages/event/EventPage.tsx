@@ -27,6 +27,9 @@ import {
     ChevronLeft,
     MapPin,
     Trash2,
+    Radio,
+    Copy,
+    ExternalLink,
 } from "lucide-react"
 import {
     Badge,
@@ -119,6 +122,8 @@ export default function EventsPage() {
                 location: data.location || "",
                 isPublic: data.isPublic,
                 subSchoolId: data.subSchoolId,
+                isLiveEvent: data.isLiveEvent,
+                liveUrl: data.liveUrl,
             })
             setDrawerOpen(false)
         } catch (e) {
@@ -138,6 +143,8 @@ export default function EventsPage() {
                 location: data.location || "",
                 isPublic: data.isPublic,
                 subSchoolId: data.subSchoolId,
+                isLiveEvent: data.isLiveEvent,
+                liveUrl: data.liveUrl,
             })
             setEditDrawerOpen(false)
             setEditingEvent(null)
@@ -394,6 +401,32 @@ export default function EventsPage() {
                                             >
                                                 {cfg.label}
                                             </Badge>
+                                            {ev.isLiveEvent && ev.liveUrl && (
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <Radio className="w-3 h-3 text-red-500" />
+                                                    <span className="text-xs font-medium text-red-600">Live disponible</span>
+                                                    <div className="ml-auto flex gap-1">
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            className="h-5 w-5"
+                                                            onClick={() => window.open(ev.liveUrl!, '_blank')}
+                                                            title="Ouvrir le live"
+                                                        >
+                                                            <ExternalLink size={11} />
+                                                        </Button>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            className="h-5 w-5"
+                                                            onClick={() => navigator.clipboard.writeText(ev.liveUrl!)}
+                                                            title="Copier le lien"
+                                                        >
+                                                            <Copy size={11} />
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            )}
                                             <AvatarStack seed={ev.id} />
                                         </div>
                                     )

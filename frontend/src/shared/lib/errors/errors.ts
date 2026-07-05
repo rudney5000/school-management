@@ -189,6 +189,12 @@ export const errors = {
             fr: "Type invalide",
             ru: "Неверный тип",
             ln: "Mokolo ya mokolo esengeli",
-        }
+        },
+        invalidUrl: {
+            en: "Invalid URL",
+            fr: "URL invalide",
+            ru: "Неверный URL",
+            ln: "URL ezali malamu te",
+        },
     }
 };

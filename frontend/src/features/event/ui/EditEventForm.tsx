@@ -23,6 +23,8 @@ interface EventFormState {
     location: string
     isPublic: boolean
     subSchoolId: string
+    isLiveEvent: boolean
+    liveUrl?: string
 }
 
 interface EditEventFormProps {
@@ -43,6 +45,8 @@ export function EditEventForm({ event, subSchoolId, onSubmit, onCancel, isPendin
         location: event.location,
         isPublic: event.isPublic,
         subSchoolId: subSchoolId || event.subSchoolId,
+        isLiveEvent: event.isLiveEvent,
+        liveUrl: event.liveUrl,
     })
     const { t } = useTranslation()
 
@@ -142,6 +146,31 @@ export function EditEventForm({ event, subSchoolId, onSubmit, onCancel, isPendin
                     onCheckedChange={(v) => setForm({ ...form, isPublic: v })}
                 />
             </div>
+
+            <div className="flex items-center justify-between rounded-lg border p-3">
+                <div>
+                    <p className="text-sm font-medium">Événement en ligne (avec live)</p>
+                    <p className="text-xs text-muted-foreground">
+                        Activer si cet événement sera diffusé en direct
+                    </p>
+                </div>
+                <Switch
+                    checked={form.isLiveEvent}
+                    onCheckedChange={(v) => setForm({ ...form, isLiveEvent: v })}
+                />
+            </div>
+
+            {form.isLiveEvent && (
+                <div className="grid gap-1.5">
+                    <Label htmlFor="ev-live-url">URL du live (optionnel)</Label>
+                    <Input
+                        id="ev-live-url"
+                        placeholder="https://..."
+                        value={form.liveUrl || ''}
+                        onChange={(e) => setForm({ ...form, liveUrl: e.target.value })}
+                    />
+                </div>
+            )}
 
             <div className="flex gap-2 mt-4">
                 <Button
