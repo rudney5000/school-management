@@ -7,6 +7,8 @@ import {
     type Exam
 } from "@entities/exams";
 import {ActionsComponent} from "@shared/ui/common/ActionsComponent.tsx";
+import {Button} from "@shared/ui";
+import {Copy, ExternalLink} from "lucide-react";
 
 interface GetColumnsOptions {
     t: TFunction
@@ -80,18 +82,47 @@ export function getExamColumns({
             },
         },
         {
+            accessorKey: "liveUrl",
+            header: t("dashboard.exams.columns.live"),
+            cell: ({ row }) => {
+                if (!row.original.isLiveSession || !row.original.liveUrl) {
+                    return <span className="text-sm text-muted-foreground">—</span>
+                }
+                return (
+                    <div className="flex items-center gap-1">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 text-red-500"
+                            onClick={() => window.open(row.original.liveUrl, '_blank')}
+                            title="Ouvrir le live"
+                        >
+                            <ExternalLink size={13} />
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7"
+                            onClick={() => navigator.clipboard.writeText(row.original.liveUrl!)}
+                            title="Copier le lien"
+                        >
+                            <Copy size={13} />
+                        </Button>
+                    </div>
+                )
+            },
+        },
+        {
             id: "actions",
             header: "",
             cell: ({ row }) => {
                 return (
-                    <div className="flex items-center gap-1">
-                        <ActionsComponent<Exam>
-                            row={row}
-                            onEditAction={() => onEdit(row.original)}
-                            onDeleteAction={() => onDelete(row.original)}
-                            onViewAction={() => onViewGrades(row.original)}
-                        />
-                    </div>
+                    <ActionsComponent<Exam>
+                        row={row}
+                        onEditAction={() => onEdit(row.original)}
+                        onDeleteAction={() => onDelete(row.original)}
+                        onViewAction={() => onViewGrades(row.original)}
+                    />
                 )
             },
         },

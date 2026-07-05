@@ -16,6 +16,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
+    Checkbox,
 } from '@shared/ui'
 import {
     updateExamSchema,
@@ -56,6 +57,8 @@ export const EditExamForm: React.FC<EditExamFormProps> = ({
         mode: 'onTouched',
     })
 
+    const isLiveSession = form.watch('isLiveSession')
+
     useEffect(() => {
         if (exam) {
             form.reset({
@@ -68,6 +71,8 @@ export const EditExamForm: React.FC<EditExamFormProps> = ({
                 durationMinutes: exam.durationMinutes,
                 maxScore: Number(exam.maxScore),
                 coefficient: Number(exam.coefficient),
+                isLiveSession: exam.isLiveSession,
+                liveUrl: exam.liveUrl,
             })
         }
     }, [exam, form])
@@ -252,6 +257,50 @@ export const EditExamForm: React.FC<EditExamFormProps> = ({
                             </FormItem>
                         )}
                     />
+
+                    <div className="rounded-lg border p-4 space-y-3">
+                        <FormField
+                            control={form.control}
+                            name="isLiveSession"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                    <FormControl>
+                                        <Checkbox
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                    <div className="space-y-1 leading-none">
+                                        <FormLabel className="cursor-pointer">
+                                            Examen en ligne (avec live)
+                                        </FormLabel>
+                                    </div>
+                                </FormItem>
+                            )}
+                        />
+
+                        {isLiveSession && (
+                            <div className="space-y-3 pl-6">
+                                <FormField
+                                    control={form.control}
+                                    name="liveUrl"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>URL du live (optionnel)</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    placeholder="https://..."
+                                                    value={field.value || ''}
+                                                />
+                                            </FormControl>
+                                            <FormMessage/>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        )}
+                    </div>
 
                     <div className="flex justify-end pt-2">
                         <Button type="submit" disabled={isPending}>
