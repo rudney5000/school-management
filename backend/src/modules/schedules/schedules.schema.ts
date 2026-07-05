@@ -10,6 +10,8 @@ export const createScheduleSchema = z.object({
   endTime: z.string().regex(/^\d{2}:\d{2}$/, 'Time must be HH:MM'),
   room: z.string().max(50).optional(),
   academicYear: z.string().min(1, 'Academic year is required').max(20),
+  isLiveSession: z.boolean().optional().default(false),
+  liveUrl: z.string().url('Invalid URL').optional(),
 });
 
 export const updateScheduleSchema = createScheduleSchema.partial();

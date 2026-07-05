@@ -1,8 +1,14 @@
-import { eq, and } from 'drizzle-orm';
+import {
+    eq,
+    and
+} from 'drizzle-orm';
 import { db } from '@/db';
 import { schedules } from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
-import type { CreateScheduleDto, UpdateScheduleDto } from './schedules.schema';
+import type {
+    CreateScheduleDto,
+    UpdateScheduleDto
+} from './schedules.schema';
 
 export type ScheduleRecord = typeof schedules.$inferSelect;
 
@@ -46,6 +52,8 @@ export class SchedulesService {
         endTime: input.endTime,
         room: input.room,
         academicYear: input.academicYear,
+        isLiveSession: input.isLiveSession,
+        liveUrl: input.liveUrl,
       })
       .returning();
 
