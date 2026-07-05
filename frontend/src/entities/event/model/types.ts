@@ -9,6 +9,8 @@ export type Event = {
     isPublic: boolean;
     subSchoolId: string;
     createdBy: string;
+    isLiveEvent: boolean
+    liveUrl?: string
     createdAt: string;
     updatedAt: string;
 };

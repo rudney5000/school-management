@@ -14,6 +14,13 @@ export const createEventSchema = z.object({
     location: z.string().max(255, getErrorMessage('validation.maxLength255')).optional().or(z.literal('')),
     isPublic: z.boolean().default(true),
     subSchoolId: z.string().uuid(getErrorMessage('validation.invalidUuid')),
+    isLiveEvent: z
+        .boolean()
+        .optional(),
+    liveUrl: z
+        .string()
+        .url(getErrorMessage('validation.invalidUrl'))
+        .optional(),
 });
 
 export const updateEventSchema = createEventSchema
