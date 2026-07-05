@@ -12,13 +12,7 @@ import {
     Separator
 } from '@shared/ui'
 import { cn } from '@shared/lib'
-
-const labels = [
-    { id: 'academic',       label: 'Academic',       color: 'bg-pink-400',  count: 3 },
-    { id: 'events',         label: 'Events',         color: 'bg-slate-800', count: 2 },
-    { id: 'finance',        label: 'Finance',        color: 'bg-cyan-400',  count: 1 },
-    { id: 'administration', label: 'Administration', color: 'bg-slate-400', count: 2 },
-]
+import { useTranslation } from '@shared/lib'
 
 interface ChatSidebarProps {
     selectedCategory: string
@@ -38,19 +32,27 @@ export function ChatSidebar({
                                 onSelectCategory,
                                 counts
 }: ChatSidebarProps) {
+    const { t } = useTranslation()
+    const labels = [
+        { id: 'academic',       label: t('dashboard.chat.labels.academic'),       color: 'bg-pink-400',  count: 3 },
+        { id: 'events',         label: t('dashboard.chat.labels.events'),         color: 'bg-slate-800', count: 2 },
+        { id: 'finance',        label: t('dashboard.chat.labels.finance'),        color: 'bg-cyan-400',  count: 1 },
+        { id: 'administration', label: t('dashboard.chat.labels.administration'), color: 'bg-slate-400', count: 2 },
+    ]
+
     const categories = [
-        { id: 'all',      label: 'All Chats',       icon: Inbox,       count: counts.all },
-        { id: 'starred',  label: 'Starred',          icon: Star,        count: counts.starred },
-        { id: 'unread',   label: 'Unread',           icon: Send,        count: counts.unread },
-        { id: 'groups',   label: 'Groups',           icon: FileText,    count: counts.groups },
-        { id: 'direct',   label: 'Direct Messages',  icon: AlertCircle, count: counts.direct },
-        { id: 'archived', label: 'Archived',         icon: Trash2,      count: counts.archived },
+        { id: 'all',      label: t('dashboard.chat.categories.all'),      icon: Inbox,       count: counts.all },
+        { id: 'starred',  label: t('dashboard.chat.categories.starred'),  icon: Star,        count: counts.starred },
+        { id: 'unread',   label: t('dashboard.chat.categories.unread'),   icon: Send,        count: counts.unread },
+        { id: 'groups',   label: t('dashboard.chat.categories.groups'),   icon: FileText,    count: counts.groups },
+        { id: 'direct',   label: t('dashboard.chat.categories.direct'),   icon: AlertCircle, count: counts.direct },
+        { id: 'archived', label: t('dashboard.chat.categories.archived'), icon: Trash2,      count: counts.archived },
     ]
 
     return (
         <aside className="flex w-44 shrink-0 flex-col border-r border-border bg-card px-3 py-5">
             <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Category
+                {t('dashboard.chat.category')}
             </p>
             <nav className="flex flex-col gap-0.5">
                 {categories.map(({ id, label, icon: Icon, count }) => (
@@ -83,7 +85,7 @@ export function ChatSidebar({
             <Separator className="my-4" />
 
             <div className="mb-2 flex items-center justify-between px-2">
-                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Label</p>
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t('dashboard.chat.label')}</p>
                 <button className="text-muted-foreground hover:text-foreground">
                     <Plus className="size-3.5" />
                 </button>

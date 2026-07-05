@@ -24,6 +24,7 @@ import {useMessageActions} from "@entities/chat/lib/useMessageActions";
 import {InboxThreadReplies} from "@/pages/chat/ui/inbox/InboxThreadReplies";
 import {InboxReplyComposer} from "@/pages/chat/ui/inbox/InboxReplyComposer";
 import {ForwardDialog} from "@/pages/chat/ui/inbox/ForwardDialog";
+import { useTranslation } from '@shared/lib'
 
 interface InboxMessageViewProps {
     message: Message
@@ -42,6 +43,7 @@ export function InboxMessageView({
                                      onReplyOpen,
                                      onReplyClose
 }: InboxMessageViewProps) {
+    const { t } = useTranslation()
     const [threadOpen, setThreadOpen] = useState(false)
     const senderLabel = message.sender.email?.split('@')[0] ?? '??'
     const initials = senderLabel.slice(0, 2).toUpperCase()
@@ -58,7 +60,7 @@ export function InboxMessageView({
                         onClick={onReplyOpen}
                     >
                         <Reply className="size-3.5" />
-                        Reply
+                        {t('dashboard.chat.reply')}
                     </Button>
                     <Button
                         variant="ghost" size="sm"
@@ -66,7 +68,7 @@ export function InboxMessageView({
                         onClick={() => setForwardOpen(true)}
                     >
                         <Forward className="size-3.5" />
-                        Forward
+                        {t('dashboard.chat.forward')}
                     </Button>
                 </div>
                 <div className="flex items-center gap-1">
@@ -99,7 +101,7 @@ export function InboxMessageView({
                                 <p className="font-semibold text-foreground">{senderLabel}</p>
                                 <p className="text-xs text-muted-foreground">{message.sender.email}</p>
                                 <div className="flex items-center gap-1 mt-0.5 text-xs text-muted-foreground">
-                                    <span>To:</span>
+                                    <span>{t('dashboard.chat.to')}:</span>
                                     {conversation.members
                                         .filter(m => m.userId !== message.senderId)
                                         .slice(0, 3)
@@ -130,7 +132,7 @@ export function InboxMessageView({
 
                     <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
                         {message.isDeleted
-                            ? <span className="italic text-muted-foreground">Message supprimé</span>
+                            ? <span className="italic text-muted-foreground">{t('dashboard.chat.messageDeleted')}</span>
                             : message.content
                         }
                     </div>
@@ -145,7 +147,7 @@ export function InboxMessageView({
                             className="flex items-center gap-2 text-xs text-muted-foreground"
                         >
                             {threadOpen ? <ChevronUp className="size-3.5" /> : <ChevronDown className="size-3.5" />}
-                            {threadOpen ? 'Hide replies' : 'Show replies'}
+                            {threadOpen ? t('dashboard.chat.hideReplies') : t('dashboard.chat.showReplies')}
                         </Button>
 
                         {threadOpen && (

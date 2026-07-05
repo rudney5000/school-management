@@ -4,6 +4,7 @@ import type {
     Conversation,
     Message, UploadedFile
 } from '@entities/chat'
+import { useTranslation } from '@shared/lib'
 
 interface ChatWindowProps {
     activeConversation: Conversation | null
@@ -26,10 +27,11 @@ export function ChatWindow({
                                onMessageChange,
                                onSend,
                            }: ChatWindowProps) {
+    const { t } = useTranslation()
     if (!activeConversation) {
         return (
             <div className="flex flex-1 items-center justify-center bg-card">
-                <p className="text-sm text-muted-foreground">Select a conversation</p>
+                <p className="text-sm text-muted-foreground">{t('dashboard.chat.selectConversation')}</p>
             </div>
         )
     }

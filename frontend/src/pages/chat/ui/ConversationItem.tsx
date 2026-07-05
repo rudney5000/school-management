@@ -12,6 +12,7 @@ import type {
 import {
     getConversationDisplayName
 } from "@entities/chat/lib/getConversationDisplayName";
+import { useTranslation } from '@shared/lib'
 
 interface ConversationItemProps {
     conversation: Conversation
@@ -32,8 +33,9 @@ export function ConversationItem({
                                      lastMessage,
                                      onClick
 }: ConversationItemProps) {
+    const { t } = useTranslation()
     const displayName = getConversationDisplayName(conversation, currentUserId)
-    const initials = displayName !== 'Unnamed Chat' && displayName !== 'Direct Message'
+    const initials = displayName !== t('dashboard.chat.unnamedChat') && displayName !== t('dashboard.chat.directMessage')
         ? displayName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
         : '??'
 
@@ -70,10 +72,10 @@ export function ConversationItem({
                     </span>
                 </div>
                 <p className="mt-0.5 truncate text-xs font-medium text-foreground/80">
-                    {conversation.description || 'No description'}
+                    {conversation.description || t('dashboard.chat.noDescription')}
                 </p>
                 <p className="mt-0.5 line-clamp-2 text-[11px] leading-relaxed text-muted-foreground">
-                    {lastMessage?.content || 'No messages yet'}
+                    {lastMessage?.content || t('dashboard.chat.noMessages')}
                 </p>
             </div>
 

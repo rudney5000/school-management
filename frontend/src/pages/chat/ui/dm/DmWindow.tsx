@@ -65,6 +65,7 @@ export function DmWindow({
                 messageText={messageText}
                 activeConversation={activeConversation}
                 activeConversationId={activeConversationId}
+                currentUserId={currentUserId}
                 onChange={onMessageChange}
                 onSend={onSend}
             />

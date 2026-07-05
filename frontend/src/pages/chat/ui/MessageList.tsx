@@ -9,6 +9,7 @@ import type {
     Conversation,
     Message
 } from '@entities/chat'
+import { useTranslation } from '@shared/lib'
 
 interface MessageListProps {
     activeConversation: Conversation | null
@@ -23,6 +24,7 @@ export function MessageList({
                                 currentUserId,
                                 isLoading
 }: MessageListProps) {
+    const { t } = useTranslation()
     return (
         <ScrollArea className="h-full">
             {activeConversation && (
@@ -39,7 +41,7 @@ export function MessageList({
                                 </AvatarFallback>
                             </Avatar>
                             <div>
-                                <p className="font-semibold text-primary">{activeConversation.name || 'Unnamed Chat'}</p>
+                                <p className="font-semibold text-primary">{activeConversation.name || t('dashboard.chat.unnamedChat')}</p>
                                 <p className="text-sm text-muted-foreground">{activeConversation.description}</p>
                             </div>
                         </div>
@@ -53,12 +55,12 @@ export function MessageList({
                         {isLoading && (
                             <div className="text-center text-sm text-muted-foreground">
                                 <Spinner/>
-                                Loading messages...
+                                {t('dashboard.chat.loadingMessages')}
                             </div>
                         )}
                         {messages.length === 0 && !isLoading && (
                             <div className="text-center text-sm text-muted-foreground">
-                                No messages yet. Start the conversation!
+                                {t('dashboard.chat.startConversation')}
                             </div>
                         )}
                         {[...messages].reverse().map((message) => (

@@ -10,6 +10,7 @@ import type {
 } from '@entities/chat'
 import {useMessageActions} from "@entities/chat/lib/useMessageActions";
 import {cn} from "@shared/lib";
+import { useTranslation } from '@shared/lib'
 
 interface InboxToolbarProps {
     conversation: Conversation
@@ -17,14 +18,26 @@ interface InboxToolbarProps {
     currentUserId: string | null
 }
 
-export function InboxToolbar({ conversation, selectedMessage }: InboxToolbarProps) {
-    const { starMessage, archiveMessage, deleteMessage, loadingId } = useMessageActions(conversation.id)
+export function InboxToolbar({
+                                 conversation,
+                                 selectedMessage
+}: InboxToolbarProps) {
+    const { t } = useTranslation()
+    const {
+        starMessage,
+        archiveMessage,
+        deleteMessage,
+        loadingId
+    } = useMessageActions(conversation.id)
 
     return (
         <div className="flex items-center justify-between border-b border-border px-4 py-2">
             <div className="flex flex-col">
                 <span className="text-sm font-semibold">{conversation.name}</span>
-                <span className="text-xs text-muted-foreground">{conversation.members.length} members</span>
+                <span className="text-xs text-muted-foreground">
+                    {conversation.members.length}
+                    {t('dashboard.chat.members')}
+                </span>
             </div>
             <div className="flex items-center gap-1">
                 <Button

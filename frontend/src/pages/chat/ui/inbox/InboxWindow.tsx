@@ -8,6 +8,7 @@ import {InboxToolbar} from "@/pages/chat/ui/inbox/InboxToolbar";
 import {InboxMessageRow} from "@/pages/chat/ui/inbox/InboxMessageRow";
 import {InboxMessageView} from "@/pages/chat/ui/inbox/InboxMessageView";
 import {MessageInput} from "@/pages/chat/ui/MessageInput";
+import { useTranslation } from '@shared/lib'
 
 interface InboxWindowProps {
     activeConversation: Conversation | null
@@ -30,6 +31,7 @@ export function InboxWindow({
                                 onMessageChange,
                                 onSend
 }: InboxWindowProps) {
+    const { t } = useTranslation()
     const [selectedMessage, setSelectedMessage] = useState<Message | null>(null)
     const [replyOpen, setReplyOpen] = useState(false)
 
@@ -38,7 +40,7 @@ export function InboxWindow({
     if (!activeConversation) {
         return (
             <div className="flex flex-1 items-center justify-center text-muted-foreground text-sm">
-                Select a conversation
+                {t('dashboard.chat.selectConversation')}
             </div>
         )
     }
@@ -55,12 +57,12 @@ export function InboxWindow({
                     <div className="flex flex-col divide-y divide-border">
                         {isLoadingMessages && (
                             <div className="p-4 text-center text-sm text-muted-foreground">
-                                Loading...
+                                {t('dashboard.chat.loadingMessages')}
                             </div>
                         )}
                         {rootMessages.length === 0 && !isLoadingMessages && (
                             <div className="p-4 text-center text-sm text-muted-foreground">
-                                No messages yet
+                                {t('dashboard.chat.noMessages')}
                             </div>
                         )}
                         {rootMessages.map((message) => (
@@ -92,7 +94,7 @@ export function InboxWindow({
                         />
                     ) : (
                         <div className="flex flex-1 items-center justify-center text-muted-foreground text-sm">
-                            Select a message to read
+                            {t('dashboard.chat.selectConversation')}
                         </div>
                     )}
                 </div>
@@ -102,6 +104,7 @@ export function InboxWindow({
                     activeConversationId={activeConversationId}
                     onChange={onMessageChange}
                     onSend={onSend}
+                    currentUserId={currentUserId}
                 />
             </div>
         </div>

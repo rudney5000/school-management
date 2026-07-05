@@ -33,6 +33,7 @@ import {FilePreview} from "@/pages/chat/ui/FilePreview";
 import {
     getConversationDisplayName
 } from "@entities/chat/lib/getConversationDisplayName";
+import { useTranslation } from '@shared/lib'
 
 interface MessageInputProps {
     messageText: string
@@ -51,6 +52,7 @@ export function MessageInput({
                                  onChange,
                                  onSend
 }: MessageInputProps) {
+    const { t } = useTranslation()
 
     const fileInputRef = useRef<HTMLInputElement>(null)
     const imageInputRef = useRef<HTMLInputElement>(null)
@@ -89,7 +91,7 @@ export function MessageInput({
                 <span className="shrink-0 text-sm font-medium text-muted-foreground">
                     {activeConversation
                         ? getConversationDisplayName(activeConversation, currentUserId)
-                        : 'Select a conversation'}
+                        : t('dashboard.chat.selectConversation')}
                 </span>
             </div>
 
@@ -107,7 +109,7 @@ export function MessageInput({
 
             <textarea
                 className="min-h-[80px] w-full resize-none bg-transparent px-4 py-3 text-sm text-foreground focus:outline-none border border-border rounded-lg mb-3"
-                placeholder="Type a message..."
+                placeholder={t('dashboard.chat.typeMessage')}
                 value={messageText}
                 onChange={(e) => onChange(e.target.value)}
                 onKeyDown={(e) => {
@@ -213,8 +215,8 @@ export function MessageInput({
                         }
                     >
                         {isUploading
-                            ? <><Spinner className="size-4"/> Uploading...</>
-                            : <><Send className="size-4"/> Send</>
+                            ? <><Spinner className="size-4"/> {t('dashboard.chat.uploading')}</>
+                            : <><Send className="size-4"/> {t('dashboard.chat.send')}</>
                         }
                     </Button>
                 </div>

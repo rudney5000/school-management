@@ -5,6 +5,7 @@ import {
 import { cn } from '@shared/lib'
 import type { Message } from '@entities/chat'
 import {AttachmentView} from "@/pages/chat/ui/AttachmentView";
+import { useTranslation } from '@shared/lib'
 
 interface MessageBubbleProps {
     message: Message
@@ -15,8 +16,8 @@ export function MessageBubble({
                                   message,
                                   isOwn
 }: MessageBubbleProps) {
-
-    const senderEmail = message.sender?.email ?? 'Utilisateur inconnu'
+    const { t } = useTranslation()
+    const senderEmail = message.sender?.email ?? t('dashboard.chat.unknownUser')
     const initials =
         senderEmail.split('@')[0].slice(0, 2).toUpperCase()
 
@@ -38,7 +39,7 @@ export function MessageBubble({
                     {senderEmail}
                 </p>
                 {message.isDeleted
-                    ? <p className="italic opacity-60">Message supprimé</p>
+                    ? <p className="italic opacity-60">{t('dashboard.chat.messageDeleted')}</p>
                     : message.content
                         ? <p>{message.content}</p>
                         : null
@@ -57,7 +58,7 @@ export function MessageBubble({
                 )}
 
                 {message.isEdited && !message.isDeleted && (
-                    <p className="text-[9px] opacity-50 mt-0.5">modifié</p>
+                    <p className="text-[9px] opacity-50 mt-0.5">{t('dashboard.chat.edited')}</p>
                 )}
                 <p className="text-[10px] opacity-70 mt-1">
                     {new Date(message.createdAt).toLocaleTimeString([], {

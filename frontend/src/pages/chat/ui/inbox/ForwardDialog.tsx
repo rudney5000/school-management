@@ -22,6 +22,7 @@ import { cn } from '@shared/lib'
 import { useAppSelector } from '@shared/store/hooks'
 import { selectConversations } from '@entities/chat'
 import type { Message } from '@entities/chat'
+import { useTranslation } from '@shared/lib'
 
 interface ForwardDialogProps {
     message: Message
@@ -30,6 +31,7 @@ interface ForwardDialogProps {
 }
 
 export function ForwardDialog({ message, onForward, onClose }: ForwardDialogProps) {
+    const { t } = useTranslation()
     const [search, setSearch] = useState('')
     const [selectedId, setSelectedId] = useState<string | null>(null)
     const [isForwarding, setIsForwarding] = useState(false)
@@ -62,10 +64,10 @@ export function ForwardDialog({ message, onForward, onClose }: ForwardDialogProp
                     <div className="flex items-center justify-between">
                         <div>
                             <DialogTitle className="text-base font-semibold">
-                                Forward message
+                                {t('dashboard.chat.forwardMessage')}
                             </DialogTitle>
                             <DialogDescription className="text-xs text-muted-foreground mt-0.5">
-                                Select a conversation to forward to
+                                {t('dashboard.chat.selectConversationForward')}
                             </DialogDescription>
                         </div>
                         <Button variant="ghost" size="icon-sm" onClick={onClose}>
@@ -75,15 +77,15 @@ export function ForwardDialog({ message, onForward, onClose }: ForwardDialogProp
                 </DialogHeader>
 
                 <div className="mx-4 mt-4 rounded-xl border border-border bg-muted/50 px-4 py-3">
-                    <p className="text-xs text-muted-foreground mb-1">Forwarding:</p>
+                    <p className="text-xs text-muted-foreground mb-1">{t('dashboard.chat.forwarding')}</p>
                     <p className="text-sm text-foreground line-clamp-2">
                         {message.isDeleted
-                            ? <span className="italic text-muted-foreground">Message supprimé</span>
+                            ? <span className="italic text-muted-foreground">{t('dashboard.chat.messageDeleted')}</span>
                             : message.content
                         }
                     </p>
                     <p className="text-[10px] text-muted-foreground mt-1">
-                        From {message.sender.email?.split('@')[0]} ·{' '}
+                        {t('dashboard.chat.from')} {message.sender.email?.split('@')[0]} ·{' '}
                         {new Date(message.createdAt).toLocaleDateString()}
                     </p>
                 </div>
@@ -92,7 +94,7 @@ export function ForwardDialog({ message, onForward, onClose }: ForwardDialogProp
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
                         <Input
-                            placeholder="Search conversations..."
+                            placeholder={t('dashboard.chat.searchConversations')}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             className="pl-9 rounded-full bg-muted border-transparent"
@@ -104,7 +106,7 @@ export function ForwardDialog({ message, onForward, onClose }: ForwardDialogProp
                 <div className="mx-4 mt-3 max-h-64 overflow-y-auto rounded-xl border border-border divide-y divide-border">
                     {filtered.length === 0 && (
                         <div className="p-4 text-center text-sm text-muted-foreground">
-                            No conversations found
+                            {t('dashboard.chat.noConversationsFound')}
                         </div>
                     )}
                     {filtered.map((conv) => {
@@ -113,10 +115,10 @@ export function ForwardDialog({ message, onForward, onClose }: ForwardDialogProp
                             : '??'
                         const isSelected = selectedId === conv.id
                         const typeLabel = {
-                            dm: 'DM',
-                            group: 'Group',
-                            class: 'Class',
-                            course: 'Course',
+                            dm: t('dashboard.chat.types.dm'),
+                            group: t('dashboard.chat.types.group'),
+                            class: t('dashboard.chat.types.class'),
+                            course: t('dashboard.chat.types.course'),
                         }[conv.type]
 
                         return (
@@ -143,10 +145,10 @@ export function ForwardDialog({ message, onForward, onClose }: ForwardDialogProp
 
                                 <div className="min-w-0 flex-1">
                                     <p className="truncate text-sm font-medium text-foreground">
-                                        {conv.name || 'Unnamed Chat'}
+                                        {conv.name || t('dashboard.chat.unnamedChat')}
                                     </p>
                                     <p className="text-xs text-muted-foreground">
-                                        {typeLabel} · {conv.members.length} members
+                                        {typeLabel} · {conv.members.length} {t('dashboard.chat.members')}
                                     </p>
                                 </div>
 
@@ -165,13 +167,12 @@ export function ForwardDialog({ message, onForward, onClose }: ForwardDialogProp
                 <div className="flex items-center justify-between px-4 py-4 border-t border-border mt-3">
                     <p className="text-xs text-muted-foreground">
                         {selectedId
-                            ? `1 conversation selected`
-                            : 'Select a conversation'
-                        }
+                            ? t('dashboard.chat.conversationSelected')
+                            : t('dashboard.chat.selectConversation')}
                     </p>
                     <div className="flex items-center gap-2">
                         <Button variant="ghost" size="sm" onClick={onClose}>
-                            Cancel
+                            {t('common.cancel')}
                         </Button>
                         <Button
                             size="sm"
@@ -180,7 +181,7 @@ export function ForwardDialog({ message, onForward, onClose }: ForwardDialogProp
                             onClick={handleForward}
                         >
                             <Forward className="size-3.5" />
-                            {isForwarding ? 'Forwarding...' : 'Forward'}
+                            {isForwarding ? t('dashboard.chat.forwardingInProgress') : t('dashboard.chat.forward')}
                         </Button>
                     </div>
                 </div>

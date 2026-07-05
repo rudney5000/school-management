@@ -5,6 +5,7 @@ import {
 } from '@shared/ui'
 import { cn } from '@shared/lib'
 import type { Message } from '@entities/chat'
+import { useTranslation } from '@shared/lib'
 
 interface InboxMessageRowProps {
     message: Message
@@ -16,6 +17,7 @@ interface InboxMessageRowProps {
 export function InboxMessageRow({
                                     message, isSelected, currentUserId, onClick
                                 }: InboxMessageRowProps) {
+    const { t } = useTranslation()
     const isOwn = message.senderId === currentUserId
     const senderLabel = message.sender.email?.split('@')[0] ?? '??'
     const initials = senderLabel.slice(0, 2).toUpperCase()
@@ -64,7 +66,7 @@ export function InboxMessageRow({
                     </p>
                 )}
                 <p className="mt-0.5 line-clamp-2 text-[11px] text-muted-foreground leading-relaxed">
-                    {message.isDeleted ? 'Message supprimé' : message.content}
+                    {message.isDeleted ? t('dashboard.chat.messageDeleted') : message.content}
                 </p>
             </div>
 

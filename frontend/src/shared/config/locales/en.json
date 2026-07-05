@@ -824,6 +824,66 @@
         "loading": "Loading...",
         "error": "An error occurred"
       }
+    },
+    "chat": {
+      "title": "Chat",
+      "searchAnything": "Search anything",
+      "search": "Search",
+      "searchConversations": "Search conversations...",
+      "category": "Category",
+      "label": "Label",
+      "labels": {
+        "academic": "Academic",
+        "events": "Events",
+        "finance": "Finance",
+        "administration": "Administration"
+      },
+      "categories": {
+        "all": "All Chats",
+        "starred": "Starred",
+        "unread": "Unread",
+        "groups": "Groups",
+        "direct": "Direct Messages",
+        "archived": "Archived"
+      },
+      "loadingConversations": "Loading conversations...",
+      "noConversations": "No conversations yet",
+      "selectConversation": "Select a conversation",
+      "typeMessage": "Type a message...",
+      "uploading": "Uploading...",
+      "send": "Send",
+      "unnamedChat": "Unnamed Chat",
+      "directMessage": "Direct Message",
+      "noDescription": "No description",
+      "noMessages": "No messages yet",
+      "startConversation": "No messages yet. Start the conversation!",
+      "unknownUser": "Unknown user",
+      "messageDeleted": "Message deleted",
+      "edited": "edited",
+      "loadingMessages": "Loading messages...",
+      "members": "members",
+      "reply": "Reply",
+      "forward": "Forward",
+      "to": "To",
+      "cc": "Cc",
+      "bcc": "Bcc",
+      "re": "Re:",
+      "typeReply": "Type your reply...",
+      "hideReplies": "Hide replies",
+      "showReplies": "Show replies",
+      "forwardMessage": "Forward message",
+      "selectConversationForward": "Select a conversation to forward to",
+      "forwarding": "Forwarding:",
+      "from": "From",
+      "noConversationsFound": "No conversations found",
+      "types": {
+        "dm": "DM",
+        "group": "Group",
+        "class": "Class",
+        "course": "Course"
+      },
+      "conversationSelected": "1 conversation selected",
+      "forwardingInProgress": "Forwarding..."
     }
   },
   "theme": {

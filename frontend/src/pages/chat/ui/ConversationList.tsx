@@ -14,6 +14,7 @@ import type {
     Conversation,
     Message
 } from '@entities/chat'
+import { useTranslation } from '@shared/lib'
 
 interface ConversationListProps {
     conversations: Conversation[]
@@ -36,13 +37,14 @@ export function ConversationList({
                                      isLoading,
                                      onSelect
 }: ConversationListProps) {
+    const { t } = useTranslation()
     return (
         <div className="flex w-80 shrink-0 flex-col border-r border-border bg-background">
             <div className="flex items-center gap-2 p-3">
                 <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
-                        placeholder="Search"
+                        placeholder={t('dashboard.chat.search')}
                         className="rounded-full pl-9 text-sm bg-card border-border"
                     />
                 </div>
@@ -77,12 +79,12 @@ export function ConversationList({
                     {isLoading && (
                         <div className="p-4 text-center text-sm text-muted-foreground">
                             <Spinner/>
-                            Loading conversations...
+                            {t('dashboard.chat.loadingConversations')}
                         </div>
                     )}
                     {conversations.length === 0 && !isLoading && (
                         <div className="p-4 text-center text-sm text-muted-foreground">
-                            No conversations yet
+                            {t('dashboard.chat.noConversations')}
                         </div>
                     )}
                 </div>

@@ -8,6 +8,7 @@ import {
 import { Button } from '@shared/ui'
 import type { Conversation, Message } from '@entities/chat'
 import {useThreadReplies} from "@entities/chat/lib/useThreadReplies";
+import { useTranslation } from '@shared/lib'
 
 interface InboxReplyComposerProps {
     message: Message
@@ -16,6 +17,7 @@ interface InboxReplyComposerProps {
 }
 
 export function InboxReplyComposer({ message, conversation, onClose }: InboxReplyComposerProps) {
+    const { t } = useTranslation()
     const [content, setContent] = useState('')
     const { replyToThread } = useThreadReplies(conversation.id, message.id)
 
@@ -35,7 +37,7 @@ export function InboxReplyComposer({ message, conversation, onClose }: InboxRepl
     return (
         <div className="border-t border-border bg-background m-4 rounded-xl overflow-hidden shadow-sm">
             <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
-                <span className="text-xs text-muted-foreground shrink-0">To:</span>
+                <span className="text-xs text-muted-foreground shrink-0">{t('dashboard.chat.to')}:</span>
                 <div className="flex flex-wrap gap-1 flex-1">
                     {conversation.members
                         .filter(m => m.userId !== message.senderId)
@@ -51,8 +53,8 @@ export function InboxReplyComposer({ message, conversation, onClose }: InboxRepl
                     }
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <button className="hover:text-foreground">Cc</button>
-                    <button className="hover:text-foreground">Bcc</button>
+                    <button className="hover:text-foreground">{t('dashboard.chat.cc')}</button>
+                    <button className="hover:text-foreground">{t('dashboard.chat.bcc')}</button>
                 </div>
                 <Button
                     variant="ghost" size="icon-sm"
@@ -64,7 +66,7 @@ export function InboxReplyComposer({ message, conversation, onClose }: InboxRepl
             </div>
 
             <div className="flex items-center gap-2 border-b border-border px-4 py-2">
-                <span className="text-xs text-muted-foreground shrink-0">Re:</span>
+                <span className="text-xs text-muted-foreground shrink-0">{t('dashboard.chat.re')}</span>
                 <span className="text-xs text-foreground truncate">
                     {message.subject || message.content?.slice(0, 50)}
                 </span>
@@ -72,7 +74,7 @@ export function InboxReplyComposer({ message, conversation, onClose }: InboxRepl
 
             <textarea
                 className="min-h-[120px] w-full resize-none bg-transparent px-4 py-3 text-sm text-foreground focus:outline-none"
-                placeholder="Type your reply..."
+                placeholder={t('dashboard.chat.typeReply')}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 onKeyDown={(e) => {
@@ -99,7 +101,7 @@ export function InboxReplyComposer({ message, conversation, onClose }: InboxRepl
                         className="text-muted-foreground"
                         onClick={onClose}
                     >
-                        Cancel
+                        {t('common.cancel')}
                     </Button>
                     <Button
                         size="sm"
@@ -108,7 +110,7 @@ export function InboxReplyComposer({ message, conversation, onClose }: InboxRepl
                         disabled={!content.trim()}
                     >
                         <Send className="size-3.5" />
-                        Send
+                        {t('dashboard.chat.send')}
                     </Button>
                 </div>
             </div>
