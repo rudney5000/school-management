@@ -17,6 +17,9 @@ export const createCourseSchema = z.object({
   totalHours: z.number().int().nonnegative().optional().default(0),
   status: z.enum(COURSE_STATUSES).optional().default('active'),
   subSchoolId: z.string().uuid('Invalid sub-school ID'),
+  isDistanceCourse: z.boolean().optional().default(false),
+  liveScheduledAt: z.coerce.date().optional(),
+  liveUrl: z.string().url('Invalid URL').optional(),
 });
 
 export const createCourseResourceSchema = z.object({
@@ -24,7 +27,6 @@ export const createCourseResourceSchema = z.object({
   title: z.string().min(1, 'Title is required').max(150),
   url: z.string().url('Invalid URL').optional(),
 });
-
 
 export const updateCourseSchema = createCourseSchema
   .partial()

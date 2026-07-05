@@ -1,8 +1,18 @@
-import { and, eq } from 'drizzle-orm';
+import {
+    and,
+    eq
+} from 'drizzle-orm';
 import { db } from '@/db';
-import {courseResources, courses} from '@/db/schema';
+import {
+    courseResources,
+    courses
+} from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
-import type {CreateCourseDto, CreateCourseResourceDto, UpdateCourseDto} from './courses.schema';
+import type {
+    CreateCourseDto,
+    CreateCourseResourceDto,
+    UpdateCourseDto
+} from './courses.schema';
 
 export type CourseRecord = typeof courses.$inferSelect;
 export type CourseResourceRecord = typeof courseResources.$inferSelect;
@@ -57,6 +67,9 @@ export class CoursesService {
         totalHours: input.totalHours,
         status: input.status,
         subSchoolId: input.subSchoolId,
+        isDistanceCourse: input.isDistanceCourse,
+        liveScheduledAt: input.liveScheduledAt,
+        liveUrl: input.liveUrl,
       })
       .returning();
 

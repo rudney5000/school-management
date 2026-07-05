@@ -1,4 +1,12 @@
-import { pgTable, uuid, varchar, text, integer, timestamp } from 'drizzle-orm/pg-core';
+import {
+    pgTable,
+    uuid,
+    varchar,
+    text,
+    integer,
+    timestamp,
+    boolean
+} from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import {subSchools} from "./subSchool";
 import {teachers} from "@/db/schema/teacher";
@@ -22,6 +30,9 @@ export const courses = pgTable('courses', {
     totalHours: integer('total_hours').notNull().default(0),
     status: varchar('status', { length: 20 }).notNull().default('active'),
     subSchoolId: uuid('sub_school_id').notNull().references(() => subSchools.id, { onDelete: 'cascade' }),
+    isDistanceCourse: boolean('is_distance_course').notNull().default(false),
+    liveScheduledAt: timestamp('live_scheduled_at'),
+    liveUrl: text('live_url'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 
