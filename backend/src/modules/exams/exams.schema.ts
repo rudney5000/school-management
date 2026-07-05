@@ -13,6 +13,8 @@ export const createExamSchema = z.object({
     durationMinutes: z.number().int().positive().default(60),
     maxScore: z.coerce.number().positive().default(20).transform(v => String(v)),
     coefficient: z.coerce.number().positive().default(1).transform(v => String(v)),
+    isLiveExam: z.boolean().optional().default(false),
+    liveUrl: z.string().url('Invalid URL').optional(),
 })
 
 export const examParamsSchema = z.object({

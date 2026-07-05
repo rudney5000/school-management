@@ -5,7 +5,7 @@ import {
     integer,
     timestamp,
     numeric,
-    text
+    text,
 } from 'drizzle-orm/pg-core';
 import {relations} from 'drizzle-orm';
 import {
@@ -18,6 +18,9 @@ import {courses} from "@/db/schema/courses";
 import {subSchools} from "@/db/schema/subSchool";
 import {students} from "@/db/schema/students";
 import {academicPeriods} from "@/db/schema/academicPeriod";
+import {
+    liveSessionColumns
+} from "@/db/schema/liveSessionColumns";
 
 export const exams = pgTable("exams", {
     id: uuid("id").primaryKey().defaultRandom(),
@@ -34,6 +37,7 @@ export const exams = pgTable("exams", {
     academicPeriodId: uuid("academic_period_id")
         .references(() => academicPeriods.id, { onDelete: 'set null' }),
     createdBy: uuid("created_by").references(() => users.id),
+    ...liveSessionColumns,
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
 })
