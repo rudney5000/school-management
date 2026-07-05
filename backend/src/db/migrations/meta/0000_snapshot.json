@@ -1,5 +1,5 @@
 {
-  "id": "acbcff07-5a58-4ba4-b4f8-7fe984157b79",
+  "id": "9651f8d2-b50a-4297-8357-84867bb6f5f1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1986,6 +1986,25 @@
           "primaryKey": false,
           "notNull": true
         },
+        "is_distance_course": {
+          "name": "is_distance_course",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "live_scheduled_at": {
+          "name": "live_scheduled_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "live_url": {
+          "name": "live_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -2279,6 +2298,19 @@
           "primaryKey": false,
           "notNull": true
         },
+        "is_live_session": {
+          "name": "is_live_session",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "live_url": {
+          "name": "live_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -2523,6 +2555,19 @@
           "primaryKey": false,
           "notNull": false
         },
+        "is_live_session": {
+          "name": "is_live_session",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "live_url": {
+          "name": "live_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -2674,6 +2719,19 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
+        },
+        "is_live_session": {
+          "name": "is_live_session",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "live_url": {
+          "name": "live_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",

@@ -331,6 +331,9 @@ CREATE TABLE IF NOT EXISTS "courses" (
 	"total_hours" integer DEFAULT 0 NOT NULL,
 	"status" varchar(20) DEFAULT 'active' NOT NULL,
 	"sub_school_id" uuid NOT NULL,
+	"is_distance_course" boolean DEFAULT false NOT NULL,
+	"live_scheduled_at" timestamp,
+	"live_url" text,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
@@ -362,6 +365,8 @@ CREATE TABLE IF NOT EXISTS "events" (
 	"is_public" boolean DEFAULT true,
 	"sub_school_id" uuid NOT NULL,
 	"created_by" uuid NOT NULL,
+	"is_live_session" boolean DEFAULT false NOT NULL,
+	"live_url" text,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
 );
@@ -392,6 +397,8 @@ CREATE TABLE IF NOT EXISTS "exams" (
 	"coefficient" numeric(4, 2) DEFAULT '1' NOT NULL,
 	"academic_period_id" uuid,
 	"created_by" uuid,
+	"is_live_session" boolean DEFAULT false NOT NULL,
+	"live_url" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
@@ -407,6 +414,8 @@ CREATE TABLE IF NOT EXISTS "schedules" (
 	"room" varchar(50),
 	"academic_year" varchar(20) NOT NULL,
 	"sub_school_id" uuid NOT NULL,
+	"is_live_session" boolean DEFAULT false NOT NULL,
+	"live_url" text,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint

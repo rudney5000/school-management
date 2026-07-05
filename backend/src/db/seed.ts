@@ -238,7 +238,8 @@ async function seed() {
             totalLessons: 0,
             totalHours: 0,
             teacherId: teacher.id,
-            subSchoolId: subSchool.id
+            subSchoolId: subSchool.id,
+            isDistanceCourse: false,
         },
         {
             name: 'Français',
@@ -250,7 +251,8 @@ async function seed() {
             status: 'active' as const,
             totalLessons: 0,
             totalHours: 0,
-            subSchoolId: subSchool.id
+            subSchoolId: subSchool.id,
+            isDistanceCourse: false,
         },
         {
             name: 'Physique-Chimie',
@@ -262,7 +264,8 @@ async function seed() {
             status: 'active' as const,
             totalLessons: 0,
             totalHours: 0,
-            subSchoolId: subSchool.id
+            subSchoolId: subSchool.id,
+            isDistanceCourse: false,
         },
         {
             name: 'Biologie',
@@ -274,7 +277,8 @@ async function seed() {
             status: 'active' as const,
             totalLessons: 0,
             totalHours: 0,
-            subSchoolId: subSchool.id
+            subSchoolId: subSchool.id,
+            isDistanceCourse: false,
         },
         {
             name: 'Histoire-Géographie',
@@ -286,7 +290,8 @@ async function seed() {
             status: 'active' as const,
             totalLessons: 0,
             totalHours: 0,
-            subSchoolId: subSchool.id
+            subSchoolId: subSchool.id,
+            isDistanceCourse: false,
         },
         {
             name: 'Anglais',
@@ -298,7 +303,10 @@ async function seed() {
             status: 'active' as const,
             totalLessons: 0,
             totalHours: 0,
-            subSchoolId: subSchool.id
+            subSchoolId: subSchool.id,
+            isDistanceCourse: true,
+            liveScheduledAt: new Date('2026-07-10T14:00:00Z'),
+            liveUrl: 'https://meet.google.com/abc-defg-hij',
         },
         {
             name: 'Éducation Civique',
@@ -310,7 +318,8 @@ async function seed() {
             status: 'active' as const,
             totalLessons: 0,
             totalHours: 0,
-            subSchoolId: subSchool.id
+            subSchoolId: subSchool.id,
+            isDistanceCourse: false,
         },
         {
             name: 'Informatique',
@@ -322,7 +331,8 @@ async function seed() {
             status: 'active' as const,
             totalLessons: 0,
             totalHours: 0,
-            subSchoolId: subSchool.id
+            subSchoolId: subSchool.id,
+            isDistanceCourse: false,
         },
     ];
 
@@ -502,14 +512,14 @@ async function seed() {
     console.log('✓ Parent-students links created');
 
 
-    const [existingSchedule] = await db.select().from(schedules)
+    const [existingSchedule1] = await db.select().from(schedules)
         .where(and(
             eq(schedules.subSchoolId, subSchool.id),
             eq(schedules.dayOfWeek, 'MONDAY'),
             eq(schedules.startTime, '08:00')
         ));
 
-    if (!existingSchedule) {
+    if (!existingSchedule1) {
         const [mathCourse] = await db.select().from(courses)
             .where(and(eq(courses.code, 'MATH-01'), eq(courses.subSchoolId, subSchool.id)));
 
@@ -529,11 +539,153 @@ async function seed() {
             endTime: '09:00',
             room: 'Salle 12',
             academicYear: '2024-2025',
+            isLiveSession: false,
         });
 
         console.log('✓ Schedule created: Math, Monday 08:00-09:00');
     } else {
-        console.log('~ Schedule already exists');
+        console.log('~ Schedule already exists: Math, Monday 08:00');
+    }
+
+    const [existingSchedule2] = await db.select().from(schedules)
+        .where(and(
+            eq(schedules.subSchoolId, subSchool.id),
+            eq(schedules.dayOfWeek, 'MONDAY'),
+            eq(schedules.startTime, '09:00')
+        ));
+
+    if (!existingSchedule2) {
+        const [frCourse] = await db.select().from(courses)
+            .where(and(eq(courses.code, 'FR-01'), eq(courses.subSchoolId, subSchool.id)));
+
+        const [classB] = await db.select().from(classes)
+            .where(and(eq(classes.name, '1ère Année Secondaire B'), eq(classes.subSchoolId, subSchool.id)));
+
+        const [teacher] = await db.select().from(teachers)
+            .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'));
+
+        await db.insert(schedules).values({
+            subSchoolId: subSchool.id,
+            classId: classB.id,
+            courseId: frCourse.id,
+            teacherId: teacher.id,
+            dayOfWeek: 'MONDAY',
+            startTime: '09:00',
+            endTime: '10:00',
+            room: 'Salle 12',
+            academicYear: '2024-2025',
+            isLiveSession: false,
+        });
+
+        console.log('✓ Schedule created: Français, Monday 09:00-10:00');
+    } else {
+        console.log('~ Schedule already exists: Français, Monday 09:00');
+    }
+
+    const [existingSchedule3] = await db.select().from(schedules)
+        .where(and(
+            eq(schedules.subSchoolId, subSchool.id),
+            eq(schedules.dayOfWeek, 'TUESDAY'),
+            eq(schedules.startTime, '08:00')
+        ));
+
+    if (!existingSchedule3) {
+        const [pcCourse] = await db.select().from(courses)
+            .where(and(eq(courses.code, 'PC-01'), eq(courses.subSchoolId, subSchool.id)));
+
+        const [classA] = await db.select().from(classes)
+            .where(and(eq(classes.name, '1ère Année Secondaire A'), eq(classes.subSchoolId, subSchool.id)));
+
+        const [teacher] = await db.select().from(teachers)
+            .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'));
+
+        await db.insert(schedules).values({
+            subSchoolId: subSchool.id,
+            classId: classA.id,
+            courseId: pcCourse.id,
+            teacherId: teacher.id,
+            dayOfWeek: 'TUESDAY',
+            startTime: '08:00',
+            endTime: '09:00',
+            room: 'Laboratoire',
+            academicYear: '2024-2025',
+            isLiveSession: false,
+        });
+
+        console.log('✓ Schedule created: Physique-Chimie, Tuesday 08:00-09:00');
+    } else {
+        console.log('~ Schedule already exists: Physique-Chimie, Tuesday 08:00');
+    }
+
+    const [existingSchedule4] = await db.select().from(schedules)
+        .where(and(
+            eq(schedules.subSchoolId, subSchool.id),
+            eq(schedules.dayOfWeek, 'WEDNESDAY'),
+            eq(schedules.startTime, '10:00')
+        ));
+
+    if (!existingSchedule4) {
+        const [bioCourse] = await db.select().from(courses)
+            .where(and(eq(courses.code, 'BIO-01'), eq(courses.subSchoolId, subSchool.id)));
+
+        const [classB] = await db.select().from(classes)
+            .where(and(eq(classes.name, '1ère Année Secondaire B'), eq(classes.subSchoolId, subSchool.id)));
+
+        const [teacher] = await db.select().from(teachers)
+            .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'));
+
+        await db.insert(schedules).values({
+            subSchoolId: subSchool.id,
+            classId: classB.id,
+            courseId: bioCourse.id,
+            teacherId: teacher.id,
+            dayOfWeek: 'WEDNESDAY',
+            startTime: '10:00',
+            endTime: '11:00',
+            room: 'Salle 5',
+            academicYear: '2024-2025',
+            isLiveSession: false,
+        });
+
+        console.log('✓ Schedule created: Biologie, Wednesday 10:00-11:00');
+    } else {
+        console.log('~ Schedule already exists: Biologie, Wednesday 10:00');
+    }
+
+    const [existingSchedule5] = await db.select().from(schedules)
+        .where(and(
+            eq(schedules.subSchoolId, subSchool.id),
+            eq(schedules.dayOfWeek, 'THURSDAY'),
+            eq(schedules.startTime, '14:00')
+        ));
+
+    if (!existingSchedule5) {
+        const [enCourse] = await db.select().from(courses)
+            .where(and(eq(courses.code, 'EN-01'), eq(courses.subSchoolId, subSchool.id)));
+
+        const [classA] = await db.select().from(classes)
+            .where(and(eq(classes.name, '1ère Année Secondaire A'), eq(classes.subSchoolId, subSchool.id)));
+
+        const [teacher] = await db.select().from(teachers)
+            .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'));
+
+        await db.insert(schedules).values({
+            subSchoolId: subSchool.id,
+            classId: classA.id,
+            courseId: enCourse.id,
+            teacherId: teacher.id,
+            dayOfWeek: 'THURSDAY',
+            startTime: '14:00',
+            endTime: '15:00',
+            room: null,
+            academicYear: '2024-2025',
+            isLiveSession: true,
+            liveUrl: 'https://meet.google.com/anglais-classA-jeudi',
+        });
+
+        console.log('✓ Schedule created: Anglais, Thursday 14:00-15:00 (live)');
+    } else {
+        console.log('~ Schedule already exists: Anglais, Thursday 14:00');
     }
     const adminUser = await db.query.users.findFirst({
         where: eq(users.email, 'admin@saintjoseph.cd')
@@ -544,35 +696,39 @@ async function seed() {
             {
                 title: 'Cérémonie de Rentrée Scolaire 2024-2025',
                 description: 'Accueil des élèves, discours de la direction et présentation du corps professoral.',
-                type: 'MEETING',
+                type: 'MEETING' as const,
                 startDate: new Date('2024-09-02T08:00:00Z'),
                 endDate: new Date('2024-09-02T12:00:00Z'),
                 location: 'Cour principale',
                 isPublic: true,
                 subSchoolId: subSchool.id,
                 createdBy: adminUser.id,
+                isLiveEvent: true,
+                liveUrl: 'https://meet.google.com/rentree-2024-2025',
             },
             {
                 title: 'Examens du Premier Trimestre',
                 description: 'Période d\'évaluations pour toutes les classes du secondaire. Présence obligatoire.',
-                type: 'EXAM',
+                type: 'EXAM' as const,
                 startDate: new Date('2024-11-18T07:30:00Z'),
                 endDate: new Date('2024-11-29T16:00:00Z'),
                 location: 'Salles de classe habituelles',
                 isPublic: false,
                 subSchoolId: subSchool.id,
                 createdBy: adminUser.id,
+                isLiveEvent: false,
             },
             {
                 title: 'Tournoi Inter-Classes de Football',
                 description: 'Compétition sportive amicale entre les classes de 1ère et 2ème année secondaire.',
-                type: 'SPORT' as any,
+                type: 'SPORT' as const,
                 startDate: new Date('2024-10-15T14:00:00Z'),
                 endDate: new Date('2024-10-15T17:00:00Z'),
                 location: 'Terrain de sport de l\'école',
                 isPublic: true,
                 subSchoolId: subSchool.id,
                 createdBy: adminUser.id,
+                isLiveEvent: false,
             }
         ];
 
@@ -692,6 +848,7 @@ async function seed() {
             maxScore: '10',
             coefficient: '1',
             createdBy: teacherUser.id,
+            isLiveExam: false,
         },
         {
             title: 'Examen mi-trimestre — Mathématiques',
@@ -705,19 +862,21 @@ async function seed() {
             maxScore: '20',
             coefficient: '2',
             createdBy: teacherUser.id,
+            isLiveExam: false,
         },
         {
             title: 'Examen final — Mathématiques',
             type: 'final' as const,
             status: 'scheduled' as const,
             courseId: mathCourseForExam.id,
-            classId: classA.id,
+            classId: classB.id,
             subSchoolId: subSchool.id,
             examDate: new Date('2024-11-20T08:00:00Z'),
             durationMinutes: 180,
             maxScore: '20',
             coefficient: '3',
             createdBy: teacherUser.id,
+            isLiveExam: false,
         },
         {
             title: 'Interrogation — Expression écrite',
@@ -731,6 +890,7 @@ async function seed() {
             maxScore: '10',
             coefficient: '1',
             createdBy: teacherUser.id,
+            isLiveExam: false,
         },
         {
             title: 'Devoir maison — Littérature',
@@ -744,6 +904,7 @@ async function seed() {
             maxScore: '20',
             coefficient: '1',
             createdBy: teacherUser.id,
+            isLiveExam: false,
         },
         {
             title: 'Interrogation orale — Physique',
@@ -757,9 +918,10 @@ async function seed() {
             maxScore: '10',
             coefficient: '1',
             createdBy: teacherUser.id,
+            isLiveExam: true,
+            liveUrl: 'https://meet.google.com/oral-physique-classA',
         },
     ]
-
     const insertedExams: (typeof exams.$inferSelect)[] = []
 
     for (const exam of sampleExams) {
@@ -1382,7 +1544,7 @@ async function seed() {
             {
                 subSchoolId: subSchool.id,
                 courseId: null,
-                classId: null,
+                classId: classB.id,
                 scheduleId: mathScheduleForLive?.id ?? null,
                 eventId: null,
                 examId: null,
@@ -1397,7 +1559,7 @@ async function seed() {
             {
                 subSchoolId: subSchool.id,
                 courseId: null,
-                classId: null,
+                classId: classB.id,
                 scheduleId: null,
                 eventId: examEventForLive?.id ?? null,
                 examId: null,
@@ -1412,7 +1574,7 @@ async function seed() {
             {
                 subSchoolId: subSchool.id,
                 courseId: null,
-                classId: null,
+                classId: classA.id,
                 scheduleId: null,
                 eventId: null,
                 examId: oralExamForLive?.id ?? null,
@@ -1427,7 +1589,7 @@ async function seed() {
             {
                 subSchoolId: subSchool.id,
                 courseId: null,
-                classId: null,
+                classId: classB.id,
                 scheduleId: null,
                 eventId: null,
                 examId: null,
