@@ -4,7 +4,10 @@ import {
     Clock,
     MapPin,
     Pencil,
-    Trash2
+    Trash2,
+    Radio,
+    Copy,
+    ExternalLink
 } from 'lucide-react'
 import {
     cn,
@@ -148,6 +151,33 @@ export const ScheduleList: React.FC<ScheduleListProps> = ({
                                         </div>
                                     )}
                                 </div>
+
+                                {schedule.isLiveSession && schedule.liveUrl && (
+                                    <div className="flex items-center gap-2 pt-2 border-t mb-3">
+                                        <Radio className="w-3.5 h-3.5 text-red-500" />
+                                        <span className="text-xs font-medium text-red-600">Live disponible</span>
+                                        <div className="ml-auto flex gap-1">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-6 w-6"
+                                                onClick={() => window.open(schedule.liveUrl!, '_blank')}
+                                                title="Ouvrir le live"
+                                            >
+                                                <ExternalLink size={12} />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-6 w-6"
+                                                onClick={() => navigator.clipboard.writeText(schedule.liveUrl!)}
+                                                title="Copier le lien"
+                                            >
+                                                <Copy size={12} />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )}
 
                                 <div className="flex items-center justify-between mt-2">
                                     <div className="flex items-center gap-1.5">

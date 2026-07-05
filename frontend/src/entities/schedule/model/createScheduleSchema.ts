@@ -26,6 +26,14 @@ export const createScheduleSchema = z.object({
         .min(1, getErrorMessage('validation.academicYearRequired'))
         .max(20, getErrorMessage('validation.maxLength20')),
     subSchoolId: z.string().uuid(),
+    isLiveSession: z
+        .boolean()
+        .optional(),
+    liveUrl: z
+        .string()
+        .url(getErrorMessage('validation.invalidUrl'))
+        .optional(),
+
 })
 
 export const updateScheduleSchema = createScheduleSchema.partial()

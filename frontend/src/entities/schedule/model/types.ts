@@ -9,6 +9,8 @@ export type Schedule = {
     room: string | null
     subSchoolId: string
     academicYear: string
+    isLiveSession: boolean
+    liveUrl: string | null
     createdAt: string
 }
 

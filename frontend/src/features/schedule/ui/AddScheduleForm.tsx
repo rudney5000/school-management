@@ -16,6 +16,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
+    Checkbox,
 } from '@shared/ui'
 import {
     createScheduleSchema,
@@ -61,8 +62,11 @@ export const AddScheduleForm: React.FC<Props> = ({
             classId: '',
             courseId: '',
             teacherId: '',
+            isLiveSession: false,
         },
     })
+
+    const isLiveSession = form.watch('isLiveSession')
 
     const { mutate, isPending } = useCreateSchedule()
 
@@ -244,6 +248,50 @@ export const AddScheduleForm: React.FC<Props> = ({
                             </FormItem>
                         )}
                     />
+
+                    <div className="rounded-lg border p-4 space-y-3">
+                        <FormField
+                            control={form.control}
+                            name="isLiveSession"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                    <FormControl>
+                                        <Checkbox
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                    <div className="space-y-1 leading-none">
+                                        <FormLabel className="cursor-pointer">
+                                            Séance en ligne (avec live)
+                                        </FormLabel>
+                                    </div>
+                                </FormItem>
+                            )}
+                        />
+
+                        {isLiveSession && (
+                            <div className="space-y-3 pl-6">
+                                <FormField
+                                    control={form.control}
+                                    name="liveUrl"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>URL du live (optionnel)</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    placeholder="https://..."
+                                                    value={field.value || ''}
+                                                />
+                                            </FormControl>
+                                            <FormMessage/>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        )}
+                    </div>
 
                     <div className="flex justify-end pt-2">
                         <Button type="submit" disabled={isPending}>
