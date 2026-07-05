@@ -1,5 +1,9 @@
 import type {Teacher} from "@entities/teacher";
-import type {CourseColor, CourseIcon, CourseStatus} from "@entities/courses/model/constants";
+import type {
+    CourseColor,
+    CourseIcon,
+    CourseStatus
+} from "@entities/courses/model/constants";
 
 export type Course = {
     id: string
@@ -15,6 +19,9 @@ export type Course = {
     totalHours: number
     status: CourseStatus
     subSchoolId: string
+    isDistanceCourse: boolean
+    liveScheduledAt?: string
+    liveUrl?: string
     createdAt: string
 }
 

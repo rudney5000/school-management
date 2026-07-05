@@ -1,6 +1,10 @@
 import { z } from 'zod'
 import { getErrorMessage } from '@shared/lib'
-import {COURSE_COLORS, COURSE_ICONS, COURSE_STATUSES} from "@entities/courses/model/constants";
+import {
+    COURSE_COLORS,
+    COURSE_ICONS,
+    COURSE_STATUSES
+} from "@entities/courses/model/constants";
 
 export const createCourseSchema = z.object({
     name: z
@@ -60,6 +64,19 @@ export const createCourseSchema = z.object({
     subSchoolId: z
         .string()
         .uuid('Invalid sub-school ID'),
+
+    isDistanceCourse: z
+        .boolean()
+        .optional(),
+
+    liveScheduledAt: z
+        .string()
+        .optional(),
+
+    liveUrl: z
+        .string()
+        .url(getErrorMessage('validation.invalidUrl'))
+        .optional(),
 })
 
 export const updateCourseSchema = createCourseSchema

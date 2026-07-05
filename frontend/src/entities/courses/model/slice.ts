@@ -1,4 +1,8 @@
-import {createSlice, type PayloadAction, type Slice} from "@reduxjs/toolkit";
+import {
+    createSlice,
+    type PayloadAction,
+    type Slice
+} from "@reduxjs/toolkit";
 
 type CourseState = {
     selectedCourseId: string | null;
