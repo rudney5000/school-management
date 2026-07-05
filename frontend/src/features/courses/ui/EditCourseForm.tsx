@@ -11,6 +11,7 @@ import {
     Pencil,
     Zap,
     GraduationCap,
+    Radio,
 } from 'lucide-react'
 import {
     Button,
@@ -26,6 +27,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
+    Checkbox,
 } from '@shared/ui'
 import {
     updateCourseSchema,
@@ -95,8 +97,13 @@ export const EditCourseForm: React.FC<Props> = ({
             totalLessons: course.totalLessons,
             totalHours: course.totalHours,
             status: course.status,
+            isDistanceCourse: course.isDistanceCourse,
+            liveScheduledAt: course.liveScheduledAt,
+            liveUrl: course.liveUrl,
         },
     })
+
+    const isDistanceCourse = form.watch('isDistanceCourse')
 
     const { mutate, isPending } = useUpdateCourse()
 
@@ -289,6 +296,68 @@ export const EditCourseForm: React.FC<Props> = ({
                             </FormItem>
                         )}
                     />
+
+                    <div className="rounded-lg border p-4 space-y-3">
+                        <FormField
+                            control={form.control}
+                            name="isDistanceCourse"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                    <FormControl>
+                                        <Checkbox
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                    <div className="space-y-1 leading-none">
+                                        <FormLabel className="flex items-center gap-1.5 cursor-pointer">
+                                            <Radio className="w-3.5 h-3.5 text-red-500"/>
+                                            Cours à distance (avec live)
+                                        </FormLabel>
+                                    </div>
+                                </FormItem>
+                            )}
+                        />
+
+                        {isDistanceCourse && (
+                            <div className="space-y-3 pl-6">
+                                <FormField
+                                    control={form.control}
+                                    name="liveScheduledAt"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Date et heure du live (optionnel)</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="datetime-local"
+                                                    {...field}
+                                                    value={field.value || ''}
+                                                />
+                                            </FormControl>
+                                            <FormMessage/>
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="liveUrl"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>URL du live (optionnel)</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    placeholder="https://..."
+                                                    value={field.value || ''}
+                                                />
+                                            </FormControl>
+                                            <FormMessage/>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        )}
+                    </div>
 
                     <div className="flex justify-end pt-4 gap-2">
                         <Button type="submit" disabled={isPending}>

@@ -1,26 +1,17 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useParams } from '@tanstack/react-router'
+import React, {useState} from 'react'
+import {useForm} from 'react-hook-form'
+import {zodResolver} from '@hookform/resolvers/zod'
+import {useParams} from '@tanstack/react-router'
+import {BookOpen, GraduationCap, Lightbulb, Palette, Pencil, Radio, Ruler, Smartphone, Zap,} from 'lucide-react'
 import {
-    BookOpen,
-    Ruler,
-    Palette,
-    Lightbulb,
-    Smartphone,
-    Pencil,
-    Zap,
-    GraduationCap,
-} from 'lucide-react'
-import {
-    Button,
-    Input,
+    Button, Checkbox,
     Form,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
+    Input,
     Select,
     SelectContent,
     SelectItem,
@@ -28,18 +19,18 @@ import {
     SelectValue,
 } from '@shared/ui'
 import {
-    createCourseSchema,
-    type CreateCourseDto,
-    useCreateCourse,
     COURSE_COLORS,
     COURSE_ICONS,
     COURSE_STATUSES,
     type CourseColor,
-    type CourseIcon
+    type CourseIcon,
+    type CreateCourseDto,
+    createCourseSchema,
+    useCreateCourse
 } from '@entities/courses'
 import CustomDrawer from "@shared/ui/custom-drawer/custom-drawer"
-import { useTranslation } from "@shared/lib"
-import { cn } from '@/shared/lib'
+import {useTranslation} from "@shared/lib"
+import {cn} from '@/shared/lib'
 
 const iconMap: Record<CourseIcon, React.ReactNode> = {
     'book-open': <BookOpen size={15} />,
@@ -87,16 +78,19 @@ export const AddCourseForm: React.FC<Props> = ({
         },
     })
 
-    const { mutate, isPending } = useCreateCourse()
+    const { mutate: createCourse, isPending: isCreatingCourse } = useCreateCourse()
+    const isDistanceCourse = form.watch('isDistanceCourse')
 
     function onSubmit(dto: CreateCourseDto) {
-        mutate(dto, {
+        createCourse(dto, {
             onSuccess: () => {
                 form.reset()
                 handleSuccess?.()
             },
         })
     }
+
+    const isPending = isCreatingCourse
 
     return (
         <CustomDrawer
@@ -111,13 +105,13 @@ export const AddCourseForm: React.FC<Props> = ({
                     <FormField
                         control={form.control}
                         name="name"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem>
                                 <FormLabel>{t('dashboard.classes.fields.name')}</FormLabel>
                                 <FormControl>
-                                    <Input {...field} placeholder="Ex: 6ème A" />
+                                    <Input {...field} placeholder="Ex: 6ème A"/>
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -125,13 +119,13 @@ export const AddCourseForm: React.FC<Props> = ({
                     <FormField
                         control={form.control}
                         name="code"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem>
                                 <FormLabel>{t('dashboard.courses.fields.code')}</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -139,13 +133,13 @@ export const AddCourseForm: React.FC<Props> = ({
                     <FormField
                         control={form.control}
                         name="description"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem>
                                 <FormLabel>{t('dashboard.courses.fields.description')}</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -154,7 +148,7 @@ export const AddCourseForm: React.FC<Props> = ({
                         <FormField
                             control={form.control}
                             name="credits"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>{t('dashboard.courses.fields.credits')}</FormLabel>
                                     <FormControl>
@@ -164,14 +158,14 @@ export const AddCourseForm: React.FC<Props> = ({
                                             onChange={(e) => field.onChange(e.target.value === '' ? '' : Number(e.target.value))}
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage/>
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
                             name="totalLessons"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Leçons</FormLabel>
                                     <FormControl>
@@ -181,14 +175,14 @@ export const AddCourseForm: React.FC<Props> = ({
                                             onChange={(e) => field.onChange(e.target.value === '' ? '' : Number(e.target.value))}
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage/>
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
                             name="totalHours"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Heures</FormLabel>
                                     <FormControl>
@@ -198,7 +192,7 @@ export const AddCourseForm: React.FC<Props> = ({
                                             onChange={(e) => field.onChange(e.target.value === '' ? '' : Number(e.target.value))}
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage/>
                                 </FormItem>
                             )}
                         />
@@ -207,7 +201,7 @@ export const AddCourseForm: React.FC<Props> = ({
                     <FormField
                         control={form.control}
                         name="icon"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem>
                                 <FormLabel>Icône</FormLabel>
                                 <FormControl>
@@ -229,7 +223,7 @@ export const AddCourseForm: React.FC<Props> = ({
                                         ))}
                                     </div>
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -237,7 +231,7 @@ export const AddCourseForm: React.FC<Props> = ({
                     <FormField
                         control={form.control}
                         name="color"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem>
                                 <FormLabel>Couleur</FormLabel>
                                 <FormControl>
@@ -256,7 +250,7 @@ export const AddCourseForm: React.FC<Props> = ({
                                         ))}
                                     </div>
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -264,13 +258,13 @@ export const AddCourseForm: React.FC<Props> = ({
                     <FormField
                         control={form.control}
                         name="status"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem>
                                 <FormLabel>Statut</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue />
+                                            <SelectValue/>
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -281,10 +275,72 @@ export const AddCourseForm: React.FC<Props> = ({
                                         ))}
                                     </SelectContent>
                                 </Select>
-                                <FormMessage />
+                                <FormMessage/>
                             </FormItem>
                         )}
                     />
+
+                    <div className="rounded-lg border p-4 space-y-3">
+                        <FormField
+                            control={form.control}
+                            name="isDistanceCourse"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                    <FormControl>
+                                        <Checkbox
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                    <div className="space-y-1 leading-none">
+                                        <FormLabel className="flex items-center gap-1.5 cursor-pointer">
+                                            <Radio className="w-3.5 h-3.5 text-red-500"/>
+                                            Cours à distance (avec live)
+                                        </FormLabel>
+                                    </div>
+                                </FormItem>
+                            )}
+                        />
+
+                        {isDistanceCourse && (
+                            <div className="space-y-3 pl-6">
+                                <FormField
+                                    control={form.control}
+                                    name="liveScheduledAt"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Date et heure du live (optionnel)</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="datetime-local"
+                                                    {...field}
+                                                    value={field.value || ''}
+                                                />
+                                            </FormControl>
+                                            <FormMessage/>
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="liveUrl"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>URL du live (optionnel)</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    placeholder="https://..."
+                                                    value={field.value || ''}
+                                                />
+                                            </FormControl>
+                                            <FormMessage/>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        )}
+                    </div>
 
                     <div className="flex justify-end pt-4 gap-2">
                         <Button type="button" variant="outline" onClick={handleOpen}>

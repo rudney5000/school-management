@@ -14,6 +14,9 @@ import {
     Edit2,
     Trash2,
     CheckCircle2,
+    Radio,
+    Copy,
+    ExternalLink,
 } from 'lucide-react';
 
 import {
@@ -152,6 +155,33 @@ export default function CourseCard({ course, onEdit, onDelete }: Props) {
                       {t('dashboard.courses.stats.creditsShort')}.
                   </span>
                 </div>
+
+                {course.isDistanceCourse && course.liveUrl && (
+                    <div className="flex items-center gap-2 pt-2 border-t">
+                        <Radio className="w-3.5 h-3.5 text-red-500" />
+                        <span className="text-xs font-medium text-red-600">Live disponible</span>
+                        <div className="ml-auto flex gap-1">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7"
+                                onClick={() => window.open(course.liveUrl, '_blank')}
+                                title="Ouvrir le live"
+                            >
+                                <ExternalLink size={13} />
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7"
+                                onClick={() => navigator.clipboard.writeText(course.liveUrl!)}
+                                title="Copier le lien"
+                            >
+                                <Copy size={13} />
+                            </Button>
+                        </div>
+                    </div>
+                )}
             </CardContent>
 
             <Separator />
