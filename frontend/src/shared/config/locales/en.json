@@ -662,7 +662,8 @@
         "course": "Course",
         "date": "Date",
         "type": "Type",
-        "status": "Status"
+        "status": "Status",
+        "live": "Link"
       },
       "types": {
         "quiz": "Quiz",

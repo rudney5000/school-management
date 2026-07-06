@@ -4,7 +4,6 @@ import {
     DoorOpen,
     CalendarDays,
     BookOpen,
-    PenLine,
     TrendingUp,
     Users,
     GraduationCap,
@@ -45,7 +44,6 @@ export const adminNav: NavGroup[] = [
         groupKey: 'nav.group.pedagogy',
         items: [
             { labelKey: 'nav.courses',       icon: BookOpen,        path: '/sub-schools/$subSchoolId/courses' },
-            { labelKey: 'nav.exams',         icon: PenLine,         path: '/sub-schools/$subSchoolId/exams' },
             { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/sub-schools/$subSchoolId/assessments' },
             { labelKey: 'nav.attendances',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendances' },
             { labelKey: 'nav.reports',       icon: BarChart3,       path: '/sub-schools/$subSchoolId/reports' },
@@ -81,7 +79,6 @@ export const teacherNav: NavGroup[] = [
     {
         groupKey: 'nav.group.pedagogy',
         items: [
-            { labelKey: 'nav.exams',         icon: PenLine,         path: '/sub-schools/$subSchoolId/exams' },
             { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/sub-schools/$subSchoolId/assessments' },
             { labelKey: 'nav.attendances',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendances' },
         ],
@@ -109,7 +106,6 @@ export const studentNav: NavGroup[] = [
     {
         groupKey: 'nav.group.pedagogy',
         items: [
-            { labelKey: 'nav.exams',         icon: PenLine,         path: '/sub-schools/$subSchoolId/exams' },
             { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/sub-schools/$subSchoolId/assessments' },
             { labelKey: 'nav.attendances',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendances' },
         ],
@@ -138,7 +134,6 @@ export const directorNav: NavGroup[] = [
         groupKey: 'nav.group.pedagogy',
         items: [
             { labelKey: 'nav.courses',       icon: BookOpen,        path: '/sub-schools/$subSchoolId/courses' },
-            { labelKey: 'nav.exams',         icon: PenLine,         path: '/sub-schools/$subSchoolId/exams' },
             { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/sub-schools/$subSchoolId/assessments' },
             { labelKey: 'nav.attendances',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendances' },
             { labelKey: 'nav.reports',       icon: BarChart3,       path: '/sub-schools/$subSchoolId/reports' },

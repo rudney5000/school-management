@@ -719,7 +719,8 @@
         "course": "Cours",
         "date": "Mokolo",
         "type": "Lolenge",
-        "status": "État"
+        "status": "État",
+        "live": "lien"
       },
       "types": {
         "quiz": "Motuna",

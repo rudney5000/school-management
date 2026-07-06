@@ -594,7 +594,8 @@
         "course": "Cours",
         "date": "Date",
         "type": "Type",
-        "status": "Statut"
+        "status": "Statut",
+        "live": "Lien"
       },
       "types": {
         "quiz": "Quiz",

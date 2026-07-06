@@ -35,7 +35,7 @@ import {
     EditExamForm
 } from "@features/exams";
 
-export function ExamPage() {
+export function AssessmentsPage() {
     const { subSchoolId } = useParams({ strict: false })
     const { t } = useTranslation()
     const { data,  isLoading, isError } = useExams(subSchoolId)

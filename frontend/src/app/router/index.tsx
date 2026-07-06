@@ -27,7 +27,7 @@ import CoursesPage from "@/pages/courses/CoursesPage";
 import SchedulePage from "@/pages/schedule/SchedulePage";
 import EventPage from "@/pages/event/EventPage";
 import AttendancePage from "@/pages/attendances/AttendancesPage";
-import {ExamPage} from "@/pages/exams/ExamPage";
+import {AssessmentsPage} from "@/pages/exams/AssessmentsPage";
 import {ChatPage} from "@/pages/chat/ChatPage";
 
 type RouterContext = {
@@ -196,10 +196,10 @@ const attendancesRoute = createRoute({
     component: AttendancePage
 })
 
-const examsRoute = createRoute({
+const assessmentsRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
-    path: 'exams',
-    component: ExamPage
+    path: 'assessments',
+    component: AssessmentsPage
 })
 
 const chatRoute = createRoute({
@@ -235,7 +235,7 @@ const routeTree = rootRoute.addChildren([
                     scheduleRoute,
                     eventsRoute,
                     attendancesRoute,
-                    examsRoute,
+                    assessmentsRoute,
                     chatRoute,
                 ]),
             ])
