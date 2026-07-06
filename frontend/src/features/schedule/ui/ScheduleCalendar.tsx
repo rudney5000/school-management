@@ -75,8 +75,7 @@ export const ScheduleCalendar = <T extends Schedule>({
     const today = new Date()
 
     return (
-        <div className="flex flex-col h-full">
-            {/* Header */}
+        <div className="flex flex-col h-full min-h-0">
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-4">
                     <Button
@@ -119,9 +118,7 @@ export const ScheduleCalendar = <T extends Schedule>({
                 </div>
             </div>
 
-            {/* Calendar Grid */}
-            <div className="flex-1 bg-white rounded-2xl border border-zinc-200 p-4">
-                {/* Day Headers */}
+            <div className="flex-1 min-h-0 bg-white rounded-2xl border border-zinc-200 p-4 overflow-y-auto">
                 <div className="grid grid-cols-7 gap-2 mb-2">
                     {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].map((day) => (
                         <div
@@ -133,7 +130,6 @@ export const ScheduleCalendar = <T extends Schedule>({
                     ))}
                 </div>
 
-                {/* Calendar Days */}
                 <div className="grid grid-cols-7 gap-2">
                     {days.map((day, index) => {
                         if (!day) {
@@ -170,7 +166,7 @@ export const ScheduleCalendar = <T extends Schedule>({
                                         'text-xs font-medium mt-auto',
                                         isCurrentDay ? 'text-white/80' : DAY_TEXT_COLORS[colorIndex]
                                     )}>
-                                        {daySchedules.length} {daySchedules.length > 1 ? 'Tâches' : 'Tâche'}
+                                        {t('dashboard.schedules.task', { count: daySchedules.length })}
                                     </span>
                                 )}
                             </div>

@@ -484,6 +484,8 @@
       "changeRoutine": "Change Routine",
       "loading": "Loading...",
       "error": "An error occurred",
+      "task_one": "{{count}} Task",
+      "task_other": "{{count}} Tasks",
       "calendar": {
         "today": "Today"
       },

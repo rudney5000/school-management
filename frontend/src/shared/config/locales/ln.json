@@ -449,6 +449,7 @@
       "changeRoutine": "Kobongola programme",
       "loading": "Ezali kokoma...",
       "error": "Libunga moko esalemi",
+      "task_other": "Mosala {{count}}",
       "calendar": {
         "today": "Lelo"
       },

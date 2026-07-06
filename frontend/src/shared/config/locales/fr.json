@@ -492,6 +492,8 @@
       "changeRoutine": "Modifier l'emploi du temps",
       "loading": "Chargement...",
       "error": "Une erreur est survenue",
+      "task_one": "{{count}} Tâche",
+      "task_other": "{{count}} Tâches",
       "calendar": {
         "today": "Aujourd'hui"
       },

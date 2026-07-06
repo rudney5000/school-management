@@ -469,6 +469,10 @@
       "changeRoutine": "Изменить расписание",
       "loading": "Загрузка...",
       "error": "Произошла ошибка",
+      "task_one": "{{count}} занятие",
+      "task_few": "{{count}} занятия",
+      "task_many": "{{count}} занятий",
+      "task_other": "{{count}} занятия",
       "calendar": {
         "today": "Сегодня"
       },
