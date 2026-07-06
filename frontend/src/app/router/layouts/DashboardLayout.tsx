@@ -1,9 +1,10 @@
 import { Outlet } from '@tanstack/react-router'
-import type { UserRole } from '@features/auth/model/dto/RegisterDto.ts'
+import type { UserRole } from '@features/auth/model/dto/RegisterDto'
 import { Sidebar } from '@/widgets/sidebar/sidebar'
 import { Header } from '@/widgets/header/Header'
 import { useAppSelector } from '@shared/store/hooks'
 import { useState, useEffect } from 'react'
+import {VideoCallOverlay} from "@features/video-call/ui/VideoCallOverlay";
 
 export function DashboardLayout() {
     const auth = useAppSelector((state) => state.auth)
@@ -54,13 +55,17 @@ export function DashboardLayout() {
             )}
 
             <div className="flex flex-col flex-1 min-w-0 p-3 pl-0">
-                <div className="flex flex-col flex-1 min-w-0 bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06),0_4px_16px_rgba(23,85,236,0.04)] overflow-hidden">
-                    <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+                <div className="flex flex-col flex-1 min-w-0 p-3 pl-0">
+                    <div
+                        className="flex flex-col flex-1 min-w-0 bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06),0_4px_16px_rgba(23,85,236,0.04)] overflow-hidden">
+                        <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)}/>
 
-                    <main className="flex-1 overflow-y-auto p-6 lg:p-8 bg-zinc-50/40">
-                        <Outlet />
-                    </main>
+                        <main className="flex-1 overflow-y-auto p-6 lg:p-8 bg-zinc-50/40">
+                            <Outlet/>
+                        </main>
+                    </div>
                 </div>
+                <VideoCallOverlay/>
             </div>
         </div>
     )

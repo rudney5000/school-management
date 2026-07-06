@@ -16,7 +16,8 @@ import {
     selectOnlineUsers,
     selectUnreadCountByConversation,
     chatActions,
-    type Message, type UploadedFile,
+    type Message,
+    type UploadedFile,
 } from '@entities/chat'
 import { useConversations } from '@entities/chat'
 import { useMessages } from '@entities/chat'

@@ -50,16 +50,19 @@ export function ChatPage() {
                     onSelect={handleSelectConversation}
                     currentUserId={currentUserId}
                 />
-                <ChatWindow
-                    activeConversation={activeConversation}
-                    activeConversationId={activeConversationId}
-                    messages={messages}
-                    currentUserId={currentUserId}
-                    isLoadingMessages={isLoadingMessages}
-                    messageText={messageText}
-                    onMessageChange={setMessageText}
-                    onSend={handleSendMessage}
-                />
+                {activeConversation && (
+                    <ChatWindow
+                        activeConversation={activeConversation}
+                        activeConversationId={activeConversationId}
+                        messages={messages}
+                        currentUserId={currentUserId}
+                        subSchoolId={activeConversation.subSchoolId}
+                        isLoadingMessages={isLoadingMessages}
+                        messageText={messageText}
+                        onMessageChange={setMessageText}
+                        onSend={handleSendMessage}
+                    />
+                )}
             </div>
         </div>
     )

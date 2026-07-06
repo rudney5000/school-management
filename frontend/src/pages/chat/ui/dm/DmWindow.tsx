@@ -1,17 +1,25 @@
+import {useDispatch} from "react-redux";
 import {
     Reply,
-    MoreHorizontal
+    MoreHorizontal,
+    Video
 } from 'lucide-react'
 import { Button } from '@shared/ui'
 import { MessageList } from '../MessageList'
 import { MessageInput } from '../MessageInput'
 import type {
     Conversation,
-    Message, UploadedFile
+    Message,
+    UploadedFile
 } from '@entities/chat'
 import {
     getConversationDisplayName
 } from "@entities/chat/lib/getConversationDisplayName";
+import {
+    callUiSlice,
+    useCreateVideoCallSession
+} from "@entities/video-call";
+import {CommonError} from "@shared/helperClass/CommonError.ts";
 
 interface DmWindowProps {
     activeConversation: Conversation
@@ -20,6 +28,7 @@ interface DmWindowProps {
     currentUserId: string | null
     isLoadingMessages: boolean
     messageText: string
+    subSchoolId: string
     onMessageChange: (text: string) => void
     onSend: (attachments?: UploadedFile[]) => void
 }
@@ -29,11 +38,33 @@ export function DmWindow({
                              activeConversationId,
                              messages,
                              currentUserId,
+                             subSchoolId,
                              isLoadingMessages,
                              messageText,
                              onMessageChange,
                              onSend
 }: DmWindowProps) {
+
+    const dispatch = useDispatch()
+    const { mutate: createVideoCall, isPending: isCreatingCall } = useCreateVideoCallSession(subSchoolId)
+
+    const handleStartGroupCall = () => {
+        if (!activeConversationId) return
+
+        createVideoCall(
+            { conversationId: activeConversationId },
+            {
+                onSuccess: (response) => {
+                    if (response.IsFail || response.result instanceof CommonError) {
+                        return
+                    }
+                    dispatch(callUiSlice.actions.setActiveSessionId(response.result.id))
+                }
+            }
+        )
+    }
+
+
     return (
         <div className="flex flex-1 flex-col bg-card">
             <div className="flex items-center justify-between border-b border-border px-5 py-3">
@@ -43,6 +74,16 @@ export function DmWindow({
                     </span>
                 </div>
                 <div className="flex items-center gap-1">
+                    <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        className="text-muted-foreground"
+                        onClick={handleStartGroupCall}
+                        disabled={isCreatingCall || !activeConversationId}
+                        title="Démarrer un appel de groupe"
+                    >
+                        <Video className="size-4" />
+                    </Button>
                     <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
                         <Reply className="size-4" />
                     </Button>

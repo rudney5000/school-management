@@ -11,6 +11,7 @@ interface ChatWindowProps {
     activeConversationId: string | null
     messages: Message[]
     currentUserId: string | null
+    subSchoolId: string
     isLoadingMessages: boolean
     messageText: string
     onMessageChange: (text: string) => void
@@ -23,6 +24,7 @@ export function ChatWindow({
                                messages,
                                currentUserId,
                                isLoadingMessages,
+                               subSchoolId,
                                messageText,
                                onMessageChange,
                                onSend,
@@ -43,6 +45,7 @@ export function ChatWindow({
                 activeConversationId={activeConversation.id}
                 messages={messages}
                 currentUserId={currentUserId}
+                subSchoolId={subSchoolId}
                 isLoadingMessages={isLoadingMessages}
                 messageText={messageText}
                 onMessageChange={onMessageChange}
