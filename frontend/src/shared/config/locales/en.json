@@ -162,13 +162,16 @@
     "dashboard": "Dashboard",
     "students": "Students",
     "teachers": "Teachers",
+    "schedule": "Schedules",
+    "parents": "Parents",
     "exams": "Exams",
     "events": "Events",
     "finance": "Finance",
     "calendar": "Calendar",
     "attendances": "Attendance",
     "chat": "Chat",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "assessments": "Assessments"
   },
   "header": {
     "search": "Search...",
