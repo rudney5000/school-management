@@ -889,7 +889,23 @@
         "course": "Course"
       },
       "conversationSelected": "1 conversation selected",
-      "forwardingInProgress": "Forwarding..."
+      "forwardingInProgress": "Forwarding...",
+      "videoCall": {
+        "title": "Chat",
+        "placeholder": "Write a message...",
+        "leaveDialog": {
+          "hostConfirm": "Do you really want to end this live for all participants?",
+          "participantConfirm": "Do you really want to leave this live?",
+          "cancel": "Cancel",
+          "end": "End",
+          "leave": "Leave"
+        },
+        "connecting": "Connecting...",
+        "host": "Host",
+        "joining": "Connecting...",
+        "joinCall": "Join call",
+        "you": "(you)"
+      }
     }
   },
   "theme": {

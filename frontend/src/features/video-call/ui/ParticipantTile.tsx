@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import type { Track } from 'livekit-client';
 import { MicOff } from 'lucide-react';
+import { useTranslation } from '@shared/lib/useTranslation';
 
 type ParticipantTileProps = {
     name: string;
@@ -13,6 +14,7 @@ export function ParticipantTile({ name, videoTrack, audioTrack, isLocal }: Parti
     const videoRef = useRef<HTMLVideoElement>(null);
     const audioRef = useRef<HTMLAudioElement>(null);
 
+    const { t } = useTranslation()
     useEffect(() => {
         if (videoRef.current && videoTrack) {
             videoTrack.attach(videoRef.current);
@@ -48,7 +50,7 @@ export function ParticipantTile({ name, videoTrack, audioTrack, isLocal }: Parti
             )}
 
             <div className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-0.5 rounded">
-                {name} {isLocal && '(vous)'}
+                {name} {isLocal && t('dashboard.chat.videoCall.you')}
             </div>
 
             {!isLocal && <audio ref={audioRef} autoPlay />}

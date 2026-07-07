@@ -820,7 +820,23 @@
         "course": "Cours"
       },
       "conversationSelected": "1 conversation sélectionnée",
-      "forwardingInProgress": "Transfert en cours..."
+      "forwardingInProgress": "Transfert en cours...",
+      "videoCall": {
+        "title": "Chat",
+        "placeholder": "Écrire un message...",
+        "leaveDialog": {
+          "hostConfirm": "Voulez-vous vraiment terminer ce live pour tous les participants ?",
+          "participantConfirm": "Voulez-vous vraiment quitter ce live ?",
+          "cancel": "Annuler",
+          "end": "Terminer",
+          "leave": "Quitter"
+        },
+        "connecting": "Connexion en cours...",
+        "host": "Hôte",
+        "joining": "Connexion...",
+        "joinCall": "Rejoindre l'appel",
+        "you": "(vous)"
+      }
     },
     "events": {
       "title": "Événements",

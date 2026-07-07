@@ -578,7 +578,23 @@
         "course": "Cours"
       },
       "conversationSelected": "Conversation moko aponami",
-      "forwardingInProgress": "Kotinda..."
+      "forwardingInProgress": "Kotinda...",
+      "videoCall": {
+        "title": "Kosolola",
+        "placeholder": "Tinda message moko...",
+        "leaveDialog": {
+          "hostConfirm": "Ozali na nganga mpo na kokoma live oyo mpo na bato nyonso?",
+          "participantConfirm": "Ozali na nganga mpo na kokima live oyo?",
+          "cancel": "Koboya",
+          "end": "Kokoma",
+          "leave": "Kokima"
+        },
+        "connecting": "Kokota...",
+        "host": "Mokambi",
+        "joining": "Kokota...",
+        "joinCall": "Kokota na appèl",
+        "you": "(yo)"
+      }
     },
     "events": {
       "title": "Makambo ya Kelasi",

@@ -1,6 +1,7 @@
 import { X } from 'lucide-react';
 import { Button } from '@shared/ui';
 import { MessageList } from '@/pages/chat/ui/MessageList';
+import { useTranslation } from '@shared/lib/useTranslation';
 import type {
     Conversation,
     Message
@@ -27,10 +28,12 @@ export function CallChatPanel({
                                   onSend,
                                   onClose
 }: CallChatPanelProps) {
+    const { t } = useTranslation();
+
     return (
         <div className="w-80 border-l border-neutral-800 flex flex-col bg-neutral-950">
             <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-800">
-                <span className="text-sm font-semibold text-white">Chat</span>
+                <span className="text-sm font-semibold text-white">{t('dashboard.chat.videoCall.title')}</span>
                 <Button variant="ghost" size="icon-sm" onClick={onClose}>
                     <X className="size-4 text-neutral-400" />
                 </Button>
@@ -46,7 +49,7 @@ export function CallChatPanel({
             <div className="p-2 border-t border-neutral-800">
                 <input
                     className="w-full rounded-md bg-neutral-900 text-white text-sm px-3 py-2 outline-none"
-                    placeholder="Écrire un message..."
+                    placeholder={t('dashboard.chat.videoCall.placeholder')}
                     value={messageText}
                     onChange={(e) => onMessageChange(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && onSend()}

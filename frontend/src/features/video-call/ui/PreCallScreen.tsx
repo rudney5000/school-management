@@ -13,6 +13,7 @@ import {
 import {
     useMediaDevices
 } from '@shared/lib/livekit/useMediaDevices';
+import { useTranslation } from '@shared/lib/useTranslation';
 
 type PreCallScreenProps = {
     onJoin: () => void;
@@ -25,6 +26,7 @@ export function PreCallScreen({ onJoin, isJoining }: PreCallScreenProps) {
     const [micEnabled, setMicEnabled] = useState(true);
     const [cameraEnabled, setCameraEnabled] = useState(true);
 
+    const { t } = useTranslation();
     useEffect(() => {
         if (videoRef.current && previewStream) {
             videoRef.current.srcObject = previewStream;
@@ -71,9 +73,8 @@ export function PreCallScreen({ onJoin, isJoining }: PreCallScreenProps) {
                     {cameraEnabled ? <Video className="w-4 h-4" /> : <VideoOff className="w-4 h-4" />}
                 </Button>
             </div>
-
             <Button onClick={onJoin} disabled={isJoining} className="w-full max-w-md">
-                {isJoining ? 'Connexion...' : "Rejoindre l'appel"}
+                {isJoining ? t('dashboard.chat.videoCall.joining') : t('dashboard.chat.videoCall.joinCall')}
             </Button>
         </div>
     );

@@ -799,7 +799,23 @@
         "course": "Курс"
       },
       "conversationSelected": "Выбрана 1 беседа",
-      "forwardingInProgress": "Пересылка..."
+      "forwardingInProgress": "Пересылка...",
+      "videoCall": {
+        "title": "Чат",
+        "placeholder": "Написать сообщение...",
+        "leaveDialog": {
+          "hostConfirm": "Вы действительно хотите завершить этот трансляцию для всех участников?",
+          "participantConfirm": "Вы действительно хотите покинуть этот трансляцию?",
+          "cancel": "Отмена",
+          "end": "Завершить",
+          "leave": "Покинуть"
+        },
+        "connecting": "Подключение...",
+        "host": "Хост",
+        "joining": "Подключение...",
+        "joinCall": "Присоединиться к звонку",
+        "you": "(вы)"
+      }
     },
     "events": {
       "title": "События",

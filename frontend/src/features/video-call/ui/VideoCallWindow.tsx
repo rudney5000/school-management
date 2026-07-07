@@ -11,6 +11,7 @@ import { LeaveConfirmDialog } from './LeaveConfirmDialog';
 import { useLiveKitRoom } from '@shared/lib/livekit/useLiveKitRoom';
 import { useCallSession } from '@entities/video-call/lib/useCallSession';
 import { useCallChat } from '@features/video-call/lib/useCallChat';
+import { useTranslation } from '@shared/lib/useTranslation';
 import {
     resetCallUi,
     selectIsCameraOff,
@@ -29,6 +30,7 @@ type VideoCallWindowProps = {
 
 export function VideoCallWindow({ sessionId, onClose }: VideoCallWindowProps) {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
     const isMuted = useSelector(selectIsMuted);
     const isCameraOff = useSelector(selectIsCameraOff);
 
@@ -87,7 +89,7 @@ export function VideoCallWindow({ sessionId, onClose }: VideoCallWindowProps) {
                     ))}
                     {!isConnected && (
                         <div className="col-span-full text-center text-sm text-neutral-500">
-                            Connexion en cours...
+                            {t('dashboard.chat.videoCall.connecting')}
                         </div>
                     )}
                 </div>

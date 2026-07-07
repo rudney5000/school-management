@@ -7,6 +7,7 @@ import {
     PhoneOff,
     MessageSquare
 } from 'lucide-react';
+import { useTranslation } from '@shared/lib/useTranslation';
 
 type CallControlsProps = {
     isMuted: boolean;
@@ -29,6 +30,8 @@ export function CallControls({
                                  onToggleChat,
                                  isChatOpen
 }: CallControlsProps) {
+    const { t } = useTranslation();
+
     return (
         <div className="flex items-center justify-center gap-3 p-4">
             <Button variant={isMuted ? 'destructive' : 'secondary'} size="icon" onClick={onToggleMute}>
@@ -47,7 +50,7 @@ export function CallControls({
             </Button>
             {isHost && (
                 <span className="text-xs text-neutral-400 ml-2 select-none">
-                    Hôte
+                    {t('dashboard.chat.videoCall.host')}
                 </span>
             )}
         </div>
