@@ -1,7 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+    useEffect,
+    useRef,
+    useState
+} from 'react';
 import { Button } from '@shared/ui/button';
-import { Mic, MicOff, Video, VideoOff } from 'lucide-react';
-import { useMediaDevices } from '@shared/lib/livekit/useMediaDevices.ts';
+import {
+    Mic,
+    MicOff,
+    Video,
+    VideoOff
+} from 'lucide-react';
+import {
+    useMediaDevices
+} from '@shared/lib/livekit/useMediaDevices';
 
 type PreCallScreenProps = {
     onJoin: () => void;

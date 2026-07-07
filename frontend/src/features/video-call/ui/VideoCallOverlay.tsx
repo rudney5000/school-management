@@ -1,5 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { resetCallUi, selectActiveSessionId } from '@entities/video-call'
+import {
+    useDispatch,
+    useSelector
+} from 'react-redux'
+import {
+    resetCallUi,
+    selectActiveSessionId
+} from '@entities/video-call'
 import {VideoCallWindow} from "@features/video-call/ui/VideoCallWindow";
 
 export function VideoCallOverlay() {

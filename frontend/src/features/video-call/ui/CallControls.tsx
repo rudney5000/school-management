@@ -4,7 +4,8 @@ import {
     MicOff,
     Video,
     VideoOff,
-    PhoneOff
+    PhoneOff,
+    MessageSquare
 } from 'lucide-react';
 
 type CallControlsProps = {
@@ -13,9 +14,21 @@ type CallControlsProps = {
     onToggleMute: () => void;
     onToggleCamera: () => void;
     onHangUp: () => void;
+    isHost?: boolean;
+    onToggleChat?: () => void;
+    isChatOpen?: boolean;
 };
 
-export function CallControls({ isMuted, isCameraOff, onToggleMute, onToggleCamera, onHangUp }: CallControlsProps) {
+export function CallControls({
+                                 isMuted,
+                                 isCameraOff,
+                                 onToggleMute,
+                                 onToggleCamera,
+                                 onHangUp,
+                                 isHost,
+                                 onToggleChat,
+                                 isChatOpen
+}: CallControlsProps) {
     return (
         <div className="flex items-center justify-center gap-3 p-4">
             <Button variant={isMuted ? 'destructive' : 'secondary'} size="icon" onClick={onToggleMute}>
@@ -24,9 +37,19 @@ export function CallControls({ isMuted, isCameraOff, onToggleMute, onToggleCamer
             <Button variant={isCameraOff ? 'destructive' : 'secondary'} size="icon" onClick={onToggleCamera}>
                 {isCameraOff ? <VideoOff className="w-4 h-4" /> : <Video className="w-4 h-4" />}
             </Button>
+            {onToggleChat && (
+                <Button variant={isChatOpen ? 'default' : 'secondary'} size="icon" onClick={onToggleChat}>
+                    <MessageSquare className="w-4 h-4" />
+                </Button>
+            )}
             <Button variant="destructive" size="icon" onClick={onHangUp}>
                 <PhoneOff className="w-4 h-4" />
             </Button>
+            {isHost && (
+                <span className="text-xs text-neutral-400 ml-2 select-none">
+                    Hôte
+                </span>
+            )}
         </div>
     );
 }
