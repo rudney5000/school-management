@@ -12,10 +12,21 @@ export const createConversationSchema = z.object({
     subSchoolId: z.string().uuid(),
 })
 
+export const messageAttachmentInputSchema = z.object({
+    key:       z.string(),
+    publicUrl: z.string(),
+    filename:  z.string(),
+    mimeType:  z.string(),
+    size:      z.number(),
+    width:     z.number().optional(),
+    height:    z.number().optional(),
+})
+
 export const sendMessageSchema = z.object({
-    content:   z.string().min(1).max(5000),
-    type:      z.enum(['text', 'image', 'file', 'system']).default('text'),
-    replyToId: z.string().uuid().optional(),
+    content:     z.string().max(5000).default(''),
+    type:        z.enum(['text', 'image', 'file', 'system']).default('text'),
+    replyToId:   z.string().uuid().optional(),
+    attachments: z.array(messageAttachmentInputSchema).optional(),
 })
 
 export const editMessageSchema = z.object({
