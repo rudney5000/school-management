@@ -1,4 +1,9 @@
 import {
+    useEffect,
+    useState
+} from "react";
+
+import {
     ResponsiveContainer,
     BarChart,
     Bar,
@@ -14,19 +19,144 @@ import {
     CardContent,
     CardHeader,
     CardTitle,
-} from '@/shared/ui/card'
-
+} from '@/shared/ui/'
 import { cn } from '@/shared/lib/utils'
+import {gradeApi} from "@/entities/grades/api/grade.api";
+import {Status} from "@shared/helperClass/CommonResponse";
+import type {Grade} from "@entities/grades";
+import {useAppSelector} from "@shared/store/hooks";
+import {selectSubSchoolId} from "@features/auth/model/selectors";
+import {
+    type Course,
+    courseApi
+} from "@entities/courses";
 
-const gradeDistribution = [
-    { grade: 'A', students: 28, color: '#6366f1' },
-    { grade: 'B', students: 22, color: '#10b981' },
-    { grade: 'C', students: 16, color: '#f59e0b' },
-    { grade: 'D', students: 10, color: '#f97316' },
-    { grade: 'F', students: 6, color: '#ef4444' },
-]
+interface GradeDistributionItem {
+    grade: string;
+    students: number;
+    color: string;
+}
+
+interface GradeStats {
+    classAverage: string;
+    passing: string;
+    failing: string;
+    aGradeStudents: string;
+}
+
+interface GradeData {
+    distribution: GradeDistributionItem[];
+    stats: GradeStats;
+}
+
+const ALL_COURSES_ID = 'ALL';
+
+function classifyPercentage(percentage: number): 'A' | 'B' | 'C' | 'D' | 'F' {
+    if (percentage >= 90) return 'A';
+    if (percentage >= 80) return 'B';
+    if (percentage >= 70) return 'C';
+    if (percentage >= 60) return 'D';
+    return 'F';
+}
+
+function computeGradeData(grades: Grade[]): GradeData {
+    const distribution = { A: 0, B: 0, C: 0, D: 0, F: 0 };
+    let weightedSum = 0;
+    let totalCoefficient = 0;
+    let passing = 0;
+
+    for (const g of grades) {
+        const score = parseFloat(g.score);
+        const maxScore = parseFloat(g.maxScore);
+        const coefficient = parseFloat(g.coefficient) || 1;
+
+        if (isNaN(score) || isNaN(maxScore) || maxScore <= 0) continue;
+
+        const percentage = (score / maxScore) * 100;
+        distribution[classifyPercentage(percentage)]++;
+        weightedSum += percentage * coefficient;
+        totalCoefficient += coefficient;
+        if (percentage >= 60) passing++;
+    }
+
+    const total = grades.length;
+    const averageScore = totalCoefficient > 0 ? (weightedSum / totalCoefficient).toFixed(1) : '0';
+    const failing = total - passing;
+
+    return {
+        distribution: [
+            { grade: 'A', students: distribution.A, color: '#6366f1' },
+            { grade: 'B', students: distribution.B, color: '#10b981' },
+            { grade: 'C', students: distribution.C, color: '#f59e0b' },
+            { grade: 'D', students: distribution.D, color: '#f97316' },
+            { grade: 'F', students: distribution.F, color: '#ef4444' },
+        ],
+        stats: {
+            classAverage: `${averageScore}%`,
+            passing: `${passing}/${total}`,
+            failing: failing.toString(),
+            aGradeStudents: distribution.A.toString(),
+        },
+    };
+}
 
 export function GradeDistributionChart() {
+    const subSchoolId = useAppSelector(selectSubSchoolId);
+    const [allGrades, setAllGrades] = useState<Grade[]>([]);
+    const [courses, setCourses] = useState<Course[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedCourseId, setSelectedCourseId] = useState<string>(ALL_COURSES_ID);
+
+    useEffect(() => {
+        if (!subSchoolId) return;
+
+        const fetchData = async () => {
+            try {
+                const [gradesResponse, coursesResponse] = await Promise.all([
+                    gradeApi.getAll({ subSchoolId }),
+                    courseApi.getAll({ subSchoolId }),
+                ]);
+
+                if (gradesResponse.status === Status.Success && Array.isArray(gradesResponse.result)) {
+                    setAllGrades(gradesResponse.result);
+                }
+
+                if (coursesResponse.status === Status.Success && Array.isArray(coursesResponse.result)) {
+                    setCourses(coursesResponse.result);
+                }
+            } catch (error) {
+                console.error('Error fetching grades:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [subSchoolId]);
+
+    const filteredGrades = selectedCourseId === ALL_COURSES_ID
+        ? allGrades
+        : allGrades.filter((g) => g.courseId === selectedCourseId);
+
+    const gradeData = computeGradeData(filteredGrades);
+
+    if (loading) {
+        return (
+            <Card>
+                <CardHeader className="pb-2">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <CardTitle className="text-base">Grade Distribution</CardTitle>
+                            <p className="text-xs text-zinc-400 mt-0.5">Loading...</p>
+                        </div>
+                    </div>
+                </CardHeader>
+                <CardContent>
+                    <div className="h-40 bg-zinc-100 rounded-lg animate-pulse" />
+                </CardContent>
+            </Card>
+        );
+    }
+
     return (
         <Card>
             <CardHeader className="pb-2">
@@ -37,26 +167,36 @@ export function GradeDistributionChart() {
                         </CardTitle>
 
                         <p className="text-xs text-zinc-400 mt-0.5">
-                            All classes · Q2 2026
+                            {selectedCourseId === ALL_COURSES_ID ? 'All courses' : courses.find(c => c.id === selectedCourseId)?.name} · Current period
                         </p>
                     </div>
 
-                    <div className="flex gap-1.5">
-                        {['All Classes', 'CS101', 'CS102', 'CS201'].map(
-                            (course, index) => (
-                                <button
-                                    key={course}
-                                    className={cn(
-                                        'text-xs px-2.5 py-1 rounded-full transition-colors',
-                                        index === 0
-                                            ? 'bg-zinc-800 text-white'
-                                            : 'text-zinc-500 hover:bg-zinc-100'
-                                    )}
-                                >
-                                    {course}
-                                </button>
-                            )
-                        )}
+                    <div className="flex gap-1.5 flex-wrap">
+                        <button
+                            onClick={() => setSelectedCourseId(ALL_COURSES_ID)}
+                            className={cn(
+                                'text-xs px-2.5 py-1 rounded-full transition-colors',
+                                selectedCourseId === ALL_COURSES_ID
+                                    ? 'bg-zinc-800 text-white'
+                                    : 'text-zinc-500 hover:bg-zinc-100'
+                            )}
+                        >
+                            All Classes
+                        </button>
+                        {courses.map((course) => (
+                            <button
+                                key={course.id}
+                                onClick={() => setSelectedCourseId(course.id)}
+                                className={cn(
+                                    'text-xs px-2.5 py-1 rounded-full transition-colors',
+                                    selectedCourseId === course.id
+                                        ? 'bg-zinc-800 text-white'
+                                        : 'text-zinc-500 hover:bg-zinc-100'
+                                )}
+                            >
+                                {course.name}
+                            </button>
+                        ))}
                     </div>
                 </div>
             </CardHeader>
@@ -64,7 +204,7 @@ export function GradeDistributionChart() {
             <CardContent>
                 <ResponsiveContainer width="100%" height={160}>
                     <BarChart
-                        data={gradeDistribution}
+                        data={gradeData.distribution}
                         barSize={48}
                     >
                         <CartesianGrid
@@ -102,7 +242,7 @@ export function GradeDistributionChart() {
                             dataKey="students"
                             radius={[4, 4, 0, 0]}
                         >
-                            {gradeDistribution.map((entry, index) => (
+                            {gradeData.distribution.map((entry, index) => (
                                 <Cell
                                     key={index}
                                     fill={entry.color}
@@ -113,7 +253,7 @@ export function GradeDistributionChart() {
                 </ResponsiveContainer>
 
                 <div className="grid grid-cols-5 text-center mt-2 pt-3 border-t border-zinc-100 text-xs">
-                    {gradeDistribution.map((grade) => (
+                    {gradeData.distribution.map((grade) => (
                         <div key={grade.grade}>
                             <div className="font-bold text-zinc-800">
                                 {grade.students}
@@ -125,32 +265,27 @@ export function GradeDistributionChart() {
                     ))}
                 </div>
 
-                <div className="grid grid-cols-5 gap-3 mt-4 pt-4 border-t border-zinc-100">
+                <div className="grid grid-cols-4 gap-3 mt-4 pt-4 border-t border-zinc-100">
                     {[
                         {
-                            val: '82.4%',
+                            val: gradeData.stats.classAverage,
                             lbl: 'Class Average',
                             color: 'text-zinc-800',
                         },
                         {
-                            val: '82/87',
+                            val: gradeData.stats.passing,
                             lbl: 'Passing',
                             color: 'text-zinc-800',
                         },
                         {
-                            val: '6',
+                            val: gradeData.stats.failing,
                             lbl: 'Failing',
                             color: 'text-red-500',
                         },
                         {
-                            val: '28',
+                            val: gradeData.stats.aGradeStudents,
                             lbl: 'A-Grade Students',
                             color: 'text-indigo-600',
-                        },
-                        {
-                            val: '94.7%',
-                            lbl: 'Submission Rate',
-                            color: 'text-zinc-800',
                         },
                     ].map((item) => (
                         <div

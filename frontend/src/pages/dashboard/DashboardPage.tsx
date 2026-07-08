@@ -1,7 +1,12 @@
-import {ClassroomPulse, PendingGradingWidget, RecentActivity, ScheduleWidget, StatsCards} from "@/pages/dashboard/ui";
-import {GradeDistributionChart} from "@/pages/dashboard/ui/";
-import {AssignmentsWidget} from "@/pages/dashboard/ui/";
-import {AnnouncementsWidget} from "@/pages/dashboard/ui/";
+import {
+    ClassroomPulse,
+    PendingGradingWidget,
+    RecentActivity,
+    ScheduleWidget,
+    StatsCards,
+    UpcomingEventsWidget,
+    GradeDistributionChart
+} from "@/pages/dashboard/ui";
 
 export function DashboardPage() {
     return (
@@ -17,12 +22,11 @@ export function DashboardPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                 <GradeDistributionChart />
-                <AssignmentsWidget />
+                <UpcomingEventsWidget />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                <AnnouncementsWidget/>
 
                 <PendingGradingWidget/>
 
