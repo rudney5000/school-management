@@ -7,7 +7,10 @@ import type { CreateEnrollmentDto } from './enrollments.schema';
 export type EnrollmentRecord = typeof enrollments.$inferSelect;
 
 export class EnrollmentsService {
-  async findAll(): Promise<EnrollmentRecord[]> {
+  async findAll(classId?: string): Promise<EnrollmentRecord[]> {
+    if (classId) {
+      return db.select().from(enrollments).where(eq(enrollments.classId, classId));
+    }
     return db.select().from(enrollments);
   }
 
@@ -26,12 +29,12 @@ export class EnrollmentsService {
 
   async create(input: CreateEnrollmentDto): Promise<EnrollmentRecord> {
     const [enrollment] = await db
-      .insert(enrollments)
-      .values({
-        studentId: input.studentId,
-        classId: input.classId,
-      })
-      .returning();
+        .insert(enrollments)
+        .values({
+          studentId: input.studentId,
+          classId: input.classId,
+        })
+        .returning();
 
     return enrollment;
   }

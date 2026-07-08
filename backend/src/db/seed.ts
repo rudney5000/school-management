@@ -31,6 +31,7 @@ import {
     messageAttachments,
     liveSessions,
     liveSessionViewers,
+    enrollments,
 } from './schema';
 import {
     and,
@@ -481,6 +482,32 @@ async function seed() {
     });
 
     console.log('✓ Student 2: paul.kabila@saintjoseph.cd');
+
+    const [classAForEnroll] = await db.select().from(classes)
+        .where(and(eq(classes.name, '1ère Année Secondaire A'), eq(classes.subSchoolId, subSchool.id)));
+
+    const [classBForEnroll] = await db.select().from(classes)
+        .where(and(eq(classes.name, '1ère Année Secondaire B'), eq(classes.subSchoolId, subSchool.id)));
+
+    const sampleEnrollments = [
+        { studentId: student.id, classId: classAForEnroll.id },
+        { studentId: student2.id, classId: classBForEnroll.id },
+    ];
+
+    for (const enrollment of sampleEnrollments) {
+        const [existingEnrollment] = await db.select().from(enrollments)
+            .where(and(
+                eq(enrollments.studentId, enrollment.studentId),
+                eq(enrollments.classId, enrollment.classId),
+            ));
+
+        if (!existingEnrollment) {
+            await db.insert(enrollments).values(enrollment);
+            console.log(`✓ Enrollment created: student ${enrollment.studentId} → class ${enrollment.classId}`);
+        } else {
+            console.log(`~ Enrollment already exists: student ${enrollment.studentId} → class ${enrollment.classId}`);
+        }
+    }
 
     await db.delete(users).where(eq(users.email, 'sophie.kabila@saintjoseph.cd')).catch(() => {});
     await db.delete(parents).where(eq(parents.email, 'sophie.kabila@saintjoseph.cd')).catch(() => {});

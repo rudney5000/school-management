@@ -9,5 +9,10 @@ export const enrollmentParamsSchema = z.object({
   id: z.string().uuid('Invalid enrollment ID'),
 });
 
+export const enrollmentQuerySchema = z.object({
+  classId: z.string().uuid('Invalid class ID').optional(),
+});
+
 export type CreateEnrollmentDto = z.infer<typeof createEnrollmentSchema>;
 export type EnrollmentParamsDto = z.infer<typeof enrollmentParamsSchema>;
+export type EnrollmentQueryDto = z.infer<typeof enrollmentQuerySchema>;

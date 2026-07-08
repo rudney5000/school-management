@@ -4,6 +4,7 @@ import { EnrollmentsController } from '@/modules/enrollments/enrollments.control
 import {
   createEnrollmentSchema,
   enrollmentParamsSchema,
+  enrollmentQuerySchema,
 } from '@/modules/enrollments/enrollments.schema';
 import { authenticate } from '@/middleware/authenticate';
 import { authorize } from '@/middleware/authorize';
@@ -14,13 +15,14 @@ const controller = new EnrollmentsController();
 router.get(
   '/',
   authenticate,
-  authorize('admin', 'director', 'super_admin'),
+  authorize('admin', 'director', 'super_admin', 'teacher', 'parent', 'student'),
+    validate({ params: enrollmentQuerySchema }),
   controller.getAll,
 );
 router.get(
   '/:id',
   authenticate,
-  authorize('admin', 'director', 'teacher', 'parent'),
+  authorize('admin', 'director', 'super_admin', 'teacher', 'parent', 'student'),
   validate({ params: enrollmentParamsSchema }),
   controller.getById,
 );

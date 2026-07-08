@@ -8,7 +8,8 @@ export class EnrollmentsController {
   private readonly service = new EnrollmentsService();
 
   getAll = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const data = await this.service.findAll();
+    const { classId } = req.query as { classId?: string };
+    const data = await this.service.findAll(classId);
     respond(res, data);
   });
 

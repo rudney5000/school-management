@@ -24,20 +24,23 @@ export class SchedulesService {
         );
   }
 
-  async findById(id: string, subSchoolId: string): Promise<ScheduleRecord> {
-    const [schedule] = await db
-      .select()
-      .from(schedules)
-      .where(
-        eq(schedules.id, id))
-        eq(schedules.subSchoolId, subSchoolId);
+    async findById(id: string, subSchoolId: string): Promise<ScheduleRecord> {
+        const [schedule] = await db
+            .select()
+            .from(schedules)
+            .where(
+                and(
+                    eq(schedules.id, id),
+                    eq(schedules.subSchoolId, subSchoolId)
+                )
+            );
 
-    if (!schedule) {
-      throw new AppError('NOT_FOUND', 'Emploi du temps introuvable', 404);
+        if (!schedule) {
+            throw new AppError('NOT_FOUND', 'Emploi du temps introuvable', 404);
+        }
+
+        return schedule;
     }
-
-    return schedule;
-  }
 
   async create(input: CreateScheduleDto): Promise<ScheduleRecord> {
     const [schedule] = await db
