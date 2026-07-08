@@ -24,3 +24,4 @@ export const selectAttendancePermission: (state: RootState) => {
 
 export const selectAccessToken = (state: RootState) => state.auth.accessToken
 export const selectUserId = (state: RootState) => state.auth.userId
+export const selectSubSchoolId = (state: RootState) => state.auth.subSchoolId

@@ -1,9 +1,9 @@
 import {ApiWrapper} from "@shared/api/ApiWrapper";
 import {baseApi} from "@shared/api/instance";
 import type {
-    ParentParamsDto,
-    ParentListQueryDto
-} from "@entities/parent/model/dto";
+    ScheduleParamsDto,
+    ScheduleListQueryDto
+} from "@entities/schedule/model/dto";
 import type {
     CreateScheduleDto,
     Schedule,
@@ -15,14 +15,14 @@ export class ScheduleApi extends ApiWrapper {
         super(baseApi);
     }
 
-    getAll(params?: ParentListQueryDto) {
+    getAll(params?: ScheduleListQueryDto) {
         return this.handleRequest<Schedule[]>(
             this._baseApi.get('/schedules', params ),
             (raw) => raw as Schedule[]
         )
     }
 
-    getById(params: ParentParamsDto) {
+    getById(params: ScheduleParamsDto) {
         return this.handleRequest<Schedule>(
             this._baseApi.get(`/schedules/${params.id}`),
             (raw) => raw as Schedule
