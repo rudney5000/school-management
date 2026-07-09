@@ -11,6 +11,7 @@ import { Status } from "@shared/helperClass/CommonResponse";
 import { formatDistanceToNow, subDays, format } from "date-fns";
 import { useAppSelector } from "@shared/store/hooks";
 import { selectSubSchoolId } from "@features/auth/model/selectors";
+import {useTranslation} from "@shared/lib";
 import type { Grade } from "@entities/grades";
 import type { StudentAttendance } from "@entities/attendances";
 
@@ -23,6 +24,7 @@ interface Activity {
 }
 
 export function RecentActivity() {
+    const { t } = useTranslation();
     const subSchoolId = useAppSelector(selectSubSchoolId);
     const [activities, setActivities] = useState<Activity[]>([]);
     const [loading, setLoading] = useState(true);
@@ -60,7 +62,7 @@ export function RecentActivity() {
                         if (percentage >= 90) {
                             items.push({
                                 icon: '🏅',
-                                text: `Student scored ${score}/${maxScore} (${percentage.toFixed(0)}%)`,
+                                text: t('dashboard.widgets.recentActivity.studentScored', { score, maxScore, percentage: percentage.toFixed(0) }),
                                 timestamp,
                                 time: formatDistanceToNow(new Date(g.createdAt), { addSuffix: true }),
                                 color: 'text-green-500',
@@ -68,7 +70,7 @@ export function RecentActivity() {
                         } else if (percentage < 60) {
                             items.push({
                                 icon: '⚠️',
-                                text: 'Student flagged — score below 60%',
+                                text: t('dashboard.widgets.recentActivity.studentFlagged'),
                                 timestamp,
                                 time: formatDistanceToNow(new Date(g.createdAt), { addSuffix: true }),
                                 color: 'text-orange-500',
@@ -90,7 +92,7 @@ export function RecentActivity() {
                     for (const a of attendances) {
                         items.push({
                             icon: '📋',
-                            text: 'Student marked absent',
+                            text: t('dashboard.widgets.recentActivity.studentMarkedAbsent'),
                             timestamp: new Date(a.date).getTime(),
                             time: formatDistanceToNow(new Date(a.date), { addSuffix: true }),
                             color: 'text-red-500',
@@ -114,10 +116,10 @@ export function RecentActivity() {
             <Card>
                 <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
-                        <CardTitle className="text-base">Activity Feed</CardTitle>
-                        <button className="text-xs text-indigo-600 hover:underline">All</button>
+                        <CardTitle className="text-base">{t('dashboard.widgets.recentActivity.title')}</CardTitle>
+                        <button className="text-xs text-indigo-600 hover:underline">{t('dashboard.widgets.recentActivity.all')}</button>
                     </div>
-                    <p className="text-xs text-zinc-400">Loading...</p>
+                    <p className="text-xs text-zinc-400">{t('dashboard.widgets.recentActivity.loading')}</p>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-3">
@@ -134,15 +136,15 @@ export function RecentActivity() {
         <Card>
             <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                    <CardTitle className="text-base">Activity Feed</CardTitle>
-                    <button className="text-xs text-indigo-600 hover:underline">All</button>
+                    <CardTitle className="text-base">{t('dashboard.widgets.recentActivity.title')}</CardTitle>
+                    <button className="text-xs text-indigo-600 hover:underline">{t('dashboard.widgets.recentActivity.all')}</button>
                 </div>
-                <p className="text-xs text-zinc-400">Student & class updates · last 24h</p>
+                <p className="text-xs text-zinc-400">{t('dashboard.widgets.recentActivity.studentClassUpdates')}</p>
             </CardHeader>
             <CardContent className="space-y-3">
                 {activities.length === 0 ? (
                     <div className="text-center text-sm text-zinc-400 py-8">
-                        No recent activity
+                        {t('dashboard.widgets.recentActivity.noRecentActivity')}
                     </div>
                 ) : (
                     activities.map((a, i) => (

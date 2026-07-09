@@ -18,6 +18,7 @@ import {Status} from "@shared/helperClass/CommonResponse";
 import type {Schedule} from "@entities/schedule";
 import {useAppSelector} from "@shared/store/hooks";
 import {selectSubSchoolId} from "@features/auth/model/selectors";
+import {useTranslation} from "@shared/lib";
 import {classApi} from "@entities/class";
 import {courseApi} from "@entities/courses";
 
@@ -49,6 +50,7 @@ function timeStringToMinutes(time: string): number {
 }
 
 export function ScheduleWidget() {
+    const { t } = useTranslation();
     const subSchoolId = useAppSelector(selectSubSchoolId);
     const [schedule, setSchedule] = useState<ScheduleItem[]>([]);
     const [loading, setLoading] = useState(true);
@@ -108,14 +110,14 @@ export function ScheduleWidget() {
                         status = 'next';
                     }
 
-                    const courseName = courseNameById.get(s.courseId) ?? 'Course';
-                    const className = classNameById.get(s.classId) ?? 'Class';
+                    const courseName = courseNameById.get(s.courseId) ?? t('dashboard.widgets.scheduleWidget.course');
+                    const className = classNameById.get(s.classId) ?? t('dashboard.widgets.scheduleWidget.class');
 
                     return {
                         id: s.id,
                         time: formatTime(s.startTime),
                         course: `${courseName} — ${className}`,
-                        room: s.room ?? 'No room assigned',
+                        room: s.room ?? t('dashboard.widgets.scheduleWidget.noRoomAssigned'),
                         status,
                     };
                 });
@@ -136,8 +138,8 @@ export function ScheduleWidget() {
                 <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                         <div>
-                            <CardTitle className="text-base">Today's Schedule</CardTitle>
-                            <p className="text-xs text-zinc-400 mt-0.5">Loading...</p>
+                            <CardTitle className="text-base">{t('dashboard.widgets.scheduleWidget.title')}</CardTitle>
+                            <p className="text-xs text-zinc-400 mt-0.5">{t('dashboard.widgets.scheduleWidget.loading')}</p>
                         </div>
                     </div>
                 </CardHeader>
@@ -158,11 +160,11 @@ export function ScheduleWidget() {
                 <div className="flex items-center justify-between">
                     <div>
                         <CardTitle className="text-base">
-                            Today's Schedule
+                            {t('dashboard.widgets.scheduleWidget.title')}
                         </CardTitle>
 
                         <p className="text-xs text-zinc-400 mt-0.5">
-                            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })} · {schedule.length} periods
+                            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })} · {t('dashboard.widgets.scheduleWidget.periods', { count: schedule.length })}
                         </p>
                     </div>
 
@@ -171,7 +173,7 @@ export function ScheduleWidget() {
                         className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs h-8 gap-1"
                     >
                         <Plus className="h-3 w-3" />
-                        New Event
+                        {t('dashboard.widgets.scheduleWidget.newEvent')}
                     </Button>
                 </div>
             </CardHeader>
@@ -179,7 +181,7 @@ export function ScheduleWidget() {
             <CardContent className="space-y-1">
                 {schedule.length === 0 ? (
                     <div className="text-center text-sm text-zinc-400 py-8">
-                        No schedule for today
+                        {t('dashboard.widgets.scheduleWidget.noSchedule')}
                     </div>
                 ) : (
                     schedule.map((item) => (

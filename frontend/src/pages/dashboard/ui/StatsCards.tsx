@@ -14,6 +14,7 @@ import {
 } from "date-fns";
 import {selectSubSchoolId} from "@features/auth/model/selectors";
 import {useAppSelector} from "@shared/store/hooks";
+import {useTranslation} from "@shared/lib";
 import type {StudentAttendance} from "@entities/attendances";
 import type {Grade} from "@entities/grades";
 import { studentApi } from "@/entities/student";
@@ -28,6 +29,7 @@ interface Stats {
 }
 
 export function StatsCards() {
+    const { t } = useTranslation();
     const subSchoolId = useAppSelector(selectSubSchoolId);
     const [stats, setStats] = useState<Stats | null>(null);
     const [loading, setLoading] = useState(true);
@@ -131,26 +133,26 @@ export function StatsCards() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <StatCard
                 value={stats.classAverageScore}
-                label="Class Average Score"
-                sub={`Across all ${stats.totalClasses} classes`}
+                label={t('dashboard.widgets.statsCards.classAverageScore')}
+                sub={t('dashboard.widgets.statsCards.acrossAllClasses', { count: stats.totalClasses })}
             />
 
             <StatCard
                 value={stats.attendanceRate}
-                label="Attendance Rate"
-                sub={`${stats.totalStudents} total students`}
+                label={t('dashboard.widgets.statsCards.attendanceRate')}
+                sub={t('dashboard.widgets.statsCards.totalStudents', { count: stats.totalStudents })}
             />
 
             <StatCard
                 value={stats.attendanceRecordedRate}
-                label="Attendance Recorded"
-                sub="Marked today"
+                label={t('dashboard.widgets.statsCards.attendanceRecorded')}
+                sub={t('dashboard.widgets.statsCards.markedToday')}
             />
 
             <StatCard
                 value={stats.atRiskStudents.toString()}
-                label="At-Risk Students"
-                sub="Below 60% threshold"
+                label={t('dashboard.widgets.statsCards.atRiskStudents')}
+                sub={t('dashboard.widgets.statsCards.belowThreshold')}
                 alert
             />
         </div>

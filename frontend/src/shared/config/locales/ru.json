@@ -901,6 +901,89 @@
         "ticketsRemaining": "Осталось мест",
         "free": "Бесплатно"
       }
+    },
+    "widgets": {
+      "statsCards": {
+        "classAverageScore": "Средний балл класса",
+        "acrossAllClasses": "По {{count}} классам",
+        "attendanceRate": "Посещаемость",
+        "totalStudents": "{{count}} учеников всего",
+        "attendanceRecorded": "Посещаемость записана",
+        "markedToday": "Отмечено сегодня",
+        "atRiskStudents": "Ученики группы риска",
+        "belowThreshold": "Ниже порога 60%"
+      },
+      "classroomPulse": {
+        "title": "Пульс класса",
+        "loading": "Загрузка...",
+        "students": "учеников",
+        "live": "В ЭФИРЕ",
+        "status": {
+          "present": "Присутствует",
+          "late": "Опоздал",
+          "excused": "Уважительная причина",
+          "absent": "Отсутствует",
+          "notRecorded": "Не записано"
+        },
+        "present": "Присутствует",
+        "needAttention": "Требует внимания"
+      },
+      "scheduleWidget": {
+        "title": "Расписание на сегодня",
+        "loading": "Загрузка...",
+        "periods": "{{count}} периодов",
+        "newEvent": "Новое событие",
+        "noSchedule": "Расписание на сегодня отсутствует",
+        "noRoomAssigned": "Кабинет не назначен",
+        "course": "Предмет",
+        "class": "Класс"
+      },
+      "gradeDistribution": {
+        "title": "Распределение оценок",
+        "loading": "Загрузка...",
+        "currentPeriod": "Текущий период",
+        "allCourses": "Все предметы",
+        "allClasses": "Все классы",
+        "students": "учеников",
+        "classAverage": "Средний балл класса",
+        "passing": "Сдали",
+        "failing": "Не сдали",
+        "aGradeStudents": "Ученики с оценкой А"
+      },
+      "pendingGrading": {
+        "title": "Оценки в ожидании",
+        "loading": "Загрузка...",
+        "pending": "в ожидании",
+        "submissionsAwaitingReview": "Работы ожидают проверки",
+        "gradesAwaitingScore": "Оценки ожидают балла",
+        "noPendingGrading": "Нет оценок в ожидании",
+        "pendingLabel": "В ожидании",
+        "awaitingScore": "Ожидает балла",
+        "gradeTypes": {
+          "homework": "Домашнее задание",
+          "participation": "Участие",
+          "project": "Проект",
+          "oral": "Устный"
+        }
+      },
+      "recentActivity": {
+        "title": "Лента активности",
+        "loading": "Загрузка...",
+        "all": "Все",
+        "studentClassUpdates": "Обновления учеников и классов · последние 24ч",
+        "noRecentActivity": "Нет недавней активности",
+        "studentScored": "Ученик получил {{score}}/{{maxScore}} ({{percentage}}%)",
+        "studentFlagged": "Ученик отмечен — оценка ниже 60%",
+        "studentMarkedAbsent": "Ученик отмечен отсутствующим"
+      },
+      "upcomingEvents": {
+        "title": "Предстоящие события",
+        "loading": "Загрузка...",
+        "thisWeek": "На этой неделе",
+        "new": "Новое",
+        "noEventsThisWeek": "Нет событий на этой неделе",
+        "past": "Прошло"
+      }
     }
   },
   "theme": {

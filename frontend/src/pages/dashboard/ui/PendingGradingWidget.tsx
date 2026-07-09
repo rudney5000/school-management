@@ -12,6 +12,7 @@ import {Status} from "@shared/helperClass/CommonResponse";
 import {type Grade, GradeType} from "@entities/grades";
 import {useAppSelector} from "@shared/store/hooks";
 import {selectSubSchoolId} from "@features/auth/model/selectors";
+import {useTranslation} from "@shared/lib";
 import {courseApi} from "@entities/courses";
 
 interface PendingGradingItem {
@@ -23,15 +24,16 @@ interface PendingGradingItem {
 }
 
 const gradeTypeLabels: Record<GradeType, string> = {
-    [GradeType.Homework]: 'Homework',
-    [GradeType.Participation]: 'Participation',
-    [GradeType.Project]: 'Project',
-    [GradeType.Oral]: 'Oral',
+    [GradeType.Homework]: 'homework',
+    [GradeType.Participation]: 'participation',
+    [GradeType.Project]: 'project',
+    [GradeType.Oral]: 'oral',
 };
 
 const colors = ['bg-indigo-500', 'bg-teal-500', 'bg-green-500', 'bg-blue-500', 'bg-amber-500', 'bg-purple-500'];
 
 export function PendingGradingWidget() {
+    const { t } = useTranslation();
     const subSchoolId = useAppSelector(selectSubSchoolId);
     const [pendingGrading, setPendingGrading] = useState<PendingGradingItem[]>([]);
     const [loading, setLoading] = useState(true);
@@ -79,8 +81,8 @@ export function PendingGradingWidget() {
                         return {
                             id: g.id,
                             initials,
-                            label: `${courseName} · ${gradeTypeLabels[g.gradeType]}`,
-                            sub: `${className} · Awaiting score`,
+                            label: `${courseName} · ${t(`dashboard.widgets.pendingGrading.gradeTypes.${gradeTypeLabels[g.gradeType]}`)}`,
+                            sub: `${className} · ${t('dashboard.widgets.pendingGrading.awaitingScore')}`,
                             color: colors[index % colors.length],
                         };
                     });
@@ -100,10 +102,10 @@ export function PendingGradingWidget() {
             <Card>
                 <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
-                        <CardTitle className="text-base">Pending Grading</CardTitle>
-                        <span className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">Loading...</span>
+                        <CardTitle className="text-base">{t('dashboard.widgets.pendingGrading.title')}</CardTitle>
+                        <span className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">{t('dashboard.widgets.pendingGrading.loading')}</span>
                     </div>
-                    <p className="text-xs text-zinc-400">Submissions awaiting review</p>
+                    <p className="text-xs text-zinc-400">{t('dashboard.widgets.pendingGrading.submissionsAwaitingReview')}</p>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-3">
@@ -120,15 +122,15 @@ export function PendingGradingWidget() {
         <Card>
             <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                    <CardTitle className="text-base">Pending Grading</CardTitle>
-                    <span className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">{pendingGrading.length} pending</span>
+                    <CardTitle className="text-base">{t('dashboard.widgets.pendingGrading.title')}</CardTitle>
+                    <span className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">{pendingGrading.length} {t('dashboard.widgets.pendingGrading.pending')}</span>
                 </div>
-                <p className="text-xs text-zinc-400">Grades awaiting a score</p>
+                <p className="text-xs text-zinc-400">{t('dashboard.widgets.pendingGrading.gradesAwaitingScore')}</p>
             </CardHeader>
             <CardContent className="space-y-3">
                 {pendingGrading.length === 0 ? (
                     <div className="text-center text-sm text-zinc-400 py-8">
-                        No pending grading
+                        {t('dashboard.widgets.pendingGrading.noPendingGrading')}
                     </div>
                 ) : (
                     pendingGrading.map((g) => (
@@ -143,7 +145,7 @@ export function PendingGradingWidget() {
                                 <div className="text-xs text-zinc-400">{g.sub}</div>
                             </div>
                             <span className="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 bg-orange-100 text-orange-600">
-                                Pending
+                                {t('dashboard.widgets.pendingGrading.pendingLabel')}
                             </span>
                         </div>
                     ))

@@ -915,6 +915,89 @@
         "joinCall": "Join call",
         "you": "(you)"
       }
+    },
+    "widgets": {
+      "statsCards": {
+        "classAverageScore": "Class Average Score",
+        "acrossAllClasses": "Across all {{count}} classes",
+        "attendanceRate": "Attendance Rate",
+        "totalStudents": "{{count}} total students",
+        "attendanceRecorded": "Attendance Recorded",
+        "markedToday": "Marked today",
+        "atRiskStudents": "At-Risk Students",
+        "belowThreshold": "Below 60% threshold"
+      },
+      "classroomPulse": {
+        "title": "Classroom Pulse",
+        "loading": "Loading...",
+        "students": "students",
+        "live": "LIVE",
+        "status": {
+          "present": "Present",
+          "late": "Late",
+          "excused": "Excused",
+          "absent": "Absent",
+          "notRecorded": "Not recorded"
+        },
+        "present": "Present",
+        "needAttention": "Need Attention"
+      },
+      "scheduleWidget": {
+        "title": "Today's Schedule",
+        "loading": "Loading...",
+        "periods": "{{count}} periods",
+        "newEvent": "New Event",
+        "noSchedule": "No schedule for today",
+        "noRoomAssigned": "No room assigned",
+        "course": "Course",
+        "class": "Class"
+      },
+      "gradeDistribution": {
+        "title": "Grade Distribution",
+        "loading": "Loading...",
+        "currentPeriod": "Current period",
+        "allCourses": "All courses",
+        "allClasses": "All Classes",
+        "students": "students",
+        "classAverage": "Class Average",
+        "passing": "Passing",
+        "failing": "Failing",
+        "aGradeStudents": "A-Grade Students"
+      },
+      "pendingGrading": {
+        "title": "Pending Grading",
+        "loading": "Loading...",
+        "pending": "pending",
+        "submissionsAwaitingReview": "Submissions awaiting review",
+        "gradesAwaitingScore": "Grades awaiting a score",
+        "noPendingGrading": "No pending grading",
+        "pendingLabel": "Pending",
+        "awaitingScore": "Awaiting score",
+        "gradeTypes": {
+          "homework": "Homework",
+          "participation": "Participation",
+          "project": "Project",
+          "oral": "Oral"
+        }
+      },
+      "recentActivity": {
+        "title": "Activity Feed",
+        "loading": "Loading...",
+        "all": "All",
+        "studentClassUpdates": "Student & class updates · last 24h",
+        "noRecentActivity": "No recent activity",
+        "studentScored": "Student scored {{score}}/{{maxScore}} ({{percentage}}%)",
+        "studentFlagged": "Student flagged — score below 60%",
+        "studentMarkedAbsent": "Student marked absent"
+      },
+      "upcomingEvents": {
+        "title": "Upcoming Events",
+        "loading": "Loading...",
+        "thisWeek": "This week",
+        "new": "New",
+        "noEventsThisWeek": "No events this week",
+        "past": "Past"
+      }
     }
   },
   "theme": {

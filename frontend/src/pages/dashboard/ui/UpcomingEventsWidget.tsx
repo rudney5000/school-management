@@ -14,6 +14,7 @@ import {Status} from "@shared/helperClass/CommonResponse";
 import {addDays, format, isPast} from "date-fns";
 import {useAppSelector} from "@shared/store/hooks";
 import {selectSubSchoolId} from "@features/auth/model/selectors";
+import {useTranslation} from "@shared/lib";
 import {TYPE_CONFIG} from "@entities/event";
 import type {SchoolEvent} from "@/pages/event/ui";
 
@@ -27,6 +28,7 @@ interface UpcomingEventItem {
     overdue: boolean;
 }
 export function UpcomingEventsWidget() {
+    const { t } = useTranslation();
     const subSchoolId = useAppSelector(selectSubSchoolId);
     const [events, setEvents] = useState<UpcomingEventItem[]>([]);
     const [loading, setLoading] = useState(true);
@@ -62,7 +64,7 @@ export function UpcomingEventsWidget() {
                                 badgeClasses: config.badgeClasses,
                                 title: e.title,
                                 sub: e.location || config.label,
-                                date: overdue ? 'Past' : format(startDate, 'MMM d'),
+                                date: overdue ? t('dashboard.widgets.upcomingEvents.past') : format(startDate, 'MMM d'),
                                 overdue,
                             };
                         });
@@ -84,8 +86,8 @@ export function UpcomingEventsWidget() {
                 <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                         <div>
-                            <CardTitle className="text-base">Upcoming Events</CardTitle>
-                            <p className="text-xs text-zinc-400 mt-0.5">Loading...</p>
+                            <CardTitle className="text-base">{t('dashboard.widgets.upcomingEvents.title')}</CardTitle>
+                            <p className="text-xs text-zinc-400 mt-0.5">{t('dashboard.widgets.upcomingEvents.loading')}</p>
                         </div>
                     </div>
                 </CardHeader>
@@ -106,11 +108,11 @@ export function UpcomingEventsWidget() {
                 <div className="flex items-center justify-between">
                     <div>
                         <CardTitle className="text-base">
-                            Upcoming Events
+                            {t('dashboard.widgets.upcomingEvents.title')}
                         </CardTitle>
 
                         <p className="text-xs text-zinc-400 mt-0.5">
-                            This week
+                            {t('dashboard.widgets.upcomingEvents.thisWeek')}
                         </p>
                     </div>
 
@@ -119,7 +121,7 @@ export function UpcomingEventsWidget() {
                         className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs h-8 gap-1"
                     >
                         <Plus className="h-3 w-3" />
-                        New
+                        {t('dashboard.widgets.upcomingEvents.new')}
                     </Button>
                 </div>
             </CardHeader>
@@ -127,7 +129,7 @@ export function UpcomingEventsWidget() {
             <CardContent className="space-y-3">
                 {events.length === 0 ? (
                     <div className="text-center text-sm text-zinc-400 py-8">
-                        No events this week
+                        {t('dashboard.widgets.upcomingEvents.noEventsThisWeek')}
                     </div>
                 ) : (
                     events.map((event) => (

@@ -20,6 +20,7 @@ import {
 } from "date-fns";
 import {useAppSelector} from "@shared/store/hooks";
 import {selectSubSchoolId} from "@features/auth/model/selectors";
+import {useTranslation} from "@shared/lib";
 import {studentApi} from "@entities/student";
 import type {
     AttendanceStatus,
@@ -60,14 +61,8 @@ const pulseColors: Record<PulseStatus, string> = {
     UNRECORDED: 'bg-zinc-300',
 };
 
-const statusLabels: Record<PulseStatus, string> = {
-    PRESENT: 'Present',
-    LATE: 'Late',
-    EXCUSED: 'Excused',
-    ABSENT: 'Absent',
-    UNRECORDED: 'Not recorded',
-};
 export function ClassroomPulse() {
+    const { t } = useTranslation();
     const subSchoolId = useAppSelector(selectSubSchoolId);
     const [pulseData, setPulseData] = useState<PulseData | null>(null);
     const [loading, setLoading] = useState(true);
@@ -169,9 +164,9 @@ export function ClassroomPulse() {
                 <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                         <div>
-                            <CardTitle className="text-base">Classroom Pulse</CardTitle>
+                            <CardTitle className="text-base">{t('dashboard.widgets.classroomPulse.title')}</CardTitle>
                             <Spinner/>
-                            <p className="text-xs text-zinc-400 mt-0.5">Loading...</p>
+                            <p className="text-xs text-zinc-400 mt-0.5">{t('dashboard.widgets.classroomPulse.loading')}</p>
                         </div>
                     </div>
                 </CardHeader>
@@ -188,7 +183,7 @@ export function ClassroomPulse() {
                 <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                         <div>
-                            <CardTitle className="text-base">Classroom Pulse</CardTitle>
+                            <CardTitle className="text-base">{t('dashboard.widgets.classroomPulse.title')}</CardTitle>
                         </div>
                     </div>
                 </CardHeader>
@@ -205,16 +200,16 @@ export function ClassroomPulse() {
                 <div className="flex items-center justify-between">
                     <div>
                         <CardTitle className="text-base">
-                            Classroom Pulse
+                            {t('dashboard.widgets.classroomPulse.title')}
                         </CardTitle>
                         <p className="text-xs text-zinc-400 mt-0.5">
-                            {pulseData.courseName} · {pulseData.className} · {pulseData.students.length} students
+                            {pulseData.courseName} · {pulseData.className} · {pulseData.students.length} {t('dashboard.widgets.classroomPulse.students')}
                         </p>
                     </div>
 
                     <span className="flex items-center gap-1.5 text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">
                         <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                        LIVE
+                        {t('dashboard.widgets.classroomPulse.live')}
                     </span>
                 </div>
             </CardHeader>
@@ -224,7 +219,7 @@ export function ClassroomPulse() {
                     {pulseData.students.map((student) => (
                         <div
                             key={student.id}
-                            title={`${student.initials} · ${statusLabels[student.status]}`}
+                            title={`${student.initials} · ${t(`dashboard.widgets.classroomPulse.status.${student.status.toLowerCase()}`)}`}
                             className={cn(
                                 'aspect-square rounded-md flex items-center justify-center text-white text-[10px] font-bold',
                                 pulseColors[student.status]
@@ -238,11 +233,11 @@ export function ClassroomPulse() {
                 <div className="flex flex-wrap gap-3 text-xs text-zinc-500 mb-4">
                     {(
                         [
-                            { key: 'PRESENT', label: `Present (${pulseData.statusCounts.PRESENT})` },
-                            { key: 'LATE', label: `Late (${pulseData.statusCounts.LATE})` },
-                            { key: 'EXCUSED', label: `Excused (${pulseData.statusCounts.EXCUSED})` },
-                            { key: 'ABSENT', label: `Absent (${pulseData.statusCounts.ABSENT})` },
-                            { key: 'UNRECORDED', label: `Not recorded (${pulseData.statusCounts.UNRECORDED})` },
+                            { key: 'PRESENT', label: `${t('dashboard.widgets.classroomPulse.status.present')} (${pulseData.statusCounts.PRESENT})` },
+                            { key: 'LATE', label: `${t('dashboard.widgets.classroomPulse.status.late')} (${pulseData.statusCounts.LATE})` },
+                            { key: 'EXCUSED', label: `${t('dashboard.widgets.classroomPulse.status.excused')} (${pulseData.statusCounts.EXCUSED})` },
+                            { key: 'ABSENT', label: `${t('dashboard.widgets.classroomPulse.status.absent')} (${pulseData.statusCounts.ABSENT})` },
+                            { key: 'UNRECORDED', label: `${t('dashboard.widgets.classroomPulse.status.notRecorded')} (${pulseData.statusCounts.UNRECORDED})` },
                         ] as { key: PulseStatus; label: string }[]
                     ).map((item) => (
                         <span key={item.key} className="flex items-center gap-1">
@@ -258,7 +253,7 @@ export function ClassroomPulse() {
                             {pulseData.present}
                         </div>
                         <div className="text-xs text-zinc-400 uppercase tracking-wide">
-                            Present
+                            {t('dashboard.widgets.classroomPulse.present')}
                         </div>
                     </div>
 
@@ -267,7 +262,7 @@ export function ClassroomPulse() {
                             {pulseData.needAttention}
                         </div>
                         <div className="text-xs text-zinc-400 uppercase tracking-wide">
-                            Need Attention
+                            {t('dashboard.widgets.classroomPulse.needAttention')}
                         </div>
                     </div>
                 </div>

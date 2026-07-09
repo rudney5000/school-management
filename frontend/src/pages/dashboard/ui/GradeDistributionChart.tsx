@@ -26,6 +26,7 @@ import {Status} from "@shared/helperClass/CommonResponse";
 import type {Grade} from "@entities/grades";
 import {useAppSelector} from "@shared/store/hooks";
 import {selectSubSchoolId} from "@features/auth/model/selectors";
+import {useTranslation} from "@shared/lib";
 import {
     type Course,
     courseApi
@@ -101,6 +102,7 @@ function computeGradeData(grades: Grade[]): GradeData {
 }
 
 export function GradeDistributionChart() {
+    const { t } = useTranslation();
     const subSchoolId = useAppSelector(selectSubSchoolId);
     const [allGrades, setAllGrades] = useState<Grade[]>([]);
     const [courses, setCourses] = useState<Course[]>([]);
@@ -145,8 +147,8 @@ export function GradeDistributionChart() {
                 <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
                         <div>
-                            <CardTitle className="text-base">Grade Distribution</CardTitle>
-                            <p className="text-xs text-zinc-400 mt-0.5">Loading...</p>
+                            <CardTitle className="text-base">{t('dashboard.widgets.gradeDistribution.title')}</CardTitle>
+                            <p className="text-xs text-zinc-400 mt-0.5">{t('dashboard.widgets.gradeDistribution.loading')}</p>
                         </div>
                     </div>
                 </CardHeader>
@@ -163,11 +165,11 @@ export function GradeDistributionChart() {
                 <div className="flex items-center justify-between">
                     <div>
                         <CardTitle className="text-base">
-                            Grade Distribution
+                            {t('dashboard.widgets.gradeDistribution.title')}
                         </CardTitle>
 
                         <p className="text-xs text-zinc-400 mt-0.5">
-                            {selectedCourseId === ALL_COURSES_ID ? 'All courses' : courses.find(c => c.id === selectedCourseId)?.name} · Current period
+                            {selectedCourseId === ALL_COURSES_ID ? t('dashboard.widgets.gradeDistribution.allCourses') : courses.find(c => c.id === selectedCourseId)?.name} · {t('dashboard.widgets.gradeDistribution.currentPeriod')}
                         </p>
                     </div>
 
@@ -181,7 +183,7 @@ export function GradeDistributionChart() {
                                     : 'text-zinc-500 hover:bg-zinc-100'
                             )}
                         >
-                            All Classes
+                            {t('dashboard.widgets.gradeDistribution.allClasses')}
                         </button>
                         {courses.map((course) => (
                             <button
@@ -234,7 +236,7 @@ export function GradeDistributionChart() {
                                 fontSize: 12,
                             }}
                             formatter={(value) => [
-                                `${value} students`,
+                                `${value} ${t('dashboard.widgets.gradeDistribution.students')}`,
                             ]}
                         />
 
@@ -259,7 +261,7 @@ export function GradeDistributionChart() {
                                 {grade.students}
                             </div>
                             <div className="text-zinc-400">
-                                students
+                                {t('dashboard.widgets.gradeDistribution.students')}
                             </div>
                         </div>
                     ))}
@@ -269,22 +271,22 @@ export function GradeDistributionChart() {
                     {[
                         {
                             val: gradeData.stats.classAverage,
-                            lbl: 'Class Average',
+                            lbl: t('dashboard.widgets.gradeDistribution.classAverage'),
                             color: 'text-zinc-800',
                         },
                         {
                             val: gradeData.stats.passing,
-                            lbl: 'Passing',
+                            lbl: t('dashboard.widgets.gradeDistribution.passing'),
                             color: 'text-zinc-800',
                         },
                         {
                             val: gradeData.stats.failing,
-                            lbl: 'Failing',
+                            lbl: t('dashboard.widgets.gradeDistribution.failing'),
                             color: 'text-red-500',
                         },
                         {
                             val: gradeData.stats.aGradeStudents,
-                            lbl: 'A-Grade Students',
+                            lbl: t('dashboard.widgets.gradeDistribution.aGradeStudents'),
                             color: 'text-indigo-600',
                         },
                     ].map((item) => (

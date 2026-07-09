@@ -876,6 +876,89 @@
         "noData": "Data ezali te",
         "noDataDesc": "Statistiki ekozala sima ya kotíya manote"
       }
+    },
+    "widgets": {
+      "statsCards": {
+        "classAverageScore": "Ntálisi ya klase",
+        "acrossAllClasses": "Na {{count}} klasses",
+        "attendanceRate": "Proportion ya ba présents",
+        "totalStudents": "{{count}} bana-école na mobimba",
+        "attendanceRecorded": "Présence ekotíyamí",
+        "markedToday": "Ekotíyamí lobi",
+        "atRiskStudents": "Bana-ôle na risk",
+        "belowThreshold": "Na se ya 60%"
+      },
+      "classroomPulse": {
+        "title": "Pulse ya klase",
+        "loading": "Kotíya...",
+        "students": "bana-ôle",
+        "live": "EN DIRECT",
+        "status": {
+          "present": "Présent",
+          "late": "Na molili",
+          "excused": "Excusé",
+          "absent": "Absent",
+          "notRecorded": "Ekotíyamí te"
+        },
+        "present": "Présent",
+        "needAttention": "Tálá malamu"
+      },
+      "scheduleWidget": {
+        "title": "Kalendrie ya lobi",
+        "loading": "Kotíya...",
+        "periods": "{{count}} ntangos",
+        "newEvent": "Eveniment ya sika",
+        "noSchedule": "Kalendrie te ya lobi",
+        "noRoomAssigned": "Salle ekabwaní te",
+        "course": "Cours",
+        "class": "Klasse"
+      },
+      "gradeDistribution": {
+        "title": "Kabwanakabwana ya manote",
+        "loading": "Kotíya...",
+        "currentPeriod": "Ntango ya sikawa",
+        "allCourses": "Bosangisi ba cours",
+        "allClasses": "Bosangisi ba klasses",
+        "students": "bana-ôle",
+        "classAverage": "Ntálisi ya klase",
+        "passing": "Balongí",
+        "failing": "Bayéki",
+        "aGradeStudents": "Bana-ôle na note A"
+      },
+      "pendingGrading": {
+        "title": "Manote na koyoka",
+        "loading": "Kotíya...",
+        "pending": "na koyoka",
+        "submissionsAwaitingReview": "Ba submissions na koyoka botatoli",
+        "gradesAwaitingScore": "Manote na koyoka score",
+        "noPendingGrading": "Manote te na koyoka",
+        "pendingLabel": "Na koyoka",
+        "awaitingScore": "Na koyoka score",
+        "gradeTypes": {
+          "homework": "Devoir",
+          "participation": "Participation",
+          "project": "Projet",
+          "oral": "Oral"
+        }
+      },
+      "recentActivity": {
+        "title": "Fil d'activité",
+        "loading": "Kotíya...",
+        "all": "Mobimba",
+        "studentClassUpdates": "Mises à jour bana-ôle & klasses · 24h ya libosó",
+        "noRecentActivity": "Activité ya libosó te",
+        "studentScored": "Bana-ôle noté {{score}}/{{maxScore}} ({{percentage}}%)",
+        "studentFlagged": "Bana-ôle flaggé — note na se ya 60%",
+        "studentMarkedAbsent": "Bana-ôle marqué absent"
+      },
+      "upcomingEvents": {
+        "title": "Ba evenements ya kokota",
+        "loading": "Kotíya...",
+        "thisWeek": "Sémene ya sikawa",
+        "new": "Sika",
+        "noEventsThisWeek": "Evenement te ya sémene ya sikawa",
+        "past": "Ekíaki"
+      }
     }
   },
   "theme": {

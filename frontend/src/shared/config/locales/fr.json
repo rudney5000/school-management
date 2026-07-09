@@ -922,6 +922,89 @@
         "ticketsRemaining": "Places restantes",
         "free": "Gratuit"
       }
+    },
+    "widgets": {
+      "statsCards": {
+        "classAverageScore": "Moyenne de classe",
+        "acrossAllClasses": "Sur {{count}} classes",
+        "attendanceRate": "Taux de présence",
+        "totalStudents": "{{count}} élèves au total",
+        "attendanceRecorded": "Présence enregistrée",
+        "markedToday": "Marquée aujourd'hui",
+        "atRiskStudents": "Élèves à risque",
+        "belowThreshold": "En dessous du seuil de 60%"
+      },
+      "classroomPulse": {
+        "title": "Pulse de classe",
+        "loading": "Chargement...",
+        "students": "élèves",
+        "live": "EN DIRECT",
+        "status": {
+          "present": "Présent",
+          "late": "En retard",
+          "excused": "Excusé",
+          "absent": "Absent",
+          "notRecorded": "Non enregistré"
+        },
+        "present": "Présent",
+        "needAttention": "Attention requise"
+      },
+      "scheduleWidget": {
+        "title": "Emploi du temps du jour",
+        "loading": "Chargement...",
+        "periods": "{{count}} périodes",
+        "newEvent": "Nouvel événement",
+        "noSchedule": "Aucun emploi du temps pour aujourd'hui",
+        "noRoomAssigned": "Aucune salle assignée",
+        "course": "Cours",
+        "class": "Classe"
+      },
+      "gradeDistribution": {
+        "title": "Distribution des notes",
+        "loading": "Chargement...",
+        "currentPeriod": "Période actuelle",
+        "allCourses": "Tous les cours",
+        "allClasses": "Toutes les classes",
+        "students": "élèves",
+        "classAverage": "Moyenne de classe",
+        "passing": "Admis",
+        "failing": "Échoué",
+        "aGradeStudents": "Élèves avec note A"
+      },
+      "pendingGrading": {
+        "title": "Notes en attente",
+        "loading": "Chargement...",
+        "pending": "en attente",
+        "submissionsAwaitingReview": "Soumissions en attente de révision",
+        "gradesAwaitingScore": "Notes en attente de score",
+        "noPendingGrading": "Aucune note en attente",
+        "pendingLabel": "En attente",
+        "awaitingScore": "En attente de score",
+        "gradeTypes": {
+          "homework": "Devoir",
+          "participation": "Participation",
+          "project": "Projet",
+          "oral": "Oral"
+        }
+      },
+      "recentActivity": {
+        "title": "Fil d'activité",
+        "loading": "Chargement...",
+        "all": "Tout",
+        "studentClassUpdates": "Mises à jour élèves & classes · dernières 24h",
+        "noRecentActivity": "Aucune activité récente",
+        "studentScored": "Élève noté {{score}}/{{maxScore}} ({{percentage}}%)",
+        "studentFlagged": "Élève signalé — note en dessous de 60%",
+        "studentMarkedAbsent": "Élève marqué absent"
+      },
+      "upcomingEvents": {
+        "title": "Événements à venir",
+        "loading": "Chargement...",
+        "thisWeek": "Cette semaine",
+        "new": "Nouveau",
+        "noEventsThisWeek": "Aucun événement cette semaine",
+        "past": "Passé"
+      }
     }
   },
   "theme": {
