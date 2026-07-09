@@ -136,6 +136,13 @@
   "dashboard": {
     "title": "Панель управления",
     "subtitle": "Обзор",
+    "tagline": "Управление школой",
+    "live": "В эфире",
+    "aria": {
+      "close": "Закрыть боковую панель",
+      "expand": "Развернуть боковую панель",
+      "collapse": "Свернуть боковую панель"
+    },
     "greeting": {
       "morning": "Доброе утро",
       "afternoon": "Добрый день",
@@ -153,7 +160,9 @@
       "totalStudents": "Всего учеников",
       "totalCourses": "Всего курсов",
       "attendances": "Посещаемость",
-      "upcomingEvents": "Предстоящие события"
+      "upcomingEvents": "Предстоящие события",
+      "term": "Четверть",
+      "period": "Урок {{number}}"
     },
     "schedule": {
       "title": "Занятия сегодня",

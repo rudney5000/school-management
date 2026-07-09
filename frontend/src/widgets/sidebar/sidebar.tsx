@@ -82,7 +82,7 @@ export function Sidebar({
                             EduPulse
                         </span>
                         <span className="text-[10px] font-medium uppercase tracking-widest text-white/50">
-                            School Management
+                            {t('dashboard.tagline')}
                         </span>
                     </div>
 
@@ -92,7 +92,7 @@ export function Sidebar({
                             size="icon"
                             onClick={onToggle}
                             className="absolute right-1 top-1/2 -translate-y-1/2 z-10 h-6 w-6 rounded-full bg-[#1755EC] border border-white/30 text-white hover:bg-[#1245cc]"
-                            aria-label="Fermer la sidebar"
+                            aria-label={t('dashboard.aria.close')}
                         >
                             <X className="w-3.5 h-3.5" />
                         </Button>
@@ -105,7 +105,7 @@ export function Sidebar({
                                 'flex items-center justify-center',
                                 'hover:bg-[#1245cc] transition-colors'
                             )}
-                            aria-label={collapsed ? 'Déplier la sidebar' : 'Réduire la sidebar'}
+                            aria-label={collapsed ? t('dashboard.aria.expand') : t('dashboard.aria.collapse')}
                         >
                             <ChevronLeft
                                 className={cn(
@@ -181,7 +181,10 @@ export function Sidebar({
                                                     <TooltipTrigger asChild>
                                                         <span className="block">{linkContent}</span>
                                                     </TooltipTrigger>
-                                                    <TooltipContent side="right">
+                                                    <TooltipContent
+                                                        side="right"
+                                                        className="bg-[#1755EC] text-white border-none shadow-lg"
+                                                    >
                                                         {t(item.labelKey)}
                                                         {item.badge && (
                                                             <span className="ml-1.5 text-xs opacity-70">
@@ -211,7 +214,7 @@ export function Sidebar({
                                         className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse block mx-auto"/>
                                 </TooltipTrigger>
                                 <TooltipContent side="right">
-                                    {liveClass.code} · Live
+                                    {liveClass.code} · {t('dashboard.live')}
                                 </TooltipContent>
                             </Tooltip>
                         ) : (
@@ -219,7 +222,7 @@ export function Sidebar({
                                 <div className="flex items-center gap-1.5 mb-0.5">
                                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0"/>
                                     <span className="text-[11px] font-semibold text-white">
-                                        {liveClass.code} · Period 3 · Live
+                                        {liveClass.code} · {t('dashboard.period', { number: 3 })} · {t('dashboard.live')}
                                     </span>
                                 </div>
                                 <p className="text-[10px] text-white/60 truncate">
@@ -268,16 +271,28 @@ export function Sidebar({
                     {stats && !collapsed && (
                         <div className="grid grid-cols-3 divide-x divide-white/15 mt-3 pt-3 border-t border-white/10">
                             <div className="flex flex-col items-center px-1">
-                                <span className="text-[14px] font-bold text-white">{stats.classes}</span>
-                                <span className="text-[9px] text-white/50 uppercase tracking-wide">Classes</span>
+                                <span className="text-[14px] font-bold text-white">
+                                    {stats.classes}
+                                </span>
+                                <span className="text-[9px] text-white/50 uppercase tracking-wide">
+                                    {t('dashboard.stats.classes')}
+                                </span>
                             </div>
                             <div className="flex flex-col items-center px-1">
-                                <span className="text-[14px] font-bold text-white">{stats.students}</span>
-                                <span className="text-[9px] text-white/50 uppercase tracking-wide">Students</span>
+                                <span className="text-[14px] font-bold text-white">
+                                    {stats.students}
+                                </span>
+                                <span className="text-[9px] text-white/50 uppercase tracking-wide">
+                                    {t('dashboard.stats.students')}
+                                </span>
                             </div>
                             <div className="flex flex-col items-center px-1">
-                                <span className="text-[14px] font-bold text-white">{stats.term}</span>
-                                <span className="text-[9px] text-white/50 uppercase tracking-wide">Term</span>
+                                <span className="text-[14px] font-bold text-white">
+                                    {stats.term}
+                                </span>
+                                <span className="text-[9px] text-white/50 uppercase tracking-wide">
+                                    {t('dashboard.stats.term')}
+                                </span>
                             </div>
                         </div>
                     )}

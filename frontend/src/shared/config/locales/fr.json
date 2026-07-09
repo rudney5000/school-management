@@ -182,6 +182,13 @@
   "dashboard": {
     "title":          "Tableau de bord",
     "subtitle":       "Vue d'ensemble",
+    "tagline": "Gestion Scolaire",
+    "live": "En direct",
+    "aria": {
+      "close": "Fermer la sidebar",
+      "expand": "Déplier la sidebar",
+      "collapse": "Réduire la sidebar"
+    },
     "greeting": {
       "morning": "Bonjour",
       "afternoon": "Bon apres midi",
@@ -195,7 +202,9 @@
       "exams":    "Examens",
       "students": "Élèves",
       "teachers": "Enseignants",
-      "events":   "Événements"
+      "events":   "Événements",
+      "term": "Trimestre",
+      "period": "Période {{number}}"
     },
     "schedule": {
       "title":   "Cours du jour",

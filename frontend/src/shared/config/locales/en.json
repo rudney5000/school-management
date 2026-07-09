@@ -180,6 +180,13 @@
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "Overview",
+    "tagline": "School Management",
+    "live": "Live",
+    "aria": {
+      "close": "Close sidebar",
+      "expand": "Expand sidebar",
+      "collapse": "Collapse sidebar"
+    },
     "greeting": {
       "morning": "morning",
       "afternoon": "afternoon",
@@ -193,7 +200,9 @@
       "exams": "Exams",
       "students": "Students",
       "teachers": "Teachers",
-      "events": "Events"
+      "events": "Events",
+      "period": "Period {{number}}",
+      "term": "Term"
     },
     "schedule": {
       "title": "Today's Classes",

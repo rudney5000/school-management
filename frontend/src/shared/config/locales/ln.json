@@ -138,6 +138,13 @@
   "dashboard": {
     "title": "Tableau de bord",
     "subtitle": "Vue d'ensemble",
+    "tagline": "Bokambi ya Eteyelo",
+    "live": "Na ntango oyo",
+    "aria": {
+      "close": "Kokanga sidebar",
+      "expand": "Kofungola sidebar",
+      "collapse": "Kokitisa sidebar"
+    },
     "greeting": {
       "morning": "Mbote na ntɔngɔ",
       "afternoon": "Mbote na moi",
@@ -152,7 +159,9 @@
       "students": "Élèves",
       "teachers": "Ba Enseignant",
       "events": "Ba évenement",
-      "attendances": "Présences"
+      "attendances": "Présences",
+      "term": "Trimestre",
+      "period": "Ngonga {{number}}"
     },
     "schedule": {
       "title": "Cours du jour",
