@@ -53,11 +53,18 @@ export function Sidebar({
         <TooltipProvider delayDuration={0}>
             <aside
                 className={cn(
-                    'flex flex-col shrink-0 h-screen sticky top-0 bg-gradient-to-b from-[#1755EC] to-[#4F46E5]',
-                    'transition-[width] duration-250 ease-in-out overflow-hidden',
-                    'lg:relative z-30',
-                    isMobile ? (collapsed ? '-translate-x-full' : 'translate-x-0 fixed') : '',
-                    isMobile ? 'w-[260px]' : (collapsed ? 'w-[64px]' : 'w-[260px]')
+                    'flex flex-col shrink-0 h-screen bg-gradient-to-b from-[#1755EC] to-[#4F46E5]',
+                    'transition-[width,transform] duration-200 ease-in-out overflow-hidden',
+                    'z-30',
+                    isMobile
+                        ? cn(
+                            'fixed inset-y-0 left-0 w-[260px]',
+                            collapsed ? '-translate-x-full' : 'translate-x-0'
+                        )
+                        : cn(
+                            'sticky top-0 lg:relative',
+                            collapsed ? 'w-[64px]' : 'w-[260px]'
+                        )
                 )}
             >
                 <div className="relative flex items-center gap-3 px-4 h-16 shrink-0 border-b border-white/10">
@@ -143,9 +150,7 @@ export function Sidebar({
                                             <Icon
                                                 className={cn(
                                                     'w-[18px] h-[18px] shrink-0 transition-colors',
-                                                    isActive
-                                                        ? 'text-[#1755EC]'
-                                                        : 'text-white/60 group-hover:text-white'
+                                                    isActive ? 'text-[#1755EC]' : 'text-white/60 group-hover:text-white'
                                                 )}
                                             />
                                             <span
@@ -154,19 +159,17 @@ export function Sidebar({
                                                     collapsed ? 'opacity-0 w-0' : 'opacity-100'
                                                 )}
                                             >
-                                                {t(item.labelKey)}
-                                            </span>
+                                    {t(item.labelKey)}
+                                </span>
                                             {item.badge && !collapsed && (
                                                 <span
                                                     className={cn(
                                                         'flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[10px] font-semibold',
-                                                        isActive
-                                                            ? 'bg-[#1755EC]/10 text-[#1755EC]'
-                                                            : 'bg-white/20 text-white'
+                                                        isActive ? 'bg-[#1755EC]/10 text-[#1755EC]' : 'bg-white/20 text-white'
                                                     )}
                                                 >
-                                                    {item.badge}
-                                                </span>
+                                        {item.badge}
+                                    </span>
                                             )}
                                         </LocaleLink>
                                     )
@@ -176,14 +179,14 @@ export function Sidebar({
                                             {collapsed ? (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
-                                                        {linkContent}
+                                                        <span className="block">{linkContent}</span>
                                                     </TooltipTrigger>
                                                     <TooltipContent side="right">
                                                         {t(item.labelKey)}
                                                         {item.badge && (
                                                             <span className="ml-1.5 text-xs opacity-70">
-                                                                {item.badge}
-                                                            </span>
+                                                    {item.badge}
+                                                </span>
                                                         )}
                                                     </TooltipContent>
                                                 </Tooltip>
@@ -199,11 +202,13 @@ export function Sidebar({
                 </nav>
 
                 {liveClass && (
-                    <div className="shrink-0 mx-2.5 mb-2 px-3 py-2.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10">
+                    <div
+                        className="shrink-0 mx-2.5 mb-2 px-3 py-2.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10">
                         {collapsed ? (
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse block mx-auto" />
+                                    <span
+                                        className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse block mx-auto"/>
                                 </TooltipTrigger>
                                 <TooltipContent side="right">
                                     {liveClass.code} · Live
@@ -212,7 +217,7 @@ export function Sidebar({
                         ) : (
                             <>
                                 <div className="flex items-center gap-1.5 mb-0.5">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0"/>
                                     <span className="text-[11px] font-semibold text-white">
                                         {liveClass.code} · Period 3 · Live
                                     </span>
@@ -225,11 +230,13 @@ export function Sidebar({
                     </div>
                 )}
 
-                <div className="shrink-0 mx-2.5 mb-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 p-3">
+                <div
+                    className="shrink-0 mx-2.5 mb-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 p-3">
                     <div className="flex items-center gap-3">
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0 ring-2 ring-white/20 cursor-default">
+                                <div
+                                    className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0 ring-2 ring-white/20 cursor-default">
                                     <span className="text-[12px] font-semibold text-white">
                                         {getInitials(userName)}
                                     </span>
