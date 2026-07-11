@@ -6,12 +6,13 @@ import { sql } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import {createServer} from "node:http";
 import {initSocketServer} from "@/socket/socket";
+import path from "node:path";
 
 async function bootstrap(): Promise<void> {
 
   if (env.NODE_ENV === 'production') {
     console.log('Running migrations...');
-    await migrate(db, { migrationsFolder: './migrations' });
+    await migrate(db, { migrationsFolder: path.join(process.cwd(), 'src/db/migrations') });
     console.log('✓ Migrations done');
   }
 
@@ -22,12 +23,12 @@ async function bootstrap(): Promise<void> {
   const httpServer = createServer(app)
 
   initSocketServer(httpServer)
-  console.log('✓ Socket server initialized')
+  const port = process.env.PORT || env.PORT_BACKEND
 
-  httpServer.listen(env.PORT_BACKEND, () => {
-    console.log(`✓ Server running on port ${env.PORT_BACKEND}`);
-    console.log(`  Health  → http://localhost:${env.PORT_BACKEND}/health`);
-    console.log(`  API     → http://localhost:${env.PORT_BACKEND}/api`);
+  httpServer.listen(port, () => {
+    console.log(`✓ Server running on port ${port}`);
+    console.log(`  Health  → http://localhost:${port}/health`);
+    console.log(`  API     → http://localhost:${port}/api`);
     console.log(`  Env     → ${env.NODE_ENV}`);
   });
 }

@@ -52,7 +52,7 @@ export class ExamsService {
                 durationMinutes: input.durationMinutes,
                 maxScore: String(input.maxScore),
                 coefficient: String(input.coefficient),
-                isLiveExam: input.isLiveExam,
+                isLiveSession: input.isLiveExam,
                 liveUrl: input.liveUrl,
                 createdBy: input.createdBy,
             })

@@ -48,7 +48,7 @@ export class EventsService {
           location: input.location,
           isPublic: input.isPublic,
           subSchoolId: input.subSchoolId,
-          isLiveEvent: input.isLiveEvent,
+          isLiveSession: input.isLiveEvent,
           liveUrl: input.liveUrl,
           createdBy: createdByUserId,
         })
