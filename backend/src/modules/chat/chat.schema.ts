@@ -66,8 +66,6 @@ export type AddMembersInput         = z.infer<typeof addMembersSchema>
 
 export type UploadedFile = {
     key:       string
-    publicUrl: string
-    bucketName: string
     filename:  string
     mimeType:  string
     size:      number

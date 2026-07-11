@@ -24,8 +24,10 @@ import type {
     AddReactionInput,
     AddMembersInput,
     EditMessageInput,
+    UploadedFile,
 } from './chat.schema'
 import {messageAttachments} from "@/db/schema";
+import {getAttachmentUrl} from "@/config/storage";
 
 export class ChatService {
 
@@ -142,7 +144,7 @@ export class ChatService {
             ? await db.query.messages.findFirst({ where: eq(messages.id, before) })
             : null
 
-        return db.query.messages.findMany({
+        const rows = await db.query.messages.findMany({
             where: and(
                 eq(messages.conversationId, conversationId),
                 beforeMessage ? lt(messages.createdAt, beforeMessage.createdAt) : undefined,
@@ -156,6 +158,8 @@ export class ChatService {
             orderBy: desc(messages.createdAt),
             limit,
         })
+
+        return Promise.all(rows.map(this.withAttachmentUrls))
     }
 
     async sendMessage(conversationId: string, senderId: string, input: SendMessageInput) {
@@ -181,7 +185,7 @@ export class ChatService {
     }
 
     async findMessageById(messageId: string) {
-        return db.query.messages.findFirst({
+        const message = await db.query.messages.findFirst({
             where: eq(messages.id, messageId),
             with: {
                 sender:    { columns: { id: true, email: true, role: true } },
@@ -190,6 +194,9 @@ export class ChatService {
                 attachments: true,
             },
         })
+
+        if (!message) return message
+        return this.withAttachmentUrls(message)
     }
 
     async editMessage(messageId: string, userId: string, input: EditMessageInput) {
@@ -328,9 +335,7 @@ export class ChatService {
         await db.insert(messageAttachments).values(
             attachments.map(a => ({
                 messageId,
-                bucketName: a.bucketName,
                 key:        a.key,
-                url:        a.publicUrl,
                 filename:   a.filename,
                 mimeType:   a.mimeType,
                 size:       a.size,
@@ -389,5 +394,18 @@ export class ChatService {
         })
         if (!message) throw new AppError('NOT_FOUND', 'Message introuvable', 404)
         return message
+    }
+
+    private async withAttachmentUrls<T extends { attachments?: { key: string }[] }>(message: T): Promise<T> {
+        if (!message.attachments?.length) return message
+
+        const attachments = await Promise.all(
+            message.attachments.map(async (a) => ({
+                ...a,
+                url: await getAttachmentUrl(a.key),
+            }))
+        )
+
+        return { ...message, attachments }
     }
 }

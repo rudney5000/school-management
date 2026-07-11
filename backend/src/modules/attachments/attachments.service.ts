@@ -11,11 +11,11 @@ import {
     conversations
 } from '@/db/schema/chat'
 import {
+    BUCKET_NAME,
+    buildObjectKey,
     s3Client,
-    ensureBucketExists
 } from '@/config/storage'
 import { AppError } from '@/shared/errors/app-error'
-import { env } from '@/config/env'
 import {PresignUploadInput} from "@/modules/attachments/attachments.schema";
 
 export class AttachmentsService {
@@ -39,13 +39,16 @@ export class AttachmentsService {
 
         if (!conversation) throw new AppError('NOT_FOUND', 'Conversation introuvable', 404)
 
-        const bucketName = await ensureBucketExists(conversation.subSchoolId)
-
         const extension = input.filename.split('.').pop()
-        const key = `chats/${input.conversationId}/${randomUUID()}.${extension}`
+        const key = buildObjectKey(
+            conversation.subSchoolId,
+            'chats',
+            input.conversationId,
+            `${randomUUID()}.${extension}`
+        )
 
         const command = new PutObjectCommand({
-            Bucket:        bucketName,
+            Bucket:        BUCKET_NAME,
             Key:           key,
             ContentType:   input.mimeType,
             ContentLength: input.size,
@@ -56,8 +59,6 @@ export class AttachmentsService {
         return {
             uploadUrl,
             key,
-            bucketName,
-            publicUrl: `${env.MINIO_ENDPOINT}/${bucketName}/${key}`,
         }
     }
 }
