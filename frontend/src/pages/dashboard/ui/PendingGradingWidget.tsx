@@ -33,7 +33,7 @@ const gradeTypeLabels: Record<GradeType, string> = {
 const colors = ['bg-indigo-500', 'bg-teal-500', 'bg-green-500', 'bg-blue-500', 'bg-amber-500', 'bg-purple-500'];
 
 export function PendingGradingWidget() {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const subSchoolId = useAppSelector(selectSubSchoolId);
     const [pendingGrading, setPendingGrading] = useState<PendingGradingItem[]>([]);
     const [loading, setLoading] = useState(true);
@@ -44,9 +44,9 @@ export function PendingGradingWidget() {
         const fetchPendingGrading = async () => {
             try {
                 const [gradesResponse, classesResponse, coursesResponse] = await Promise.all([
-                    gradeApi.getAll({ subSchoolId }),
-                    classApi.getAll({ subSchoolId }),
-                    courseApi.getAll({ subSchoolId }),
+                    gradeApi.getAll({subSchoolId}),
+                    classApi.getAll({subSchoolId}),
+                    courseApi.getAll({subSchoolId}),
                 ]);
 
                 if (gradesResponse.status !== Status.Success || !Array.isArray(gradesResponse.result)) {
@@ -103,14 +103,15 @@ export function PendingGradingWidget() {
                 <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                         <CardTitle className="text-base">{t('dashboard.widgets.pendingGrading.title')}</CardTitle>
-                        <span className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">{t('dashboard.widgets.pendingGrading.loading')}</span>
+                        <span
+                            className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">{t('dashboard.widgets.pendingGrading.loading')}</span>
                     </div>
                     <p className="text-xs text-zinc-400">{t('dashboard.widgets.pendingGrading.submissionsAwaitingReview')}</p>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-3">
                         {[1, 2, 3, 4].map((i) => (
-                            <div key={i} className="h-12 bg-zinc-100 rounded-lg animate-pulse" />
+                            <div key={i} className="h-12 bg-zinc-100 rounded-lg animate-pulse"/>
                         ))}
                     </div>
                 </CardContent>
@@ -123,7 +124,8 @@ export function PendingGradingWidget() {
             <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                     <CardTitle className="text-base">{t('dashboard.widgets.pendingGrading.title')}</CardTitle>
-                    <span className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">{pendingGrading.length} {t('dashboard.widgets.pendingGrading.pending')}</span>
+                    <span
+                        className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">{pendingGrading.length} {t('dashboard.widgets.pendingGrading.pending')}</span>
                 </div>
                 <p className="text-xs text-zinc-400">{t('dashboard.widgets.pendingGrading.gradesAwaitingScore')}</p>
             </CardHeader>
@@ -135,16 +137,19 @@ export function PendingGradingWidget() {
                 ) : (
                     pendingGrading.map((g) => (
                         <div key={g.id} className="flex items-center gap-3 cursor-pointer group">
-                            <div className={cn('w-8 h-8 rounded-full shrink-0 flex items-center justify-center text-white text-xs font-bold', g.color)}>
+                            <div
+                                className={cn('w-8 h-8 rounded-full shrink-0 flex items-center justify-center text-white text-xs font-bold', g.color)}>
                                 {g.initials}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <div className="text-sm font-medium text-zinc-800 group-hover:text-indigo-600 transition-colors truncate">
+                                <div
+                                    className="text-sm font-medium text-zinc-800 group-hover:text-indigo-600 transition-colors truncate">
                                     {g.label}
                                 </div>
                                 <div className="text-xs text-zinc-400">{g.sub}</div>
                             </div>
-                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 bg-orange-100 text-orange-600">
+                            <span
+                                className="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 bg-orange-100 text-orange-600">
                                 {t('dashboard.widgets.pendingGrading.pendingLabel')}
                             </span>
                         </div>
