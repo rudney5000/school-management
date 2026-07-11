@@ -12,7 +12,7 @@ async function bootstrap(): Promise<void> {
 
   if (env.NODE_ENV === 'production') {
     console.log('Running migrations...');
-    await migrate(db, { migrationsFolder: path.join(process.cwd(), 'src/db/migrations') });
+    await migrate(db, { migrationsFolder: path.join(process.cwd(), 'migrations') });
     console.log('✓ Migrations done');
   }
 
