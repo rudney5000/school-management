@@ -14,6 +14,8 @@ const envSchema = z.object({
     .transform((value) => value.split(',').map((origin) => origin.trim())),
   REDIS_HOST: z.string().default('localhost'),
   REDIS_PORT: z.coerce.number().default(6379),
+  REDIS_PASSWORD: z.string().optional(),
+  REDIS_TLS: z.coerce.boolean().default(false),
   MINIO_ENDPOINT:      z.string().url(),
   MINIO_ROOT_USER:     z.string().min(1),
   MINIO_ROOT_PASSWORD: z.string().min(1),

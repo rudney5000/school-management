@@ -41,7 +41,6 @@ import {
     examResults,
     exams
 } from "@/db/schema/exam";
-import {randomUUID} from "crypto";
 
 async function seed() {
     console.log('Seeding...');
@@ -1480,23 +1479,18 @@ async function seed() {
             .where(eq(messageAttachments.messageId, mathMsg.id))
 
         if (!existingAttachment) {
-            const bucketName = `school-${subSchool.id}`
 
             await db.insert(messageAttachments).values([
                 {
                     messageId: mathMsg.id,
-                    bucketName,
                     key:       `chats/${mathMsg.conversationId}/sample-doc.pdf`,
-                    url:       `http://localhost:9000/school-chat/chats/${mathMsg.conversationId}/sample-doc.pdf`,
                     filename:  'Programme-examen-novembre.pdf',
                     mimeType:  'application/pdf',
                     size:      102400,
                 },
                 {
                     messageId: mathMsg.id,
-                    bucketName,
                     key:       `chats/${mathMsg.conversationId}/sample-image.jpg`,
-                    url:       `http://localhost:9000/school-chat/chats/${mathMsg.conversationId}/sample-image.jpg`,
                     filename:  'formules-mathematiques.jpg',
                     mimeType:  'image/jpeg',
                     size:      204800,
