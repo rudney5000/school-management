@@ -1,12 +1,11 @@
 import {
-    Button,
     Badge,
     Card,
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-    LocaleLink
+    Button
 } from "@shared/ui";
 import {
     Calendar,
@@ -17,7 +16,7 @@ import {
     Trophy
 } from "lucide-react";
 import { useTranslation } from '@/shared/lib';
-import {LanguageSwitcher} from "@features/change-language/ui/LanguageSwitcher";
+import { Navigation } from "@shared/ui";
 
 export function HeroSection() {
     const { t } = useTranslation();
@@ -29,37 +28,7 @@ export function HeroSection() {
     ];
     return (
         <section className="mx-auto max-w-7xl px-6 py-8 lg:px-10 lg:py-12">
-            <nav className="mb-10 flex items-center justify-between rounded-full bg-white/70 px-5 py-4 backdrop-blur">
-                <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
-                        S
-                    </div>
-                    <span className="text-2xl font-semibold tracking-tight text-blue-600">
-                        SchoolHub
-                    </span>
-                </div>
-
-                <div className="hidden items-center gap-8 text-sm text-slate-600 md:flex">
-                    <a href="#features" className="hover:text-slate-950">
-                        {t('home.hero_section.features')}
-                    </a>
-                    <a href="#users" className="hover:text-slate-950">
-                        {t('home.hero_section.users')}
-                    </a>
-                    <LocaleLink to='/faq' className="hover:text-slate-950">
-                        {t('home.hero_section.faq')}
-                    </LocaleLink>
-                </div>
-
-                <div className="flex items-center gap-3">
-                    <LanguageSwitcher />
-
-                    <LocaleLink to='/login'>
-                        {t('home.hero_section.login')}
-                    </LocaleLink>
-                    <Button className="rounded-full px-6">{t('home.hero_section.get_started')}</Button>
-                </div>
-            </nav>
+            <Navigation />
 
             <div className="grid items-center gap-12 lg:grid-cols-2">
                 <div className="space-y-8">

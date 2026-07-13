@@ -971,5 +971,115 @@
     "profile": "Profil",
     "settings": "Bongisi",
     "logout": "Kobima"
+  },
+  "faq": {
+    "nav": {
+      "home": "Ezala",
+      "faq": "Mituna oyo etunamaka mingi",
+      "login": "Kokota",
+      "getStarted": "Bandá"
+    },
+    "hero": {
+      "badge": "Esika ya bosungi",
+      "title": "Mituna oyo etunamaka mingi",
+      "description": "Tia bisusu mbandaka ya ba masolo na yo na SchoolHub. Equipe ya bisungi na biso ezali mpo na kosunga yo."
+    },
+    "quickLinks": {
+      "documentation": {
+        "title": "Documentation",
+        "desc": "Buku ya bosungi ya mobimba"
+      },
+      "mobileApp": {
+        "title": "Application ya téléphone",
+        "desc": "Ezali na iOS mpe Android"
+      },
+      "support": {
+        "title": "Bosungi na internet",
+        "desc": "Chat 24/7 ezali"
+      },
+      "webinars": {
+        "title": "Ba webinaires",
+        "desc": "Ba formations ya na tango oyo"
+      }
+    },
+    "support": {
+      "title": "Osengi bosungi?",
+      "description": "Equipe ya bisungi na biso ezali mpo na kotia mbandaka na ba masolo nyonso.",
+      "email": "Email",
+      "phone": "Telefone",
+      "hours": "Ba ngonga",
+      "contactButton": "Kotisa na bosungi"
+    },
+    "categories": {
+      "accounts": {
+        "title": "Ba comptes & Basaleli",
+        "questions": {
+          "createAccount": {
+            "question": "Comment na kokota compte na SchoolHub?",
+            "answer": "Kokana na 'Bandá' na likolo ya mobali mbala, sima kokota na ba étapes ya inscription. Ozali kokota email ya confirmation mpo na kotia compte na yo na mbote. Ba administrateurs bakoki mpe kosalaka ba comptes mpo na bayekoli mpe balakisi na eteyelo na bango."
+          },
+          "addChildren": {
+            "question": "Comment na kobakisa bana mingi na compte ya moboti?",
+            "answer": "Na espace ya moboti na yo, kokota na 'Bana na ngai' sima kokana na 'Bakisa mwana'. Kotia code oyo etindami na eteyelo ya mwana na yo. Ozali kokota bana mingi bazali kokota na ba eteyelo misusu."
+          },
+          "changePassword": {
+            "question": "Comment na kobongola mot de passe ya ngai?",
+            "answer": "Kokota na profil na yo na kokana na avatar na yo, sima 'Ba paramètres ya sécurité' mpe 'Bongola mot de passe'. Ozali kokota email ya confirmation mpo na kokima kobongola."
+          }
+        }
+      },
+      "courses": {
+        "title": "Ba cours & Pédagogie",
+        "questions": {
+          "publishCourses": {
+            "question": "Comment ba enseignants bazali kotisa ba cours?",
+            "answer": "Ba enseignants bakota na espace pédagogique na bango, basala cours ya sika, bakisaka ba ressources (ba documents, ba vidéos, ba liens) mpe batisa yango. Bayekoli bakota notification automatique."
+          },
+          "askQuestions": {
+            "question": "Bayekoli bakoki kokota masolo na ba cours?",
+            "answer": "Iyo, cours nyonso ezali na espace ya discussion awa bayekoli bakoki kokota masolo. Ba enseignants bazali kotia mbandaka mpe ba mbandaka ezali monana na classe nyonso."
+          },
+          "trackProgress": {
+            "question": "Comment na kolanda progrès ya bayekoli?",
+            "answer": "Tableau de bord ya mosusu ezali monaka ba notes, ba devoirs ezali kotisama, tango oyo ezali pasé na module nyonso mpe ba statistiques ya progrès mpo na moyekoli nyonso."
+          }
+        }
+      },
+      "security": {
+        "title": "Sécurité & Confidentialité",
+        "questions": {
+          "dataProtection": {
+            "question": "Comment ba données ya bayekoli bazali batelami?",
+            "answer": "Ba données nyonso ezali crypté na SSL/TLS. Biso to respecti RGPD mpe ba réglementations ya protection ya mineurs. Ba données ezali na Europe mpe ba sauvegardes ya mokolo mobimba."
+          },
+          "accessLevels": {
+            "question": "Ba niveaux d'accès nini bazali?",
+            "answer": "Ezali na ba rôles 4 ya liboso: Administrateur (accès ya mobimba), Enseignant (gestion pédagogique), Élève (accès ya cours mpe ba notes), Parent (kolanda bana). Rôle nyonso ezali na ba permissions ya yango."
+          },
+          "parentControl": {
+            "question": "Nakoki kokola moboti azali mona?",
+            "answer": "Iyo, ba enseignants mpe ba administrateurs bakoki kokola visibilité ya ba informations: ba notes ya detailé to ba moyenne nyonso, ba commentaires publics to privés, etc."
+          }
+        }
+      },
+      "pricing": {
+        "title": "Tarification & Facturation",
+        "questions": {
+          "plans": {
+            "question": "Ba plans tarifaires nini bazali?",
+            "answer": "Bisoto tozali na ba formules 3: Essential (kino 300 bayekoli), Professional (kino 1000 bayekoli) mpe ba analyses ya avancé, mpe Enterprise (illimité) mpe bosungi ya dédié. Kotisa biso mpo na devis ya personnalisé."
+          },
+          "trial": {
+            "question": "Ezali na période ya essai gratuit?",
+            "answer": "Iyo, formule nyonso ezali na mibu 30 ya essai gratuit sans engagement. Carte bancaire te esengeli mpo na période ya essai."
+          },
+          "billing": {
+            "question": "Comment facturation ezali kokota?",
+            "answer": "Facturation annuelle to mensuelle na choix na yo. Paiement na carte bancaire, virement to chèque. Réduction ya 15% mpo na engagement annuel. Ba factures ezali na espace ya administrateur."
+          }
+        }
+      }
+    },
+    "questionsCount": "{{count}} masolo"
   }
 }

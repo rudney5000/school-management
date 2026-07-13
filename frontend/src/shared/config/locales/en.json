@@ -1010,5 +1010,115 @@
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Logout"
+  },
+  "faq": {
+    "nav": {
+      "home": "Home",
+      "faq": "FAQ",
+      "login": "Login",
+      "getStarted": "Get Started"
+    },
+    "hero": {
+      "badge": "Help Center",
+      "title": "Frequently Asked Questions",
+      "description": "Find all the answers to your questions about SchoolHub. Our support team is also available to help you."
+    },
+    "quickLinks": {
+      "documentation": {
+        "title": "Documentation",
+        "desc": "Complete user guide"
+      },
+      "mobileApp": {
+        "title": "Mobile App",
+        "desc": "iOS & Android available"
+      },
+      "support": {
+        "title": "Online Support",
+        "desc": "24/7 Chat available"
+      },
+      "webinars": {
+        "title": "Webinars",
+        "desc": "Live training sessions"
+      }
+    },
+    "support": {
+      "title": "Need help?",
+      "description": "Our support team is available to answer all your questions.",
+      "email": "Email",
+      "phone": "Phone",
+      "hours": "Hours",
+      "contactButton": "Contact support"
+    },
+    "categories": {
+      "accounts": {
+        "title": "Accounts & Users",
+        "questions": {
+          "createAccount": {
+            "question": "How do I create an account on SchoolHub?",
+            "answer": "Click 'Get Started' in the top right, then follow the registration steps. You will receive a confirmation email to activate your account. Administrators can also create accounts for students and teachers at their institution."
+          },
+          "addChildren": {
+            "question": "How do I add multiple children to a parent account?",
+            "answer": "In your parent space, go to 'My Children' then click 'Add a Child'. Enter the code provided by your child's institution. You can follow multiple children enrolled in different institutions."
+          },
+          "changePassword": {
+            "question": "How do I change my password?",
+            "answer": "Access your profile by clicking on your avatar, then 'Security Settings' and 'Change Password'. You will receive a confirmation email to validate the change."
+          }
+        }
+      },
+      "courses": {
+        "title": "Courses & Pedagogy",
+        "questions": {
+          "publishCourses": {
+            "question": "How do teachers publish courses?",
+            "answer": "Teachers access their educational space, create a new course, add resources (documents, videos, links) and publish it. Students receive an automatic notification."
+          },
+          "askQuestions": {
+            "question": "Can students ask questions about courses?",
+            "answer": "Yes, each course has a discussion space where students can ask questions. Teachers respond and answers are visible to the entire class."
+          },
+          "trackProgress": {
+            "question": "How do I track student progress?",
+            "answer": "A dedicated dashboard shows grades, assignments submitted, time spent on each module, and progress statistics for each student."
+          }
+        }
+      },
+      "security": {
+        "title": "Security & Privacy",
+        "questions": {
+          "dataProtection": {
+            "question": "How are student data protected?",
+            "answer": "All data is encrypted with SSL/TLS. We comply with GDPR and regulations on the protection of minors. Data is hosted in Europe with daily backups."
+          },
+          "accessLevels": {
+            "question": "What are the different access levels?",
+            "answer": "There are 4 main roles: Administrator (full access), Teacher (educational management), Student (access to courses and grades), Parent (child monitoring). Each role has specific permissions."
+          },
+          "parentControl": {
+            "question": "Can I control what parents see?",
+            "answer": "Yes, teachers and administrators can configure information visibility: detailed grades or averages only, public or private comments, etc."
+          }
+        }
+      },
+      "pricing": {
+        "title": "Pricing & Billing",
+        "questions": {
+          "plans": {
+            "question": "What pricing plans are available?",
+            "answer": "We offer 3 plans: Essential (up to 300 students), Professional (up to 1000 students) with advanced analytics, and Enterprise (unlimited) with dedicated support. Contact us for a custom quote."
+          },
+          "trial": {
+            "question": "Is there a free trial period?",
+            "answer": "Yes, all plans include 30 days of free trial with no commitment. No credit card required for the trial period."
+          },
+          "billing": {
+            "question": "How does billing work?",
+            "answer": "Annual or monthly billing at your choice. Payment by credit card, bank transfer or check. 15% discount for annual commitment. Invoices available in the admin space."
+          }
+        }
+      }
+    },
+    "questionsCount": "{{count}} questions"
   }
 }

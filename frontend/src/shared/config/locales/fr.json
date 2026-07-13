@@ -1017,5 +1017,115 @@
     "profile": "Profil",
     "settings": "Paramètres",
     "logout": "Déconnexion"
+  },
+  "faq": {
+    "nav": {
+      "home": "Accueil",
+      "faq": "FAQ",
+      "login": "Connexion",
+      "getStarted": "Commencer"
+    },
+    "hero": {
+      "badge": "Centre d'Aide",
+      "title": "Questions Fréquentes",
+      "description": "Retrouvez toutes les réponses à vos questions sur SchoolHub. Notre équipe support est également disponible pour vous aider."
+    },
+    "quickLinks": {
+      "documentation": {
+        "title": "Documentation",
+        "desc": "Guide complet d'utilisation"
+      },
+      "mobileApp": {
+        "title": "Application Mobile",
+        "desc": "iOS & Android disponibles"
+      },
+      "support": {
+        "title": "Support en ligne",
+        "desc": "Chat 24/7 disponible"
+      },
+      "webinars": {
+        "title": "Webinaires",
+        "desc": "Formations en direct"
+      }
+    },
+    "support": {
+      "title": "Besoin d'aide?",
+      "description": "Notre équipe support est disponible pour répondre à toutes vos questions.",
+      "email": "Email",
+      "phone": "Téléphone",
+      "hours": "Horaires",
+      "contactButton": "Contacter le support"
+    },
+    "categories": {
+      "accounts": {
+        "title": "Comptes & Utilisateurs",
+        "questions": {
+          "createAccount": {
+            "question": "Comment créer un compte sur SchoolHub?",
+            "answer": "Cliquez sur 'Commencer' en haut à droite, puis suivez les étapes d'inscription. Vous recevrez un email de confirmation pour activer votre compte. Les administrateurs peuvent également créer des comptes pour les élèves et enseignants de leur établissement."
+          },
+          "addChildren": {
+            "question": "Comment ajouter plusieurs enfants à un compte parent?",
+            "answer": "Dans votre espace parent, allez dans 'Mes enfants' puis cliquez sur 'Ajouter un enfant'. Entrez le code fourni par l'établissement de votre enfant. Vous pouvez suivre plusieurs enfants scolarisés dans différents établissements."
+          },
+          "changePassword": {
+            "question": "Comment changer mon mot de passe?",
+            "answer": "Accédez à votre profil en cliquant sur votre avatar, puis 'Paramètres de sécurité' et 'Changer le mot de passe'. Vous recevrez un email de confirmation pour valider le changement."
+          }
+        }
+      },
+      "courses": {
+        "title": "Cours & Pédagogie",
+        "questions": {
+          "publishCourses": {
+            "question": "Comment les enseignants publient-ils les cours?",
+            "answer": "Les enseignants accèdent à leur espace pédagogique, créent un nouveau cours, ajoutent les ressources (documents, vidéos, liens) et le publient. Les élèves reçoivent une notification automatique."
+          },
+          "askQuestions": {
+            "question": "Les élèves peuvent-ils poser des questions sur les cours?",
+            "answer": "Oui, chaque cours dispose d'un espace de discussion où les élèves peuvent poser des questions. Les enseignants répondent et les réponses sont visibles par toute la classe."
+          },
+          "trackProgress": {
+            "question": "Comment suivre la progression des élèves?",
+            "answer": "Un tableau de bord dédié montre les notes, les devoirs rendus, le temps passé sur chaque module et les statistiques de progression pour chaque élève."
+          }
+        }
+      },
+      "security": {
+        "title": "Sécurité & Confidentialité",
+        "questions": {
+          "dataProtection": {
+            "question": "Comment sont protégées les données des élèves?",
+            "answer": "Toutes les données sont cryptées en SSL/TLS. Nous respectons le RGPD et les réglementations sur la protection des mineurs. Les données sont hébergées en Europe avec des sauvegardes quotidiennes."
+          },
+          "accessLevels": {
+            "question": "Quels sont les différents niveaux d'accès?",
+            "answer": "Il existe 4 rôles principaux: Administrateur (accès complet), Enseignant (gestion pédagogique), Élève (accès cours et notes), Parent (suivi enfants). Chaque rôle a des permissions spécifiques."
+          },
+          "parentControl": {
+            "question": "Puis-je contrôler ce que voient les parents?",
+            "answer": "Oui, les enseignants et administrateurs peuvent configurer la visibilité des informations: notes détaillées ou moyennes uniquement, commentaires publics ou privés, etc."
+          }
+        }
+      },
+      "pricing": {
+        "title": "Tarification & Facturation",
+        "questions": {
+          "plans": {
+            "question": "Quels sont les plans tarifaires disponibles?",
+            "answer": "Nous proposons 3 formules: Essential (jusqu'à 300 élèves), Professional (jusqu'à 1000 élèves) avec analyses avancées, et Enterprise (illimité) avec support dédié. Contactez-nous pour un devis personnalisé."
+          },
+          "trial": {
+            "question": "Y a-t-il une période d'essai gratuit?",
+            "answer": "Oui, toutes les formules incluent 30 jours d'essai gratuit sans engagement. Aucune carte bancaire demandée pour la période d'essai."
+          },
+          "billing": {
+            "question": "Comment se passe la facturation?",
+            "answer": "Facturation annuelle ou mensuelle au choix. Paiement par carte bancaire, virement ou chèque. Réduction de 15% pour engagement annuel. Factures disponibles dans l'espace administrateur."
+          }
+        }
+      }
+    },
+    "questionsCount": "{{count}} questions"
   }
 }
