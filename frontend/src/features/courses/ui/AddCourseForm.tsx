@@ -1,10 +1,20 @@
-import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
 import {useParams} from '@tanstack/react-router'
-import {BookOpen, GraduationCap, Lightbulb, Palette, Pencil, Radio, Ruler, Smartphone, Zap,} from 'lucide-react'
 import {
-    Button, Checkbox,
+    BookOpen,
+    GraduationCap,
+    Lightbulb,
+    Palette,
+    Pencil,
+    Radio,
+    Ruler,
+    Smartphone,
+    Zap,
+} from 'lucide-react'
+import {
+    Button,
+    Checkbox,
     Form,
     FormControl,
     FormField,
