@@ -74,7 +74,7 @@ export function SchoolSwitcher() {
                         role="combobox"
                         aria-expanded={open}
                         aria-label={t('school.selectSchool')}
-                        className="w-[260px] justify-between border-zinc-200 hover:bg-zinc-50 shadow-sm"
+                        className="w-[260px] justify-between rounded-xl border-zinc-200/80 hover:bg-zinc-50/80 shadow-sm"
                     >
                         {selectedSubSchool ? (
                             <>
