@@ -3,30 +3,16 @@ import { Home, ArrowLeft, Search } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import {Button} from "@shared/ui/button.tsx";
 import {Card} from "@shared/ui/card.tsx";
+import { useTranslation } from '@/shared/lib';
+import { Navigation } from "@shared/ui/Navigation";
 
 export function NotFoundPage() {
+    const { t } = useTranslation();
+
     return (
         <main className="min-h-screen bg-[#eef1f7] text-slate-950 flex items-center justify-center">
             <section className="mx-auto max-w-7xl px-6 py-8 lg:px-10 lg:py-12">
-                <nav className="mb-10 flex items-center justify-between rounded-full bg-white/70 px-5 py-4 backdrop-blur">
-                    <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
-                            S
-                        </div>
-                        <span className="text-2xl font-semibold tracking-tight text-blue-600">
-                            SchoolHub
-                        </span>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                        <Button asChild variant="ghost" className="rounded-full">
-                            <Link to="/">Accueil</Link>
-                        </Button>
-                        <Button asChild className="rounded-full px-6">
-                            <Link to="/">Connexion</Link>
-                        </Button>
-                    </div>
-                </nav>
+                <Navigation />
 
                 <div className="grid items-center gap-12 lg:grid-cols-2">
                     <div className="space-y-8 text-center lg:text-left">
@@ -35,11 +21,10 @@ export function NotFoundPage() {
                                 404
                             </div>
                             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-                                Page non trouvée
+                                {t('notFound.page_not_found')}
                             </h1>
                             <p className="max-w-xl text-lg leading-8 text-slate-600">
-                                Oups! La page que vous recherchez semble introuvable.
-                                Peut-être a-t-elle été déplacée ou n'existe plus.
+                                {t('notFound.description')}
                             </p>
                         </div>
 
@@ -47,13 +32,13 @@ export function NotFoundPage() {
                             <Button asChild size="lg" className="rounded-full px-8">
                                 <Link to="/">
                                     <Home className="mr-2 h-5 w-5" />
-                                    Retour à l'accueil
+                                    {t('notFound.back_to_home')}
                                 </Link>
                             </Button>
                             <Button asChild size="lg" variant="outline" className="rounded-full px-8">
                                 <Link to="/">
                                     <ArrowLeft className="mr-2 h-5 w-5" />
-                                    Page précédente
+                                    {t('notFound.previous_page')}
                                 </Link>
                             </Button>
                         </div>
@@ -64,9 +49,9 @@ export function NotFoundPage() {
                                     <Search className="h-5 w-5" />
                                 </div>
                                 <div className="flex-1 text-left">
-                                    <h3 className="font-semibold text-slate-950">Vous cherchez quelque chose?</h3>
+                                    <h3 className="font-semibold text-slate-950">{t('notFound.looking_for_something')}</h3>
                                     <p className="mt-1 text-sm text-slate-600">
-                                        Utilisez le menu de navigation ou retournez à l'accueil pour trouver votre chemin.
+                                        {t('notFound.use_navigation')}
                                     </p>
                                 </div>
                             </div>
@@ -84,30 +69,30 @@ export function NotFoundPage() {
                                         <Search className="h-10 w-10" />
                                     </div>
                                     <h2 className="text-2xl font-semibold">
-                                        Cette page est partie en excursion
+                                        {t('notFound.page_on_trip')}
                                     </h2>
                                     <p className="mt-3 text-white/80">
-                                        Mais ne vous inquiétez pas! Il y a beaucoup à découvrir sur SchoolHub.
+                                        {t('notFound.dont_worry')}
                                     </p>
                                 </div>
 
                                 <div className="grid gap-4">
                                     <div className="rounded-2xl bg-white/10 p-4 backdrop-blur-sm">
-                                        <h3 className="font-semibold">Gestion Scolaire</h3>
+                                        <h3 className="font-semibold">{t('notFound.school_management')}</h3>
                                         <p className="mt-1 text-sm text-white/80">
-                                            Plateforme complète du primaire au supérieur
+                                            {t('notFound.complete_platform')}
                                         </p>
                                     </div>
                                     <div className="rounded-2xl bg-white/10 p-4 backdrop-blur-sm">
-                                        <h3 className="font-semibold">150+ Établissements</h3>
+                                        <h3 className="font-semibold">{t('notFound.establishments')}</h3>
                                         <p className="mt-1 text-sm text-white/80">
-                                            Rejoignez notre communauté éducative
+                                            {t('notFound.join_community')}
                                         </p>
                                     </div>
                                     <div className="rounded-2xl bg-white/10 p-4 backdrop-blur-sm">
-                                        <h3 className="font-semibold">Multi-Utilisateurs</h3>
+                                        <h3 className="font-semibold">{t('notFound.multi_users')}</h3>
                                         <p className="mt-1 text-sm text-white/80">
-                                            Élèves, enseignants, parents et administration
+                                            {t('notFound.users_list')}
                                         </p>
                                     </div>
                                 </div>

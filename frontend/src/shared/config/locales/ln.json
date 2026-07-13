@@ -33,6 +33,24 @@
     "already_have_account": "Ozali déjà na compte?",
     "sign_in": "Kokota"
   },
+  "notFound": {
+    "home": "Ekolo",
+    "login": "Kokota",
+    "page_not_found": "Page ezali te",
+    "description": "Aïe! Page oyo ozali koluka ekoki kozala te. Mbala aza kobongola to aza exista te.",
+    "back_to_home": "Kokota na ekolo",
+    "previous_page": "Page ya liboso",
+    "looking_for_something": "Ozali koluka mosusu?",
+    "use_navigation": "Salela menu ya navigation to kokota na ekolo mpo na kokota nzela.",
+    "page_on_trip": "Page oyo aza kenda na excursion",
+    "dont_worry": "Kasi kokanga! Ezali makambo mingi mpo na koyeba na SchoolHub.",
+    "school_management": "Bokambi ya kelasi",
+    "complete_platform": "Plateforme ya mobimba kobanda na primaire kino na université",
+    "establishments": "Ba eteyelo koleka 150",
+    "join_community": "Sangana na communauté ya boyekoli na biso",
+    "multi_users": "Ba basaleli mingi",
+    "users_list": "Bayekoli, balakisi, baboti mpe administration"
+  },
   "nav": {
     "group": {
       "main": "Ya liboso",

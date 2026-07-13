@@ -151,6 +151,24 @@
       "permanent_access_description": "Compatible desktop, tablet and mobile for everyone."
     }
   },
+  "notFound": {
+    "home": "Home",
+    "login": "Login",
+    "page_not_found": "Page not found",
+    "description": "Oops! The page you are looking for seems to be missing. Maybe it has been moved or no longer exists.",
+    "back_to_home": "Back to home",
+    "previous_page": "Previous page",
+    "looking_for_something": "Looking for something?",
+    "use_navigation": "Use the navigation menu or go back to home to find your way.",
+    "page_on_trip": "This page went on a field trip",
+    "dont_worry": "But don't worry! There's plenty to discover on SchoolHub.",
+    "school_management": "School Management",
+    "complete_platform": "Complete platform from primary to higher education",
+    "establishments": "150+ Establishments",
+    "join_community": "Join our educational community",
+    "multi_users": "Multi-Users",
+    "users_list": "Students, teachers, parents and administration"
+  },
   "nav": {
     "group": {
       "main": "Main",
