@@ -17,7 +17,7 @@ import {LoginPage} from "@/pages/login/LoginPage";
 import {RegisterPage} from "@/pages/register/RegisterPage";
 import i18n from "@app/i18n/i18n";
 import {DashboardLayout} from "@app/router/layouts/DashboardLayout";
-import {SUPPORT_LOCALES} from "@shared/config/i18n/locale-config";
+import {DEFAULT_LOCALE, SUPPORT_LOCALES} from "@shared/config/i18n/locale-config";
 
 type RouterContext = {
     isAuthenticated: () => boolean;
@@ -32,6 +32,17 @@ const rootRoute = createRootRoute({
     component: LocaleOutlet,
     notFoundComponent: NotFoundPage
 });
+
+const indexRedirectRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/',
+    beforeLoad: () => {
+        throw redirect({
+            to: '/$locale',
+            params: { locale: DEFAULT_LOCALE }
+        })
+    }
+})
 
 const localeRoute = createRoute({
     getParentRoute: () => rootRoute,
@@ -198,6 +209,7 @@ const chatRoute = createRoute({
 })
 
 const routeTree = rootRoute.addChildren([
+    indexRedirectRoute,
     localeRoute.addChildren([
         homeLayoutRoute
             .addChildren([
