@@ -78,9 +78,12 @@ export function Sidebar({
                             collapsed ? 'opacity-0 w-0' : 'opacity-100'
                         )}
                     >
-                        <span className="text-[15px] font-bold tracking-tight text-white truncate">
-                            EduPulse
-                        </span>
+
+                        <LocaleLink to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                            <span className="text-[15px] font-bold tracking-tight text-white truncate">
+                                SchoolHub
+                            </span>
+                        </LocaleLink>
                         <span className="text-[10px] font-medium uppercase tracking-widest text-white/50">
                             {t('dashboard.tagline')}
                         </span>
