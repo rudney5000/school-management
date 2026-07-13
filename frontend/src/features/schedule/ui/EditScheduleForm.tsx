@@ -65,7 +65,7 @@ export const EditScheduleForm: React.FC<Props> = ({
             room: schedule.room ?? '',
             academicYear: schedule.academicYear,
             isLiveSession: schedule.isLiveSession,
-            liveUrl: schedule.liveUrl,
+            liveUrl: schedule.liveUrl ?? undefined,
         },
     })
 

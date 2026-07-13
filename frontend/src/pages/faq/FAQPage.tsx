@@ -1,4 +1,3 @@
-
 import {
     HelpCircle,
     MessageSquare,
@@ -13,10 +12,16 @@ import {
     ChevronRight,
 } from "lucide-react";
 import {Link} from "@tanstack/react-router";
-import {Button} from "@shared/ui/button.tsx";
-import {Badge} from "@shared/ui/badge.tsx";
-import {Card} from "@shared/ui/card.tsx";
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@shared/ui/accordion.tsx";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+    Badge,
+    Button,
+    Card
+} from "@shared/ui";
+import {useLocaleRoute} from "@shared/lib";
 
 const faqCategories = [
     {
@@ -121,6 +126,7 @@ const quickLinks = [
 ];
 
 export function FAQPage() {
+    const { localeRoute } = useLocaleRoute()
     return (
         <main className="min-h-screen bg-[#eef1f7] text-slate-950">
             <section className="mx-auto max-w-7xl px-6 py-8 lg:px-10 lg:py-12">
@@ -138,7 +144,7 @@ export function FAQPage() {
                         <Link to="/" className="hover:text-slate-950">
                             Accueil
                         </Link>
-                        <Link to="/faq" className="font-semibold text-blue-600">
+                        <Link {...localeRoute("/faq")} className="font-semibold text-blue-600">
                             FAQ
                         </Link>
                     </div>
@@ -153,7 +159,6 @@ export function FAQPage() {
                     </div>
                 </nav>
 
-                {/* Header */}
                 <div className="mb-12 text-center">
                     <Badge className="rounded-full px-4 py-2 text-sm" variant="secondary">
                         Centre d'Aide
@@ -167,7 +172,6 @@ export function FAQPage() {
                     </p>
                 </div>
 
-                {/* Quick Links */}
                 <div className="mb-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     {quickLinks.map((link) => (
                         <Card key={link.title} className="group cursor-pointer rounded-3xl border-0 bg-white p-5 shadow-sm transition-all hover:shadow-lg">
@@ -186,7 +190,6 @@ export function FAQPage() {
                 </div>
 
                 <div className="grid gap-8 lg:grid-cols-3">
-                    {/* Sidebar */}
                     <div className="lg:col-span-1">
                         <Card className="sticky top-8 rounded-[2rem] border-0 bg-blue-600 p-6 text-white shadow-[0_20px_60px_rgba(37,99,235,0.25)]">
                             <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-white/20">
@@ -235,7 +238,6 @@ export function FAQPage() {
                         </Card>
                     </div>
 
-                    {/* FAQ Categories */}
                     <div className="lg:col-span-2">
                         <div className="space-y-6">
                             {faqCategories.map((category) => (

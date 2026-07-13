@@ -5,7 +5,10 @@ import {
     type OverviewDetailItem,
     type OverviewQuickAction
 } from "@shared/ui/data-table/panels/EntityOverviewPanel";
-import {Edit, Eye} from "lucide-react";
+import {
+    Edit,
+    Eye
+} from "lucide-react";
 
 export const ClassDetailPanel = ({ classItem }: { classItem: Class }) => {
 
@@ -18,7 +21,7 @@ export const ClassDetailPanel = ({ classItem }: { classItem: Class }) => {
         { label: 'Niveau', value: classItem.gradeLevel || '-' },
         { label: 'Capacité', value: classItem.capacity.toString() },
         { label: 'Effectif', value: classItem.studentsCount?.toString() || '0' },
-        { label: 'Enseignant', value: classItem.teacher || '-' },
+        { label: 'Enseignant', value: Array.isArray(classItem.teacher) ? classItem.teacher.join(', ') : (classItem.teacher || '-') },
     ]
 
     const quickActions: OverviewQuickAction[] = [

@@ -5,6 +5,7 @@ import {
 import { chatApi } from '@entities/chat/api/chat.api'
 import { handleApiError } from '@shared/lib'
 import type {UploadedFile} from "@entities/chat";
+import {isSuccess} from "@shared/helperClass/CommonResponse";
 
 export function useFileUpload(conversationId: string) {
     const [isUploading, setIsUploading] = useState(false)
@@ -22,8 +23,8 @@ export function useFileUpload(conversationId: string) {
                 conversationId,
             })
 
-            if (!res.IsSuccess) throw new Error('Presign failed')
-            const { uploadUrl, key, publicUrl, bucketName } = res.result
+            if (!isSuccess(res)) throw new Error('Presign failed')
+            const { uploadUrl, key, publicUrl } = res.result
 
             await fetch(uploadUrl, {
                 method:  'PUT',
@@ -45,7 +46,6 @@ export function useFileUpload(conversationId: string) {
             return {
                 key,
                 publicUrl,
-                bucketName,
                 filename: file.name,
                 mimeType: file.type,
                 size: file.size,
