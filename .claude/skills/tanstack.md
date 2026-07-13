@@ -17,7 +17,7 @@ export const STUDENT_KEYS = {
 
 ```typescript
 // frontend/src/entities/student/api/queries.ts
-export function useStudents(subSchoolId: string) {
+export function useCourses(subSchoolId: string) {
   return useQuery({
     queryKey: STUDENT_KEYS.bySchool(subSchoolId),
     queryFn: () => api.get<Student[]>(`/students?subSchoolId=${subSchoolId}`),
@@ -29,7 +29,7 @@ export function useStudents(subSchoolId: string) {
 ## Mutation — avec invalidation
 
 ```typescript
-export function useCreateStudent() {
+export function useCreateCourse() {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -47,7 +47,7 @@ export function useCreateStudent() {
 
 ```typescript
 function StudentList() {
-  const { data, isLoading, isError, error } = useStudents(subSchoolId)
+  const { data, isLoading, isError, error } = useCourses(subSchoolId)
 
   if (isLoading) return <StudentListSkeleton />
   if (isError) return <ErrorMessage message={error.message} />

@@ -136,9 +136,15 @@ backend/
 │   │   │
 │   │   ├── enrollments/       # Student enrollments module
 │   │   │   ├── enrollments.controller.ts
-│   │   │   ├── enrollments.router.ts
-│   │   │   ├── enrollments.schema.ts
-│   │   │   └── enrollments.service.ts
+│   │   │   ├── events.router.ts
+│   │   │   ├── events.schema.ts
+│   │   │   └── events.service.ts
+│   │   │
+│   │   ├── events/       # Student events module
+│   │   │   ├── events.controller.ts
+│   │   │   ├── events.router.ts
+│   │   │   ├── events.schema.ts
+│   │   │   └── events.service.ts
 │   │   │
 │   │   ├── grades/            # Grades management module
 │   │   │   ├── grades.controller.ts

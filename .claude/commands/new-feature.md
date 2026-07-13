@@ -9,7 +9,7 @@
 frontend/src/features/{name}/
 ├── index.ts              ← Public API (exports uniquement)
 ├── ui/
-│   ├── {Name}Form.tsx
+│   ├── {Name}form.tsx
 │   └── {Name}List.tsx
 ├── model/
 │   ├── use-{name}.ts     ← Hook principal de la feature
@@ -38,11 +38,11 @@ export { useGradeEntry } from './model/use-grade-entry'
 
 ```typescript
 // features/grade-entry/model/use-grade-entry.ts
-import { useCreateGrade } from '@/entities/grade'
+import { useCreateAcademicPeriod } from '@/entities/grade'
 import { useOfflineQueue } from '@/features/offline-sync' // OK : shared concern
 
 export function useGradeEntry(examId: string) {
-  const createGrade = useCreateGrade()
+  const createGrade = useCreateAcademicPeriod()
   const { enqueue } = useOfflineQueue()
 
   const submitGrade = async (data: GradeFormData) => {
