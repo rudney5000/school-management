@@ -28,5 +28,28 @@ export default defineConfig({
             '@entities': path.resolve(__dirname, './src/entities'),
             '@shared': path.resolve(__dirname, './src/shared')
         }
+    },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        if (id.includes('@tanstack')) {
+                            return 'vendor-tanstack'
+                        }
+                        if (id.includes('react-dom') || id.includes('/react/')) {
+                            return 'vendor-react'
+                        }
+                        if (id.includes('@reduxjs') || id.includes('react-redux')) {
+                            return 'vendor-redux'
+                        }
+                        if (id.includes('date-fns')) {
+                            return 'vendor-dates'
+                        }
+                    }
+                    return undefined
+                }
+            }
+        }
     }
 });

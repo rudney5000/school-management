@@ -2,6 +2,7 @@ import {
     createRootRoute,
     createRoute,
     createRouter,
+    lazyRouteComponent,
     Outlet,
     redirect,
     RouterProvider
@@ -16,19 +17,7 @@ import {LoginPage} from "@/pages/login/LoginPage";
 import {RegisterPage} from "@/pages/register/RegisterPage";
 import i18n from "@app/i18n/i18n";
 import {DashboardLayout} from "@app/router/layouts/DashboardLayout";
-import {DashboardPage} from "@/pages/dashboard";
 import {SUPPORT_LOCALES} from "@shared/config/i18n/locale-config";
-import StudentsPage from "@/pages/student/StudentsPage";
-import TeachersPage from "@/pages/teacher/TeachersPage";
-import ParentsPage from "@/pages/parent/ParentsPage";
-import ClassesPage from "@/pages/class/ClassPage";
-import StudentDetailsPage from "@/pages/student/StudentDetailsPage";
-import CoursesPage from "@/pages/courses/CoursesPage";
-import SchedulePage from "@/pages/schedule/SchedulePage";
-import EventPage from "@/pages/event/EventPage";
-import AttendancePage from "@/pages/attendances/AttendancesPage";
-import {AssessmentsPage} from "@/pages/exams/AssessmentsPage";
-import {ChatPage} from "@/pages/chat/ChatPage";
 
 type RouterContext = {
     isAuthenticated: () => boolean;
@@ -127,19 +116,19 @@ export const subSchoolRoute = createRoute({
 const dashboardRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'dashboard',
-    component: DashboardPage,
+    component: lazyRouteComponent(() => import('@/pages/dashboard').then(m => ({ default: m.DashboardPage }))),
 })
 
 const studentRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'students',
-    component: StudentsPage
+    component: lazyRouteComponent(() => import('@/pages/student/StudentsPage'))
 })
 
 const studentDetailRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'students/$studentId',
-    component: StudentDetailsPage
+    component: lazyRouteComponent(() => import('@/pages/student/StudentDetailsPage')),
 })
 
 const teacherDetailRoute = createRoute({
@@ -157,55 +146,55 @@ const parentDetailRoute = createRoute({
 const teachersRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'teachers',
-    component: TeachersPage
+    component: lazyRouteComponent(() => import('@/pages/teacher/TeachersPage')),
 })
 
 const parentsRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'parents',
-    component: ParentsPage
+    component: lazyRouteComponent(() => import('@/pages/parent/ParentsPage')),
 })
 
 const classesRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'classes',
-    component: ClassesPage
+    component: lazyRouteComponent(() => import('@/pages/class/ClassPage')),
 })
 
 const coursesRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'courses',
-    component: CoursesPage
+    component: lazyRouteComponent(() => import('@/pages/courses/CoursesPage')),
 })
 
 const scheduleRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'schedules',
-    component: SchedulePage
+    component: lazyRouteComponent(() => import('@/pages/schedule/SchedulePage')),
 })
 
 const eventsRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'events',
-    component: EventPage
+    component: lazyRouteComponent(() => import('@/pages/event/EventPage')),
 })
 
 const attendancesRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'attendances',
-    component: AttendancePage
+    component: lazyRouteComponent(() => import('@/pages/attendances/AttendancesPage')),
 })
 
 const assessmentsRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'assessments',
-    component: AssessmentsPage
+    component: lazyRouteComponent(() => import('@/pages/exams/AssessmentsPage').then(m => ({ default: m.AssessmentsPage }))),
 })
 
 const chatRoute = createRoute({
     getParentRoute: () => subSchoolRoute,
     path: 'messages',
-    component: ChatPage
+    component: lazyRouteComponent(() => import('@/pages/chat/ChatPage').then(m => ({ default: m.ChatPage }))),
 })
 
 const routeTree = rootRoute.addChildren([
