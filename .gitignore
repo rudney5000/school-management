@@ -42,3 +42,7 @@ docker-compose.override.yml
 # Frontend specific
 frontend/.vite/
 frontend/dist/
+
+# Tauri / Rust
+frontend/src-tauri/target/
+frontend/src-tauri/gen/
