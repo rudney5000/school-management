@@ -78,7 +78,7 @@ export default function CoursesPage() {
 
     return (
         <div className="min-h-screen bg-secondary/40">
-            <header className="bg-background border-b sticky top-0 z-30">
+            <header className="bg-background border-b sticky top-0 z-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-3">
                     <h1 className="text-lg sm:text-xl font-bold tracking-tight shrink-0">
                         {t('dashboard.courses.title')}
