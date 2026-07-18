@@ -166,20 +166,24 @@ export const parentNav: NavGroup[] = [
                 path: '/sub-schools/$subSchoolId/dashboard',
             },
             {
-                labelKey: 'nav.children',
+                labelKey: 'nav.students',
                 icon: GraduationCap,
-                path: '/sub-schools/$subSchoolId/children',
+                path: '/sub-schools/$subSchoolId/students',
             },
             {
                 labelKey: 'nav.schedule',
                 icon: CalendarDays,
                 path: '/sub-schools/$subSchoolId/schedules',
             },
-            { labelKey: 'nav.events',        icon: CalendarCheck,    path: '/sub-schools/$subSchoolId/events' },
+            {
+                labelKey: 'nav.events',
+                icon: CalendarCheck,
+                path: '/sub-schools/$subSchoolId/events'
+            },
         ],
     },
     {
-        groupKey: 'nav.group.academic',
+        groupKey: 'nav.group.pedagogy',
         items: [
             {
                 labelKey: 'nav.assessments',
@@ -199,7 +203,7 @@ export const parentNav: NavGroup[] = [
         ],
     },
     {
-        groupKey: 'nav.group.communication',
+        groupKey: 'nav.group.system',
         items: [
             {
                 labelKey: 'nav.messages',

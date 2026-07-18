@@ -379,7 +379,10 @@
         "addTitle": "New parent",
         "addDescription": "Fill in the required information.",
         "editTitle": "Edit parent",
-        "editDescription": "Update parent information."
+        "editDescription": "Update parent information.",
+        "selectGender": "Select gender",
+        "selectChildren": "Select children",
+        "noUnassignedChildren": "No unassigned children"
       },
       "fields": {
         "firstName": "First name",
@@ -390,7 +393,8 @@
         "dateOfBirth": "Date of birth",
         "address": "Address",
         "image": "Image",
-        "isActive": "Active parent"
+        "isActive": "Active parent",
+        "children": "Children"
       },
       "gender": {
         "male": "Male",
@@ -422,7 +426,8 @@
         "completion": "Completion",
         "attendance": "Attendance",
         "thisMonth": "This month",
-        "quickActions": "Quick Actions"
+        "quickActions": "Quick Actions",
+        "children": "Children"
       }
     },
     "classes": {

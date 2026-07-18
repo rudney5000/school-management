@@ -1,8 +1,17 @@
-import {and, eq, isNull} from 'drizzle-orm';
+import {
+    and,
+    eq,
+    isNull} from 'drizzle-orm';
 import { db } from '@/db';
-import { students } from '@/db/schema';
+import {
+    parentStudents,
+    students
+} from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
-import type { CreateStudentDto, UpdateStudentDto } from './students.schema';
+import type {
+    CreateStudentDto,
+    UpdateStudentDto
+} from './students.schema';
 
 export type StudentRecord = typeof students.$inferSelect;
 
@@ -37,26 +46,41 @@ export class StudentsService {
     return student;
   }
 
-async create(input: CreateStudentDto): Promise<StudentRecord> {
-    const [student] = await db
-        .insert(students)
-        .values({
-            subSchoolId:       input.subSchoolId,
-            parentId:       input.parentId,
-            firstName:      input.firstName,
-            lastName:       input.lastName,
-            email:          input.email,
-            phone:          input.phone,
-            address:        input.address,
-            gender:         input.gender,
-            dateOfBirth:    input.dateOfBirth,
-            enrollmentDate: input.enrollmentDate,
-            isActive:       input.isActive,
-        })
-        .returning();
+    async findUnassigned(subSchoolId: string): Promise<StudentRecord[]> {
+        return db.select().from(students).where(
+            and(
+                eq(students.subSchoolId, subSchoolId),
+                isNull(students.parentId),
+                isNull(students.deletedAt),
+            ),
+        );
+    }
 
-    return student;
-}
+    async create(input: CreateStudentDto): Promise<StudentRecord> {
+        return db.transaction(async (tx) => {
+            const [student] = await tx.insert(students).values({
+                subSchoolId: input.subSchoolId,
+                parentId: input.parentId,
+                firstName: input.firstName,
+                lastName: input.lastName,
+                email: input.email,
+                phone: input.phone,
+                address: input.address,
+                gender: input.gender,
+                dateOfBirth: input.dateOfBirth,
+                enrollmentDate: input.enrollmentDate,
+                isActive: input.isActive,
+            }).returning();
+
+            if (input.parentId) {
+                await tx.insert(parentStudents)
+                    .values({ parentId: input.parentId, studentId: student.id })
+                    .onConflictDoNothing();
+            }
+
+            return student;
+        });
+    }
 
   async update(
     id: string,

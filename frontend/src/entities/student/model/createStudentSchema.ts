@@ -60,6 +60,10 @@ export const createStudentSchema = studentBaseSchema.extend({
     parentId: z.string().uuid().optional().or(z.literal('')),
 });
 
+export const subSchoolQuerySchema = z.object({
+    subSchoolId: z.string().uuid().optional(),
+});
+
 export const updateStudentSchema = createStudentSchema
     .partial()
 

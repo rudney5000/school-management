@@ -349,7 +349,10 @@
         "addTitle": "Новый родитель",
         "addDescription": "Заполните необходимую информацию.",
         "editTitle": "Редактировать родителя",
-        "editDescription": "Обновите информацию о родителе."
+        "editDescription": "Обновите информацию о родителе.",
+        "selectGender": "Выберите пол",
+        "selectChildren": "Выберите детей",
+        "noUnassignedChildren": "Нет непривязанных детей"
       },
       "fields": {
         "firstName": "Имя",
@@ -360,7 +363,8 @@
         "dateOfBirth": "Дата рождения",
         "address": "Адрес",
         "image": "Изображение",
-        "isActive": "Активный родители"
+        "isActive": "Активный родители",
+        "children": "Дети"
       },
       "columns": {
         "firstName": "Имя",
@@ -402,7 +406,8 @@
         "completion": "Выполнение",
         "attendance": "Посещаемость",
         "thisMonth": "В этом месяце",
-        "quickActions": "Быстрые действия"
+        "quickActions": "Быстрые действия",
+        "children": "Дети"
       }
     },
     "classes": {

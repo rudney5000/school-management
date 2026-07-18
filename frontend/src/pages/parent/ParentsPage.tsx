@@ -45,11 +45,11 @@ const ParentsPage = () => {
         const active = parents.filter(p => p.isActive).length
         const inactive = total - active
         return [
-            { label: t('dashboard.students.stats.total'), value: total, icon: Users,
+            { label: t('dashboard.parents.stats.total'), value: total, icon: Users,
                 trend: { value: `${total}`, positive: true } },
-            { label: t('dashboard.students.stats.active'), value: active, icon: UserCheck,
+            { label: t('dashboard.parents.stats.active'), value: active, icon: UserCheck,
                 trend: { value: `${total > 0 ? Math.round((active / total) * 100) : 0}%`, positive: true } },
-            { label: t('dashboard.students.stats.inactive'), value: inactive, icon: UserX,
+            { label: t('dashboard.parents.stats.inactive'), value: inactive, icon: UserX,
                 trend: { value: `${total > 0 ? Math.round((inactive / total) * 100) : 0}%`, positive: false } },
         ]
     }, [data, t])

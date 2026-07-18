@@ -35,7 +35,7 @@ import {
 } from './schema';
 import {
     and,
-    eq
+    eq, inArray
 } from 'drizzle-orm';
 import {
     examResults,
@@ -508,6 +508,63 @@ async function seed() {
         }
     }
 
+    const unassignedStudentsData = [
+        {
+            firstName: 'Grace',
+            lastName: 'Kabila',
+            email: 'grace.kabila@saintjoseph.cd',
+            gender: 'female' as const,
+            dateOfBirth: '2012-05-10',
+        },
+        {
+            firstName: 'David',
+            lastName: 'Mukendi',
+            email: 'david.mukendi@saintjoseph.cd',
+            gender: 'male' as const,
+            dateOfBirth: '2011-02-18',
+        },
+        {
+            firstName: 'Esther',
+            lastName: 'Ilunga',
+            email: 'esther.ilunga@saintjoseph.cd',
+            gender: 'female' as const,
+            dateOfBirth: '2009-11-03',
+        },
+        {
+            firstName: 'Joseph',
+            lastName: 'Tshibangu',
+            email: 'joseph.tshibangu@saintjoseph.cd',
+            gender: 'male' as const,
+            dateOfBirth: '2013-08-25',
+        },
+        {
+            firstName: 'Chantal',
+            lastName: 'Mbala',
+            email: 'chantal.mbala@saintjoseph.cd',
+            gender: 'female' as const,
+            dateOfBirth: '2010-04-14',
+        },
+    ];
+
+    const insertedUnassignedStudents: (typeof students.$inferSelect)[] = [];
+
+    for (const s of unassignedStudentsData) {
+        const [existing] = await db.select().from(students)
+            .where(eq(students.email, s.email));
+
+        if (!existing) {
+            const [inserted] = await db.insert(students).values({
+                ...s,
+                enrollmentDate: '2024-09-01',
+                subSchoolId: subSchool.id,
+            }).returning();
+            insertedUnassignedStudents.push(inserted);
+            console.log(`✓ Student (sans parent) créé: ${s.firstName} ${s.lastName}`);
+        } else {
+            insertedUnassignedStudents.push(existing);
+            console.log(`~ Student déjà existant: ${s.firstName} ${s.lastName}`);
+        }
+    }
     await db.delete(users).where(eq(users.email, 'sophie.kabila@saintjoseph.cd')).catch(() => {});
     await db.delete(parents).where(eq(parents.email, 'sophie.kabila@saintjoseph.cd')).catch(() => {});
 
@@ -537,6 +594,79 @@ async function seed() {
         .onConflictDoNothing();
     console.log('✓ Parent-students links created');
 
+    await db.update(students)
+        .set({ parentId: parent.id })
+        .where(inArray(students.id, [student.id, student2.id]));
+    console.log('✓ students.parentId synchronisé');
+
+    const additionalParentsData = [
+        {
+            firstName: 'Jean-Pierre',
+            lastName: 'Mbuyi',
+            email: 'jeanpierre.mbuyi@saintjoseph.cd',
+            phone: '+243 82 333 4444',
+            gender: 'male' as const,
+            address: 'Kinshasa, RDC',
+            childIndexes: [1],
+        },
+        {
+            firstName: 'Alphonsine',
+            lastName: 'Kalonji',
+            email: 'alphonsine.kalonji@saintjoseph.cd',
+            phone: '+243 89 555 6666',
+            gender: 'female' as const,
+            address: 'Kinshasa, RDC',
+            childIndexes: [2, 3],
+        },
+        {
+            firstName: 'Robert',
+            lastName: 'Nzuzi',
+            email: 'robert.nzuzi@saintjoseph.cd',
+            phone: '+243 84 777 8888',
+            gender: 'male' as const,
+            address: 'Kinshasa, RDC',
+            childIndexes: [],
+        },
+    ];
+
+    for (const p of additionalParentsData) {
+        await db.delete(users).where(eq(users.email, p.email)).catch(() => {});
+        await db.delete(parents).where(eq(parents.email, p.email)).catch(() => {});
+
+        const [newParent] = await db.insert(parents).values({
+            firstName: p.firstName,
+            lastName: p.lastName,
+            email: p.email,
+            phone: p.phone,
+            gender: p.gender,
+            address: p.address,
+            subSchoolId: subSchool.id,
+        }).returning();
+
+        await db.insert(users).values({
+            email: p.email,
+            password: hashedPassword,
+            role: 'parent',
+            parentId: newParent.id,
+        });
+        console.log(`✓ Parent user: ${p.email}`);
+
+        if (p.childIndexes.length > 0) {
+            const childIds = p.childIndexes.map(i => insertedUnassignedStudents[i].id);
+
+            await db.insert(parentStudents)
+                .values(childIds.map(studentId => ({ parentId: newParent.id, studentId })))
+                .onConflictDoNothing();
+
+            await db.update(students)
+                .set({ parentId: newParent.id })
+                .where(inArray(students.id, childIds));
+
+            console.log(`✓ ${childIds.length} enfant(s) lié(s) à ${p.firstName} ${p.lastName}`);
+        } else {
+            console.log(`~ ${p.firstName} ${p.lastName} créé sans enfant (test état vide)`);
+        }
+    }
 
     const [existingSchedule1] = await db.select().from(schedules)
         .where(and(

@@ -336,7 +336,10 @@
         "addTitle": "Moboti ya sika",
         "addDescription": "Tondela bisaleli oyo esengami.",
         "editTitle": "Kobongisa moboti",
-        "editDescription": "Longola bisaleli ya moboti."
+        "editDescription": "Longola bisaleli ya moboti.",
+        "selectGender": "Pona loti",
+        "selectChildren": "Pona bana",
+        "noUnassignedChildren": "Bana mosusu te"
       },
       "fields": {
         "firstName": "Nkombo ya liboso",
@@ -347,7 +350,8 @@
         "dateOfBirth": "Mokolo ya kobotama",
         "address": "Adilesi",
         "image": "Image",
-        "isActive": "Moyindami ya active"
+        "isActive": "Moyindami ya active",
+        "children": "Bana"
       },
       "columns": {
         "firstName": "Nkombo ya liboso",
@@ -385,7 +389,8 @@
         "completion": "Bosilisi",
         "attendance": "Bopesi ya bozali",
         "thisMonth": "Sanza oyo",
-        "quickActions": "Misala ya mbangu"
+        "quickActions": "Misala ya mbangu",
+        "children": "Bana"
       }
     },
     "classes": {

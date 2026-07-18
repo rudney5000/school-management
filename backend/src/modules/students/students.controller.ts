@@ -30,6 +30,12 @@ export class StudentsController {
     respond(res, data);
   });
 
+  getUnassigned = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const subSchoolId = resolvesSubSchoolId(req);
+    const data = await this.service.findUnassigned(subSchoolId);
+    respond(res, data);
+  });
+
   create = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const data = await this.service.create(req.body as CreateStudentDto);
     respond(res, data, 201);

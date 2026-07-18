@@ -1,10 +1,12 @@
-import { and, eq } from 'drizzle-orm';
+import {and, eq, inArray} from 'drizzle-orm';
 import { db } from '@/db';
 import {parents, parentStudents, students} from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
 import type { CreateParentDto, UpdateParentDto } from './parents.schema';
+import {StudentRecord} from "@/modules/students/students.service";
 
 export type ParentRecord = typeof parents.$inferSelect;
+export type ChildSummary = Pick<StudentRecord, 'id' | 'firstName' | 'lastName'>;
 
 export class ParentsService {
     async findAll(subSchoolId: string) {
@@ -44,42 +46,74 @@ export class ParentsService {
         }
     }
 
-  async findById(id: string, subSchoolId: string): Promise<ParentRecord> {
-    const [parent] = await db
-      .select()
-      .from(parents)
-      .where(
-        and(
-          eq(parents.id, id),
-          eq(parents.subSchoolId, subSchoolId),
-        ),
-      );
+    async findById(id: string, subSchoolId: string): Promise<ParentRecord & { children: ChildSummary[] }> {
+        const [parent] = await db.select()
+            .from(parents)
+            .where(
+                and(
+                    eq(parents.id, id),
+                    eq(parents.subSchoolId, subSchoolId)
+                ),
+        );
+        if (!parent) throw new AppError('NOT_FOUND', 'Parent introuvable', 404);
 
-    if (!parent) {
-      throw new AppError('NOT_FOUND', 'Parent introuvable', 404);
+        const rows = await db
+            .select({ id: students.id, firstName: students.firstName, lastName: students.lastName })
+            .from(parentStudents)
+            .innerJoin(students, eq(students.id, parentStudents.studentId))
+            .where(eq(parentStudents.parentId, id));
+
+        return { ...parent, children: rows };
     }
 
-    return parent;
-  }
+    async create(input: CreateParentDto): Promise<ParentRecord & { children: ChildSummary[] }> {
+        return db.transaction(async (tx) => {
+            const [parent] = await tx.insert(parents).values({
+                userId: input.userId,
+                firstName: input.firstName,
+                lastName: input.lastName,
+                email: input.email,
+                phone: input.phone,
+                address: input.address,
+                gender: input.gender,
+                isActive: input.isActive,
+                subSchoolId: input.subSchoolId,
+            }).returning();
 
-  async create(input: CreateParentDto): Promise<ParentRecord> {
-    const [parent] = await db
-      .insert(parents)
-      .values({
-        userId: input.userId,
-        firstName: input.firstName,
-        lastName: input.lastName,
-        email: input.email,
-        phone: input.phone,
-        address: input.address,
-        gender: input.gender,
-        isActive: input.isActive,
-        subSchoolId: input.subSchoolId,
-      })
-      .returning();
+            let children: ChildSummary[] = [];
 
-    return parent;
-  }
+            if (input.studentIds?.length) {
+                const existing = await tx
+                    .select({ id: students.id, parentId: students.parentId })
+                    .from(students)
+                    .where(inArray(students.id, input.studentIds));
+
+                const alreadyAssigned = existing.filter(s => s.parentId !== null);
+                if (alreadyAssigned.length) {
+                    throw new AppError(
+                        'CONFLICT',
+                        'Un ou plusieurs élèves ont déjà un parent assigné',
+                        409,
+                    );
+                }
+
+                await tx.insert(parentStudents)
+                    .values(input.studentIds.map(studentId => ({ parentId: parent.id, studentId })))
+                    .onConflictDoNothing();
+
+                await tx.update(students)
+                    .set({ parentId: parent.id })
+                    .where(inArray(students.id, input.studentIds));
+
+                children = await tx
+                    .select({ id: students.id, firstName: students.firstName, lastName: students.lastName })
+                    .from(students)
+                    .where(inArray(students.id, input.studentIds));
+            }
+
+            return { ...parent, children };
+        });
+    }
 
   async update(
     id: string,
