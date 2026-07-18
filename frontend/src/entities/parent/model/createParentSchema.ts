@@ -14,6 +14,8 @@ export const createParentSchema = z.object({
         .min(1, getErrorMessage('validation.lastNameRequired'))
         .max(100, getErrorMessage('validation.maxLength100')),
 
+    gender: z.enum(['male', 'female']),
+
     email: z
         .string()
         .trim()
@@ -26,6 +28,10 @@ export const createParentSchema = z.object({
         .or(z.literal('')),
 
     subSchoolId: z.string().uuid(),
+
+    studentIds: z
+        .array(z.string().uuid())
+        .optional(),
 })
 
 export const updateParentSchema = createParentSchema
