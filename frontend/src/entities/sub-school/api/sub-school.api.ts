@@ -15,9 +15,9 @@ export class SubSchoolApi extends ApiWrapper {
         )
     }
 
-    getById(id: string) {
+    getById(id: string, schoolId: string) {
         return this.handleRequest<SubSchool>(
-            this._baseApi.get(`/sub-schools/${id}`),
+            this._baseApi.get(`/sub-schools/${id}`, { schoolId }),
             (raw) => raw as SubSchool
         )
     }

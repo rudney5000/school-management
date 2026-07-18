@@ -17,7 +17,7 @@ import {
     TabsContent
 } from "@/shared/ui"
 import {GradeEntryGrid} from "@/pages/exams/ui/GradeEntryGrid";
-import {ResultsBulletin} from "@/pages/exams/ui/ResultsBulletin";
+import {ResultsBulletin} from "@/pages/exams/ui/results-bulletin/ResultsBulletin.tsx";
 import {StatisticsDashboard} from "@/pages/exams/ui/StatisticsDashboard";
 import {
     type Exam,

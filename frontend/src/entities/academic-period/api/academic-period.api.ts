@@ -22,9 +22,9 @@ export class AcademicPeriodApi extends ApiWrapper {
         )
     }
 
-    getById(params: AcademicPeriodParamsDto) {
+    getById(params: AcademicPeriodParamsDto, subSchoolId: string) {
         return this.handleRequest<AcademicPeriod>(
-            this._baseApi.get(`/academic-periods/${params.id}`),
+            this._baseApi.get(`/academic-periods/${params.id}`, { subSchoolId }),
             (raw) => raw as AcademicPeriod
         )
     }

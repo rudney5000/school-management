@@ -11,6 +11,7 @@ import {
 export const useAcademicPeriods = (params?: AcademicPeriodListQueryDto) => {
     const query = useQuery<AcademicPeriod[], Error>({
         queryKey: ['academic-period', params],
+        enabled: !!params?.subSchoolId,
         queryFn: async (): Promise<AcademicPeriod[]> => {
             const response = await academicPeriodApi.getAll(params)
 
