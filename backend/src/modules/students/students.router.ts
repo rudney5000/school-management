@@ -27,6 +27,15 @@ router.get(
   validate({ params: studentParamsSchema, query: subSchoolQuerySchema }),
   controller.getById,
 );
+
+router.get(
+    '/unassigned',
+    authenticate,
+    authorize('admin', 'director', 'super_admin'),
+    validate({ query: subSchoolQuerySchema }),
+    controller.getUnassigned,
+);
+
 router.post(
   '/',
   authenticate,
