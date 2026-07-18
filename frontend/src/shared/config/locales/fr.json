@@ -376,13 +376,24 @@
         "addTitle": "Nouveau parent",
         "addDescription": "Remplissez les informations requises.",
         "editTitle": "Modifier le parent",
-        "editDescription": "Mettez à jour les informations du parent."
+        "editDescription": "Mettez à jour les informations du parent.",
+        "selectGender": "Sélectionner le genre",
+        "selectChildren": "Sélectionner les enfants",
+        "noUnassignedChildren": "Aucun enfant non assigné"
       },
       "fields": {
         "firstName": "Prénom",
         "lastName": "Nom",
         "email": "Email",
-        "phone": "Téléphone"
+        "phone": "Téléphone",
+        "gender": "Genre",
+        "dateOfBirth": "Date de naissance",
+        "image": "Photo",
+        "status": "Statut",
+        "parent": "Parent",
+        "contact": "contact",
+        "isActive": "parent active",
+        "children": "Enfants"
       },
       "columns": {
         "firstName": "Prénom",
@@ -402,7 +413,7 @@
         "female": "Femme"
       },
       "stats": {
-        "total": "Total parents",
+        "total": "Total des parents",
         "active": "Parents actifs",
         "inactive": "Parents inactifs",
         "new": "Nouveaux parents",
@@ -415,7 +426,8 @@
         "completion": "Complétion",
         "attendance": "Assiduité",
         "thisMonth": "Ce mois-ci",
-        "quickActions": "Actions rapides"
+        "quickActions": "Actions rapides",
+        "children": "Enfants"
       },
       "status": {
         "active": "Actif",
