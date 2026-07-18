@@ -135,63 +135,94 @@ export class AuthService {
         schoolId: string;
         subSchoolId?: string;
     }> {
-        const { workers, teachers, students, subSchools } = await import('@/db/schema');
+        const { workers, teachers, teacherSchools, students, parents, subSchools } = await import('@/db/schema');
 
-        if (user.workerId) {
-            const [worker] = await db
-                .select({ subSchoolId: workers.subSchoolId })
-                .from(workers)
-                .where(eq(workers.id, user.workerId))
-                .limit(1);
+        switch (user.role) {
+            case 'admin':
+            case 'director':
+            case 'worker': {
+                if (!user.workerId) return { schoolId: '' };
 
-            const [sub] = await db
-                .select({ schoolId: subSchools.schoolId })
-                .from(subSchools)
-                .where(eq(subSchools.id, worker.subSchoolId))
-                .limit(1);
+                const [worker] = await db
+                    .select({ subSchoolId: workers.subSchoolId })
+                    .from(workers)
+                    .where(eq(workers.id, user.workerId))
+                    .limit(1);
 
-            return { schoolId: sub.schoolId, subSchoolId: worker.subSchoolId };
+                if (!worker) return { schoolId: '' };
+
+                const [sub] = await db
+                    .select({ schoolId: subSchools.schoolId })
+                    .from(subSchools)
+                    .where(eq(subSchools.id, worker.subSchoolId))
+                    .limit(1);
+
+                return { schoolId: sub.schoolId, subSchoolId: worker.subSchoolId };
+            }
+
+            case 'teacher': {
+                if (!user.teacherId) return { schoolId: '' };
+
+                const [ts] = await db
+                    .select({ subSchoolId: teacherSchools.subSchoolId })
+                    .from(teacherSchools)
+                    .where(eq(teacherSchools.teacherId, user.teacherId))
+                    .limit(1);
+
+                if (!ts) return { schoolId: '' };
+
+                const [sub] = await db
+                    .select({ schoolId: subSchools.schoolId })
+                    .from(subSchools)
+                    .where(eq(subSchools.id, ts.subSchoolId))
+                    .limit(1);
+
+                return { schoolId: sub.schoolId, subSchoolId: ts.subSchoolId };
+            }
+
+            case 'student': {
+                if (!user.studentId) return { schoolId: '' };
+
+                const [student] = await db
+                    .select({ subSchoolId: students.subSchoolId })
+                    .from(students)
+                    .where(eq(students.id, user.studentId))
+                    .limit(1);
+
+                if (!student) return { schoolId: '' };
+
+                const [sub] = await db
+                    .select({ schoolId: subSchools.schoolId })
+                    .from(subSchools)
+                    .where(eq(subSchools.id, student.subSchoolId))
+                    .limit(1);
+
+                return { schoolId: sub.schoolId, subSchoolId: student.subSchoolId };
+            }
+
+            case 'parent': {
+                if (!user.parentId) return { schoolId: '' };
+
+                const [parent] = await db
+                    .select({ subSchoolId: parents.subSchoolId })
+                    .from(parents)
+                    .where(eq(parents.id, user.parentId))
+                    .limit(1);
+
+                if (!parent) return { schoolId: '' };
+
+                const [sub] = await db
+                    .select({ schoolId: subSchools.schoolId })
+                    .from(subSchools)
+                    .where(eq(subSchools.id, parent.subSchoolId))
+                    .limit(1);
+
+                return { schoolId: sub.schoolId, subSchoolId: parent.subSchoolId };
+            }
+
+            default:
+                return { schoolId: '' };
         }
-
-        if (user.teacherId) {
-            const { teacherSchools, subSchools } = await import('@/db/schema');
-
-            const [ts] = await db
-                .select({ subSchoolId: teacherSchools.subSchoolId })
-                .from(teacherSchools)
-                .where(eq(teacherSchools.teacherId, user.teacherId))
-                .limit(1);
-
-            if (!ts) return { schoolId: '' };
-
-            const [sub] = await db
-                .select({ schoolId: subSchools.schoolId })
-                .from(subSchools)
-                .where(eq(subSchools.id, ts.subSchoolId))
-                .limit(1);
-
-            return { schoolId: sub.schoolId, subSchoolId: ts.subSchoolId };
-        }
-
-        if (user.studentId) {
-            const [student] = await db
-                .select({ subSchoolId: students.subSchoolId })
-                .from(students)
-                .where(eq(students.id, user.studentId))
-                .limit(1);
-
-            if (!student) return { schoolId: '' };
-
-            const [sub] = await db
-                .select({ schoolId: subSchools.schoolId })
-                .from(subSchools)
-                .where(eq(subSchools.id, student.subSchoolId))
-                .limit(1);
-
-            return { schoolId: sub.schoolId, subSchoolId: student.subSchoolId };
-        }
-
-        return { schoolId: '' };
     }
 
     private generateTokens(payload: TokenPayload): AuthTokens {
