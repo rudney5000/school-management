@@ -23,12 +23,14 @@ import {
     Eye
 } from "lucide-react"
 import type { StudentBulletin } from "@entities/grades"
-import type { SortBy } from "../model/useResultsBulletin"
 import {
     getAverageColor,
     getRankIcon,
     getTrendIcon
 } from "@/pages/exams/ui/results-bulletin/model/resultsBulletin.utils";
+import type {
+    SortBy
+} from "@/pages/exams/ui/results-bulletin/model/useResultsBulletin";
 
 type ResultsTableProps = {
     sortedResults: StudentBulletin[]

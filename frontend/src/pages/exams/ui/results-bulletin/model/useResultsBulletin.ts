@@ -42,7 +42,7 @@ export function useResultsBulletin() {
     const { data: academicPeriods = [] } = useAcademicPeriods(
         subSchoolId ? { subSchoolId } : undefined
     )
-    const { data: subSchool } = useSubSchool(subSchoolId, schoolId)
+    const { data: subSchool } = useSubSchool(subSchoolId, schoolId ?? undefined)
 
     useEffect(() => {
         if (classes.length > 0 && !selectedClassId) {
