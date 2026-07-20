@@ -29,6 +29,12 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ CREATE TYPE "public"."dispute_status" AS ENUM('pending', 'approved', 'rejected');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "public"."exam_status" AS ENUM('scheduled', 'ongoing', 'completed', 'cancelled');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -47,7 +53,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."grade_type" AS ENUM('homework', 'participation', 'project', 'oral');
+ CREATE TYPE "public"."grade_type" AS ENUM('homework', 'participation', 'project', 'oral', 'exam');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -220,6 +226,7 @@ CREATE TABLE IF NOT EXISTS "grades" (
 	"class_id" uuid NOT NULL,
 	"academic_period_id" uuid NOT NULL,
 	"sub_school_id" uuid NOT NULL,
+	"exam_id" uuid,
 	"grade_type" "grade_type" NOT NULL,
 	"score" numeric(5, 2),
 	"max_score" numeric(5, 2) DEFAULT '20' NOT NULL,
@@ -397,6 +404,7 @@ CREATE TABLE IF NOT EXISTS "exams" (
 	"coefficient" numeric(4, 2) DEFAULT '1' NOT NULL,
 	"academic_period_id" uuid,
 	"created_by" uuid,
+	"retake_of_exam_id" uuid,
 	"is_live_session" boolean DEFAULT false NOT NULL,
 	"live_url" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
@@ -717,6 +725,12 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "grades" ADD CONSTRAINT "grades_exam_id_exams_id_fk" FOREIGN KEY ("exam_id") REFERENCES "public"."exams"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "grades" ADD CONSTRAINT "grades_graded_by_users_id_fk" FOREIGN KEY ("graded_by") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -850,6 +864,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "exams" ADD CONSTRAINT "exams_created_by_users_id_fk" FOREIGN KEY ("created_by") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "exams" ADD CONSTRAINT "exams_retake_of_exam_id_exams_id_fk" FOREIGN KEY ("retake_of_exam_id") REFERENCES "public"."exams"("id") ON DELETE set null ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -1104,6 +1124,7 @@ CREATE INDEX IF NOT EXISTS "idx_parents_sub_school" ON "parents" USING btree ("s
 CREATE INDEX IF NOT EXISTS "idx_classes_sub_school" ON "classes" USING btree ("sub_school_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_classes_grade" ON "classes" USING btree ("grade_level");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "idx_enrollment_unique" ON "enrollments" USING btree ("student_id","class_id");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "exam_results_exam_student_unique" ON "exam_results" USING btree ("exam_id","student_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "idx_schedule_no_overlap" ON "schedules" USING btree ("teacher_id","class_id","day_of_week","start_time");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "idx_student_attendance_course" ON "student_attendances" USING btree ("student_id","date","course_id") WHERE "student_attendances"."course_id" IS NOT NULL;--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "idx_student_attendance_global" ON "student_attendances" USING btree ("student_id","date") WHERE "student_attendances"."course_id" IS NULL;--> statement-breakpoint

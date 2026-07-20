@@ -1,5 +1,5 @@
 {
-  "id": "43191540-0193-4e9f-85b3-088a6fc70f81",
+  "id": "4b06f5bf-7f4e-4cc8-a99f-98396af735bf",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1015,6 +1015,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "exam_id": {
+          "name": "exam_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
         "grade_type": {
           "name": "grade_type",
           "type": "grade_type",
@@ -1170,6 +1176,19 @@
           "tableTo": "sub_schools",
           "columnsFrom": [
             "sub_school_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "grades_exam_id_exams_id_fk": {
+          "name": "grades_exam_id_exams_id_fk",
+          "tableFrom": "grades",
+          "tableTo": "exams",
+          "columnsFrom": [
+            "exam_id"
           ],
           "columnsTo": [
             "id"
@@ -2420,7 +2439,29 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "exam_results_exam_student_unique": {
+          "name": "exam_results_exam_student_unique",
+          "columns": [
+            {
+              "expression": "exam_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "student_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "exam_results_exam_id_exams_id_fk": {
           "name": "exam_results_exam_id_exams_id_fk",
@@ -2555,6 +2596,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "retake_of_exam_id": {
+          "name": "retake_of_exam_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
         "is_live_session": {
           "name": "is_live_session",
           "type": "boolean",
@@ -2648,6 +2695,19 @@
             "id"
           ],
           "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "exams_retake_of_exam_id_exams_id_fk": {
+          "name": "exams_retake_of_exam_id_exams_id_fk",
+          "tableFrom": "exams",
+          "tableTo": "exams",
+          "columnsFrom": [
+            "retake_of_exam_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -4830,6 +4890,15 @@
         "SUNDAY"
       ]
     },
+    "public.dispute_status": {
+      "name": "dispute_status",
+      "schema": "public",
+      "values": [
+        "pending",
+        "approved",
+        "rejected"
+      ]
+    },
     "public.exam_status": {
       "name": "exam_status",
       "schema": "public",
@@ -4866,7 +4935,8 @@
         "homework",
         "participation",
         "project",
-        "oral"
+        "oral",
+        "exam"
       ]
     },
     "public.live_session_status": {
