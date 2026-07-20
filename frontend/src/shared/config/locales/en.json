@@ -690,7 +690,8 @@
         "date": "Date",
         "type": "Type",
         "status": "Status",
-        "live": "Link"
+        "live": "Link",
+        "academicPeriod": "Academic Period"
       },
       "types": {
         "quiz": "Quiz",

@@ -601,7 +601,8 @@
         "date": "Дата",
         "type": "Тип",
         "status": "Статус",
-        "live": "Ссылка"
+        "live": "Ссылка",
+        "academicPeriod": "Учебный период"
       },
       "types": {
         "quiz": "Тест",
@@ -644,7 +645,7 @@
         "select": "Выберите",
         "loading": "Загрузка...",
         "add": "Добавить",
-        "academicPeriod": "Учебный год"
+        "academicPeriod": "Учебный период"
       },
       "tabs": {
         "exams": "Экзамены",

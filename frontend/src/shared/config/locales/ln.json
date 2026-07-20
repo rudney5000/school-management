@@ -763,7 +763,8 @@
         "date": "Mokolo",
         "type": "Lolenge",
         "status": "État",
-        "live": "lien"
+        "live": "lien",
+        "academicPeriod": "Tango ya koyekola"
       },
       "types": {
         "quiz": "Motuna",

@@ -622,7 +622,8 @@
         "date": "Date",
         "type": "Type",
         "status": "Statut",
-        "live": "Lien"
+        "live": "Lien",
+        "academicPeriod": "Période academique"
       },
       "types": {
         "quiz": "Quiz",
@@ -671,7 +672,7 @@
         "select": "Sélectionner",
         "loading": "Chargement...",
         "add": "Ajouter",
-        "academicPeriod": "Période accademique"
+        "academicPeriod": "Période academique"
       },
       "gradeEntry": {
         "title": "Saisie des notes",
