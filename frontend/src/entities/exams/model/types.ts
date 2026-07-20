@@ -1,10 +1,10 @@
-
 export enum ExamType {
     Quiz     = "quiz",
     Midterm  = "midterm",
     Final    = "final",
     Homework = "homework",
     Oral     = "oral",
+    Exam      = "exam",
 }
 
 export enum ExamStatus {
@@ -34,4 +34,17 @@ export interface Exam {
     className: string
     isLiveSession: boolean
     liveUrl?: string
+    retakeOfExamId: string | null
+}
+
+export interface ExamResult {
+    id:        string
+    examId:    string
+    studentId: string
+    score:     string | null
+    comment:   string | null
+    gradedBy:  string | null
+    gradedAt:  string | null
+    createdAt: string
+    updatedAt: string
 }
