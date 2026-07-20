@@ -9,8 +9,10 @@ export const createExamSchema = z.object({
     }),
     courseId: z.string().uuid(getErrorMessage('validation.invalidUuid')),
     classId: z.string().uuid(getErrorMessage('validation.invalidUuid')),
+    academicPeriodId:    z.string().uuid('Invalid academic period ID').optional(),
     subSchoolId: z.string().uuid(getErrorMessage('validation.invalidUuid')),
-    examDate: z.string().min(1, getErrorMessage('validation.enrollmentDateRequired')),
+    examDate: z.string()
+        .min(1, getErrorMessage('validation.enrollmentDateRequired')),
     durationMinutes: z.coerce.number().int().positive(),
     maxScore: z.coerce.number().positive(),
     coefficient: z.coerce.number().positive(),
@@ -21,6 +23,7 @@ export const createExamSchema = z.object({
         .string()
         .url(getErrorMessage('validation.invalidUrl'))
         .optional(),
+    retakeOfExamId:      z.string().uuid('Invalid exam ID').optional(),
 })
 
 export const updateExamSchema = createExamSchema
