@@ -1,13 +1,22 @@
-import {and, eq, sql} from 'drizzle-orm'
+import {
+    and,
+    count,
+    eq,
+    isNotNull,
+    sql
+} from 'drizzle-orm'
 import { db } from '@/db'
 import { AppError } from '@/shared/errors/app-error'
-import {examResults, exams} from "@/db/schema/exam";
+import {
+    examResults,
+    exams
+} from "@/db/schema/exam";
 import {
     BulkUpsertExamResultsInput,
     CreateExamInput,
     UpdateExamInput
 } from "@/modules/exams/exams.schema";
-
+import {enrollments} from "@/db/schema";
 
 export type ExamRecord = typeof exams.$inferSelect
 export type ExamResultRecord = typeof examResults.$inferSelect
@@ -55,6 +64,7 @@ export class ExamsService {
                 isLiveSession: input.isLiveExam,
                 liveUrl: input.liveUrl,
                 createdBy: input.createdBy,
+                retakeOfExamId: input.retakeOfExamId ?? null,
             })
             .returning()
 
@@ -153,6 +163,7 @@ export class ExamResultsService {
         input: BulkUpsertExamResultsInput,
         subSchoolId: string,
         gradedBy: string,
+        userRole: string
     ): Promise<ExamResultRecord[]> {
         const [exam] = await db
             .select()
@@ -166,6 +177,25 @@ export class ExamResultsService {
 
         if (!exam) {
             throw new AppError('NOT_FOUND', 'Examen introuvable', 404)
+        }
+
+        const isRetake = exam.retakeOfExamId !== null
+        const staffRoles = ['admin', 'director', 'worker', 'super_admin']
+
+        if (isRetake && !staffRoles.includes(userRole)) {
+            throw new AppError(
+                'FORBIDDEN',
+                'Seul le staff peut saisir les notes d\'un examen de rattrapage',
+                403,
+            )
+        }
+
+        if (!isRetake && userRole !== 'teacher') {
+            throw new AppError(
+                'FORBIDDEN',
+                'Seul le professeur peut saisir les notes de cet examen',
+                403,
+            )
         }
 
         const max = Number(exam.maxScore)
@@ -188,7 +218,7 @@ export class ExamResultsService {
             gradedAt: new Date(),
         }))
 
-        return db
+        const results = await db
             .insert(examResults)
             .values(rows)
             .onConflictDoUpdate({
@@ -202,5 +232,47 @@ export class ExamResultsService {
                 },
             })
             .returning()
+
+        await this.syncExamCompletionStatus(exam.id, exam.classId, exam.status)
+
+        return results
+    }
+
+    private async syncExamCompletionStatus(
+        examId: string,
+        classId: string,
+        currentStatus: string,
+    ): Promise<void> {
+        if (currentStatus === 'cancelled') return
+
+        const [rosterCount] = await db
+            .select({ value: count() })
+            .from(enrollments)
+            .where(eq(enrollments.classId, classId))
+
+        const [gradedCount] = await db
+            .select({ value: count() })
+            .from(examResults)
+            .where(and(
+                eq(examResults.examId, examId),
+                isNotNull(examResults.score),
+            ))
+
+        const totalStudents = rosterCount?.value ?? 0
+        const totalGraded   = gradedCount?.value ?? 0
+
+        if (totalStudents === 0) return
+
+        const isFullyGraded = totalGraded >= totalStudents
+
+        if (isFullyGraded && currentStatus !== 'completed') {
+            await db.update(exams)
+                .set({ status: 'completed', updatedAt: new Date() })
+                .where(eq(exams.id, examId))
+        } else if (!isFullyGraded && currentStatus === 'completed') {
+            await db.update(exams)
+                .set({ status: 'ongoing', updatedAt: new Date() })
+                .where(eq(exams.id, examId))
+        }
     }
 }

@@ -14,12 +14,21 @@ export const createExamSchema = z.object({
     maxScore: z.coerce.number().positive().default(20).transform(v => String(v)),
     coefficient: z.coerce.number().positive().default(1).transform(v => String(v)),
     isLiveExam: z.boolean().optional().default(false),
+    retakeOfExamId: z.string().uuid('Invalid exam ID').optional(),
     liveUrl: z.string().url('Invalid URL').optional(),
 })
 
 export const examParamsSchema = z.object({
     id: z.string().uuid('Invalid student ID'),
 });
+
+export const examResultsParamsSchema = z.object({
+    examId: z.string().uuid('Invalid exam ID'),
+})
+
+export const studentResultsParamsSchema = z.object({
+    studentId: z.string().uuid('Invalid student ID'),
+})
 
 export const updateExamSchema = createExamSchema
     .partial()

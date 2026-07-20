@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const gradeTypeSchema = z.enum(['homework', 'participation', 'project', 'oral'])
+export const gradeTypeSchema = z.enum(['homework', 'participation', 'project', 'oral', 'exam'])
 
 export const createGradeSchema = z.object({
     subSchoolId:      z.string().uuid('Invalid sub-school ID'),

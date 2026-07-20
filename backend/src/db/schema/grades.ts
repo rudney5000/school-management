@@ -14,6 +14,7 @@ import { users } from '@/db/schema/users'
 import {academicPeriods} from "@/db/schema/academicPeriod";
 import {gradeTypeEnum} from "@/db/schema/enums";
 import {subSchools} from "@/db/schema/subSchool";
+import {exams} from "@/db/schema/exam";
 
 export const grades = pgTable('grades', {
     id: uuid('id').primaryKey().defaultRandom(),
@@ -30,6 +31,7 @@ export const grades = pgTable('grades', {
         .notNull()
         .references(() => academicPeriods.id, { onDelete: 'cascade' }),
     subSchoolId: uuid("sub_school_id").notNull().references(() => subSchools.id),
+    examId: uuid('exam_id').references(() => exams.id),
     gradeType: gradeTypeEnum('grade_type').notNull(),
     score: numeric('score', { precision: 5, scale: 2 }),
     maxScore: numeric('max_score', { precision: 5, scale: 2 }).notNull().default('20'),

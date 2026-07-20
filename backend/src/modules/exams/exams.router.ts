@@ -4,8 +4,11 @@ import {
     ExamResultsController
 } from './exams.controller'
 import {
+    bulkUpsertExamResultsSchema,
     createExamSchema,
-    examParamsSchema
+    examParamsSchema,
+    examResultsParamsSchema,
+    studentResultsParamsSchema
 } from "@/modules/exams/exams.schema";
 import {authenticate} from "@/middleware/authenticate";
 import {authorize} from "@/middleware/authorize";
@@ -25,7 +28,9 @@ router.get(
     '/',
     authenticate,
     authorize('admin', 'director', 'teacher', 'student', 'super_admin'),
-    validate({ query: subSchoolQuerySchema }),
+    validate({
+        query: subSchoolQuerySchema
+    }),
     examsController.getAll,
 );
 
@@ -33,7 +38,10 @@ router.get(
     '/:id',
     authenticate,
     authorize('admin', 'director', 'teacher', 'parent', 'student', 'super_admin'),
-    validate({ params: examParamsSchema, query: subSchoolQuerySchema }),
+    validate({
+        params: examParamsSchema,
+        query: subSchoolQuerySchema
+    }),
     examsController.getById,
 );
 
@@ -41,7 +49,9 @@ router.post(
     '/',
     authenticate,
     authorize('admin', 'director', 'super_admin', 'teacher'),
-    validate({ body: createExamSchema }),
+    validate({
+        body: createExamSchema
+    }),
     examsController.create,
 );
 router.patch(
@@ -59,16 +69,21 @@ router.delete(
     '/:id',
     authenticate,
     authorize('admin', 'director', 'super_admin', 'teacher'),
-    validate({ params: examParamsSchema, query: subSchoolQuerySchema }),
+    validate({
+        params: examParamsSchema,
+        query: subSchoolQuerySchema
+    }),
     examsController.remove,
 );
 
-
 router.get(
-    '/examId/results',
+    '/:examId/results',
     authenticate,
     authorize('admin', 'director', 'teacher', 'student', 'super_admin'),
-    validate({ query: subSchoolQuerySchema }),
+    validate({
+        params: examResultsParamsSchema,
+        query: subSchoolQuerySchema
+    }),
     examResultsController.getByExam,
 );
 
@@ -76,15 +91,20 @@ router.get(
     '/students/:studentId/results',
     authenticate,
     authorize('admin', 'director', 'teacher', 'student', 'super_admin'),
-    validate({ query: subSchoolQuerySchema }),
+    validate({
+        params: studentResultsParamsSchema,
+        query: subSchoolQuerySchema
+    }),
     examResultsController.getByStudent,
 );
 
 router.post(
     '/results/bulk',
     authenticate,
-    authorize('admin', 'director', 'super_admin', 'teacher'),
-    validate({ body: createExamSchema }),
+    authorize('admin', 'director', 'super_admin', 'teacher', 'worker'),
+    validate({
+        body: bulkUpsertExamResultsSchema
+    }),
     examResultsController.bulkUpsert,
 );
 

@@ -16,7 +16,6 @@ function resolveSubSchoolId(req: Request): string {
     return (req.query as { subSchoolId: string }).subSchoolId
 }
 
-
 export class ExamsController {
     private readonly service = new ExamsService()
 
@@ -80,6 +79,7 @@ export class ExamResultsController {
             req.body as BulkUpsertExamResultsInput,
             subSchoolId,
             req.user!.id,
+            req.user!.role
         )
         respond(res, data)
     })
