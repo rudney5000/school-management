@@ -16,6 +16,7 @@ export const createExamSchema = z.object({
     isLiveExam: z.boolean().optional().default(false),
     retakeOfExamId: z.string().uuid('Invalid exam ID').optional(),
     liveUrl: z.string().url('Invalid URL').optional(),
+    academicPeriodId: z.string().uuid('Invalid academic period ID').optional(),
 })
 
 export const examParamsSchema = z.object({

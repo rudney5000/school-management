@@ -57,6 +57,7 @@ export class ExamsService {
                 courseId: input.courseId,
                 classId: input.classId,
                 subSchoolId: input.subSchoolId,
+                academicPeriodId: input.academicPeriodId,
                 examDate: input.examDate,
                 durationMinutes: input.durationMinutes,
                 maxScore: String(input.maxScore),
