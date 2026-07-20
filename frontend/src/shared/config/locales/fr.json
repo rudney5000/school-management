@@ -690,7 +690,8 @@
         "studentsGraded": "élèves notés",
         "average": "Moyenne",
         "loading": "Chargement...",
-        "examNotFound": "Examen non trouvé"
+        "examNotFound": "Examen non trouvé",
+        "maxScore": "Note maximale"
       },
       "results": {
         "title": "Bulletin de résultats",

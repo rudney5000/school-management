@@ -669,7 +669,8 @@
         "studentsGraded": "учеников оценено",
         "average": "Среднее",
         "loading": "Загрузка...",
-        "examNotFound": "Экзамен не найден"
+        "examNotFound": "Экзамен не найден",
+        "maxScore": "Максимальный балл"
       },
       "results": {
         "title": "Табель успеваемости",

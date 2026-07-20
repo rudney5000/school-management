@@ -758,7 +758,8 @@
         "studentsGraded": "students graded",
         "average": "Average",
         "loading": "Loading...",
-        "examNotFound": "Exam not found"
+        "examNotFound": "Exam not found",
+        "maxScore": "Max score"
       },
       "results": {
         "title": "Report Card",

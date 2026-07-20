@@ -831,7 +831,8 @@
         "studentsGraded": "bana-école batíamí manote",
         "average": "Ntálisi",
         "loading": "Kozela...",
-        "examNotFound": "Esálisi eyebáni te"
+        "examNotFound": "Esálisi eyebáni te",
+        "maxScore": "Note ya mpenza"
       },
       "results": {
         "title": "Bulletin ya barésulta",
