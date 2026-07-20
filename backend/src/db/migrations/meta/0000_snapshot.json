@@ -1,5 +1,5 @@
 {
-  "id": "4b06f5bf-7f4e-4cc8-a99f-98396af735bf",
+  "id": "16c4dba3-fd8e-4ac9-961d-ba4ba4c926bd",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1100,6 +1100,12 @@
             },
             {
               "expression": "academic_period_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "exam_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"

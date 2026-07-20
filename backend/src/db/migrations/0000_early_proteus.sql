@@ -1113,7 +1113,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_archive" ON "message_archives" U
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_reaction" ON "message_reactions" USING btree ("message_id","user_id","emoji");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_read_receipt" ON "message_read_receipts" USING btree ("message_id","user_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_star" ON "message_stars" USING btree ("message_id","user_id");--> statement-breakpoint
-CREATE UNIQUE INDEX IF NOT EXISTS "unique_grade_idx" ON "grades" USING btree ("student_id","course_id","academic_period_id","grade_type");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "unique_grade_idx" ON "grades" USING btree ("student_id","course_id","academic_period_id","exam_id","grade_type");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_sub_schools_school" ON "sub_schools" USING btree ("school_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_sub_schools_code" ON "sub_schools" USING btree ("code");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_teacher_school" ON "teacher_schools" USING btree ("teacher_id","sub_school_id");--> statement-breakpoint
