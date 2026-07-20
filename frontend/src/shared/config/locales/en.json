@@ -732,7 +732,8 @@
         "coefficient": "Coefficient",
         "select": "Select",
         "loading": "Loading...",
-        "add": "Add"
+        "add": "Add",
+        "academicPeriod": "Academic period"
       },
       "tabs": {
         "exams": "Exams",

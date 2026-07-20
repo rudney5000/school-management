@@ -670,7 +670,8 @@
         "coefficient": "Coefficient",
         "select": "Sélectionner",
         "loading": "Chargement...",
-        "add": "Ajouter"
+        "add": "Ajouter",
+        "academicPeriod": "Période accademique"
       },
       "gradeEntry": {
         "title": "Saisie des notes",
