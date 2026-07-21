@@ -677,6 +677,7 @@
       "title": "Exams",
       "subtitle": "Manage your exams and grades",
       "searchPlaceholder": "Search an exam...",
+      "noExamSelected": "No exam selected",
       "filters": {
         "all": "All",
         "scheduled": "Scheduled",
@@ -684,7 +685,8 @@
         "completed": "Completed",
         "cancelled": "Cancelled",
         "myExams": "My Exams",
-        "allClasses": "All Classes"
+        "allClasses": "All Classes",
+        "allPeriods": "All Periods"
       },
       "columns": {
         "title": "Exam",

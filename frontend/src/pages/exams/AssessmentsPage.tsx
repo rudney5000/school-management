@@ -16,9 +16,15 @@ import {
     Tabs,
     TabsContent
 } from "@/shared/ui"
-import {GradeEntryGrid} from "@/pages/exams/ui/GradeEntryGrid";
-import {ResultsBulletin} from "@/pages/exams/ui/results-bulletin/ResultsBulletin.tsx";
-import {StatisticsDashboard} from "@/pages/exams/ui/StatisticsDashboard";
+import {
+    GradeEntryGrid
+} from "@/pages/exams/ui/GradeEntryGrid";
+import {
+    ResultsBulletin
+} from "@/pages/exams/ui/results-bulletin/ResultsBulletin";
+import {
+    StatisticsDashboard
+} from "@/pages/exams/ui/StatisticsDashboard";
 import {
     type Exam,
     ExamStatus,
@@ -34,17 +40,37 @@ import {
     DeleteExamAlert,
     EditExamForm
 } from "@features/exams";
+import {useAcademicPeriods} from "@entities/academic-period";
+import {useAppSelector} from "@shared/store/hooks";
+import {selectRole} from "@features/auth/model/selectors";
+import {useClasses} from "@entities/class";
 
 export function AssessmentsPage() {
     const { subSchoolId } = useParams({ strict: false })
     const { t } = useTranslation()
-    const { data,  isLoading, isError } = useExams(subSchoolId)
+    const role = useAppSelector(selectRole)
+
+    const [selectedPeriodId, setSelectedPeriodId] = useState('all')
+    const [selectedClassId, setSelectedClassId] = useState('all')
+    const [teacherOnly, setTeacherOnly] = useState(false)
+    const [activeFilter, setActiveFilter] = useState('all')
+
+    const { data, isLoading, isError } = useExams(subSchoolId, {
+        classId: selectedClassId !== 'all' ? selectedClassId : undefined,
+        teacherOnly: role === 'teacher' ? teacherOnly : undefined,
+    })
+    const { data: classes = [] } = useClasses(subSchoolId)
+    const { data: academicPeriods = [] } = useAcademicPeriods(
+        subSchoolId ? { subSchoolId } : undefined
+    )
+    const { data: courses } = useCourses(subSchoolId)
+
     const [activeTab, setActiveTab] = useState("exams")
     const [examToEdit, setExamToEdit] = useState<Exam>()
     const [examToDelete, setExamToDelete] = useState<Exam>()
     const [examToGrade, setExamToGrade] = useState<Exam>()
+
     const [formOpen, setFormOpen] = useState(false)
-    const [activeFilter, setActiveFilter] = useState('all')
 
     const tabs = [
         { value: 'exams',       label: t('dashboard.exams.tabs.exams'),      icon: CalendarDays },
@@ -61,24 +87,36 @@ export function AssessmentsPage() {
         { id: ExamStatus.Cancelled, label: t('dashboard.exams.filters.cancelled') },
     ]
 
-    const { data: courses } = useCourses(subSchoolId)
+    const filteredData = useMemo(() => {
+        return (data ?? []).filter(exam => {
+            const statusMatch = activeFilter === 'all' || exam.status === activeFilter
+            const periodMatch = selectedPeriodId === 'all' || exam.academicPeriodId === selectedPeriodId
+            return statusMatch && periodMatch
+        })
+    }, [data, activeFilter, selectedPeriodId])
 
     const courseMap = useMemo(
         () => new Map(courses?.map(c => [c.id, c.name]) ?? []),
         [courses]
     )
 
+    const academicPeriodMap = useMemo(
+        () => new Map(academicPeriods?.map(p => [p.id, p.name]) ?? []),
+        [academicPeriods]
+    )
+
     const columns = useMemo(() => getExamColumns({
         t,
         examToEdit,
         courseMap,
+        academicPeriodMap,
         onEdit: setExamToEdit,
         onDelete: setExamToDelete,
         onViewGrades: (exam) => {
             setExamToGrade(exam);
             setActiveTab("grade-entry")
         }
-    }), [t, examToEdit, courseMap])
+    }), [t, examToEdit, courseMap, academicPeriodMap])
 
     return (
         <div className="min-h-screen bg-background">
@@ -126,12 +164,12 @@ export function AssessmentsPage() {
                     </div>
 
                     <TabsContent value="exams" className="space-y-6">
-                        <ExamStats exams={data ?? []}/>
+                        <ExamStats exams={filteredData}/>
                         <ExamTable
                             columns={columns}
                             isLoading={isLoading}
                             isError={isError}
-                            data={data ?? []}
+                            data={filteredData}
                             title="exam table"
                             toolbar={({ onSearchChange }) => (
                                 <ExamTableToolbar
@@ -140,6 +178,15 @@ export function AssessmentsPage() {
                                     onFilterChange={setActiveFilter}
                                     statusFilters={statusFilters}
                                     onNew={() => setFormOpen(true)}
+                                    classes={classes}
+                                    selectedClassId={selectedClassId}
+                                    onClassChange={setSelectedClassId}
+                                    academicPeriods={academicPeriods}
+                                    selectedPeriodId={selectedPeriodId}
+                                    onPeriodChange={setSelectedPeriodId}
+                                    showTeacherToggle={role === 'teacher'}
+                                    teacherOnly={teacherOnly}
+                                    onTeacherOnlyChange={setTeacherOnly}
                                 />
                             )}
                         />
@@ -179,7 +226,9 @@ export function AssessmentsPage() {
                                     className="flex size-14 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
                                     <PencilLine className="size-6"/>
                                 </div>
-                                <p className="mt-4 text-sm font-medium text-foreground">Aucun examen sélectionné</p>
+                                <p className="mt-4 text-sm font-medium text-foreground">
+                                    {t("dashboard.exams.noExamSelected")}
+                                </p>
                                 <p>{t("dashboard.exams.gradeEntry.selectExam")}</p>
                             </div>
                         )

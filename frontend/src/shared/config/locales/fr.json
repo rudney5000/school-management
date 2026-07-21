@@ -609,6 +609,7 @@
       "title": "Examens",
       "subtitle": "Gérez vos examens et les notes",
       "searchPlaceholder": "Rechercher un examen...",
+      "noExamSelected": "Aucun examen sélectionné",
       "filters": {
         "all": "Tous",
         "scheduled": "Planifiés",
@@ -616,7 +617,8 @@
         "completed": "Terminés",
         "cancelled": "Annulés",
         "myExams": "Mes examens",
-        "allClasses": "Toutes les classes"
+        "allClasses": "Toutes les classes",
+        "allPeriods": "Toutes les périodes"
       },
       "columns": {
         "title": "Examen",

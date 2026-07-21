@@ -588,6 +588,7 @@
       "title": "Экзамены",
       "subtitle": "Управляйте экзаменами и оценками",
       "searchPlaceholder": "Найти экзамен...",
+      "noExamSelected": "Экзамен не выбран",
       "filters": {
         "all": "Все",
         "scheduled": "Запланированные",
@@ -595,7 +596,8 @@
         "completed": "Завершённые",
         "cancelled": "Отменённые",
         "myExams": "Мои экзамены",
-        "allClasses": "Все классы"
+        "allClasses": "Все классы",
+        "allPeriods": "Все периоды"
       },
       "columns": {
         "title": "Экзамен",

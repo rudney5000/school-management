@@ -750,6 +750,7 @@
       "title": "Bilembo ya masomo",
       "subtitle": "Talela bilembo na manota ya bana",
       "searchPlaceholder": "Koluka examen...",
+      "noExamSelected": "Ekzamɛ moko te eponami",
       "filters": {
         "all": "Nyonso",
         "scheduled": "Etíamí",
@@ -757,7 +758,8 @@
         "completed": "Esílá",
         "cancelled": "Esilisámí",
         "myExams": "Misala mpo na bana",
-        "allClasses": "Misala mpo na kelasi"
+        "allClasses": "Misala mpo na kelasi",
+        "allPeriods": "Tango ya koyekola"
       },
       "columns": {
         "title": "Examen",
