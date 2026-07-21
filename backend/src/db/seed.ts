@@ -861,6 +861,54 @@ async function seed() {
     const [teacherUser] = await db.select().from(users)
         .where(eq(users.email, 'jean.muamba@saintjoseph.cd'))
 
+    const samplePeriods = [
+        {
+            subSchoolId: subSchool.id,
+            name: 'Trimestre 1',
+            type: 'trimester' as const,
+            startDate: new Date('2024-09-02'),
+            endDate: new Date('2024-11-30'),
+            isCurrent: false,
+        },
+        {
+            subSchoolId: subSchool.id,
+            name: 'Trimestre 2',
+            type: 'trimester' as const,
+            startDate: new Date('2024-12-01'),
+            endDate: new Date('2025-02-28'),
+            isCurrent: true,
+        },
+        {
+            subSchoolId: subSchool.id,
+            name: 'Trimestre 3',
+            type: 'trimester' as const,
+            startDate: new Date('2025-03-01'),
+            endDate: new Date('2025-06-30'),
+            isCurrent: false,
+        },
+    ]
+
+    const insertedPeriods: (typeof academicPeriods.$inferSelect)[] = []
+
+    for (const period of samplePeriods) {
+        const [existing] = await db.select().from(academicPeriods)
+            .where(and(
+                eq(academicPeriods.name, period.name),
+                eq(academicPeriods.subSchoolId, period.subSchoolId),
+            ))
+
+        if (!existing) {
+            const [inserted] = await db.insert(academicPeriods).values(period).returning()
+            insertedPeriods.push(inserted)
+            console.log(`✓ Academic period created: ${period.name}`)
+        } else {
+            insertedPeriods.push(existing)
+            console.log(`~ Academic period already exists: ${period.name}`)
+        }
+    }
+
+    const trimestre1 = insertedPeriods.find(p => p.name === 'Trimestre 1')!
+
     const sampleExams = [
         {
             title: 'Interrogation — Algèbre linéaire',
@@ -869,6 +917,7 @@ async function seed() {
             courseId: mathCourseForExam.id,
             classId: classA.id,
             subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
             examDate: new Date('2024-10-10T08:00:00Z'),
             durationMinutes: 30,
             maxScore: '10',
@@ -883,6 +932,7 @@ async function seed() {
             courseId: mathCourseForExam.id,
             classId: classA.id,
             subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
             examDate: new Date('2024-10-28T08:00:00Z'),
             durationMinutes: 120,
             maxScore: '20',
@@ -897,6 +947,7 @@ async function seed() {
             courseId: mathCourseForExam.id,
             classId: classB.id,
             subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
             examDate: new Date('2024-11-20T08:00:00Z'),
             durationMinutes: 180,
             maxScore: '20',
@@ -911,6 +962,7 @@ async function seed() {
             courseId: frCourse.id,
             classId: classA.id,
             subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
             examDate: new Date('2024-10-08T10:00:00Z'),
             durationMinutes: 45,
             maxScore: '10',
@@ -925,6 +977,7 @@ async function seed() {
             courseId: frCourse.id,
             classId: classB.id,
             subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
             examDate: new Date('2024-10-15T00:00:00Z'),
             durationMinutes: 60,
             maxScore: '20',
@@ -939,6 +992,7 @@ async function seed() {
             courseId: pcCourse.id,
             classId: classA.id,
             subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
             examDate: new Date('2024-11-05T09:00:00Z'),
             durationMinutes: 20,
             maxScore: '10',
@@ -1035,6 +1089,7 @@ async function seed() {
             courseId: originalExamForRetake.courseId,
             classId: originalExamForRetake.classId,
             subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
             examDate: new Date('2024-12-10T08:00:00Z'),
             durationMinutes: 90,
             maxScore: originalExamForRetake.maxScore,
@@ -1048,54 +1103,6 @@ async function seed() {
 
         console.log(`⏭ Rattrapage laissé sans résultats (pour test manuel avec compte staff)`)
     }
-
-    const samplePeriods = [
-        {
-            subSchoolId: subSchool.id,
-            name: 'Trimestre 1',
-            type: 'trimester' as const,
-            startDate: new Date('2024-09-02'),
-            endDate: new Date('2024-11-30'),
-            isCurrent: false,
-        },
-        {
-            subSchoolId: subSchool.id,
-            name: 'Trimestre 2',
-            type: 'trimester' as const,
-            startDate: new Date('2024-12-01'),
-            endDate: new Date('2025-02-28'),
-            isCurrent: true,
-        },
-        {
-            subSchoolId: subSchool.id,
-            name: 'Trimestre 3',
-            type: 'trimester' as const,
-            startDate: new Date('2025-03-01'),
-            endDate: new Date('2025-06-30'),
-            isCurrent: false,
-        },
-    ]
-
-    const insertedPeriods: (typeof academicPeriods.$inferSelect)[] = []
-
-    for (const period of samplePeriods) {
-        const [existing] = await db.select().from(academicPeriods)
-            .where(and(
-                eq(academicPeriods.name, period.name),
-                eq(academicPeriods.subSchoolId, period.subSchoolId),
-            ))
-
-        if (!existing) {
-            const [inserted] = await db.insert(academicPeriods).values(period).returning()
-            insertedPeriods.push(inserted)
-            console.log(`✓ Academic period created: ${period.name}`)
-        } else {
-            insertedPeriods.push(existing)
-            console.log(`~ Academic period already exists: ${period.name}`)
-        }
-    }
-
-    const trimestre1 = insertedPeriods.find(p => p.name === 'Trimestre 1')!
 
     const [frCourseForGrade] = await db.select().from(courses)
         .where(and(eq(courses.code, 'FR-01'), eq(courses.subSchoolId, subSchool.id)))
