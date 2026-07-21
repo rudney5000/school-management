@@ -1,4 +1,8 @@
 import type { ColumnDef } from "@tanstack/react-table"
+import {
+    Copy,
+    ExternalLink
+} from "lucide-react";
 import { format } from "date-fns/format"
 import type { TFunction } from "i18next"
 import {
@@ -6,14 +10,16 @@ import {
     getTypeBadgeClass,
     type Exam
 } from "@entities/exams";
-import {ActionsComponent} from "@shared/ui/common/ActionsComponent.tsx";
+import {
+    ActionsComponent
+} from "@shared/ui/common/ActionsComponent";
 import {Button} from "@shared/ui";
-import {Copy, ExternalLink} from "lucide-react";
 
 interface GetColumnsOptions {
     t: TFunction
     examToEdit: Exam | undefined
     courseMap: Map<string, string>
+    academicPeriodMap: Map<string, string>
     onViewGrades: (exam: Exam) => void
     onEdit: (exam: Exam) => void
     onDelete: (exam: Exam) => void
@@ -22,6 +28,7 @@ interface GetColumnsOptions {
 export function getExamColumns({
                                    t,
                                    courseMap,
+                                   academicPeriodMap,
                                    onViewGrades,
                                    onEdit,
                                    onDelete
@@ -45,6 +52,15 @@ export function getExamColumns({
             cell: ({ getValue }) => (
                 <span className="text-sm text-muted-foreground">
                     {courseMap.get(getValue() as string) ?? '—'}
+                </span>
+            ),
+        },
+        {
+            accessorKey: "academicPeriodId",
+            header: t("dashboard.exams.columns.academicPeriod"),
+            cell: ({ getValue }) => (
+                <span className="text-sm text-muted-foreground">
+                    {academicPeriodMap.get(getValue() as string) ?? "—"}
                 </span>
             ),
         },
