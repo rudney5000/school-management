@@ -593,7 +593,9 @@
         "scheduled": "Запланированные",
         "ongoing": "Текущие",
         "completed": "Завершённые",
-        "cancelled": "Отменённые"
+        "cancelled": "Отменённые",
+        "myExams": "Мои экзамены",
+        "allClasses": "Все классы"
       },
       "columns": {
         "title": "Экзамен",

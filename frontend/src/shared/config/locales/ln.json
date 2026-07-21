@@ -755,7 +755,9 @@
         "scheduled": "Etíamí",
         "ongoing": "Ezalí kosálema",
         "completed": "Esílá",
-        "cancelled": "Esilisámí"
+        "cancelled": "Esilisámí",
+        "myExams": "Misala mpo na bana",
+        "allClasses": "Misala mpo na kelasi"
       },
       "columns": {
         "title": "Examen",

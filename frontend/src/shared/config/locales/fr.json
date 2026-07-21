@@ -614,7 +614,9 @@
         "scheduled": "Planifiés",
         "ongoing": "En cours",
         "completed": "Terminés",
-        "cancelled": "Annulés"
+        "cancelled": "Annulés",
+        "myExams": "Mes examens",
+        "allClasses": "Toutes les classes"
       },
       "columns": {
         "title": "Examen",

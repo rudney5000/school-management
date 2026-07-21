@@ -682,7 +682,9 @@
         "scheduled": "Scheduled",
         "ongoing": "Ongoing",
         "completed": "Completed",
-        "cancelled": "Cancelled"
+        "cancelled": "Cancelled",
+        "myExams": "My Exams",
+        "allClasses": "All Classes"
       },
       "columns": {
         "title": "Exam",
