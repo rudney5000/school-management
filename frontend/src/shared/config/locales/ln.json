@@ -750,12 +750,16 @@
       "title": "Bilembo ya masomo",
       "subtitle": "Talela bilembo na manota ya bana",
       "searchPlaceholder": "Koluka examen...",
+      "noExamSelected": "Ekzamɛ moko te eponami",
       "filters": {
         "all": "Nyonso",
         "scheduled": "Etíamí",
         "ongoing": "Ezalí kosálema",
         "completed": "Esílá",
-        "cancelled": "Esilisámí"
+        "cancelled": "Esilisámí",
+        "myExams": "Misala mpo na bana",
+        "allClasses": "Misala mpo na kelasi",
+        "allPeriods": "Tango ya koyekola"
       },
       "columns": {
         "title": "Examen",
@@ -763,7 +767,8 @@
         "date": "Mokolo",
         "type": "Lolenge",
         "status": "État",
-        "live": "lien"
+        "live": "lien",
+        "academicPeriod": "Tango ya koyekola"
       },
       "types": {
         "quiz": "Motuna",
@@ -805,7 +810,8 @@
         "coefficient": "Koefisiyán",
         "select": "Pona kosálí",
         "loading": "Kozela...",
-        "add": "Sala"
+        "add": "Sala",
+        "academicPeriod": "Tango ya koyekola"
       },
       "tabs": {
         "exams": "Masálisi",
@@ -831,7 +837,8 @@
         "studentsGraded": "bana-école batíamí manote",
         "average": "Ntálisi",
         "loading": "Kozela...",
-        "examNotFound": "Esálisi eyebáni te"
+        "examNotFound": "Esálisi eyebáni te",
+        "maxScore": "Note ya mpenza"
       },
       "results": {
         "title": "Bulletin ya barésulta",

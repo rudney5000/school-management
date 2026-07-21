@@ -1,24 +1,67 @@
-import {and, eq, sql} from 'drizzle-orm'
+import {
+    and,
+    eq,
+    sql
+} from 'drizzle-orm'
 import { db } from '@/db'
 import { AppError } from '@/shared/errors/app-error'
-import {examResults, exams} from "@/db/schema/exam";
+import {
+    examResults,
+    exams
+} from "@/db/schema/exam";
 import {
     BulkUpsertExamResultsInput,
     CreateExamInput,
     UpdateExamInput
 } from "@/modules/exams/exams.schema";
-
+import {
+    mapExamTypeToGradeType
+} from "@/modules/exams/exam-type-to-grade-type.mapper";
+import {
+    GradesService
+} from "@/modules/grades/grades.service";
+import {
+    courses,
+    enrollments,
+    users
+} from "@/db/schema";
 
 export type ExamRecord = typeof exams.$inferSelect
 export type ExamResultRecord = typeof examResults.$inferSelect
 
 export class ExamsService {
 
-    async findAll(subSchoolId: string): Promise<ExamRecord[]> {
-        return db
-            .select()
+    async findAll(
+        subSchoolId: string,
+        filters?: { classId?: string; teacherUserId?: string }
+    ): Promise<ExamRecord[]> {
+        let teacherId: string | undefined
+
+        if (filters?.teacherUserId) {
+            const [user] = await db
+                .select({ teacherId: users.teacherId })
+                .from(users)
+                .where(eq(users.id, filters.teacherUserId))
+
+            if (!user?.teacherId) {
+                return []
+            }
+            teacherId = user.teacherId
+        }
+
+        const rows = await db
+            .select({ exam: exams })
             .from(exams)
-            .where(eq(exams.subSchoolId, subSchoolId))
+            .innerJoin(courses, eq(exams.courseId, courses.id))
+            .where(
+                and(
+                    eq(exams.subSchoolId, subSchoolId),
+                    filters?.classId ? eq(exams.classId, filters.classId) : undefined,
+                    teacherId ? eq(courses.teacherId, teacherId) : undefined,
+                )
+            )
+
+        return rows.map(r => r.exam)
     }
 
     async findById(id: string, subSchoolId: string): Promise<ExamRecord> {
@@ -48,6 +91,7 @@ export class ExamsService {
                 courseId: input.courseId,
                 classId: input.classId,
                 subSchoolId: input.subSchoolId,
+                academicPeriodId: input.academicPeriodId,
                 examDate: input.examDate,
                 durationMinutes: input.durationMinutes,
                 maxScore: String(input.maxScore),
@@ -55,6 +99,7 @@ export class ExamsService {
                 isLiveSession: input.isLiveExam,
                 liveUrl: input.liveUrl,
                 createdBy: input.createdBy,
+                retakeOfExamId: input.retakeOfExamId ?? null,
             })
             .returning()
 
@@ -97,7 +142,13 @@ export class ExamsService {
     }
 }
 
+type ExamStatusValue = 'scheduled' | 'ongoing' | 'completed' | 'cancelled'
+
 export class ExamResultsService {
+
+    constructor(
+        private readonly gradesService: GradesService = new GradesService()
+    ) {}
 
     async findByExam(examId: string, subSchoolId: string): Promise<ExamResultRecord[]> {
         const [exam] = await db
@@ -153,6 +204,7 @@ export class ExamResultsService {
         input: BulkUpsertExamResultsInput,
         subSchoolId: string,
         gradedBy: string,
+        userRole: string
     ): Promise<ExamResultRecord[]> {
         const [exam] = await db
             .select()
@@ -166,6 +218,25 @@ export class ExamResultsService {
 
         if (!exam) {
             throw new AppError('NOT_FOUND', 'Examen introuvable', 404)
+        }
+
+        const isRetake = exam.retakeOfExamId !== null
+        const staffRoles = ['admin', 'director', 'worker', 'super_admin']
+
+        if (isRetake && !staffRoles.includes(userRole)) {
+            throw new AppError(
+                'FORBIDDEN',
+                'Seul le staff peut saisir les notes d\'un examen de rattrapage',
+                403,
+            )
+        }
+
+        if (!isRetake && userRole !== 'teacher') {
+            throw new AppError(
+                'FORBIDDEN',
+                'Seul le professeur peut saisir les notes de cet examen',
+                403,
+            )
         }
 
         const max = Number(exam.maxScore)
@@ -188,7 +259,7 @@ export class ExamResultsService {
             gradedAt: new Date(),
         }))
 
-        return db
+        const results = await db
             .insert(examResults)
             .values(rows)
             .onConflictDoUpdate({
@@ -202,5 +273,81 @@ export class ExamResultsService {
                 },
             })
             .returning()
+
+        await this.syncExamCompletionStatus(exam.id, exam.classId, exam.status)
+        await this.syncToGrades(exam, input.results, subSchoolId, gradedBy)
+
+        return results
+    }
+
+    private async syncToGrades(
+        exam: ExamRecord,
+        results: BulkUpsertExamResultsInput['results'],
+        subSchoolId: string,
+        gradedBy: string,
+    ): Promise<void> {
+        if (!exam.academicPeriodId) {
+            return
+        }
+
+        await this.gradesService.bulkCreate(
+            {
+                courseId: exam.courseId,
+                classId: exam.classId,
+                academicPeriodId: exam.academicPeriodId,
+                examId: exam.id,
+                gradeType: mapExamTypeToGradeType(exam.type),
+                maxScore: Number(exam.maxScore),
+                coefficient: Number(exam.coefficient),
+                results: results.map(r => ({
+                    studentId: r.studentId,
+                    score: r.score,
+                    comment: r.comment ?? null,
+                })),
+            },
+            subSchoolId,
+            gradedBy,
+        )
+    }
+
+    private async syncExamCompletionStatus(
+        examId: string,
+        classId: string,
+        currentStatus: ExamStatusValue,
+    ): Promise<void> {
+        if (currentStatus === 'cancelled') {
+            return
+        }
+
+        const [{ studentCount }] = await db
+            .select({ studentCount: sql<number>`count(*)::int` })
+            .from(enrollments)
+            .where(eq(enrollments.classId, classId))
+
+        const [{ gradedCount }] = await db
+            .select({ gradedCount: sql<number>`count(*)::int` })
+            .from(examResults)
+            .where(
+                and(
+                    eq(examResults.examId, examId),
+                    sql`${examResults.score} is not null`,
+                )
+            )
+
+        const isFullyGraded = studentCount > 0 && gradedCount >= studentCount
+
+        let newStatus: ExamStatusValue = currentStatus
+        if (isFullyGraded) {
+            newStatus = 'completed'
+        } else if (currentStatus === 'completed') {
+            newStatus = 'ongoing'
+        }
+
+        if (newStatus !== currentStatus) {
+            await db
+                .update(exams)
+                .set({ status: newStatus, updatedAt: new Date() })
+                .where(eq(exams.id, examId))
+        }
     }
 }

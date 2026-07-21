@@ -1,6 +1,9 @@
 import { pgEnum } from 'drizzle-orm/pg-core';
 
-export const genderEnum = pgEnum('gender', ['male', 'female']);
+export const genderEnum = pgEnum('gender', [
+    'male',
+    'female'
+]);
 
 export const dayOfWeekEnum = pgEnum('day_of_week', [
     'MONDAY',
@@ -31,6 +34,7 @@ export const payrollStatusEnum = pgEnum('payroll_status', [
     'PAID',
     'CANCELLED',
 ]);
+
 export const paymentTypeEnum = pgEnum('payment_type', [
     'TUITION',
     'CANTEEN',
@@ -62,21 +66,24 @@ export const EventTypeEnum = pgEnum('event_type', [
     'OTHER',
 ]);
 
-export const attendanceTargetEnum = pgEnum(
-    'attendance_target',
-    [
+export const attendanceTargetEnum = pgEnum('attendance_target', [
         'student',
         'teacher'
-    ]
-);
+    ]);
 
-export const examTypeEnum = pgEnum(
-    "exam_type",
-    ["quiz", "midterm", "final", "homework", "oral"
+export const examTypeEnum = pgEnum("exam_type", [
+    "quiz",
+    "midterm",
+    "final",
+    "homework",
+    "oral"
     ])
-export const examStatusEnum = pgEnum(
-    "exam_status",
-    ["scheduled", "ongoing", "completed", "cancelled"
+
+export const examStatusEnum = pgEnum("exam_status", [
+    "scheduled",
+    "ongoing",
+    "completed",
+    "cancelled"
     ])
 
 export const gradeTypeEnum = pgEnum('grade_type', [
@@ -84,6 +91,7 @@ export const gradeTypeEnum = pgEnum('grade_type', [
     'participation',
     'project',
     'oral',
+    'exam'
 ])
 
 export const conversationTypeEnum = pgEnum('conversation_type', [
@@ -115,3 +123,9 @@ export const liveSessionStatusEnum = pgEnum('live_session_status', [
     'live',
     'ended'
 ]);
+
+export const disputeStatusEnum = pgEnum('dispute_status', [
+    'pending',
+    'approved',
+    'rejected'
+])

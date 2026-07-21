@@ -861,144 +861,6 @@ async function seed() {
     const [teacherUser] = await db.select().from(users)
         .where(eq(users.email, 'jean.muamba@saintjoseph.cd'))
 
-    const sampleExams = [
-        {
-            title: 'Interrogation — Algèbre linéaire',
-            type: 'quiz' as const,
-            status: 'completed' as const,
-            courseId: mathCourseForExam.id,
-            classId: classA.id,
-            subSchoolId: subSchool.id,
-            examDate: new Date('2024-10-10T08:00:00Z'),
-            durationMinutes: 30,
-            maxScore: '10',
-            coefficient: '1',
-            createdBy: teacherUser.id,
-            isLiveExam: false,
-        },
-        {
-            title: 'Examen mi-trimestre — Mathématiques',
-            type: 'midterm' as const,
-            status: 'completed' as const,
-            courseId: mathCourseForExam.id,
-            classId: classA.id,
-            subSchoolId: subSchool.id,
-            examDate: new Date('2024-10-28T08:00:00Z'),
-            durationMinutes: 120,
-            maxScore: '20',
-            coefficient: '2',
-            createdBy: teacherUser.id,
-            isLiveExam: false,
-        },
-        {
-            title: 'Examen final — Mathématiques',
-            type: 'final' as const,
-            status: 'scheduled' as const,
-            courseId: mathCourseForExam.id,
-            classId: classB.id,
-            subSchoolId: subSchool.id,
-            examDate: new Date('2024-11-20T08:00:00Z'),
-            durationMinutes: 180,
-            maxScore: '20',
-            coefficient: '3',
-            createdBy: teacherUser.id,
-            isLiveExam: false,
-        },
-        {
-            title: 'Interrogation — Expression écrite',
-            type: 'quiz' as const,
-            status: 'completed' as const,
-            courseId: frCourse.id,
-            classId: classA.id,
-            subSchoolId: subSchool.id,
-            examDate: new Date('2024-10-08T10:00:00Z'),
-            durationMinutes: 45,
-            maxScore: '10',
-            coefficient: '1',
-            createdBy: teacherUser.id,
-            isLiveExam: false,
-        },
-        {
-            title: 'Devoir maison — Littérature',
-            type: 'homework' as const,
-            status: 'completed' as const,
-            courseId: frCourse.id,
-            classId: classB.id,
-            subSchoolId: subSchool.id,
-            examDate: new Date('2024-10-15T00:00:00Z'),
-            durationMinutes: 60,
-            maxScore: '20',
-            coefficient: '1',
-            createdBy: teacherUser.id,
-            isLiveExam: false,
-        },
-        {
-            title: 'Interrogation orale — Physique',
-            type: 'oral' as const,
-            status: 'ongoing' as const,
-            courseId: pcCourse.id,
-            classId: classA.id,
-            subSchoolId: subSchool.id,
-            examDate: new Date('2024-11-05T09:00:00Z'),
-            durationMinutes: 20,
-            maxScore: '10',
-            coefficient: '1',
-            createdBy: teacherUser.id,
-            isLiveExam: true,
-            liveUrl: 'https://meet.google.com/oral-physique-classA',
-        },
-    ]
-    const insertedExams: (typeof exams.$inferSelect)[] = []
-
-    for (const exam of sampleExams) {
-        const [existing] = await db.select().from(exams)
-            .where(and(
-                eq(exams.title, exam.title),
-                eq(exams.subSchoolId, exam.subSchoolId),
-            ))
-
-        if (!existing) {
-            const [inserted] = await db.insert(exams).values(exam).returning()
-            insertedExams.push(inserted)
-            console.log(`✓ Exam created: ${exam.title}`)
-        } else {
-            insertedExams.push(existing)
-            console.log(`~ Exam already exists: ${exam.title}`)
-        }
-    }
-
-    const completedExams = insertedExams.filter(e => e.status === 'completed')
-    const allStudentsForResults = [student, student2]
-
-    function randomScore(max: number): string {
-        const percent = 0.4 + Math.random() * 0.6
-        return (Math.round(percent * max * 10) / 10).toFixed(1)
-    }
-
-    for (const exam of completedExams) {
-        for (const s of allStudentsForResults) {
-            const [existing] = await db.select().from(examResults)
-                .where(and(
-                    eq(examResults.examId, exam.id),
-                    eq(examResults.studentId, s.id),
-                ))
-
-            if (!existing) {
-                await db.insert(examResults).values({
-                    examId: exam.id,
-                    studentId: s.id,
-                    score: randomScore(Number(exam.maxScore)),
-                    comment: null,
-                    gradedBy: teacherUser.id,
-                    gradedAt: new Date(),
-                })
-                console.log(`✓ Result: ${s.firstName} ${s.lastName} → ${exam.title}`)
-            } else {
-                console.log(`~ Result already exists: ${s.firstName} ${s.lastName} → ${exam.title}`)
-            }
-        }
-    }
-
     const samplePeriods = [
         {
             subSchoolId: subSchool.id,
@@ -1046,6 +908,201 @@ async function seed() {
     }
 
     const trimestre1 = insertedPeriods.find(p => p.name === 'Trimestre 1')!
+
+    const sampleExams = [
+        {
+            title: 'Interrogation — Algèbre linéaire',
+            type: 'quiz' as const,
+            status: 'completed' as const,
+            courseId: mathCourseForExam.id,
+            classId: classA.id,
+            subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
+            examDate: new Date('2024-10-10T08:00:00Z'),
+            durationMinutes: 30,
+            maxScore: '10',
+            coefficient: '1',
+            createdBy: teacherUser.id,
+            isLiveExam: false,
+        },
+        {
+            title: 'Examen mi-trimestre — Mathématiques',
+            type: 'midterm' as const,
+            status: 'completed' as const,
+            courseId: mathCourseForExam.id,
+            classId: classA.id,
+            subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
+            examDate: new Date('2024-10-28T08:00:00Z'),
+            durationMinutes: 120,
+            maxScore: '20',
+            coefficient: '2',
+            createdBy: teacherUser.id,
+            isLiveExam: false,
+        },
+        {
+            title: 'Examen final — Mathématiques',
+            type: 'final' as const,
+            status: 'scheduled' as const,
+            courseId: mathCourseForExam.id,
+            classId: classB.id,
+            subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
+            examDate: new Date('2024-11-20T08:00:00Z'),
+            durationMinutes: 180,
+            maxScore: '20',
+            coefficient: '3',
+            createdBy: teacherUser.id,
+            isLiveExam: false,
+        },
+        {
+            title: 'Interrogation — Expression écrite',
+            type: 'quiz' as const,
+            status: 'completed' as const,
+            courseId: frCourse.id,
+            classId: classA.id,
+            subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
+            examDate: new Date('2024-10-08T10:00:00Z'),
+            durationMinutes: 45,
+            maxScore: '10',
+            coefficient: '1',
+            createdBy: teacherUser.id,
+            isLiveExam: false,
+        },
+        {
+            title: 'Devoir maison — Littérature',
+            type: 'homework' as const,
+            status: 'completed' as const,
+            courseId: frCourse.id,
+            classId: classB.id,
+            subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
+            examDate: new Date('2024-10-15T00:00:00Z'),
+            durationMinutes: 60,
+            maxScore: '20',
+            coefficient: '1',
+            createdBy: teacherUser.id,
+            isLiveExam: false,
+        },
+        {
+            title: 'Interrogation orale — Physique',
+            type: 'oral' as const,
+            status: 'ongoing' as const,
+            courseId: pcCourse.id,
+            classId: classA.id,
+            subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
+            examDate: new Date('2024-11-05T09:00:00Z'),
+            durationMinutes: 20,
+            maxScore: '10',
+            coefficient: '1',
+            createdBy: teacherUser.id,
+            isLiveExam: true,
+            liveUrl: 'https://meet.google.com/oral-physique-classA',
+        },
+    ]
+    const insertedExams: (typeof exams.$inferSelect)[] = []
+
+    for (const exam of sampleExams) {
+        const [existing] = await db.select().from(exams)
+            .where(and(
+                eq(exams.title, exam.title),
+                eq(exams.subSchoolId, exam.subSchoolId),
+            ))
+
+        if (!existing) {
+            const [inserted] = await db.insert(exams).values(exam).returning()
+            insertedExams.push(inserted)
+            console.log(`✓ Exam created: ${exam.title}`)
+        } else {
+            insertedExams.push(existing)
+            console.log(`~ Exam already exists: ${exam.title}`)
+        }
+    }
+
+    const completedExams = insertedExams.filter(e => e.status === 'completed')
+    const allStudentsForResults = [student, student2]
+
+    function randomScore(max: number): string {
+        const percent = 0.4 + Math.random() * 0.6
+        return (Math.round(percent * max * 10) / 10).toFixed(1)
+    }
+
+    const examToLeaveEmpty = completedExams.find(e => e.title === 'Interrogation — Expression écrite')
+
+    const examToLeavePartial = completedExams.find(e => e.title === 'Examen mi-trimestre — Mathématiques')
+
+    for (const exam of completedExams) {
+        if (exam.id === examToLeaveEmpty?.id) {
+            console.log(`⏭ Exam laissé sans résultats (pour test manuel): ${exam.title}`)
+            continue
+        }
+        for (const s of allStudentsForResults) {
+            if (exam.id === examToLeavePartial?.id && s.id === student2.id) {
+                console.log(`⏭ Résultat manquant volontairement: ${s.firstName} ${s.lastName} → ${exam.title}`)
+                continue
+            }
+
+            const [existing] = await db.select().from(examResults)
+                .where(and(
+                    eq(examResults.examId, exam.id),
+                    eq(examResults.studentId, s.id),
+                ))
+
+            if (!existing) {
+                await db.insert(examResults).values({
+                    examId: exam.id,
+                    studentId: s.id,
+                    score: randomScore(Number(exam.maxScore)),
+                    comment: null,
+                    gradedBy: teacherUser.id,
+                    gradedAt: new Date(),
+                })
+                console.log(`✓ Result: ${s.firstName} ${s.lastName} → ${exam.title}`)
+            } else {
+                console.log(`~ Result already exists: ${s.firstName} ${s.lastName} → ${exam.title}`)
+            }
+        }
+    }
+
+    const [directorUser] = await db.select().from(users)
+        .where(eq(users.email, 'directeur@saintjoseph.cd'))
+
+    const originalExamForRetake = insertedExams.find(
+        e => e.title === 'Examen mi-trimestre — Mathématiques'
+    )
+
+    if (originalExamForRetake && directorUser) {
+        const retakeTitle = 'Rattrapage — Mathématiques (Trimestre 1)'
+
+        const [existingRetake] = await db.select().from(exams)
+            .where(and(
+                eq(exams.title, retakeTitle),
+                eq(exams.subSchoolId, subSchool.id),
+            ))
+
+        const retakeExam = existingRetake ?? (await db.insert(exams).values({
+            title: retakeTitle,
+            type: 'final',
+            status: 'completed',
+            courseId: originalExamForRetake.courseId,
+            classId: originalExamForRetake.classId,
+            subSchoolId: subSchool.id,
+            academicPeriodId: trimestre1.id,
+            examDate: new Date('2024-12-10T08:00:00Z'),
+            durationMinutes: 90,
+            maxScore: originalExamForRetake.maxScore,
+            coefficient: originalExamForRetake.coefficient,
+            createdBy: directorUser.id,
+            retakeOfExamId: originalExamForRetake.id,
+            isLiveSession: false,
+        }).returning())[0]
+
+        console.log(`✓ Exam de rattrapage créé: ${retakeExam.title}`)
+
+        console.log(`⏭ Rattrapage laissé sans résultats (pour test manuel avec compte staff)`)
+    }
 
     const [frCourseForGrade] = await db.select().from(courses)
         .where(and(eq(courses.code, 'FR-01'), eq(courses.subSchoolId, subSchool.id)))

@@ -609,12 +609,16 @@
       "title": "Examens",
       "subtitle": "Gérez vos examens et les notes",
       "searchPlaceholder": "Rechercher un examen...",
+      "noExamSelected": "Aucun examen sélectionné",
       "filters": {
         "all": "Tous",
         "scheduled": "Planifiés",
         "ongoing": "En cours",
         "completed": "Terminés",
-        "cancelled": "Annulés"
+        "cancelled": "Annulés",
+        "myExams": "Mes examens",
+        "allClasses": "Toutes les classes",
+        "allPeriods": "Toutes les périodes"
       },
       "columns": {
         "title": "Examen",
@@ -622,7 +626,8 @@
         "date": "Date",
         "type": "Type",
         "status": "Statut",
-        "live": "Lien"
+        "live": "Lien",
+        "academicPeriod": "Période academique"
       },
       "types": {
         "quiz": "Quiz",
@@ -670,7 +675,8 @@
         "coefficient": "Coefficient",
         "select": "Sélectionner",
         "loading": "Chargement...",
-        "add": "Ajouter"
+        "add": "Ajouter",
+        "academicPeriod": "Période academique"
       },
       "gradeEntry": {
         "title": "Saisie des notes",
@@ -690,7 +696,8 @@
         "studentsGraded": "élèves notés",
         "average": "Moyenne",
         "loading": "Chargement...",
-        "examNotFound": "Examen non trouvé"
+        "examNotFound": "Examen non trouvé",
+        "maxScore": "Note maximale"
       },
       "results": {
         "title": "Bulletin de résultats",

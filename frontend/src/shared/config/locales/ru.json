@@ -588,12 +588,16 @@
       "title": "Экзамены",
       "subtitle": "Управляйте экзаменами и оценками",
       "searchPlaceholder": "Найти экзамен...",
+      "noExamSelected": "Экзамен не выбран",
       "filters": {
         "all": "Все",
         "scheduled": "Запланированные",
         "ongoing": "Текущие",
         "completed": "Завершённые",
-        "cancelled": "Отменённые"
+        "cancelled": "Отменённые",
+        "myExams": "Мои экзамены",
+        "allClasses": "Все классы",
+        "allPeriods": "Все периоды"
       },
       "columns": {
         "title": "Экзамен",
@@ -601,7 +605,8 @@
         "date": "Дата",
         "type": "Тип",
         "status": "Статус",
-        "live": "Ссылка"
+        "live": "Ссылка",
+        "academicPeriod": "Учебный период"
       },
       "types": {
         "quiz": "Тест",
@@ -643,7 +648,8 @@
         "coefficient": "Коэффициент",
         "select": "Выберите",
         "loading": "Загрузка...",
-        "add": "Добавить"
+        "add": "Добавить",
+        "academicPeriod": "Учебный период"
       },
       "tabs": {
         "exams": "Экзамены",
@@ -669,7 +675,8 @@
         "studentsGraded": "учеников оценено",
         "average": "Среднее",
         "loading": "Загрузка...",
-        "examNotFound": "Экзамен не найден"
+        "examNotFound": "Экзамен не найден",
+        "maxScore": "Максимальный балл"
       },
       "results": {
         "title": "Табель успеваемости",

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const gradeTypeSchema = z.enum(['homework', 'participation', 'project', 'oral'])
+export const gradeTypeSchema = z.enum(['homework', 'participation', 'project', 'oral', 'exam'])
 
 export const createGradeSchema = z.object({
     subSchoolId:      z.string().uuid('Invalid sub-school ID'),
@@ -28,6 +28,7 @@ export const bulkCreateGradesSchema = z.object({
     courseId:         z.string().uuid(),
     classId:          z.string().uuid(),
     academicPeriodId: z.string().uuid(),
+    examId: z.string().uuid().optional(),
     gradeType:        gradeTypeSchema,
     maxScore:         z.coerce.number().positive().default(20),
     coefficient:      z.coerce.number().positive().default(1),

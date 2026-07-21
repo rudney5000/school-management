@@ -16,5 +16,6 @@ export function getTypeBadgeClass(type: ExamType): string {
         final:    "bg-amber-50 text-amber-700",
         homework: "bg-green-50 text-green-700",
         oral:     "bg-pink-50 text-pink-700",
+        exam:     "bg-slate-50 text-slate-700",
     }[type]
 }

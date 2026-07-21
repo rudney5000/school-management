@@ -28,6 +28,7 @@ import { useCourses } from '@entities/courses'
 import {useClasses} from "@entities/class";
 import CustomDrawer from '@shared/ui/custom-drawer/custom-drawer'
 import { useTranslation } from '@shared/lib'
+import {useAcademicPeriods} from "@entities/academic-period";
 
 type AddExamFormProps = {
     isOpen?: boolean
@@ -47,7 +48,9 @@ export const AddExamForm: React.FC<AddExamFormProps> = ({
 
     const { data: courses } = useCourses(subSchoolId)
     const { data: classes } = useClasses(subSchoolId)
-
+    const { data: academicPeriods } = useAcademicPeriods({
+        subSchoolId: subSchoolId!,
+    })
     const form = useForm<CreateExamDto>({
         resolver: zodResolver(createExamSchema),
         mode: 'onTouched',
@@ -158,6 +161,31 @@ export const AddExamForm: React.FC<AddExamFormProps> = ({
                                         {classes?.map((c) => (
                                             <SelectItem key={c.id} value={c.id}>
                                                 {c.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="academicPeriodId"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{t('dashboard.exams.fields.academicPeriod')}</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder={t('dashboard.exams.fields.select')} />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {academicPeriods?.map((p) => (
+                                            <SelectItem key={p.id} value={p.id}>
+                                                {p.name}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>

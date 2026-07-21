@@ -4,8 +4,9 @@ export type ExamParamsDto = {
 
 export type ExamListQueryDto = {
     subSchoolId: string
+    classId?: string
+    teacherOnly?: boolean
 }
-
 export type ExamResultParamsDto = {
     id: string
 }

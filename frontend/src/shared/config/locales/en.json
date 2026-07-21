@@ -677,12 +677,16 @@
       "title": "Exams",
       "subtitle": "Manage your exams and grades",
       "searchPlaceholder": "Search an exam...",
+      "noExamSelected": "No exam selected",
       "filters": {
         "all": "All",
         "scheduled": "Scheduled",
         "ongoing": "Ongoing",
         "completed": "Completed",
-        "cancelled": "Cancelled"
+        "cancelled": "Cancelled",
+        "myExams": "My Exams",
+        "allClasses": "All Classes",
+        "allPeriods": "All Periods"
       },
       "columns": {
         "title": "Exam",
@@ -690,7 +694,8 @@
         "date": "Date",
         "type": "Type",
         "status": "Status",
-        "live": "Link"
+        "live": "Link",
+        "academicPeriod": "Academic Period"
       },
       "types": {
         "quiz": "Quiz",
@@ -732,7 +737,8 @@
         "coefficient": "Coefficient",
         "select": "Select",
         "loading": "Loading...",
-        "add": "Add"
+        "add": "Add",
+        "academicPeriod": "Academic period"
       },
       "tabs": {
         "exams": "Exams",
@@ -758,7 +764,8 @@
         "studentsGraded": "students graded",
         "average": "Average",
         "loading": "Loading...",
-        "examNotFound": "Exam not found"
+        "examNotFound": "Exam not found",
+        "maxScore": "Max score"
       },
       "results": {
         "title": "Report Card",
