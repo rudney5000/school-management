@@ -50,12 +50,14 @@ export function useResultsBulletin() {
         }
     }, [classes, selectedClassId])
 
+    const isPeriodSelected = selectedPeriod !== "all"
+
     const { data: grades = [], isLoading: gradesLoading } = useGrades({
         classId: selectedClassId,
-        subSchoolId
+        subSchoolId,
+        ...(isPeriodSelected && { academicPeriodId: selectedPeriod }),
     })
 
-    const isPeriodSelected = selectedPeriod !== "all"
     const { data: classInfo } = useClass(selectedClassId, subSchoolId)
     const { data: academicPeriod } = useAcademicPeriod(
         isPeriodSelected ? selectedPeriod : undefined,
