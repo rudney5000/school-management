@@ -1,4 +1,7 @@
-import type { Request, Response } from 'express'
+import type {
+    Request,
+    Response
+} from 'express'
 import { asyncHandler } from '@/shared/utils/async-handler'
 import { respond } from '@/shared/utils/respond'
 import {
@@ -21,7 +24,12 @@ export class ExamsController {
 
     getAll = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const subSchoolId = resolveSubSchoolId(req)
-        const data = await this.service.findAll(subSchoolId)
+        const { classId, teacherOnly } = req.query as { classId?: string; teacherOnly?: boolean }
+
+        const data = await this.service.findAll(subSchoolId, {
+            classId,
+            teacherUserId: teacherOnly ? req.user!.id : undefined,
+        })
         respond(res, data)
     })
 

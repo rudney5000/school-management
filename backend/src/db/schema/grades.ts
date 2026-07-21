@@ -43,7 +43,7 @@ export const grades = pgTable('grades', {
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
 }, (t) => ({
     uniqueGrade: uniqueIndex('unique_grade_idx')
-        .on(t.studentId, t.courseId, t.academicPeriodId, t.gradeType),
+        .on(t.studentId, t.courseId, t.academicPeriodId, t.examId, t.gradeType),
 }))
 
 export const gradesRelations = relations(grades, ({ one }) => ({

@@ -115,6 +115,7 @@ export class GradesService {
             courseId:         input.courseId,
             classId:          input.classId,
             academicPeriodId: input.academicPeriodId,
+            examId:           input.examId ?? null,
             gradeType:        input.gradeType,
             score:            r.score !== null ? String(r.score) : null,
             maxScore:         String(input.maxScore ?? 20),
@@ -128,7 +129,13 @@ export class GradesService {
             .insert(grades)
             .values(rows)
             .onConflictDoUpdate({
-                target: [grades.studentId, grades.courseId, grades.academicPeriodId, grades.gradeType],
+                target: [
+                    grades.studentId,
+                    grades.courseId,
+                    grades.academicPeriodId,
+                    grades.examId,
+                    grades.gradeType
+                ],
                 set: {
                     score:     sql`excluded.score`,
                     comment:   sql`excluded."comment"`,

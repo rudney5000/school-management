@@ -28,6 +28,7 @@ export const bulkCreateGradesSchema = z.object({
     courseId:         z.string().uuid(),
     classId:          z.string().uuid(),
     academicPeriodId: z.string().uuid(),
+    examId: z.string().uuid().optional(),
     gradeType:        gradeTypeSchema,
     maxScore:         z.coerce.number().positive().default(20),
     coefficient:      z.coerce.number().positive().default(1),

@@ -6,6 +6,7 @@ import {
 import {
     bulkUpsertExamResultsSchema,
     createExamSchema,
+    examListQuerySchema,
     examParamsSchema,
     examResultsParamsSchema,
     studentResultsParamsSchema
@@ -29,7 +30,7 @@ router.get(
     authenticate,
     authorize('admin', 'director', 'teacher', 'student', 'super_admin'),
     validate({
-        query: subSchoolQuerySchema
+        query: examListQuerySchema
     }),
     examsController.getAll,
 );

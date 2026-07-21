@@ -1,8 +1,6 @@
 import {
     and,
-    count,
     eq,
-    isNotNull,
     sql
 } from 'drizzle-orm'
 import { db } from '@/db'
@@ -16,18 +14,54 @@ import {
     CreateExamInput,
     UpdateExamInput
 } from "@/modules/exams/exams.schema";
-import {enrollments} from "@/db/schema";
+import {
+    mapExamTypeToGradeType
+} from "@/modules/exams/exam-type-to-grade-type.mapper";
+import {
+    GradesService
+} from "@/modules/grades/grades.service";
+import {
+    courses,
+    enrollments,
+    users
+} from "@/db/schema";
 
 export type ExamRecord = typeof exams.$inferSelect
 export type ExamResultRecord = typeof examResults.$inferSelect
 
 export class ExamsService {
 
-    async findAll(subSchoolId: string): Promise<ExamRecord[]> {
-        return db
-            .select()
+    async findAll(
+        subSchoolId: string,
+        filters?: { classId?: string; teacherUserId?: string }
+    ): Promise<ExamRecord[]> {
+        let teacherId: string | undefined
+
+        if (filters?.teacherUserId) {
+            const [user] = await db
+                .select({ teacherId: users.teacherId })
+                .from(users)
+                .where(eq(users.id, filters.teacherUserId))
+
+            if (!user?.teacherId) {
+                return []
+            }
+            teacherId = user.teacherId
+        }
+
+        const rows = await db
+            .select({ exam: exams })
             .from(exams)
-            .where(eq(exams.subSchoolId, subSchoolId))
+            .innerJoin(courses, eq(exams.courseId, courses.id))
+            .where(
+                and(
+                    eq(exams.subSchoolId, subSchoolId),
+                    filters?.classId ? eq(exams.classId, filters.classId) : undefined,
+                    teacherId ? eq(courses.teacherId, teacherId) : undefined,
+                )
+            )
+
+        return rows.map(r => r.exam)
     }
 
     async findById(id: string, subSchoolId: string): Promise<ExamRecord> {
@@ -108,7 +142,13 @@ export class ExamsService {
     }
 }
 
+type ExamStatusValue = 'scheduled' | 'ongoing' | 'completed' | 'cancelled'
+
 export class ExamResultsService {
+
+    constructor(
+        private readonly gradesService: GradesService = new GradesService()
+    ) {}
 
     async findByExam(examId: string, subSchoolId: string): Promise<ExamResultRecord[]> {
         const [exam] = await db
@@ -235,44 +275,78 @@ export class ExamResultsService {
             .returning()
 
         await this.syncExamCompletionStatus(exam.id, exam.classId, exam.status)
+        await this.syncToGrades(exam, input.results, subSchoolId, gradedBy)
 
         return results
+    }
+
+    private async syncToGrades(
+        exam: ExamRecord,
+        results: BulkUpsertExamResultsInput['results'],
+        subSchoolId: string,
+        gradedBy: string,
+    ): Promise<void> {
+        if (!exam.academicPeriodId) {
+            return
+        }
+
+        await this.gradesService.bulkCreate(
+            {
+                courseId: exam.courseId,
+                classId: exam.classId,
+                academicPeriodId: exam.academicPeriodId,
+                examId: exam.id,
+                gradeType: mapExamTypeToGradeType(exam.type),
+                maxScore: Number(exam.maxScore),
+                coefficient: Number(exam.coefficient),
+                results: results.map(r => ({
+                    studentId: r.studentId,
+                    score: r.score,
+                    comment: r.comment ?? null,
+                })),
+            },
+            subSchoolId,
+            gradedBy,
+        )
     }
 
     private async syncExamCompletionStatus(
         examId: string,
         classId: string,
-        currentStatus: string,
+        currentStatus: ExamStatusValue,
     ): Promise<void> {
-        if (currentStatus === 'cancelled') return
+        if (currentStatus === 'cancelled') {
+            return
+        }
 
-        const [rosterCount] = await db
-            .select({ value: count() })
+        const [{ studentCount }] = await db
+            .select({ studentCount: sql<number>`count(*)::int` })
             .from(enrollments)
             .where(eq(enrollments.classId, classId))
 
-        const [gradedCount] = await db
-            .select({ value: count() })
+        const [{ gradedCount }] = await db
+            .select({ gradedCount: sql<number>`count(*)::int` })
             .from(examResults)
-            .where(and(
-                eq(examResults.examId, examId),
-                isNotNull(examResults.score),
-            ))
+            .where(
+                and(
+                    eq(examResults.examId, examId),
+                    sql`${examResults.score} is not null`,
+                )
+            )
 
-        const totalStudents = rosterCount?.value ?? 0
-        const totalGraded   = gradedCount?.value ?? 0
+        const isFullyGraded = studentCount > 0 && gradedCount >= studentCount
 
-        if (totalStudents === 0) return
+        let newStatus: ExamStatusValue = currentStatus
+        if (isFullyGraded) {
+            newStatus = 'completed'
+        } else if (currentStatus === 'completed') {
+            newStatus = 'ongoing'
+        }
 
-        const isFullyGraded = totalGraded >= totalStudents
-
-        if (isFullyGraded && currentStatus !== 'completed') {
-            await db.update(exams)
-                .set({ status: 'completed', updatedAt: new Date() })
-                .where(eq(exams.id, examId))
-        } else if (!isFullyGraded && currentStatus === 'completed') {
-            await db.update(exams)
-                .set({ status: 'ongoing', updatedAt: new Date() })
+        if (newStatus !== currentStatus) {
+            await db
+                .update(exams)
+                .set({ status: newStatus, updatedAt: new Date() })
                 .where(eq(exams.id, examId))
         }
     }
