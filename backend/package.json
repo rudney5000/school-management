@@ -35,6 +35,8 @@
     "morgan": "^1.10.0",
     "postgres": "^3.4.3",
     "socket.io": "^4.8.3",
+    "@react-pdf/renderer": "^3.4.0",
+    "@school-hub/pdf-templates": "workspace:*",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -48,6 +50,8 @@
     "eslint": "^8.56.0",
     "tsc-alias": "^1.8.8",
     "tsx": "^4.7.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "@types/react": "^18.3.1",
+    "@types/qrcode": "^1.5.5"
   }
 }
