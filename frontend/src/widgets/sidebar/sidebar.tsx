@@ -1,7 +1,7 @@
 import { useRouterState } from '@tanstack/react-router'
 import { cn } from '@shared/lib/utils'
 import { navByRole, type NavGroup } from './nav-items'
-import {ChevronLeft, School, X} from 'lucide-react'
+import {ChevronLeft, School, X, LogOut} from 'lucide-react'
 import { useTranslation } from '@shared/lib/useTranslation'
 import type { UserRole } from '@features/auth/model/dto/RegisterDto'
 import { getInitials } from '@shared/lib/getInitial'
@@ -13,6 +13,9 @@ import {
     TooltipTrigger,
     Button
 } from '@shared/ui'
+import { useAppDispatch } from '@/shared/store/hooks'
+import {logout} from "@features/auth/store/auth-slice";
+import {useLocaleRoute} from "@shared/lib";
 
 type SidebarProps = {
     role?: UserRole
@@ -46,6 +49,15 @@ export function Sidebar({
     const { t, locale } = useTranslation()
     const routerState = useRouterState()
     const currentPath = routerState.location.pathname
+    const dispatch = useAppDispatch()
+    const { localeRoute } = useLocaleRoute()
+
+    const handleLogout = () => {
+        localStorage.clear()
+        dispatch(logout())
+        const loginRoute = localeRoute('/login')
+        window.location.href = loginRoute.to
+    }
 
     const groups: NavGroup[] = navByRole[role]
 
@@ -269,6 +281,19 @@ export function Sidebar({
                                 <p className="text-[11px] text-white/50 truncate">{userEmail}</p>
                             )}
                         </div>
+
+                        <button
+                            onClick={handleLogout}
+                            className={cn(
+                                'shrink-0 w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20',
+                                'flex items-center justify-center transition-colors',
+                                'text-white/70 hover:text-white',
+                                collapsed ? 'hidden' : 'flex'
+                            )}
+                            aria-label={t('user.logout')}
+                        >
+                            <LogOut className="w-4 h-4" />
+                        </button>
                     </div>
 
                     {stats && !collapsed && (
