@@ -85,7 +85,7 @@ school-management/
     │   │   │   ├── school.ts
     │   │   │   ├── users.ts
     │   │   │   ├── academic.ts
-    │   │   │   ├── finance.ts
+    │   │   │   ├── payments.ts
     │   │   │   └── index.ts
     │   │   ├── migrations/
     │   │   └── index.ts        ← Drizzle client
