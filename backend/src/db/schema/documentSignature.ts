@@ -19,33 +19,24 @@ import { signatureStatusEnum } from '@/db/schema/enums'
 
 export const documentSignatures = pgTable('document_signatures', {
     id: uuid('id').primaryKey().defaultRandom(),
-
     documentType: varchar('document_type', { length: 50 }).notNull(),
-
     documentId: uuid('document_id'),
-
     documentRef: jsonb('document_ref'),
-
     subSchoolId: uuid('sub_school_id')
         .notNull()
         .references(() => subSchools.id),
     classId: uuid('class_id').references(() => classes.id, { onDelete: 'cascade' }),
     studentId: uuid('student_id').references(() => students.id, { onDelete: 'cascade' }),
-
     signedByUserId: uuid('signed_by_user_id')
         .notNull()
         .references(() => users.id),
     signedByRole: varchar('signed_by_role', { length: 20 }).notNull(),
-
     contentHash: varchar('content_hash', { length: 64 }).notNull(),
-
     status: signatureStatusEnum('status').notNull().default('active'),
     revokedAt: timestamp('revoked_at', { withTimezone: true }),
     revokedReason: text('revoked_reason'),
-
     ipAddress: varchar('ip_address', { length: 45 }),
     userAgent: text('user_agent'),
-
     signedAt: timestamp('signed_at', { withTimezone: true }).defaultNow().notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
@@ -53,10 +44,12 @@ export const documentSignatures = pgTable('document_signatures', {
     uniqueActiveById: uniqueIndex('unique_active_signature_by_id')
         .on(t.documentType, t.documentId)
         .where(sql`status = 'active' AND document_id IS NOT NULL`),
-
-    uniqueActiveBulletin: uniqueIndex('unique_active_bulletin_signature')
-        .on(t.documentType, t.classId, sql`(document_ref->>'academicPeriodId')`)
-        .where(sql`status = 'active' AND document_type = 'bulletin'`),
+    uniqueActiveBulletinPerStudent: uniqueIndex('unique_active_bulletin_per_student')
+        .on(t.classId, t.studentId, sql`(document_ref->>'academicPeriodId')`)
+        .where(sql`status = 'active' AND document_type = 'bulletin' AND student_id IS NOT NULL`),
+    uniqueActiveBulletinPerClass: uniqueIndex('unique_active_bulletin_per_class')
+        .on(t.classId, sql`(document_ref->>'academicPeriodId')`)
+        .where(sql`status = 'active' AND document_type = 'bulletin' AND student_id IS NULL`),
 }))
 
 export const documentSignaturesRelations = relations(documentSignatures, ({ one }) => ({

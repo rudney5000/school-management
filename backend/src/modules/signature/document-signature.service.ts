@@ -19,6 +19,13 @@ interface SignContext {
     userAgent?: string;
 }
 
+export interface BatchSignResult<T extends DocumentType> {
+    params: DocumentParamsMap[T];
+    success: boolean;
+    signature?: DocumentSignatureRecord;
+    error?: string;
+}
+
 export class DocumentSignaturesService {
     async sign<T extends DocumentType>(
         documentType: T,
@@ -28,7 +35,11 @@ export class DocumentSignaturesService {
         const strategy = getSignatureStrategy(documentType);
 
         if (!strategy.allowedSignerRoles.includes(ctx.signerRole)) {
-            throw new AppError('FORBIDDEN', "Vous n'êtes pas autorisé à signer ce document", 403);
+            throw new AppError(
+                'FORBIDDEN',
+                "Vous n'êtes pas autorisé à signer ce document",
+                403
+            );
         }
 
         const scope = await strategy.resolveScope(params);
@@ -69,6 +80,40 @@ export class DocumentSignaturesService {
         });
     }
 
+    async signBatch<T extends DocumentType>(
+        documentType: T,
+        batchParams: Partial<DocumentParamsMap[T]>,
+        ctx: SignContext,
+    ): Promise<BatchSignResult<T>[]> {
+        const strategy = getSignatureStrategy(documentType);
+
+        if (!strategy.resolveBatchTargets) {
+            throw new AppError(
+                'BATCH_NOT_SUPPORTED',
+                `La signature en lot n'est pas supportée pour le type "${documentType}"`,
+                400
+            );
+        }
+
+        const targets = await strategy.resolveBatchTargets(batchParams);
+        const results: BatchSignResult<T>[] = [];
+
+        for (const target of targets) {
+            try {
+                const signature = await this.sign(documentType, target, ctx);
+                results.push({ params: target, success: true, signature });
+            } catch (err) {
+                results.push({
+                    params: target,
+                    success: false,
+                    error: err instanceof Error ? err.message : 'Erreur inconnue',
+                });
+            }
+        }
+
+        return results;
+    }
+
     async getStatus<T extends DocumentType>(documentType: T, params: DocumentParamsMap[T]) {
         const strategy = getSignatureStrategy(documentType);
         const scope = await strategy.resolveScope(params);
@@ -95,7 +140,9 @@ export class DocumentSignaturesService {
     }
 
     async revoke(id: string, reason: string): Promise<DocumentSignatureRecord> {
-        const [existing] = await db.select().from(documentSignatures).where(eq(documentSignatures.id, id));
+        const [existing] = await db.select()
+            .from(documentSignatures)
+            .where(eq(documentSignatures.id, id));
         if (!existing) {
             throw new AppError('NOT_FOUND', 'Signature introuvable', 404);
         }

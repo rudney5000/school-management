@@ -28,6 +28,7 @@ export interface DocumentSignatureStrategy<T extends DocumentType> {
     resolveScope(params: DocumentParamsMap[T]): Promise<SignatureScope>;
     assertReadyToSign(scope: SignatureScope): Promise<void>;
     computeContentHash(scope: SignatureScope): Promise<string>;
+    resolveBatchTargets?(batchParams: Partial<DocumentParamsMap[T]>): Promise<DocumentParamsMap[T][]>;
 }
 
 export const documentSignatureParamsSchema = z.object({
@@ -41,6 +42,7 @@ export const revokeSignatureSchema = z.object({
 export const bulletinSignSchema = z.object({
     subSchoolId:      z.string().uuid('Invalid sub-school ID'),
     classId:          z.string().uuid('Invalid class ID'),
+    studentId:        z.string().uuid('Invalid student ID'),
     academicPeriodId: z.string().uuid('Invalid academic period ID'),
 });
 
@@ -70,6 +72,7 @@ export const signatureStatusQuerySchema = z.object({}).passthrough()
 
 export const signDocumentSchema = z.object({}).passthrough()
 
+export const batchSignBulletinSchema = bulletinSignSchema.omit({ studentId: true });
 export type DocumentSignatureParamsDto = z.infer<typeof documentSignatureParamsSchema>;
 export type RevokeSignatureDto         = z.infer<typeof revokeSignatureSchema>;
 export type BulletinSignDto    = z.infer<typeof bulletinSignSchema>;
