@@ -26,7 +26,7 @@ import type {
     EditMessageInput,
     UploadedFile,
 } from './chat.schema'
-import {messageAttachments} from "@/db/schema";
+import {attachments} from "@/db/schema";
 import {getAttachmentUrl} from "@/config/storage";
 
 export class ChatService {
@@ -153,13 +153,12 @@ export class ChatService {
                 sender:    { columns: { id: true, email: true, role: true } },
                 reactions: { with: { user: { columns: { id: true, email: true, role: true } } } },
                 replyTo:   { columns: { id: true, content: true, senderId: true } },
-                attachments: true,
             },
             orderBy: desc(messages.createdAt),
             limit,
         })
 
-        return Promise.all(rows.map(this.withAttachmentUrls))
+        return this.attachMessageAttachments(rows)
     }
 
     async sendMessage(conversationId: string, senderId: string, input: SendMessageInput) {
@@ -191,12 +190,13 @@ export class ChatService {
                 sender:    { columns: { id: true, email: true, role: true } },
                 reactions: { with: { user: { columns: { id: true, email: true, role: true } } } },
                 replyTo:   { columns: { id: true, content: true, senderId: true } },
-                attachments: true,
             },
         })
 
         if (!message) return message
-        return this.withAttachmentUrls(message)
+
+        const [withAttachments] = await this.attachMessageAttachments([message])
+        return withAttachments
     }
 
     async editMessage(messageId: string, userId: string, input: EditMessageInput) {
@@ -331,16 +331,19 @@ export class ChatService {
         return reply
     }
 
-    async saveAttachments(messageId: string, attachments: UploadedFile[]) {
-        await db.insert(messageAttachments).values(
-            attachments.map(a => ({
-                messageId,
+    async saveAttachments(messageId: string, uploadedBy: string, uploadedFiles: UploadedFile[]) {
+        await db.insert(attachments).values(
+            uploadedFiles.map(a => ({
+                attachableType: 'conversation' as const,
+                attachableId:   messageId,
+                category:       'other' as const,
                 key:        a.key,
                 filename:   a.filename,
                 mimeType:   a.mimeType,
                 size:       a.size,
-                width:      a.width ?? null,
-                height:     a.height ?? null,
+                uploadedBy,
+                height:     a.height,
+                width:      a.width
             }))
         )
     }
@@ -407,5 +410,37 @@ export class ChatService {
         )
 
         return { ...message, attachments }
+    }
+
+    private async attachMessageAttachments<T extends { id: string }>(
+        messagesList: T[],
+    ): Promise<(T & { attachments: Array<typeof attachments.$inferSelect & { url: string }> })[]> {
+        if (messagesList.length === 0) return messagesList as any
+
+        const messageIds = messagesList.map(m => m.id)
+
+        const rows = await db
+            .select()
+            .from(attachments)
+            .where(and(
+                eq(attachments.attachableType, 'message'),
+                inArray(attachments.attachableId, messageIds),
+            ))
+
+        const withUrls = await Promise.all(
+            rows.map(async (a) => ({ ...a, url: await getAttachmentUrl(a.key) }))
+        )
+
+        const byMessageId = new Map<string, typeof withUrls>()
+        for (const a of withUrls) {
+            const list = byMessageId.get(a.attachableId) ?? []
+            list.push(a)
+            byMessageId.set(a.attachableId, list)
+        }
+
+        return messagesList.map(m => ({
+            ...m,
+            attachments: byMessageId.get(m.id) ?? [],
+        }))
     }
 }
