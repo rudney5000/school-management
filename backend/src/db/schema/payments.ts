@@ -1,7 +1,18 @@
-import { pgTable, uuid, decimal, timestamp, text, index } from 'drizzle-orm/pg-core';
+import {
+    pgTable,
+    uuid,
+    decimal,
+    timestamp,
+    text,
+    index
+} from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import {students} from "./students";
-import {paymentStatusEnum, paymentTypeEnum, payrollStatusEnum} from "./enums";
+import {
+    paymentStatusEnum,
+    paymentTypeEnum,
+    payrollStatusEnum
+} from "./enums";
 import {workers} from "./workers";
 import {teachers} from "./teacher";
 

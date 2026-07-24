@@ -148,12 +148,6 @@ export const enrollmentStatusEnum = pgEnum('enrollment_status', [
     'complete'
 ]);
 
-export const attachableTypeEnum = pgEnum('attachable_type', [
-    'conversation',
-    'enrollment',
-    'payment',
-])
-
 export const attachmentCategoryEnum = pgEnum("attachment_category", [
     "birth_certificate",
     "medical_certificate",
@@ -163,3 +157,16 @@ export const attachmentCategoryEnum = pgEnum("attachment_category", [
     "payment_receipt",
     "other",
 ]);
+
+export const attachmentStatusEnum = pgEnum('attachment_status', [
+    'pending',
+    'validated',
+    'rejected',
+]);
+
+export const attachableTypeEnum = pgEnum('attachable_type', [
+    'conversation',
+    'message',
+    'enrollment',
+    'payment',
+])
