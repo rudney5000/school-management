@@ -5,6 +5,24 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ CREATE TYPE "public"."attachable_type" AS ENUM('conversation', 'message', 'enrollment', 'payment');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."attachment_category" AS ENUM('birth_certificate', 'medical_certificate', 'previous_report', 'parent_id', 'student_photo', 'payment_receipt', 'other');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."attachment_status" AS ENUM('pending', 'validated', 'rejected');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "public"."attendance_status" AS ENUM('PRESENT', 'ABSENT', 'LATE', 'EXCUSED');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -12,6 +30,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  CREATE TYPE "public"."attendance_target" AS ENUM('student', 'teacher');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."certificate_type" AS ENUM('enrollment', 'completion', 'transfer', 'conduct', 'graduation');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -30,6 +54,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  CREATE TYPE "public"."dispute_status" AS ENUM('pending', 'approved', 'rejected');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."enrollment_status" AS ENUM('draft', 'complete');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -96,6 +126,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  CREATE TYPE "public"."role" AS ENUM('super_admin', 'admin', 'director', 'teacher', 'worker', 'parent', 'student');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."signature_status" AS ENUM('active', 'revoked');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -344,6 +380,13 @@ CREATE TABLE IF NOT EXISTS "courses" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "class_courses" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"class_id" uuid NOT NULL,
+	"course_id" uuid NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "classes" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(100) NOT NULL,
@@ -358,7 +401,8 @@ CREATE TABLE IF NOT EXISTS "enrollments" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"student_id" uuid NOT NULL,
 	"class_id" uuid NOT NULL,
-	"enrollment_date" timestamp DEFAULT now() NOT NULL
+	"enrollment_date" timestamp DEFAULT now() NOT NULL,
+	"status" "enrollment_status" DEFAULT 'draft' NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "events" (
@@ -535,15 +579,22 @@ CREATE TABLE IF NOT EXISTS "users" (
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "message_attachments" (
+CREATE TABLE IF NOT EXISTS "attachments" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"message_id" uuid NOT NULL,
+	"attachable_type" "attachable_type" NOT NULL,
+	"attachable_id" uuid NOT NULL,
+	"category" "attachment_category" NOT NULL,
 	"key" varchar(512) NOT NULL,
 	"filename" varchar(255) NOT NULL,
 	"mime_type" varchar(100) NOT NULL,
 	"size" integer NOT NULL,
 	"width" integer,
 	"height" integer,
+	"uploaded_by" uuid NOT NULL,
+	"status" "attachment_status" DEFAULT 'pending' NOT NULL,
+	"rejection_reason" text,
+	"validated_by" uuid,
+	"validated_at" timestamp with time zone,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
@@ -590,6 +641,39 @@ CREATE TABLE IF NOT EXISTS "live_sessions" (
 	"started_at" timestamp,
 	"ended_at" timestamp,
 	"created_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "document_signatures" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"document_type" varchar(50) NOT NULL,
+	"document_id" uuid,
+	"document_ref" jsonb,
+	"sub_school_id" uuid NOT NULL,
+	"class_id" uuid,
+	"student_id" uuid,
+	"signed_by_user_id" uuid NOT NULL,
+	"signed_by_role" varchar(20) NOT NULL,
+	"content_hash" varchar(64) NOT NULL,
+	"status" "signature_status" DEFAULT 'active' NOT NULL,
+	"revoked_at" timestamp with time zone,
+	"revoked_reason" text,
+	"ip_address" varchar(45),
+	"user_agent" text,
+	"signed_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "certificates" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"student_id" uuid NOT NULL,
+	"sub_school_id" uuid NOT NULL,
+	"type" "certificate_type" NOT NULL,
+	"content" text NOT NULL,
+	"issued_by" uuid,
+	"issued_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 DO $$ BEGIN
@@ -786,6 +870,18 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "courses" ADD CONSTRAINT "courses_sub_school_id_sub_schools_id_fk" FOREIGN KEY ("sub_school_id") REFERENCES "public"."sub_schools"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "class_courses" ADD CONSTRAINT "class_courses_class_id_classes_id_fk" FOREIGN KEY ("class_id") REFERENCES "public"."classes"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "class_courses" ADD CONSTRAINT "class_courses_course_id_courses_id_fk" FOREIGN KEY ("course_id") REFERENCES "public"."courses"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -1013,7 +1109,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "message_attachments" ADD CONSTRAINT "message_attachments_message_id_messages_id_fk" FOREIGN KEY ("message_id") REFERENCES "public"."messages"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "attachments" ADD CONSTRAINT "attachments_validated_by_users_id_fk" FOREIGN KEY ("validated_by") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -1108,6 +1204,48 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "document_signatures" ADD CONSTRAINT "document_signatures_sub_school_id_sub_schools_id_fk" FOREIGN KEY ("sub_school_id") REFERENCES "public"."sub_schools"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "document_signatures" ADD CONSTRAINT "document_signatures_class_id_classes_id_fk" FOREIGN KEY ("class_id") REFERENCES "public"."classes"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "document_signatures" ADD CONSTRAINT "document_signatures_student_id_students_id_fk" FOREIGN KEY ("student_id") REFERENCES "public"."students"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "document_signatures" ADD CONSTRAINT "document_signatures_signed_by_user_id_users_id_fk" FOREIGN KEY ("signed_by_user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "certificates" ADD CONSTRAINT "certificates_student_id_students_id_fk" FOREIGN KEY ("student_id") REFERENCES "public"."students"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "certificates" ADD CONSTRAINT "certificates_sub_school_id_sub_schools_id_fk" FOREIGN KEY ("sub_school_id") REFERENCES "public"."sub_schools"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "certificates" ADD CONSTRAINT "certificates_issued_by_users_id_fk" FOREIGN KEY ("issued_by") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_conversation_member" ON "conversation_members" USING btree ("conversation_id","user_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_archive" ON "message_archives" USING btree ("message_id","user_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_reaction" ON "message_reactions" USING btree ("message_id","user_id","emoji");--> statement-breakpoint
@@ -1121,6 +1259,7 @@ CREATE INDEX IF NOT EXISTS "idx_teachers_schools_sub_school" ON "teacher_schools
 CREATE INDEX IF NOT EXISTS "idx_teachers_email" ON "teachers" USING btree ("email");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_workers_sub_school" ON "workers" USING btree ("sub_school_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_parents_sub_school" ON "parents" USING btree ("sub_school_id");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "idx_class_courses_unique" ON "class_courses" USING btree ("class_id","course_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_classes_sub_school" ON "classes" USING btree ("sub_school_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_classes_grade" ON "classes" USING btree ("grade_level");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "idx_enrollment_unique" ON "enrollments" USING btree ("student_id","class_id");--> statement-breakpoint
@@ -1158,4 +1297,9 @@ CREATE INDEX IF NOT EXISTS "idx_live_sessions_schedule" ON "live_sessions" USING
 CREATE INDEX IF NOT EXISTS "idx_live_sessions_event" ON "live_sessions" USING btree ("event_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_live_sessions_exam" ON "live_sessions" USING btree ("exam_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_live_sessions_conversation" ON "live_sessions" USING btree ("conversation_id");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "idx_live_sessions_teacher" ON "live_sessions" USING btree ("teacher_id");
+CREATE INDEX IF NOT EXISTS "idx_live_sessions_teacher" ON "live_sessions" USING btree ("teacher_id");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "unique_active_signature_by_id" ON "document_signatures" USING btree ("document_type","document_id") WHERE status = 'active' AND document_id IS NOT NULL;--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "unique_active_bulletin_per_student" ON "document_signatures" USING btree ("class_id","student_id",(document_ref->>'academicPeriodId')) WHERE status = 'active' AND document_type = 'bulletin' AND student_id IS NOT NULL;--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "unique_active_bulletin_per_class" ON "document_signatures" USING btree ("class_id",(document_ref->>'academicPeriodId')) WHERE status = 'active' AND document_type = 'bulletin' AND student_id IS NULL;--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_certificates_student" ON "certificates" USING btree ("student_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_certificates_sub_school" ON "certificates" USING btree ("sub_school_id");
