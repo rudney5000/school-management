@@ -1,12 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "outDir": "dist",
     "declaration": true,
     "jsx": "react-jsx",
-    "noEmit": false
+    "noEmit": false,
+    "allowImportingTsExtensions": false,
+    "noEmitOnError": true
   },
   "include": ["src"]
 }
