@@ -11,7 +11,10 @@ export type ErrorCode =
   | 'NOT_LIVE'
   | 'NOT_SIGNED'
   | 'SIGNATURE_STALE'
-  | 'GRADES_INCOMPLETE';
+  | 'GRADES_INCOMPLETE'
+  | 'DOCUMENTS_INCOMPLETE'
+  | 'CURRICULUM_NOT_CONFIGURED'
+  | 'BATCH_NOT_SUPPORTED';
 
 export class AppError extends Error {
   readonly code: ErrorCode;

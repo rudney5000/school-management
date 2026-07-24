@@ -33,6 +33,8 @@ import {chatRouter} from "@/modules/chat/chat.router";
 import {attachmentsRouter} from "@/modules/attachments/attachments.router";
 import {videoCallsRouter} from "@/modules/videoCalls/videoCalls.router";
 import {liveSessionsRouter} from "@/modules/liveSessions/liveSessions.router";
+import {documentSignaturesRouter} from "@/modules/signature/document-signatures.router";
+import {documentPdfRouter} from "@/modules/document-pdf/document-pdf.router";
 
 export function createApp(): express.Application {
   const app = express();
@@ -74,8 +76,10 @@ export function createApp(): express.Application {
   app.use('/api/grades', gradesRouter)
   app.use('/api/chats', chatRouter)
   app.use('/api/attachments', attachmentsRouter)
-  app.use('/api/video-calls', videoCallsRouter);
-  app.use('/api/live-sessions', liveSessionsRouter);
+  app.use('/api/video-calls', videoCallsRouter)
+  app.use('/api/live-sessions', liveSessionsRouter)
+  app.use('/document-signatures', documentSignaturesRouter)
+  app.use('/document-pdf', documentPdfRouter)
 
 
   app.use(errorHandler);
