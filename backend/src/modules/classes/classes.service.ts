@@ -1,10 +1,21 @@
-import { and, eq } from 'drizzle-orm';
+import {
+  and,
+  eq
+} from 'drizzle-orm';
 import { db } from '@/db';
-import { classes } from '@/db/schema';
+import {
+  classCourses,
+  classes
+} from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
-import type { CreateClassDto, UpdateClassDto } from './classes.schema';
+import type {
+  CreateClassCourseDto,
+  CreateClassDto,
+  UpdateClassDto
+} from './classes.schema';
 
 export type ClassRecord = typeof classes.$inferSelect;
+export type ClassCourseRecord = typeof classCourses.$inferSelect;
 
 export class ClassesService {
   async findAll(subSchoolId: string): Promise<ClassRecord[]> {
@@ -12,6 +23,10 @@ export class ClassesService {
       .select()
       .from(classes)
       .where(eq(classes.subSchoolId, subSchoolId));
+  }
+
+  async findByClass(classId: string): Promise<ClassCourseRecord[]> {
+    return db.select().from(classCourses).where(eq(classCourses.classId, classId));
   }
 
   async findById(id: string, subSchoolId: string): Promise<ClassRecord> {
@@ -46,6 +61,15 @@ export class ClassesService {
     return classRecord;
   }
 
+  async createClassCourse(input: CreateClassCourseDto): Promise<ClassCourseRecord> {
+    const [record] = await db
+        .insert(classCourses)
+        .values({ classId: input.classId, courseId: input.courseId })
+        .returning();
+
+    return record;
+  }
+
   async update(
     id: string,
     subSchoolId: string,
@@ -78,5 +102,19 @@ export class ClassesService {
         eq(classes.subSchoolId, subSchoolId),
       ),
     );
+  }
+
+  async removeClassCourse(id: string): Promise<void> {
+    const [existing] = await db.select().from(classCourses).where(eq(classCourses.id, id));
+    if (!existing) {
+      throw new AppError('NOT_FOUND', 'Association classe-cours introuvable', 404);
+    }
+
+    await db.delete(classCourses).where(eq(classCourses.id, id));
+  }
+
+  async getExpectedCourseIds(classId: string): Promise<string[]> {
+    const rows = await this.findByClass(classId);
+    return rows.map((r) => r.courseId);
   }
 }

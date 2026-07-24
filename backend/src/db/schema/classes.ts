@@ -1,6 +1,15 @@
-import {pgTable, uuid, varchar, timestamp, index, integer} from 'drizzle-orm/pg-core';
+import {
+    pgTable,
+    uuid,
+    varchar,
+    timestamp,
+    index,
+    integer,
+    uniqueIndex
+} from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import {subSchools} from "./subSchool";
+import {courses} from "@/db/schema/courses";
 
 export const classes = pgTable('classes', {
     id: uuid('id').primaryKey().defaultRandom(),
@@ -15,9 +24,29 @@ export const classes = pgTable('classes', {
     idx_classes_grade: index('idx_classes_grade').on(table.gradeLevel)
 }));
 
+export const classCourses = pgTable('class_courses', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    classId: uuid('class_id').notNull().references(() => classes.id, { onDelete: 'cascade' }),
+    courseId: uuid('course_id').notNull().references(() => courses.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+}, (table) => ({
+    idx_class_courses_unique: uniqueIndex('idx_class_courses_unique').on(table.classId, table.courseId),
+}));
+
 export const classesRelations = relations(classes, ({ one }) => ({
     subSchool: one(subSchools, {
         fields: [classes.subSchoolId],
         references: [subSchools.id],
+    }),
+}));
+
+export const classCoursesRelations = relations(classCourses, ({ one }) => ({
+    class: one(classes, {
+        fields: [classCourses.classId],
+        references: [classes.id],
+    }),
+    course: one(courses, {
+        fields: [classCourses.courseId],
+        references: [courses.id],
     }),
 }));
