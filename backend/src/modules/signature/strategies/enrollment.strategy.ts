@@ -1,20 +1,18 @@
 import { createHash } from 'crypto'
-import { eq } from 'drizzle-orm'
-import { db } from '@/db'
 import {
+    EnrollmentsService
+} from '@/modules/enrollments/enrollments.service'
+import type {
     DocumentSignatureStrategy,
     EnrollmentSignDto
 } from '@/modules/signature/document-signature.schema'
-import {enrollments} from "@/db/schema";
+
+const enrollmentsService = new EnrollmentsService()
 
 export const enrollmentSignatureStrategy: DocumentSignatureStrategy<'enrollment'> = {
     allowedSignerRoles: ['director', 'admin'],
 
-    async resolveScope({
-                           subSchoolId,
-                           enrollmentId,
-                           studentId
-    }: EnrollmentSignDto ) {
+    async resolveScope({ subSchoolId, enrollmentId, studentId }: EnrollmentSignDto) {
         return {
             documentType: 'enrollment',
             documentId: enrollmentId,
@@ -24,21 +22,12 @@ export const enrollmentSignatureStrategy: DocumentSignatureStrategy<'enrollment'
     },
 
     async assertReadyToSign({ documentId }) {
-        const [enrollment] = await db
-            .select()
-            .from(enrollments)
-            .where(eq(enrollments.id, documentId!))
-        if (!enrollment) throw new Error('ENROLLMENT_NOT_FOUND')
-        if (enrollment.status !== 'complete') throw new Error('ENROLLMENT_INCOMPLETE')
+        await enrollmentsService.ensureEnrollmentCanBeSigned(documentId!)
     },
 
     async computeContentHash({ documentId }) {
-        const [enrollment] = await db
-            .select()
-            .from(enrollments)
-            .where(eq(enrollments.id, documentId!))
-
-        const normalized = JSON.stringify(enrollment, Object.keys(enrollment ?? {}).sort())
+        const enrollment = await enrollmentsService.findById(documentId!)
+        const normalized = JSON.stringify(enrollment, Object.keys(enrollment).sort())
         return createHash('sha256').update(normalized).digest('hex')
     },
 }
