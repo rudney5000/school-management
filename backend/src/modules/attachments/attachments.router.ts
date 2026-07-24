@@ -6,9 +6,11 @@ import {
     AttachmentsController
 } from "@/modules/attachments/attachments.controller";
 import {
+    attachmentParamsSchema,
     confirmUploadSchema,
     listAttachmentsQuerySchema,
-    presignUploadSchema
+    presignUploadSchema,
+    rejectAttachmentSchema
 } from "@/modules/attachments/attachments.schema";
 
 const controller = new AttachmentsController()
@@ -39,5 +41,26 @@ router.get(
         query: listAttachmentsQuerySchema
     }),
     controller.list)
+
+router.patch(
+    '/:id/validate',
+    authenticate,
+    authorize('admin', 'director', 'super_admin'),
+    validate({
+        params: attachmentParamsSchema
+    }),
+    controller.validate,
+)
+
+router.patch(
+    '/:id/reject',
+    authenticate,
+    authorize('admin', 'director', 'super_admin'),
+    validate({
+        params: attachmentParamsSchema,
+        body: rejectAttachmentSchema
+    }),
+    controller.reject,
+)
 
 export { router as attachmentsRouter }

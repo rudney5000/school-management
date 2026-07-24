@@ -16,8 +16,11 @@ import {
     ListAttachmentsQuery,
     PresignUploadInput
 } from "@/modules/attachments/attachments.schema";
-import {attachmentResolvers} from "@/shared/utils/resolvers";
+import {
+    attachmentResolvers
+} from "@/shared/utils/resolvers";
 import {attachments} from "@/db/schema";
+import {AppError} from "@/shared/errors/app-error";
 
 export class AttachmentsService {
     async presign(userId: string, userRole: string, input: PresignUploadInput) {
@@ -61,6 +64,8 @@ export class AttachmentsService {
                 filename:       input.filename,
                 mimeType:       input.mimeType,
                 size:           input.size,
+                width:          input.width,
+                height:         input.height,
                 uploadedBy:     userId,
             })
             .returning()
@@ -79,5 +84,37 @@ export class AttachmentsService {
                 eq(attachments.attachableType, query.attachableType),
                 eq(attachments.attachableId, query.attachableId),
             ))
+    }
+
+    async validate(id: string, validatedByUserId: string) {
+        const [updated] = await db
+            .update(attachments)
+            .set({
+                status: 'validated',
+                validatedBy: validatedByUserId,
+                validatedAt: new Date(),
+                rejectionReason: null,
+            })
+            .where(eq(attachments.id, id))
+            .returning()
+
+        if (!updated) throw new AppError('NOT_FOUND', 'Pièce jointe introuvable', 404)
+        return updated
+    }
+
+    async reject(id: string, reason: string) {
+        const [updated] = await db
+            .update(attachments)
+            .set({
+                status: 'rejected',
+                rejectionReason: reason,
+                validatedBy: null,
+                validatedAt: null,
+            })
+            .where(eq(attachments.id, id))
+            .returning()
+
+        if (!updated) throw new AppError('NOT_FOUND', 'Pièce jointe introuvable', 404)
+        return updated
     }
 }

@@ -10,7 +10,8 @@ import {
 import {
     ConfirmUploadInput,
     ListAttachmentsQuery,
-    PresignUploadInput
+    PresignUploadInput,
+    RejectAttachmentDto
 } from "@/modules/attachments/attachments.schema";
 
 export class AttachmentsController {
@@ -40,6 +41,17 @@ export class AttachmentsController {
             req.user!.role,
             req.query as unknown as ListAttachmentsQuery,
         )
+        respond(res, data)
+    })
+
+    validate = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.validate(req.params.id, req.user!.id)
+        respond(res, data)
+    })
+
+    reject = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const { reason } = req.body as RejectAttachmentDto
+        const data = await this.service.reject(req.params.id, reason)
         respond(res, data)
     })
 }
