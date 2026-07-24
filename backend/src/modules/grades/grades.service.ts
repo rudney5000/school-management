@@ -8,10 +8,14 @@ import type {
     BulkCreateGradesInput,
 } from './grades.schema'
 import {academicPeriods} from "@/db/schema/academicPeriod";
+import {ClassesService} from "@/modules/classes/classes.service";
+import {enrollments} from "@/db/schema";
+import {createHash} from "crypto";
 
 export type GradeRecord = typeof grades.$inferSelect
 
 export class GradesService {
+        private readonly classesService = new ClassesService()
 
     async findAll(subSchoolId: string, filters?: {
         classId?: string
@@ -33,6 +37,91 @@ export class GradesService {
                 )
             )
             .then(rows => rows.map(r => r.grades))
+    }
+
+    async ensureBulletinCanBeSigned(
+        studentId: string,
+        classId: string,
+        academicPeriodId: string,
+    ): Promise<void> {
+        const [enrollment] = await db
+            .select()
+            .from(enrollments)
+            .where(and(eq(enrollments.studentId, studentId), eq(enrollments.classId, classId)));
+
+        if (!enrollment) {
+            throw new AppError(
+                'NOT_FOUND',
+                "L'élève n'est pas inscrit dans cette classe",
+                404
+            );
+        }
+
+        const expectedCourseIds = await this.classesService.getExpectedCourseIds(classId);
+
+        if (expectedCourseIds.length === 0) {
+            throw new AppError(
+                'CURRICULUM_NOT_CONFIGURED',
+                "Aucun cours n'est associé à cette classe (programme non configuré)",
+                422,
+            );
+        }
+
+        const studentGrades = await db
+            .select({ courseId: grades.courseId, score: grades.score })
+            .from(grades)
+            .where(
+                and(
+                    eq(grades.studentId, studentId),
+                    eq(grades.classId, classId),
+                    eq(grades.academicPeriodId, academicPeriodId),
+                ),
+            );
+
+        const gradedCourseIds = new Set(
+            studentGrades.filter((g) => g.score !== null).map((g) => g.courseId),
+        );
+
+        const missing = expectedCourseIds.filter(
+            (c: string) => !gradedCourseIds.has(c)
+        );
+
+        if (missing.length > 0) {
+            throw new AppError(
+                'GRADES_INCOMPLETE',
+                `Notes manquantes pour ${missing.length} cours sur ${expectedCourseIds.length}`,
+                422,
+            );
+        }
+    }
+
+    async computeBulletinHash(
+        studentId: string,
+        classId: string,
+        academicPeriodId: string,
+    ): Promise<string> {
+        const studentGrades = await db
+            .select({
+                id: grades.id,
+                courseId: grades.courseId,
+                gradeType: grades.gradeType,
+                score: grades.score,
+            })
+            .from(grades)
+            .where(
+                and(
+                    eq(grades.studentId, studentId),
+                    eq(grades.classId, classId),
+                    eq(grades.academicPeriodId, academicPeriodId),
+                ),
+            )
+
+        const normalized = studentGrades
+            .map((g) => `${g.id}:${g.courseId}:${g.gradeType}:${g.score ?? 'null'}`)
+            .sort()
+            .join('|')
+
+        return createHash('sha256').update(normalized).digest('hex')
     }
 
     async findById(id: string, subSchoolId: string): Promise<GradeRecord> {
