@@ -1,13 +1,23 @@
+import {PenLine} from "lucide-react";
 import { useTranslation } from "@shared/lib"
-import { Spinner } from "@/shared/ui"
+import {
+    Button,
+    Spinner
+} from "@/shared/ui"
 import { useResultsBulletin } from "./model/useResultsBulletin"
 import { ResultsFilterBar } from "./ResultsFilterBar"
 import { ResultsStatsCards } from "./ResultsStatsCards"
 import { ResultsTable } from "./ResultsTable"
+import {useAppSelector} from "@shared/store/hooks";
+import {selectRole} from "@features/auth/model/selectors";
 import {
-    ElephantWatermark
-} from "@/pages/exams/ui/results-bulletin/ElephantWatermark";
+    useSignBulletinBatch
+} from "@entities/document-signature";
+// import {
+//     ElephantWatermark
+// } from "@/pages/exams/ui/results-bulletin/ElephantWatermark";
 
+const STAFF_ROLES = ['director', 'admin', 'super_admin']
 export function ResultsBulletin() {
     const { t } = useTranslation()
     const {
@@ -25,7 +35,28 @@ export function ResultsBulletin() {
         gradesLoading,
         handleOpenPdf,
         handleDownloadPdf,
+        isOpeningPdfForStudent,
+        isDownloadingPdfForStudent,
+        handleSignStudent,
+        isSigning,
+        subSchoolId,
+        isPeriodSelected,
     } = useResultsBulletin()
+
+    const userRole = useAppSelector(selectRole)
+    const isStaff = !!userRole && STAFF_ROLES.includes(userRole)
+    const canSign = !!userRole && ['teacher', ...STAFF_ROLES].includes(userRole)
+
+    const signBatchMutation = useSignBulletinBatch()
+
+    const handleSignBatch = () => {
+        if (!subSchoolId || !isPeriodSelected) return
+        signBatchMutation.mutate({
+            subSchoolId,
+            classId: selectedClassId,
+            academicPeriodId: selectedPeriod,
+        })
+    }
 
     if (gradesLoading) {
         return (
@@ -40,24 +71,32 @@ export function ResultsBulletin() {
 
     return (
         <div className="relative space-y-6">
-            <ElephantWatermark
-                className="pointer-events-none absolute -right-12 top-0 w-80 h-80 text-amber-900/5 dark:text-amber-100/5 z-0"
-            />
-
             <div className="relative z-10 space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h2 className="text-2xl font-bold">{t("dashboard.exams.results.title")}</h2>
                         <p className="text-muted-foreground mt-1">{t("dashboard.exams.results.subtitle")}</p>
                     </div>
-                    <ResultsFilterBar
-                        classes={classes}
-                        academicPeriods={academicPeriods}
-                        selectedClassId={selectedClassId}
-                        onClassChange={setSelectedClassId}
-                        selectedPeriod={selectedPeriod}
-                        onPeriodChange={setSelectedPeriod}
-                    />
+                    <div className="flex items-center gap-3">
+                        {isStaff && (
+                            <Button
+                                variant="outline"
+                                onClick={handleSignBatch}
+                                disabled={!isPeriodSelected || signBatchMutation.isPending}
+                            >
+                                <PenLine className="size-4 mr-2" />
+                                Signer les bulletins de la classe
+                            </Button>
+                        )}
+                        <ResultsFilterBar
+                            classes={classes}
+                            academicPeriods={academicPeriods}
+                            selectedClassId={selectedClassId}
+                            onClassChange={setSelectedClassId}
+                            selectedPeriod={selectedPeriod}
+                            onPeriodChange={setSelectedPeriod}
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -79,6 +118,11 @@ export function ResultsBulletin() {
                 pdfDisabledLabel={t("dashboard.exams.results.selectPeriodFirst")}
                 onOpenPdf={handleOpenPdf}
                 onDownloadPdf={handleDownloadPdf}
+                canSign={canSign}
+                onSignStudent={handleSignStudent}
+                isSigning={isSigning}
+                isOpeningPdfForStudent={isOpeningPdfForStudent}
+                isDownloadingPdfForStudent={isDownloadingPdfForStudent}
             />
         </div>
     )
