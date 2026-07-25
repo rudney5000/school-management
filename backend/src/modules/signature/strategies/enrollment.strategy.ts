@@ -10,7 +10,7 @@ import type {
 const enrollmentsService = new EnrollmentsService()
 
 export const enrollmentSignatureStrategy: DocumentSignatureStrategy<'enrollment'> = {
-    allowedSignerRoles: ['director', 'admin'],
+    allowedSignerRoles: ['director', 'admin', 'super-admin'],
 
     async resolveScope({ subSchoolId, enrollmentId, studentId }: EnrollmentSignDto) {
         return {
@@ -26,8 +26,13 @@ export const enrollmentSignatureStrategy: DocumentSignatureStrategy<'enrollment'
     },
 
     async computeContentHash({ documentId }) {
-        const enrollment = await enrollmentsService.findById(documentId!)
-        const normalized = JSON.stringify(enrollment, Object.keys(enrollment).sort())
+        const { enrollment, docsState } = await enrollmentsService.getSignableSnapshot(documentId!)
+
+        const normalized = JSON.stringify({
+            enrollment: JSON.parse(JSON.stringify(enrollment, Object.keys(enrollment).sort())),
+            docsState,
+        })
+
         return createHash('sha256').update(normalized).digest('hex')
     },
 }
