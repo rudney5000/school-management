@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 import { asyncHandler } from '@/shared/utils/async-handler';
 import { respond } from '@/shared/utils/respond';
 import type {
+  ClassCourseQueryDto, CreateClassCourseDto,
   CreateClassDto,
   SubSchoolQueryDto,
   UpdateClassDto,
@@ -24,6 +25,12 @@ export class ClassesController {
     respond(res, data);
   });
 
+  getByClass = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { classId } = req.query as ClassCourseQueryDto;
+    const data = await this.service.findByClass(classId);
+    respond(res, data);
+  });
+
   getById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const subSchoolId = resolveSubSchoolId(req);
     const data = await this.service.findById(req.params.id, subSchoolId);
@@ -32,6 +39,11 @@ export class ClassesController {
 
   create = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const data = await this.service.create(req.body as CreateClassDto);
+    respond(res, data, 201);
+  });
+
+  createClassCourse = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const data = await this.service.createClassCourse(req.body as CreateClassCourseDto);
     respond(res, data, 201);
   });
 
@@ -48,6 +60,11 @@ export class ClassesController {
   remove = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const subSchoolId = resolveSubSchoolId(req);
     await this.service.remove(req.params.id, subSchoolId);
+    res.status(204).send();
+  });
+
+  removeClassCourse = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    await this.service.removeClassCourse(req.params.id);
     res.status(204).send();
   });
 }

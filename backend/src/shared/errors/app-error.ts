@@ -8,7 +8,13 @@ export type ErrorCode =
   | 'INTERNAL_ERROR'
   | 'CALL_ENDED'
   | 'INVALID_STATE'
-  | 'NOT_LIVE';
+  | 'NOT_LIVE'
+  | 'NOT_SIGNED'
+  | 'SIGNATURE_STALE'
+  | 'GRADES_INCOMPLETE'
+  | 'DOCUMENTS_INCOMPLETE'
+  | 'CURRICULUM_NOT_CONFIGURED'
+  | 'BATCH_NOT_SUPPORTED';
 
 export class AppError extends Error {
   readonly code: ErrorCode;

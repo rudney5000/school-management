@@ -2,10 +2,13 @@ import { Router } from 'express';
 import { validate } from '@/shared/utils/validate';
 import { ClassesController } from '@/modules/classes/classes.controller';
 import {
-  createClassSchema,
-  classParamsSchema,
-  subSchoolQuerySchema,
-  updateClassSchema,
+    createClassSchema,
+    classParamsSchema,
+    subSchoolQuerySchema,
+    updateClassSchema,
+    classCourseQuerySchema,
+    createClassCourseSchema,
+    classCourseParamsSchema,
 } from '@/modules/classes/classes.schema';
 import { authenticate } from '@/middleware/authenticate';
 import { authorize } from '@/middleware/authorize';
@@ -22,6 +25,17 @@ router.get(
   }),
   controller.getAll,
 );
+
+router.get(
+    '/',
+    authenticate,
+    authorize('admin', 'director', 'teacher', 'super_admin'),
+    validate({
+        query: classCourseQuerySchema
+    }),
+    controller.getByClass,
+);
+
 router.get(
   '/:id',
   authenticate,
@@ -41,6 +55,18 @@ router.post(
   }),
   controller.create,
 );
+
+router.post(
+    '/',
+    authenticate,
+    authorize('admin', 'director', 'super_admin'),
+    validate({
+        body: createClassCourseSchema
+    }),
+    controller.createClassCourse,
+);
+
+
 router.patch(
   '/:id',
   authenticate,
@@ -52,6 +78,7 @@ router.patch(
   }),
   controller.update,
 );
+
 router.delete(
   '/:id',
   authenticate,
@@ -61,6 +88,16 @@ router.delete(
       query: subSchoolQuerySchema
   }),
   controller.remove,
+);
+
+router.delete(
+    '/:id',
+    authenticate,
+    authorize('admin', 'director', 'super_admin'),
+    validate({
+        params: classCourseParamsSchema
+    }),
+    controller.removeClassCourse,
 );
 
 export { router as classesRouter };

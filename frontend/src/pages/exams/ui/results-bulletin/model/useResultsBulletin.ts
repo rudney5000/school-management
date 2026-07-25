@@ -4,45 +4,57 @@ import {
     useEffect
 } from "react"
 import { useParams } from "@tanstack/react-router"
-import { useAppSelector } from "@shared/store/hooks"
-import { selectSchoolId } from "@features/auth/model/selectors"
 import {
     useGrades,
     type StudentBulletin
 } from "@entities/grades"
-import {
-    useClass,
-    useClasses
-} from "@entities/class"
+import { useClasses } from "@entities/class"
 import { useStudents } from "@entities/student"
-import { useCourses } from "@entities/courses"
+import { useAcademicPeriods } from "@entities/academic-period"
 import {
-    useAcademicPeriod,
-    useAcademicPeriods
-} from "@entities/academic-period"
-import { useSubSchool } from "@entities/sub-school"
+    useTranslation
+} from "@shared/lib"
 import {
-    downloadStudentPdf,
-    openStudentPdf
-} from "@features/exams/ui/generateStudentPdf"
+    useSignBulletin
+} from "@entities/document-signature/lib/useSignBulletin"
+import {
+    useBulletinSignatureStatuses
+} from "@entities/document-signature/lib/useBulletinSignatureStatuses"
+import type {
+    SignatureStatusResult
+} from "@entities/document-signature/model/types"
+import type {
+    PdfLocale
+} from "@entities/document-signature/model/types"
+import {
+    useDownloadDocumentPdf,
+    useOpenDocumentPdf
+} from "@entities/document-signature";
 
 export type SortBy = "average" | "weighted" | "name"
 
+function toPdfLocale(lng: string | undefined): PdfLocale {
+    switch (lng) {
+        case 'en': return 'en'
+        case 'ru': return 'ru'
+        case 'ln': return 'ln'
+        default: return 'ru'
+    }
+}
+
 export function useResultsBulletin() {
     const { subSchoolId } = useParams({ strict: false })
-    const schoolId = useAppSelector(selectSchoolId)
+    const { locale } = useTranslation()
 
     const [selectedClassId, setSelectedClassId] = useState<string>("")
     const [selectedPeriod, setSelectedPeriod] = useState<string>("all")
     const [sortBy, setSortBy] = useState<SortBy>("weighted")
 
     const { data: classes = [] } = useClasses(subSchoolId)
-    const { data: courses } = useCourses(subSchoolId)
     const { data: students = [] } = useStudents(subSchoolId)
     const { data: academicPeriods = [] } = useAcademicPeriods(
         subSchoolId ? { subSchoolId } : undefined
     )
-    const { data: subSchool } = useSubSchool(subSchoolId, schoolId ?? undefined)
 
     useEffect(() => {
         if (classes.length > 0 && !selectedClassId) {
@@ -57,14 +69,6 @@ export function useResultsBulletin() {
         subSchoolId,
         ...(isPeriodSelected && { academicPeriodId: selectedPeriod }),
     })
-
-    const { data: classInfo } = useClass(selectedClassId, subSchoolId)
-    const { data: academicPeriod } = useAcademicPeriod(
-        isPeriodSelected ? selectedPeriod : undefined,
-        subSchoolId
-    )
-
-    const canGeneratePdf = isPeriodSelected && !!courses && !!classInfo && !!subSchool && !!academicPeriod
 
     const studentLookup = useMemo(
         () => new Map(students.map(s => [s.id, s])),
@@ -157,17 +161,78 @@ export function useResultsBulletin() {
         return { classAverage, maxAverage, minAverage, passCount, passRate, totalStudents: studentResults.length }
     }, [studentResults])
 
-    const handleOpenPdf = async (result: StudentBulletin) => {
-        const student = studentLookup.get(result.studentId)
-        if (!canGeneratePdf || !student || !classInfo || !subSchool || !academicPeriod || !courses) return
-        await openStudentPdf(result, courses, classInfo, subSchool, academicPeriod, student)
+    const bulletinStatusParams = useMemo(() => {
+        if (!subSchoolId || !selectedClassId || !isPeriodSelected) return []
+        return sortedResults.map((r) => ({
+            subSchoolId,
+            classId: selectedClassId,
+            studentId: r.studentId,
+            academicPeriodId: selectedPeriod,
+        }))
+    }, [subSchoolId, selectedClassId, isPeriodSelected, selectedPeriod, sortedResults])
+
+    const { statusByStudentId } = useBulletinSignatureStatuses(bulletinStatusParams)
+
+    const resultsWithSignature = useMemo(
+        () => sortedResults.map((r) => ({
+            ...r,
+            signatureStatus: statusByStudentId.get(r.studentId) as SignatureStatusResult | undefined,
+        })),
+        [sortedResults, statusByStudentId]
+    )
+
+    const pdfLocale = toPdfLocale(locale)
+    const downloadPdfMutation = useDownloadDocumentPdf()
+    const openPdfMutation = useOpenDocumentPdf()
+
+    const buildBulletinPdfParams = (studentId: string) => ({
+        subSchoolId: subSchoolId!,
+        classId: selectedClassId,
+        studentId,
+        academicPeriodId: selectedPeriod,
+        locale: pdfLocale,
+    })
+
+    const canGeneratePdf = isPeriodSelected && !!subSchoolId
+
+    const handleOpenPdf = (result: StudentBulletin) => {
+        if (!canGeneratePdf) return
+        openPdfMutation.mutate({
+            documentType: 'bulletin',
+            params: buildBulletinPdfParams(result.studentId),
+        })
     }
 
-    const handleDownloadPdf = async (result: StudentBulletin) => {
-        const student = studentLookup.get(result.studentId)
-        if (!canGeneratePdf || !student || !classInfo || !subSchool || !academicPeriod || !courses) return
-        await downloadStudentPdf(result, courses, classInfo, subSchool, academicPeriod, student)
+    const handleDownloadPdf = (result: StudentBulletin) => {
+        if (!canGeneratePdf) return
+        downloadPdfMutation.mutate({
+            documentType: 'bulletin',
+            params: buildBulletinPdfParams(result.studentId),
+            filename: `bulletin-${result.studentLastName}-${result.studentFirstName}.pdf`,
+        })
     }
+
+    const signBulletinMutation = useSignBulletin()
+
+    const handleSignStudent = (studentId: string) => {
+        if (!subSchoolId || !isPeriodSelected) return
+        signBulletinMutation.mutate({
+            subSchoolId,
+            classId: selectedClassId,
+            studentId,
+            academicPeriodId: selectedPeriod,
+        })
+    }
+
+    const isOpeningPdfForStudent = (studentId: string) =>
+        openPdfMutation.isPending
+        && openPdfMutation.variables?.documentType === 'bulletin'
+        && openPdfMutation.variables.params.studentId === studentId
+
+    const isDownloadingPdfForStudent = (studentId: string) =>
+        downloadPdfMutation.isPending
+        && downloadPdfMutation.variables?.documentType === 'bulletin'
+        && downloadPdfMutation.variables.params.studentId === studentId
 
     return {
         classes,
@@ -178,11 +243,18 @@ export function useResultsBulletin() {
         setSelectedPeriod,
         sortBy,
         setSortBy,
-        sortedResults,
+        sortedResults: resultsWithSignature,
         classStats,
         canGeneratePdf,
         gradesLoading,
         handleOpenPdf,
         handleDownloadPdf,
+        isOpeningPdfForStudent,
+        isDownloadingPdfForStudent,
+        handleSignStudent,
+        isSigning: signBulletinMutation.isPending,
+        subSchoolId,
+        selectedPeriodForBatch: selectedPeriod,
+        isPeriodSelected,
     }
 }

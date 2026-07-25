@@ -129,3 +129,44 @@ export const disputeStatusEnum = pgEnum('dispute_status', [
     'approved',
     'rejected'
 ])
+
+export const signatureStatusEnum = pgEnum('signature_status', [
+    'active',
+    'revoked'
+]);
+
+export const certificateTypeEnum = pgEnum('certificate_type', [
+    'enrollment',
+    'completion',
+    'transfer',
+    'conduct',
+    'graduation',
+]);
+
+export const enrollmentStatusEnum = pgEnum('enrollment_status', [
+    'draft',
+    'complete'
+]);
+
+export const attachmentCategoryEnum = pgEnum("attachment_category", [
+    "birth_certificate",
+    "medical_certificate",
+    "previous_report",
+    "parent_id",
+    "student_photo",
+    "payment_receipt",
+    "other",
+]);
+
+export const attachmentStatusEnum = pgEnum('attachment_status', [
+    'pending',
+    'validated',
+    'rejected',
+]);
+
+export const attachableTypeEnum = pgEnum('attachable_type', [
+    'conversation',
+    'message',
+    'enrollment',
+    'payment',
+])

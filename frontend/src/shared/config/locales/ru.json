@@ -702,7 +702,15 @@
         "bestAverage": "Лучший средний балл",
         "passRate": "Процент сдавших",
         "students": "Ученики",
-        "gradesCount": "оценок"
+        "gradesCount": "оценок",
+        "signature": "Подпись",
+        "pdf": "PDF",
+        "sign": "Подписать",
+        "reSign": "Подписать повторно",
+        "preview": "Предпросмотр",
+        "download": "Скачать",
+        "notSigned": "Не подписано",
+        "pdfUnavailable": "PDF недоступен"
       },
       "statistics": {
         "title": "Статистика результатов",

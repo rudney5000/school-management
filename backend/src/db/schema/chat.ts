@@ -13,7 +13,6 @@ import {
     messageTypeEnum
 } from "@/db/schema/enums";
 import {users} from "@/db/schema/users";
-import {messageAttachments} from "@/db/schema/message-attachment";
 
 export const conversations = pgTable('conversations', {
     id:          uuid('id').primaryKey().defaultRandom(),
@@ -130,7 +129,6 @@ export const messagesRelations = relations(messages, ({ one, many }) => ({
     readReceipts:  many(messageReadReceipts),
     stars:         many(messageStars),
     archives:      many(messageArchives),
-    attachments:    many(messageAttachments),
 }))
 
 export const messageStarsRelations = relations(messageStars, ({ one }) => ({

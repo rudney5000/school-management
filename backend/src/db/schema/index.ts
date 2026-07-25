@@ -16,11 +16,13 @@ export * from './events';
 export * from './exam'
 export * from './schedule';
 export * from './attendances';
-export * from './finance';
+export * from './payments';
 export * from './school';
 export * from './enums'
 export * from './students';
 export * from './users';
-export * from './message-attachment'
+export * from './attachment'
 export * from './videoCallSessions'
 export * from './liveSessions'
+export * from './documentSignature'
+export * from './certificates'

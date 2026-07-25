@@ -28,10 +28,12 @@ import {
     conversationMembers,
     messageStars,
     messageArchives,
-    messageAttachments,
+    attachments,
     liveSessions,
     liveSessionViewers,
     enrollments,
+    classCourses,
+    certificates,
 } from './schema';
 import {
     and,
@@ -41,6 +43,17 @@ import {
     examResults,
     exams
 } from "@/db/schema/exam";
+import {
+    DocumentSignaturesService
+} from "@/modules/signature/document-signature.service";
+import { PutObjectCommand } from '@aws-sdk/client-s3'
+import {
+    s3Client,
+    BUCKET_NAME,
+    buildObjectKey
+} from '@/config/storage'
+import fs from 'fs'
+import path from 'path'
 
 async function seed() {
     console.log('Seeding...');
@@ -369,6 +382,8 @@ async function seed() {
     const [existingAdmin] = await db.select().from(users)
         .where(eq(users.email, 'admin@saintjoseph.cd'));
 
+    let adminWorker;
+
     if (!existingAdmin) {
         const [worker] = await db.insert(workers).values({
             firstName: 'Admin',
@@ -384,9 +399,35 @@ async function seed() {
             workerId: worker.id,
         });
 
+        adminWorker = worker;
         console.log('✓ Admin user: admin@saintjoseph.cd');
     } else {
         console.log('~ Admin user already exists');
+        const [worker] = await db.select().from(workers).where(eq(workers.email, 'admin@saintjoseph.cd'));
+        adminWorker = worker;
+    }
+
+    if (adminWorker && !adminWorker.signatureImageKey) {
+        const signatureImagePath = path.join(__dirname, 'assets', 'sample-signature.png');
+
+        if (fs.existsSync(signatureImagePath)) {
+            const signatureKey = buildObjectKey(subSchool.id, 'signatures', 'admin-sample.png');
+
+            await s3Client.send(new PutObjectCommand({
+                Bucket: BUCKET_NAME,
+                Key: signatureKey,
+                Body: fs.readFileSync(signatureImagePath),
+                ContentType: 'image/png',
+            }));
+
+            await db.update(workers)
+                .set({ signatureImageKey: signatureKey })
+                .where(eq(workers.id, adminWorker.id));
+
+            console.log('✓ Signature image uploadée et liée à l\'admin');
+        } else {
+            console.log('⏭ Pas de fichier sample-signature.png trouvé dans db/assets/, signature image ignorée');
+        }
     }
 
     const [existingDirector] = await db.select().from(users)
@@ -861,6 +902,26 @@ async function seed() {
     const [teacherUser] = await db.select().from(users)
         .where(eq(users.email, 'jean.muamba@saintjoseph.cd'))
 
+    const classCourseLinks = [
+        { classId: classA.id, courseId: mathCourseForExam.id },
+        { classId: classA.id, courseId: frCourse.id },
+        { classId: classA.id, courseId: pcCourse.id },
+        { classId: classB.id, courseId: mathCourseForExam.id },
+        { classId: classB.id, courseId: frCourse.id },
+    ]
+
+    for (const link of classCourseLinks) {
+        const [existing] = await db.select().from(classCourses)
+            .where(and(eq(classCourses.classId, link.classId), eq(classCourses.courseId, link.courseId)))
+
+        if (!existing) {
+            await db.insert(classCourses).values(link)
+            console.log(`✓ Class-course link created`)
+        } else {
+            console.log(`~ Class-course link already exists`)
+        }
+    }
+
     const samplePeriods = [
         {
             subSchoolId: subSchool.id,
@@ -905,6 +966,77 @@ async function seed() {
             insertedPeriods.push(existing)
             console.log(`~ Academic period already exists: ${period.name}`)
         }
+    }
+
+    const [enrollmentMarie] = await db.select().from(enrollments)
+        .where(and(eq(enrollments.studentId, student.id), eq(enrollments.classId, classA.id)))
+
+    const [enrollmentPaul] = await db.select().from(enrollments)
+        .where(and(eq(enrollments.studentId, student2.id), eq(enrollments.classId, classB.id)))
+
+    if (enrollmentMarie) {
+        const requiredCategories = [
+            'birth_certificate', 'medical_certificate', 'previous_report', 'student_photo', 'parent_id',
+        ] as const
+
+        for (const category of requiredCategories) {
+            const [existing] = await db.select().from(attachments)
+                .where(and(
+                    eq(attachments.attachableType, 'enrollment'),
+                    eq(attachments.attachableId, enrollmentMarie.id),
+                    eq(attachments.category, category),
+                ))
+
+            if (!existing) {
+                await db.insert(attachments).values({
+                    attachableType: 'enrollment',
+                    attachableId: enrollmentMarie.id,
+                    category,
+                    key: `schools/${subSchool.id}/enrollments/${enrollmentMarie.id}/${category}.pdf`,
+                    filename: `${category}.pdf`,
+                    mimeType: 'application/pdf',
+                    size: 51200,
+                    uploadedBy: adminUser!.id,
+                    status: 'validated',
+                    validatedBy: adminUser!.id,
+                    validatedAt: new Date(),
+                })
+            }
+        }
+        console.log('✓ Pièces inscription complètes et validées pour Marie')
+    }
+
+    if (enrollmentPaul) {
+        const partial = [
+            { category: 'birth_certificate' as const, status: 'validated' as const },
+            { category: 'student_photo' as const, status: 'pending' as const },
+        ]
+
+        for (const { category, status } of partial) {
+            const [existing] = await db.select().from(attachments)
+                .where(and(
+                    eq(attachments.attachableType, 'enrollment'),
+                    eq(attachments.attachableId, enrollmentPaul.id),
+                    eq(attachments.category, category),
+                ))
+
+            if (!existing) {
+                await db.insert(attachments).values({
+                    attachableType: 'enrollment',
+                    attachableId: enrollmentPaul.id,
+                    category,
+                    key: `schools/${subSchool.id}/enrollments/${enrollmentPaul.id}/${category}.pdf`,
+                    filename: `${category}.pdf`,
+                    mimeType: 'application/pdf',
+                    size: 51200,
+                    uploadedBy: adminUser!.id,
+                    status,
+                    validatedBy: status === 'validated' ? adminUser!.id : null,
+                    validatedAt: status === 'validated' ? new Date() : null,
+                })
+            }
+        }
+        console.log('⏭ Pièces inscription incomplètes pour Paul (test manuel: DOCUMENTS_INCOMPLETE)')
     }
 
     const trimestre1 = insertedPeriods.find(p => p.name === 'Trimestre 1')!
@@ -1104,6 +1236,70 @@ async function seed() {
         console.log(`⏭ Rattrapage laissé sans résultats (pour test manuel avec compte staff)`)
     }
 
+    const [existingCertificate] = await db.select().from(certificates)
+        .where(and(eq(certificates.studentId, student.id), eq(certificates.type, 'enrollment')))
+
+    const certificate = existingCertificate ?? (await db.insert(certificates).values({
+        studentId: student.id,
+        subSchoolId: subSchool.id,
+        type: 'enrollment',
+        content: `Nous, Groupe Scolaire Saint-Joseph, certifions que l'élève Marie Kabila, né(e) le 20/07/2008, est régulièrement inscrit(e) dans notre établissement pour l'année scolaire 2024-2025, en classe de 1ère Année Secondaire A.`,
+        issuedBy: directorUser?.id,
+    }).returning())[0]
+
+    console.log('✓ Certificate créé/trouvé pour Marie Kabila')
+
+    const documentSignaturesService = new DocumentSignaturesService()
+
+    if (directorUser) {
+        try {
+            await documentSignaturesService.sign('bulletin', {
+                subSchoolId: subSchool.id,
+                classId: classA.id,
+                studentId: student.id,
+                academicPeriodId: trimestre1.id,
+            }, {
+                signerRole: 'director',
+                signedByUserId: directorUser.id,
+            })
+            console.log('✓ Bulletin signé pour Marie Kabila (Trimestre 1)')
+        } catch (err) {
+            console.log(`⏭ Signature bulletin Marie échouée: ${err instanceof Error ? err.message : err}`)
+        }
+
+        if (enrollmentMarie) {
+            try {
+                await documentSignaturesService.sign('enrollment', {
+                    subSchoolId: subSchool.id,
+                    enrollmentId: enrollmentMarie.id,
+                    studentId: student.id,
+                }, {
+                    signerRole: 'director',
+                    signedByUserId: directorUser.id,
+                })
+                console.log('✓ Inscription signée pour Marie Kabila')
+            } catch (err) {
+                console.log(`⏭ Signature inscription Marie échouée: ${err instanceof Error ? err.message : err}`)
+            }
+        }
+
+        if (enrollmentPaul) {
+            try {
+                await documentSignaturesService.sign('enrollment', {
+                    subSchoolId: subSchool.id,
+                    enrollmentId: enrollmentPaul.id,
+                    studentId: student2.id,
+                }, {
+                    signerRole: 'director',
+                    signedByUserId: directorUser.id,
+                })
+                console.log('⚠ Inscription Paul signée alors qu\'elle devrait échouer — vérifier ensureEnrollmentCanBeSigned')
+            } catch (err) {
+                console.log(`✓ Signature inscription Paul refusée comme attendu: ${err instanceof Error ? err.message : err}`)
+            }
+        }
+    }
+
     const [frCourseForGrade] = await db.select().from(courses)
         .where(and(eq(courses.code, 'FR-01'), eq(courses.subSchoolId, subSchool.id)))
 
@@ -1163,6 +1359,33 @@ async function seed() {
             console.log(`~ Grade already exists: ${g.gradeType} → student ${g.studentId}`)
         }
     }
+
+    const pcGrades = gradeTypes.map(gradeType => ({
+        subSchoolId: subSchool.id,
+        studentId: student.id,
+        courseId: pcCourse.id,
+        classId: classA.id,
+        academicPeriodId: trimestre1.id,
+        gradeType,
+        score: String((Math.round((8 + Math.random() * 12) * 10) / 10).toFixed(1)),
+        maxScore: '20',
+        coefficient: '1',
+        comment: null,
+        gradedBy: teacherUser.id,
+        gradedAt: new Date(),
+    }))
+
+    for (const g of pcGrades) {
+        const [existing] = await db.select().from(grades)
+            .where(and(
+                eq(grades.studentId, g.studentId),
+                eq(grades.courseId, g.courseId),
+                eq(grades.academicPeriodId, g.academicPeriodId),
+                eq(grades.gradeType, g.gradeType),
+            ))
+        if (!existing) await db.insert(grades).values(g)
+    }
+    console.log('✓ Notes Physique-Chimie créées pour Marie (bulletin complet testable)')
 
     const teacherUserForChat = await db.query.users.findFirst({
         where: eq(users.email, 'jean.muamba@saintjoseph.cd')
@@ -1531,28 +1754,37 @@ async function seed() {
         .where(eq(messages.subject, 'Rappel — Examen du 20 novembre'))
         .limit(1)
 
-    if (mathMsg) {
-        const [existingAttachment] = await db.select().from(messageAttachments)
-            .where(eq(messageAttachments.messageId, mathMsg.id))
+    if (mathMsg && teacherUserForChat) {
+        const [existingAttachment] = await db.select().from(attachments)
+            .where(and(
+                eq(attachments.attachableType, 'message'),
+                eq(attachments.attachableId, mathMsg.id),
+            ))
 
         if (!existingAttachment) {
 
-            await db.insert(messageAttachments).values([
+            await db.insert(attachments).values([
                 {
-                    messageId: mathMsg.id,
-                    key:       `chats/${mathMsg.conversationId}/sample-doc.pdf`,
-                    filename:  'Programme-examen-novembre.pdf',
-                    mimeType:  'application/pdf',
-                    size:      102400,
+                    attachableType: 'message' as const,
+                    attachableId:   mathMsg.id,
+                    category:       'other' as const,
+                    key:        `chats/${mathMsg.conversationId}/sample-doc.pdf`,
+                    filename:   'Programme-examen-novembre.pdf',
+                    mimeType:   'application/pdf',
+                    size:       102400,
+                    uploadedBy: teacherUserForChat.id,
                 },
                 {
-                    messageId: mathMsg.id,
-                    key:       `chats/${mathMsg.conversationId}/sample-image.jpg`,
-                    filename:  'formules-mathematiques.jpg',
-                    mimeType:  'image/jpeg',
-                    size:      204800,
-                    width:     1920,
-                    height:    1080,
+                    attachableType: 'message' as const,
+                    attachableId:   mathMsg.id,
+                    category:       'other' as const,
+                    key:        `chats/${mathMsg.conversationId}/sample-image.jpg`,
+                    filename:   'formules-mathematiques.jpg',
+                    mimeType:   'image/jpeg',
+                    size:       204800,
+                    width:      1920,
+                    height:     1080,
+                    uploadedBy: teacherUserForChat.id,
                 },
             ])
             console.log('✓ Attachments créés pour le message Math')

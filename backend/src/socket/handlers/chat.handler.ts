@@ -43,7 +43,7 @@ export function registerChatHandlers(io: Server, socket: Socket, redis: Redis) {
 
             if (data.input.attachments?.length) {
                 try {
-                    await chatService.saveAttachments(message.id, data.input.attachments)
+                    await chatService.saveAttachments(message.id, userId, data.input.attachments)
                 } catch (attachErr) {
                     console.error('✗ Erreur sauvegarde attachments:', attachErr)
                     socket.emit('error', { message: 'Message envoyé mais fichier non attaché' })
