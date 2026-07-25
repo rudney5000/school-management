@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useUploadAttachment } from '../lib/useUploadAttachment'
+import { useUploadAttachment } from '@entities/attachment'
 import type { AttachableType, AttachmentCategory } from '../model/types'
 
 interface AttachmentUploadZoneProps {
