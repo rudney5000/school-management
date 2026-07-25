@@ -30,6 +30,7 @@ ENV NODE_ENV=production
 
 COPY --from=deps    /app/node_modules                       ./node_modules
 COPY --from=deps    /app/backend/node_modules                ./backend/node_modules
+COPY --from=deps    /app/packages/pdf-templates/node_modules ./packages/pdf-templates/node_modules
 COPY --from=builder /app/packages/pdf-templates/dist         ./packages/pdf-templates/dist
 COPY --from=builder /app/packages/pdf-templates/package.json ./packages/pdf-templates/package.json
 COPY --from=builder /app/backend/dist                         ./backend/dist
