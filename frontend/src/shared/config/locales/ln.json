@@ -864,7 +864,15 @@
         "bestAverage": "Ntálisi ya malamu koleka",
         "passRate": "Proportion ya balongí",
         "students": "Bana-école",
-        "gradesCount": "manote"
+        "gradesCount": "manote",
+        "signature": "Kotia sinyatili",
+        "pdf": "PDF",
+        "sign": "Kotia sinyatili",
+        "reSign": "Kotia sinyatili lisusu",
+        "preview": "Kotala liboso",
+        "download": "Kokitisa",
+        "notSigned": "Etiami sinyatili te",
+        "pdfUnavailable": "PDF ezali te"
       },
       "statistics": {
         "title": "Statistiki ya barésulta",

@@ -791,7 +791,15 @@
         "bestAverage": "Best average",
         "passRate": "Pass rate",
         "students": "Students",
-        "gradesCount": "grades"
+        "gradesCount": "grades",
+        "signature": "Signature",
+        "pdf": "PDF",
+        "sign": "Sign",
+        "reSign": "Sign again",
+        "preview": "Preview",
+        "download": "Download",
+        "notSigned": "Not signed",
+        "pdfUnavailable": "PDF unavailable"
       },
       "statistics": {
         "title": "Results Statistics",

@@ -723,7 +723,15 @@
         "bestAverage": "Meilleure moyenne",
         "passRate": "Taux de réussite",
         "students": "Élèves",
-        "gradesCount": "notes"
+        "gradesCount": "notes",
+        "signature": "Signature",
+        "pdf": "PDF",
+        "sign": "Signer",
+        "reSign": "Re-signer",
+        "preview": "Aperçu",
+        "download": "Télécharger",
+        "notSigned": "Non signé",
+        "pdfUnavailable": "PDF indisponible"
       },
       "statistics": {
         "title": "Statistiques des résultats",
