@@ -1,15 +1,22 @@
-import type { Request, Response } from 'express';
+import type {
+  Request,
+  Response
+} from 'express';
 import { asyncHandler } from '@/shared/utils/async-handler';
 import { respond } from '@/shared/utils/respond';
-import type { CreateEnrollmentDto } from '@/modules/enrollments/enrollments.schema';
-import { EnrollmentsService } from '@/modules/enrollments/enrollments.service';
+import type {
+  CreateEnrollmentDto
+} from '@/modules/enrollments/enrollments.schema';
+import {
+  EnrollmentsService
+} from '@/modules/enrollments/enrollments.service';
 
 export class EnrollmentsController {
   private readonly service = new EnrollmentsService();
 
   getAll = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const { classId } = req.query as { classId?: string };
-    const data = await this.service.findAll(classId);
+    const { classId, studentId } = req.query as { classId?: string; studentId?: string };
+    const data = await this.service.findAll({ classId, studentId });
     respond(res, data);
   });
 
