@@ -1,4 +1,8 @@
-import { and, eq, sql } from 'drizzle-orm'
+import {
+    and,
+    eq,
+    sql
+} from 'drizzle-orm'
 import { db } from '@/db'
 import { grades } from '@/db/schema/grades'
 import { AppError } from '@/shared/errors/app-error'
@@ -47,7 +51,12 @@ export class GradesService {
         const [enrollment] = await db
             .select()
             .from(enrollments)
-            .where(and(eq(enrollments.studentId, studentId), eq(enrollments.classId, classId)));
+            .where(
+                and(
+                    eq(enrollments.studentId, studentId),
+                    eq(enrollments.classId, classId)
+                )
+            );
 
         if (!enrollment) {
             throw new AppError(
