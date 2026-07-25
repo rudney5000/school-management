@@ -31,7 +31,9 @@ import {
     attachments,
     liveSessions,
     liveSessionViewers,
-    enrollments, classCourses, certificates,
+    enrollments,
+    classCourses,
+    certificates,
 } from './schema';
 import {
     and,
@@ -41,7 +43,17 @@ import {
     examResults,
     exams
 } from "@/db/schema/exam";
-import {DocumentSignaturesService} from "@/modules/signature/document-signature.service";
+import {
+    DocumentSignaturesService
+} from "@/modules/signature/document-signature.service";
+import { PutObjectCommand } from '@aws-sdk/client-s3'
+import {
+    s3Client,
+    BUCKET_NAME,
+    buildObjectKey
+} from '@/config/storage'
+import fs from 'fs'
+import path from 'path'
 
 async function seed() {
     console.log('Seeding...');
@@ -370,6 +382,8 @@ async function seed() {
     const [existingAdmin] = await db.select().from(users)
         .where(eq(users.email, 'admin@saintjoseph.cd'));
 
+    let adminWorker;
+
     if (!existingAdmin) {
         const [worker] = await db.insert(workers).values({
             firstName: 'Admin',
@@ -385,9 +399,35 @@ async function seed() {
             workerId: worker.id,
         });
 
+        adminWorker = worker;
         console.log('✓ Admin user: admin@saintjoseph.cd');
     } else {
         console.log('~ Admin user already exists');
+        const [worker] = await db.select().from(workers).where(eq(workers.email, 'admin@saintjoseph.cd'));
+        adminWorker = worker;
+    }
+
+    if (adminWorker && !adminWorker.signatureImageKey) {
+        const signatureImagePath = path.join(__dirname, 'assets', 'sample-signature.png');
+
+        if (fs.existsSync(signatureImagePath)) {
+            const signatureKey = buildObjectKey(subSchool.id, 'signatures', 'admin-sample.png');
+
+            await s3Client.send(new PutObjectCommand({
+                Bucket: BUCKET_NAME,
+                Key: signatureKey,
+                Body: fs.readFileSync(signatureImagePath),
+                ContentType: 'image/png',
+            }));
+
+            await db.update(workers)
+                .set({ signatureImageKey: signatureKey })
+                .where(eq(workers.id, adminWorker.id));
+
+            console.log('✓ Signature image uploadée et liée à l\'admin');
+        } else {
+            console.log('⏭ Pas de fichier sample-signature.png trouvé dans db/assets/, signature image ignorée');
+        }
     }
 
     const [existingDirector] = await db.select().from(users)

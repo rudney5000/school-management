@@ -1,5 +1,5 @@
 {
-  "id": "69f3a916-9b8a-4bc5-bfa9-c557b4fe2fe2",
+  "id": "4b4f4caf-7b94-4913-bbac-947b1c8eec9f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1612,6 +1612,12 @@
         "job_title": {
           "name": "job_title",
           "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "signature_image_key": {
+          "name": "signature_image_key",
+          "type": "varchar(512)",
           "primaryKey": false,
           "notNull": false
         },

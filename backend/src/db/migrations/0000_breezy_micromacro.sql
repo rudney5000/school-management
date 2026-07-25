@@ -323,6 +323,7 @@ CREATE TABLE IF NOT EXISTS "workers" (
 	"email" varchar(255) NOT NULL,
 	"phone" varchar(20),
 	"job_title" varchar(100),
+	"signature_image_key" varchar(512),
 	"sub_school_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "workers_email_unique" UNIQUE("email")
