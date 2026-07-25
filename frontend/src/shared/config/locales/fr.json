@@ -731,7 +731,12 @@
         "preview": "Aperçu",
         "download": "Télécharger",
         "notSigned": "Non signé",
-        "pdfUnavailable": "PDF indisponible"
+        "pdfUnavailable": "PDF indisponible",
+        "signatureStatus": {
+          "signed": "Signé",
+          "notSigned": "Non signé",
+          "expired": "Périmé"
+        }
       },
       "statistics": {
         "title": "Statistiques des résultats",

@@ -710,7 +710,12 @@
         "preview": "Предпросмотр",
         "download": "Скачать",
         "notSigned": "Не подписано",
-        "pdfUnavailable": "PDF недоступен"
+        "pdfUnavailable": "PDF недоступен",
+        "signatureStatus": {
+          "signed": "Подписано",
+          "notSigned": "Не подписано",
+          "expired": "Просрочено"
+        }
       },
       "statistics": {
         "title": "Статистика результатов",

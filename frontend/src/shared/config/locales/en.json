@@ -799,7 +799,12 @@
         "preview": "Preview",
         "download": "Download",
         "notSigned": "Not signed",
-        "pdfUnavailable": "PDF unavailable"
+        "pdfUnavailable": "PDF unavailable",
+        "signatureStatus": {
+          "signed": "Signed",
+          "notSigned": "Not signed",
+          "expired": "Expired"
+        }
       },
       "statistics": {
         "title": "Results Statistics",

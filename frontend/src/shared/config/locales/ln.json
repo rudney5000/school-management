@@ -872,7 +872,12 @@
         "preview": "Kotala liboso",
         "download": "Kokitisa",
         "notSigned": "Etiami sinyatili te",
-        "pdfUnavailable": "PDF ezali te"
+        "pdfUnavailable": "PDF ezali te",
+        "signatureStatus": {
+          "signed": "Etiami sinyatili",
+          "notSigned": "Etiami sinyatili te",
+          "expired": "Esili ngala"
+        }
       },
       "statistics": {
         "title": "Statistiki ya barésulta",
