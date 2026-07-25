@@ -1,9 +1,5 @@
 import { Font } from '@react-pdf/renderer';
 import path from 'path';
-import { fileURLToPath } from 'url'
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 Font.register({
     family: 'NotoSans',
