@@ -31,14 +31,32 @@ export class DocumentPdfService {
         documentType: T,
         params: DocumentParamsMap[T],
         locale: PdfLocale,
+        preview = false
     ): Promise<Buffer> {
         const status = await this.signatures.getStatus(documentType, params);
 
-        if (!status.isSigned) {
-            throw new AppError('NOT_SIGNED', 'Ce document doit être signé avant téléchargement', 422);
+        if (!preview) {
+            if (!status.isSigned) {
+                throw new AppError('NOT_SIGNED', 'Ce document doit être signé avant téléchargement', 422);
+            }
+            if (status.isStale) {
+                throw new AppError('SIGNATURE_STALE', 'Le contenu a changé depuis la signature', 409);
+            }
         }
-        if (status.isStale) {
-            throw new AppError('SIGNATURE_STALE', 'Le contenu a changé depuis la signature', 409);
+
+        const strategy = getPdfStrategy(documentType);
+
+        if (preview && !status.isSigned) {
+            const element = await strategy.buildDocument(params, locale, {
+                locale,
+                signerName: 'À valider',
+                signerRole: '',
+                signedAt: null,
+                verificationQrDataUrl: null,
+                signatureImageUrl: null,
+                isStale: true,
+            });
+            return renderToBuffer(element);
         }
 
         const [signer] = await db
@@ -52,7 +70,7 @@ export class DocumentPdfService {
             })
             .from(users)
             .leftJoin(workers, eq(users.workerId, workers.id))
-            .where(eq(users.id, status.signature.signedByUserId));
+            .where(eq(users.id, status.signature!.signedByUserId));
 
 
         if (!signer) {
@@ -66,11 +84,9 @@ export class DocumentPdfService {
         const signerRoleLabel = signer.workerJobTitle ?? signer.role;
 
         const verificationQrDataUrl = await QRCode.toDataURL(
-            `${APP_BASE_URL}/verify/${status.signature.id}`,
+            `${APP_BASE_URL}/verify/${status.signature!.id}`,
             { margin: 0, width: 160 },
         );
-
-        const strategy = getPdfStrategy(documentType);
 
         const signatureImageUrl = signer.signatureImageKey
             ? await getAttachmentUrl(signer.signatureImageKey)
@@ -80,10 +96,10 @@ export class DocumentPdfService {
             locale,
             signerName,
             signerRole: signerRoleLabel,
-            signedAt: status.signature.signedAt.toLocaleString(locale),
+            signedAt: status.signature!.signedAt.toLocaleString(locale),
             verificationQrDataUrl,
             signatureImageUrl,
-            isStale: false,
+            isStale: preview,
         });
 
         return renderToBuffer(element);

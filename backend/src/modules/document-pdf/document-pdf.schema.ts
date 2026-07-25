@@ -4,7 +4,7 @@ import {
     bulletinStatusQuerySchema,
     certificateStatusQuerySchema,
     DocumentParamsMap,
-    enrollmentStatusQuerySchema
+    enrollmentSignSchema,
 } from "@/modules/signature/document-signature.schema";
 import {
     type DocumentType,
@@ -17,8 +17,8 @@ export interface ResolvedSignature {
     locale: PdfLocale;
     signerName: string;
     signerRole: string;
-    signedAt: string;
-    verificationQrDataUrl: string;
+    signedAt: string | null;
+    verificationQrDataUrl: string | null;
     signatureImageUrl?: string | null;
     isStale: boolean;
 }
@@ -35,14 +35,17 @@ export const localeSchema = z.enum(['fr', 'en', 'ru', 'ln']);
 
 export const bulletinPdfQuerySchema = bulletinStatusQuerySchema.extend({
     locale: localeSchema,
+    preview: z.coerce.boolean().optional().default(false),
 });
 
-export const enrollmentPdfQuerySchema = enrollmentStatusQuerySchema.extend({
+export const enrollmentPdfQuerySchema = enrollmentSignSchema.extend({
     locale: localeSchema,
-});
+    preview: z.coerce.boolean().optional().default(false),
+})
 
 export const certificatePdfQuerySchema = certificateStatusQuerySchema.extend({
     locale: localeSchema,
+    preview: z.coerce.boolean().optional().default(false),
 });
 
 export type BulletinPdfQueryDto = z.infer<typeof bulletinPdfQuerySchema>;

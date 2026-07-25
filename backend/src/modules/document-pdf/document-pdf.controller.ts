@@ -28,8 +28,8 @@ export class DocumentPdfController {
     });
 
     getEnrollmentPdf = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const { locale, ...params } = req.query as unknown as EnrollmentPdfQueryDto;
-        const buffer = await this.service.generate('enrollment', params, locale);
+        const { locale, preview, ...params } = req.query as unknown as EnrollmentPdfQueryDto;
+        const buffer = await this.service.generate('enrollment', params, locale, preview);
         sendPdf(res, buffer, 'enrollment.pdf');
     });
 
