@@ -6,8 +6,7 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc && node -e \"require('fs').cpSync('src/fonts', 'dist/fonts', {recursive: true})\""
-  },
+    "build": "tsc && node --input-type=module -e \"import { cpSync } from 'node:fs'; cpSync('src/fonts', 'dist/fonts', {recursive:true})\""  },
   "peerDependencies": {
     "@react-pdf/renderer": "^3.4.0",
     "react": "^18.0.0"

@@ -3,16 +3,12 @@ import {
     Page,
     View,
     Text,
-    StyleSheet,
-    Svg
+    StyleSheet
 } from '@react-pdf/renderer';
 import {
     SignatureBlock,
     type SignatureBlockProps
 } from '../components/SignatureBlock';
-import {
-    ElephantWatermark
-} from '../components/ElephantWatermark';
 import {
     getPdfLabels,
     type PdfLocale
@@ -35,13 +31,6 @@ const styles = StyleSheet.create({
         fontSize: 10,
         color: theme.colors.text,
         paddingBottom: 60,
-    },
-    watermarkLayer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
     },
     header: {
         backgroundColor: theme.colors.primary,
@@ -102,16 +91,12 @@ export function BulletinDocument({
                                      academicPeriodLabel,
                                      rows,
                                      signature,
-}: BulletinDocumentProps) {
+                                 }: BulletinDocumentProps) {
     const t = getPdfLabels(locale);
 
     return (
         <Document>
             <Page size="A4" style={styles.page}>
-                <Svg style={styles.watermarkLayer} viewBox="0 0 595 842">
-                    <ElephantWatermark />
-                </Svg>
-
                 <View style={styles.header}>
                     <Text style={styles.schoolName}>{schoolName}</Text>
                     <Text style={styles.docTitle}>{t.bulletinTitle}</Text>
