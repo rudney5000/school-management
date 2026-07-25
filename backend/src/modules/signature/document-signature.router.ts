@@ -3,6 +3,7 @@ import { validate } from '@/shared/utils/validate';
 import { authenticate } from '@/middleware/authenticate';
 import { authorize } from '@/middleware/authorize';
 import {
+    batchSignBulletinSchema,
     bulletinSignSchema,
     bulletinStatusQuerySchema,
     certificateSignSchema,
@@ -21,12 +22,23 @@ const controller = new DocumentSignaturesController();
 router.post(
     '/bulletin',
     authenticate,
-    authorize('director', 'admin', 'super_admin'),
+    authorize('teacher', 'director', 'admin', 'super_admin'),
     validate({
         body: bulletinSignSchema
     }),
     controller.signBulletin,
 );
+
+router.post(
+    '/bulletin/batch',
+    authenticate,
+    authorize('director', 'admin', 'super_admin'),
+    validate({
+        body: batchSignBulletinSchema
+    }),
+    controller.signBulletinBatch,
+);
+
 router.get(
     '/bulletin/status',
     authenticate,

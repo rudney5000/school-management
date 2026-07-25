@@ -1,4 +1,7 @@
-import { and, eq } from 'drizzle-orm';
+import {
+    and,
+    eq
+} from 'drizzle-orm';
 import { db } from '@/db';
 import { documentSignatures } from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';

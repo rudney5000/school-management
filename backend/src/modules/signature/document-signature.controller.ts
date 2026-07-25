@@ -31,6 +31,11 @@ export class DocumentSignaturesController {
         respond(res, data, 201);
     });
 
+    signBulletinBatch = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.signBatch('bulletin', req.body as Partial<BulletinSignDto>, signContext(req));
+        respond(res, data, 201);
+    });
+
     getBulletinStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const data = await this.service.getStatus('bulletin', req.query as unknown as BulletinSignDto);
         respond(res, data);
