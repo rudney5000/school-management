@@ -8,7 +8,10 @@
     "jsx": "react-jsx",
     "noEmit": false,
     "allowImportingTsExtensions": false,
-    "noEmitOnError": true
+    "noEmitOnError": true,
+    "types": [
+      "node"
+    ]
   },
   "include": ["src"]
 }

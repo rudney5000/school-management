@@ -6,7 +6,7 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && node -e \"require('fs').cpSync('src/fonts', 'dist/fonts', {recursive: true})\""
   },
   "peerDependencies": {
     "@react-pdf/renderer": "^3.4.0",
@@ -15,6 +15,7 @@
   "devDependencies": {
     "@react-pdf/renderer": "^3.4.0",
     "@types/react": "^18.3.1",
+    "@types/node": "^26.1.1",
     "typescript": "^5.4.0"
   }
 }
