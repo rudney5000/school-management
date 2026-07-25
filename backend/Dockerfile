@@ -13,6 +13,7 @@ RUN pnpm install --frozen-lockfile --prod --filter @school/backend... --ignore-s
 FROM base AS builder
 WORKDIR /app
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY tsconfig.base.json ./
 COPY backend/package.json ./backend/
 COPY packages/pdf-templates/package.json ./packages/pdf-templates/
 RUN pnpm install --frozen-lockfile --filter @school/backend... --ignore-scripts
