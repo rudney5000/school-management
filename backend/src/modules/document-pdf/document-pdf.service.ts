@@ -20,6 +20,7 @@ import {
 import {
     PdfLocale
 } from "@school-hub/pdf-templates/src/i18n/labels";
+import {getAttachmentUrl} from "@/config/storage";
 
 const APP_BASE_URL = process.env.APP_BASE_URL ?? 'https://school-management-frontend-beta-nine.vercel.app';
 
@@ -47,6 +48,7 @@ export class DocumentPdfService {
                 workerFirstName: workers.firstName,
                 workerLastName: workers.lastName,
                 workerJobTitle: workers.jobTitle,
+                signatureImageKey: workers.signatureImageKey,
             })
             .from(users)
             .leftJoin(workers, eq(users.workerId, workers.id))
@@ -69,12 +71,18 @@ export class DocumentPdfService {
         );
 
         const strategy = getPdfStrategy(documentType);
+
+        const signatureImageUrl = signer.signatureImageKey
+            ? await getAttachmentUrl(signer.signatureImageKey)
+            : null;
+
         const element = await strategy.buildDocument(params, locale, {
             locale,
             signerName,
             signerRole: signerRoleLabel,
             signedAt: status.signature.signedAt.toLocaleString(locale),
             verificationQrDataUrl,
+            signatureImageUrl,
             isStale: false,
         });
 

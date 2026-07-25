@@ -19,6 +19,7 @@ export interface ResolvedSignature {
     signerRole: string;
     signedAt: string;
     verificationQrDataUrl: string;
+    signatureImageUrl?: string | null;
     isStale: boolean;
 }
 
