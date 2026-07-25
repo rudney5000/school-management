@@ -13,6 +13,7 @@ import {
     getPdfLabels,
     type PdfLocale
 } from "../i18n/labels";
+import {theme} from "../theme";
 
 export interface CertificateDocumentProps {
     locale: PdfLocale;
@@ -25,11 +26,33 @@ export interface CertificateDocumentProps {
 }
 
 const styles = StyleSheet.create({
-    page: { padding: 32, fontSize: 10 },
-    title: { fontSize: 14, fontWeight: 'bold', marginBottom: 4, textAlign: 'center' },
-    subtitle: { fontSize: 11, marginBottom: 20, textAlign: 'center', color: '#555' },
-    body: { fontSize: 11, lineHeight: 1.6, marginBottom: 24 },
-    issuedAt: { fontSize: 9, color: '#555', marginBottom: 12 },
+    page: {
+        fontFamily: theme.font,
+        padding: 32,
+        fontSize: 10
+    },
+    title: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        marginBottom: 4,
+        textAlign: 'center'
+    },
+    subtitle: {
+        fontSize: 11,
+        marginBottom: 20,
+        textAlign: 'center',
+        color: '#555'
+    },
+    body: {
+        fontSize: 11,
+        lineHeight: 1.6,
+        marginBottom: 24
+    },
+    issuedAt: {
+        fontSize: 9,
+        color: '#555',
+        marginBottom: 12
+    },
 });
 
 export function CertificateDocument({

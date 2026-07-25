@@ -13,6 +13,7 @@ import {
     getPdfLabels,
     type PdfLocale
 } from "../i18n/labels";
+import {theme} from "../theme";
 
 export interface EnrollmentDocumentProps {
     locale: PdfLocale;
@@ -26,11 +27,27 @@ export interface EnrollmentDocumentProps {
 }
 
 const styles = StyleSheet.create({
-    page: { padding: 32, fontSize: 10 },
-    title: { fontSize: 14, fontWeight: 'bold', marginBottom: 12 },
-    row: { flexDirection: 'row', marginBottom: 6 },
-    label: { width: 160, color: '#555' },
-    value: { flex: 1, fontWeight: 'bold' },
+    page: {
+        fontFamily: theme.font,
+        padding: 32,
+        fontSize: 10 },
+    title: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        marginBottom: 12
+    },
+    row: {
+        flexDirection: 'row',
+        marginBottom: 6
+    },
+    label: {
+        width: 160,
+        color: '#555'
+    },
+    value: {
+        flex: 1,
+        fontWeight: 'bold'
+    },
 });
 
 export function EnrollmentDocument({

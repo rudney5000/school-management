@@ -7,23 +7,42 @@ import {
 import {
     getPdfLabels,
     type PdfLocale
-} from "../i18n/labels";
+} from '../i18n/labels';
+import { theme } from '../theme';
 
 const styles = StyleSheet.create({
     container: {
         marginTop: 24,
         paddingTop: 12,
-        borderTop: '1px solid #ccc',
+        borderTop: `1px solid ${theme.colors.border}`,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
+        paddingHorizontal: 32,
     },
-    meta: { fontSize: 8, color: '#555' },
-    name: { fontSize: 10, fontWeight: 'bold', marginTop: 4 },
-    role: { fontSize: 9, color: '#333' },
-    qr: { width: 56, height: 56 },
+    meta: {
+        fontFamily: theme.font,
+        fontSize: 8,
+        color: theme.colors.muted
+    },
+    name: {
+        fontFamily: theme.font,
+        fontSize: 10,
+        fontWeight: 'bold',
+        marginTop: 4,
+        color: theme.colors.text
+    },
+    role: {
+        fontFamily: theme.font,
+        fontSize: 9,
+        color: theme.colors.text
+    },
+    qr: {
+        width: 56, height: 56 },
     staleBanner: {
+        fontFamily: theme.font,
         marginTop: 8,
+        marginHorizontal: 32,
         padding: 4,
         backgroundColor: '#fde8e8',
         color: '#b91c1c',
