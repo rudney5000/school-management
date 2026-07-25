@@ -40,13 +40,22 @@ import {
 
 type BulletinRow = StudentBulletin & { signatureStatus?: SignatureStatusResult }
 
+type ResultsTableLabels = {
+    pdfUnavailable: string
+    preview: string
+    download: string
+    sign: string
+    reSign: string
+    notSigned: string
+}
+
 type ResultsTableProps = {
     sortedResults: BulletinRow[]
     classAverage?: number
     sortBy: SortBy
     onSortChange: (value: SortBy) => void
     canGeneratePdf: boolean
-    pdfDisabledLabel: string
+    labels: ResultsTableLabels
     onOpenPdf: (result: StudentBulletin) => void
     onDownloadPdf: (result: StudentBulletin) => void
     canSign: boolean
@@ -55,14 +64,13 @@ type ResultsTableProps = {
     isOpeningPdfForStudent: (studentId: string) => boolean
     isDownloadingPdfForStudent: (studentId: string) => boolean
 }
-
 export function ResultsTable({
                                  sortedResults,
                                  classAverage,
                                  sortBy,
                                  onSortChange,
                                  canGeneratePdf,
-                                 pdfDisabledLabel,
+                                 labels,
                                  onOpenPdf,
                                  onDownloadPdf,
                                  canSign,
@@ -101,8 +109,8 @@ export function ResultsTable({
                             <TableHead className="text-center">{t("dashboard.exams.results.average")}</TableHead>
                             <TableHead className="text-center">{t("dashboard.exams.results.weightedAvg")}</TableHead>
                             <TableHead className="text-center">{t("dashboard.exams.results.trend")}</TableHead>
-                            <TableHead className="text-center">Signature</TableHead>
-                            <TableHead className="text-center">PDF</TableHead>
+                            <TableHead className="text-center">{t("dashboard.exams.results.signature")}</TableHead>
+                            <TableHead className="text-center">{t("dashboard.exams.results.pdf")}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -160,7 +168,7 @@ export function ResultsTable({
                                                     variant="ghost" size="icon" className="size-6"
                                                     onClick={() => onSignStudent(result.studentId)}
                                                     disabled={isSigning}
-                                                    title={isStale ? "Re-signer" : "Signer"}
+                                                    title={isStale ? t("dashboard.exams.results.reSign") : t("dashboard.exams.results.sign")}
                                                 >
                                                     <PenLine className="size-3.5" />
                                                 </Button>
@@ -172,7 +180,11 @@ export function ResultsTable({
                                             <Button
                                                 variant="ghost" size="icon" className="size-7"
                                                 onClick={() => onOpenPdf(result)}
-                                                title={canDownloadRow ? "Aperçu" : (isSigned ? pdfDisabledLabel : "Non signé")}
+                                                title={
+                                                    canDownloadRow
+                                                        ? labels.preview
+                                                        : (isSigned ? labels.pdfUnavailable : labels.notSigned)
+                                                }
                                                 disabled={!canDownloadRow || isOpening}
                                             >
                                                 {isOpening
@@ -182,7 +194,11 @@ export function ResultsTable({
                                             <Button
                                                 variant="ghost" size="icon" className="size-7"
                                                 onClick={() => onDownloadPdf(result)}
-                                                title={canDownloadRow ? "Télécharger" : (isSigned ? pdfDisabledLabel : "Non signé")}
+                                                title={
+                                                    canDownloadRow
+                                                        ? labels.download
+                                                        : (isSigned ? labels.pdfUnavailable : labels.notSigned)
+                                                }
                                                 disabled={!canDownloadRow || isDownloading}
                                             >
                                                 {isDownloading

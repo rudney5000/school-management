@@ -13,13 +13,18 @@ import {selectRole} from "@features/auth/model/selectors";
 import {
     useSignBulletinBatch
 } from "@entities/document-signature";
-// import {
-//     ElephantWatermark
-// } from "@/pages/exams/ui/results-bulletin/ElephantWatermark";
 
 const STAFF_ROLES = ['director', 'admin', 'super_admin']
 export function ResultsBulletin() {
     const { t } = useTranslation()
+    const resultsLabels = {
+        pdfUnavailable: t("dashboard.exams.results.pdfUnavailable"),
+        preview: t("dashboard.exams.results.preview"),
+        download: t("dashboard.exams.results.download"),
+        sign: t("dashboard.exams.results.sign"),
+        reSign: t("dashboard.exams.results.reSign"),
+        notSigned: t("dashboard.exams.results.notSigned"),
+    }
     const {
         classes,
         academicPeriods,
@@ -115,7 +120,7 @@ export function ResultsBulletin() {
                 sortBy={sortBy}
                 onSortChange={setSortBy}
                 canGeneratePdf={canGeneratePdf}
-                pdfDisabledLabel={t("dashboard.exams.results.selectPeriodFirst")}
+                labels={resultsLabels}
                 onOpenPdf={handleOpenPdf}
                 onDownloadPdf={handleDownloadPdf}
                 canSign={canSign}
