@@ -35,7 +35,6 @@ COPY --from=builder /app/packages/pdf-templates/package.json ./packages/pdf-temp
 COPY --from=builder /app/backend/dist                        ./dist
 COPY --from=builder /app/backend/src/db/migrations           ./migrations
 COPY --from=builder /app/backend/package.json                ./package.json
-RUN npm install dotenv
 
 EXPOSE 3000
 
