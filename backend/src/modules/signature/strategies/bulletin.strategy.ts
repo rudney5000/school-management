@@ -10,7 +10,7 @@ import {db} from "@/db";
 const gradesService = new GradesService()
 
 export const bulletinSignatureStrategy: DocumentSignatureStrategy<'bulletin'> = {
-    allowedSignerRoles: ['director', 'admin', 'super_admin'],
+    allowedSignerRoles: ['teacher', 'director', 'admin', 'super_admin'],
 
     async resolveScope({ subSchoolId, classId, studentId, academicPeriodId }: BulletinSignDto) {
         return {
