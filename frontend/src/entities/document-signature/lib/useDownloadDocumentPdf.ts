@@ -1,31 +1,29 @@
 import { useMutation } from '@tanstack/react-query'
 import { handleApiError } from '@shared/lib'
 import {
-    downloadDocumentPdf,
-    openDocumentPdf,
+    downloadDocumentPdf
 } from '@entities/document-signature/lib/downloadDocumentPdf'
-import type { DocumentType, DocumentPdfParamsMap } from '@entities/document-signature/model/types'
+import type {
+    DocumentPdfParamsMap
+} from '@entities/document-signature/model/types'
 
-type DownloadPdfInput<T extends DocumentType> = {
-    documentType: T
-    params:         DocumentPdfParamsMap[T]
-    filename?:      string
-}
+type DownloadPdfInput =
+    | { documentType: 'bulletin';    params: DocumentPdfParamsMap['bulletin'];    filename?: string }
+    | { documentType: 'enrollment';  params: DocumentPdfParamsMap['enrollment'];  filename?: string }
+    | { documentType: 'certificate'; params: DocumentPdfParamsMap['certificate']; filename?: string }
 
 export const useDownloadDocumentPdf = () => {
     return useMutation({
-        mutationFn: <T extends DocumentType>(input: DownloadPdfInput<T>) =>
-            downloadDocumentPdf(input.documentType, input.params, input.filename),
-        onError: (error: Error) => {
-            handleApiError(error)
+        mutationFn: (input: DownloadPdfInput) => {
+            switch (input.documentType) {
+                case 'bulletin':
+                    return downloadDocumentPdf('bulletin', input.params, input.filename)
+                case 'enrollment':
+                    return downloadDocumentPdf('enrollment', input.params, input.filename)
+                case 'certificate':
+                    return downloadDocumentPdf('certificate', input.params, input.filename)
+            }
         },
-    })
-}
-
-export const useOpenDocumentPdf = () => {
-    return useMutation({
-        mutationFn: <T extends DocumentType>(input: { documentType: T; params: DocumentPdfParamsMap[T] }) =>
-            openDocumentPdf(input.documentType, input.params),
         onError: (error: Error) => {
             handleApiError(error)
         },

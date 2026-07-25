@@ -7,22 +7,16 @@ import {
     documentSignatureApi
 } from '@entities/document-signature/api/document-signature.api'
 import type {
-    DocumentSignatureParamsDto
-} from '@entities/document-signature/model/dto'
-import type {
-    RevokeSignatureDto
+    BatchSignBulletinDto
 } from '@entities/document-signature/model/createDocumentSignatureSchema'
 
-type RevokeDocumentSignatureInput = DocumentSignatureParamsDto & RevokeSignatureDto
-
-export const useRevokeDocumentSignature = () => {
+export const useSignBulletinBatch = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: ({ id, reason }: RevokeDocumentSignatureInput) =>
-            documentSignatureApi.revoke({ id }, { reason }),
+        mutationFn: (dto: BatchSignBulletinDto) => documentSignatureApi.signBulletinBatch(dto),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['document-signature'] })
+            queryClient.invalidateQueries({ queryKey: ['document-signature', 'bulletin', 'status'] })
         },
         onError: (error: Error) => {
             handleApiError(error)

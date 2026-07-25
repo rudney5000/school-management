@@ -4,8 +4,11 @@ import type {
     DocumentSignature,
     SignatureStatusResult,
 } from '@entities/document-signature/model/types'
-import type { DocumentSignatureParamsDto } from '@entities/document-signature/model/dto'
 import type {
+    DocumentSignatureParamsDto
+} from '@entities/document-signature/model/dto'
+import type {
+    BatchSignBulletinDto,
     BulletinPdfQueryDto,
     BulletinSignDto,
     CertificatePdfQueryDto,
@@ -14,6 +17,12 @@ import type {
     EnrollmentSignDto,
     RevokeSignatureDto,
 } from '@entities/document-signature/model/createDocumentSignatureSchema'
+
+export interface BatchSignBulletinResult {
+    studentId?: string
+    success: boolean
+    error?: string
+}
 
 export class DocumentSignatureApi extends ApiWrapper {
     constructor() {
@@ -24,6 +33,13 @@ export class DocumentSignatureApi extends ApiWrapper {
         return this.handleRequest<DocumentSignature>(
             this._baseApi.post('/document-signatures/bulletin', payload),
             (raw) => raw as DocumentSignature,
+        )
+    }
+
+    signBulletinBatch(payload: BatchSignBulletinDto) {
+        return this.handleRequest<BatchSignBulletinResult[]>(
+            this._baseApi.post('/document-signatures/bulletin/batch', payload),
+            (raw) => raw as BatchSignBulletinResult[],
         )
     }
 

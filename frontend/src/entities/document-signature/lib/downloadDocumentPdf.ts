@@ -1,5 +1,10 @@
-import { documentSignatureApi } from '@entities/document-signature/api/document-signature.api'
-import type { DocumentType, DocumentPdfParamsMap } from '@entities/document-signature/model/types'
+import {
+    documentSignatureApi
+} from '@entities/document-signature/api/document-signature.api'
+import type {
+    DocumentType,
+    DocumentPdfParamsMap
+} from '@entities/document-signature/model/types'
 
 const PDF_FILENAMES: Record<DocumentType, string> = {
     bulletin:    'bulletin.pdf',
@@ -7,18 +12,21 @@ const PDF_FILENAMES: Record<DocumentType, string> = {
     certificate: 'certificate.pdf',
 }
 
-async function fetchPdf<T extends DocumentType>(
+type PdfFetcherMap = {
+    [K in DocumentType]: (params: DocumentPdfParamsMap[K]) => Promise<Blob>
+}
+
+const pdfFetchers: PdfFetcherMap = {
+    bulletin:    (params) => documentSignatureApi.downloadBulletinPdf(params),
+    enrollment:  (params) => documentSignatureApi.downloadEnrollmentPdf(params),
+    certificate: (params) => documentSignatureApi.downloadCertificatePdf(params),
+}
+
+export async function fetchPdf<T extends DocumentType>(
     documentType: T,
     params: DocumentPdfParamsMap[T],
 ): Promise<Blob> {
-    switch (documentType) {
-        case 'bulletin':
-            return documentSignatureApi.downloadBulletinPdf(params)
-        case 'enrollment':
-            return documentSignatureApi.downloadEnrollmentPdf(params)
-        case 'certificate':
-            return documentSignatureApi.downloadCertificatePdf(params)
-    }
+    return pdfFetchers[documentType](params)
 }
 
 export async function downloadDocumentPdf<T extends DocumentType>(
@@ -35,16 +43,4 @@ export async function downloadDocumentPdf<T extends DocumentType>(
     anchor.click()
 
     URL.revokeObjectURL(url)
-}
-
-export async function openDocumentPdf<T extends DocumentType>(
-    documentType: T,
-    params: DocumentPdfParamsMap[T],
-): Promise<void> {
-    const blob = await fetchPdf(documentType, params)
-    const url = URL.createObjectURL(blob)
-
-    window.open(url, '_blank')
-
-    setTimeout(() => URL.revokeObjectURL(url), 60_000)
 }
