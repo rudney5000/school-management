@@ -4,9 +4,9 @@
   "private": true,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "module",
   "scripts": {
-    "build": "tsc && node --input-type=module -e \"import { cpSync } from 'node:fs'; cpSync('src/fonts', 'dist/fonts', {recursive:true})\""  },
+    "build": "tsc && node --input-type=module -e \"import { cpSync } from 'node:fs'; cpSync('src/fonts', 'dist/fonts', {recursive:true})\""
+  },
   "peerDependencies": {
     "@react-pdf/renderer": "^3.4.0",
     "react": "^18.0.0"
@@ -16,5 +16,12 @@
     "@types/react": "^18.3.1",
     "@types/node": "^26.1.1",
     "typescript": "^5.4.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
   }
 }

@@ -11,7 +11,7 @@ import {
 } from '@/modules/signature/document-signature.schema'
 import {
     PdfLocale
-} from "@school-hub/pdf-templates/src/i18n/labels";
+} from "@school-hub/pdf-templates";
 
 export interface ResolvedSignature {
     locale: PdfLocale;

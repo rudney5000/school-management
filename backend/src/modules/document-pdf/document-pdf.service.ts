@@ -19,7 +19,7 @@ import {
 } from "@/modules/document-pdf/document-pdf.registry";
 import {
     PdfLocale
-} from "@school-hub/pdf-templates/src/i18n/labels";
+} from "@school-hub/pdf-templates";
 import {getAttachmentUrl} from "@/config/storage";
 
 const APP_BASE_URL = process.env.APP_BASE_URL ?? 'https://school-management-frontend-beta-nine.vercel.app';
