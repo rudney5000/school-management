@@ -1,4 +1,7 @@
-import { PutObjectCommand } from '@aws-sdk/client-s3'
+import {
+    DeleteObjectCommand,
+    PutObjectCommand
+} from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { randomUUID } from 'crypto'
 import {
@@ -12,6 +15,7 @@ import {
     s3Client,
 } from '@/config/storage'
 import {
+    AttachmentStatus,
     ConfirmUploadInput,
     ListAttachmentsQuery,
     PresignUploadInput
@@ -21,6 +25,8 @@ import {
 } from "@/shared/utils/resolvers";
 import {attachments} from "@/db/schema";
 import {AppError} from "@/shared/errors/app-error";
+
+const DELETABLE_BY_OWNER_STATUSES: readonly AttachmentStatus[] = ['pending', 'rejected']
 
 export class AttachmentsService {
     async presign(userId: string, userRole: string, input: PresignUploadInput) {
@@ -116,5 +122,41 @@ export class AttachmentsService {
 
         if (!updated) throw new AppError('NOT_FOUND', 'Pièce jointe introuvable', 404)
         return updated
+    }
+
+    async remove(userId: string, userRole: string, id: string) {
+        const [record] = await db
+            .select()
+            .from(attachments)
+            .where(eq(attachments.id, id))
+
+        if (!record) throw new AppError('NOT_FOUND', 'Pièce jointe introuvable', 404)
+
+        const resolver = attachmentResolvers[record.attachableType]
+        await resolver.resolve(userId, userRole, record.attachableId)
+
+        const isPrivileged = ['admin', 'director', 'super_admin'].includes(userRole)
+        const isOwner = record.uploadedBy === userId
+
+        if (!isPrivileged) {
+            if (!isOwner) {
+                throw new AppError('FORBIDDEN', "Vous n'êtes pas autorisé à supprimer ce document", 403)
+            }
+
+            if (!DELETABLE_BY_OWNER_STATUSES.includes(record.status)) {
+                throw new AppError('FORBIDDEN', 'Un document validé ne peut pas être supprimé par son auteur', 403)
+            }
+        }
+
+        await s3Client.send(new DeleteObjectCommand({
+            Bucket: BUCKET_NAME,
+            Key:    record.key,
+        }))
+
+        await db
+            .delete(attachments)
+            .where(eq(attachments.id, id))
+
+        return { id }
     }
 }

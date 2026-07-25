@@ -54,4 +54,9 @@ export class AttachmentsController {
         const data = await this.service.reject(req.params.id, reason)
         respond(res, data)
     })
+
+    remove = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.remove(req.user!.id, req.user!.role, req.params.id)
+        respond(res, data)
+    })
 }
