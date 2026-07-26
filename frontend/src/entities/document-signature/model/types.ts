@@ -1,4 +1,8 @@
-export const DOCUMENT_TYPES = ['bulletin', 'enrollment', 'certificate'] as const
+export const DOCUMENT_TYPES = [
+    'bulletin',
+    'enrollment',
+    'certificate'
+] as const
 
 export type DocumentType = typeof DOCUMENT_TYPES[number]
 

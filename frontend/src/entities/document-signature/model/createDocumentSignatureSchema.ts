@@ -32,14 +32,17 @@ export const revokeSignatureSchema = z.object({
 
 export const bulletinPdfQuerySchema = bulletinSignSchema.extend({
     locale: pdfLocaleSchema,
+    preview: z.boolean().optional(),
 })
 
 export const enrollmentPdfQuerySchema = enrollmentSignSchema.extend({
     locale: pdfLocaleSchema,
+    preview: z.boolean().optional(),
 })
 
 export const certificatePdfQuerySchema = certificateSignSchema.extend({
     locale: pdfLocaleSchema,
+    preview: z.boolean().optional(),
 })
 
 export type BatchSignBulletinDto = z.infer<typeof batchSignBulletinSchema>
