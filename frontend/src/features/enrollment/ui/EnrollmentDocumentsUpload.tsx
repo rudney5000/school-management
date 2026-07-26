@@ -1,7 +1,11 @@
 import { useAttachments } from '@entities/attachment'
 import { AttachmentUploadZone } from '@entities/attachment/ui'
 import { Badge } from '@shared/ui/badge'
-import type { AttachmentCategory } from '@entities/attachment/model/types'
+import type {
+  AttachmentCategory
+} from '@entities/attachment/model/types'
+import {useTranslation} from "@shared/lib";
+import {Spinner} from "@shared/ui";
 
 const REQUIRED_CATEGORIES: AttachmentCategory[] = [
   'birth_certificate',
@@ -11,21 +15,12 @@ const REQUIRED_CATEGORIES: AttachmentCategory[] = [
   'parent_id',
 ]
 
-const categoryLabels: Record<AttachmentCategory, string> = {
-  birth_certificate: 'Certificat de naissance',
-  medical_certificate: 'Certificat médical',
-  previous_report: 'Bulletin précédent',
-  student_photo: 'Photo de l\'élève',
-  parent_id: "Pièce d'identité du parent",
-  payment_receipt: 'Reçu de paiement',
-  other: 'Autre',
-}
-
 interface EnrollmentDocumentsUploadProps {
   enrollmentId: string
 }
 
 export function EnrollmentDocumentsUpload({ enrollmentId }: EnrollmentDocumentsUploadProps) {
+  const { t } = useTranslation()
   const { data: attachments, isLoading } = useAttachments({
     attachableType: 'enrollment',
     attachableId: enrollmentId,
@@ -37,15 +32,28 @@ export function EnrollmentDocumentsUpload({ enrollmentId }: EnrollmentDocumentsU
 
   const getStatusBadge = (category: AttachmentCategory) => {
     const attachment = getAttachmentByCategory(category)
-    
+
     if (!attachment) {
-      return <Badge variant="outline">Manquant</Badge>
+      return (
+          <Badge variant="outline">
+            {t("dashboard.enrollment.documents.status.missing")}
+          </Badge>
+      )
     }
 
     const statusConfig = {
-      pending: { label: 'En attente', variant: 'outline' as const },
-      validated: { label: 'Validé', variant: 'success' as const },
-      rejected: { label: 'Rejeté', variant: 'destructive' as const },
+      pending: {
+        label: t("dashboard.enrollment.documents.status.pending"),
+        variant: 'outline' as const
+      },
+      validated: {
+        label: t("dashboard.enrollment.documents.status.validated"),
+        variant: 'success' as const
+      },
+      rejected: {
+        label: t("dashboard.enrollment.documents.status.rejected"),
+        variant: 'destructive' as const
+      },
     }
 
     const config = statusConfig[attachment.status]
@@ -53,19 +61,26 @@ export function EnrollmentDocumentsUpload({ enrollmentId }: EnrollmentDocumentsU
   }
 
   if (isLoading) {
-    return <div className="text-sm text-muted-foreground">Chargement...</div>
+    return (
+        <div className="text-sm text-muted-foreground">
+          <Spinner/>
+          {t("dashboard.enrollment.documents.loading")}
+        </div>
+    )
   }
 
   return (
     <div className="space-y-6">
-      <h2 className="text-lg font-semibold">Documents requis</h2>
+      <h2 className="text-lg font-semibold">
+        {t("dashboard.enrollment.documents.title")}
+      </h2>
       
       <div className="space-y-4">
         {REQUIRED_CATEGORIES.map((category) => (
           <div key={category} className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-sm font-medium">
-                {categoryLabels[category]}
+                {t(`dashboard.enrollment.documents.categories.${category}`)}
               </label>
               {getStatusBadge(category)}
             </div>
