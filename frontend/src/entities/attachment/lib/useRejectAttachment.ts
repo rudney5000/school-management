@@ -3,7 +3,9 @@ import {
     useQueryClient
 } from '@tanstack/react-query'
 import { handleApiError } from '@shared/lib'
-import { attachmentApi } from '@entities/attachment/api/attachment.api'
+import {
+    attachmentApi
+} from '@entities/attachment/api/attachment.api'
 import type {
     AttachmentParamsDto
 } from '@entities/attachment/model/dto'
@@ -29,12 +31,9 @@ export const useRejectAttachment = () => {
 
             return response.result as Attachment
         },
-        onSuccess: (attachment) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ['attachments', 'list', {
-                    attachableType: attachment.attachableType,
-                    attachableId: attachment.attachableId,
-                }],
+                queryKey: ['attachments'],
             })
         },
         onError: (error: Error) => {
