@@ -1,8 +1,17 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+    useMutation,
+    useQueryClient
+} from '@tanstack/react-query'
 import { handleApiError } from '@shared/lib'
 import { attachmentApi } from '@entities/attachment/api/attachment.api'
-import type { AttachmentParamsDto } from '@entities/attachment/model/dto'
-import type { RejectAttachmentDto } from '@entities/attachment/model/createAttachmentSchema'
+import type {
+    AttachmentParamsDto
+} from '@entities/attachment/model/dto'
+import type {
+    RejectAttachmentDto
+} from '@entities/attachment/model/createAttachmentSchema'
+import type {Attachment} from "@entities/attachment";
+import type {CommonError} from "@shared/helperClass/CommonError";
 
 type RejectAttachmentInput = AttachmentParamsDto & RejectAttachmentDto
 
@@ -10,10 +19,23 @@ export const useRejectAttachment = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: ({ id, reason }: RejectAttachmentInput) =>
-            attachmentApi.reject({ id }, { reason }),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['attachments'] })
+        mutationFn: async ({ id, reason }: RejectAttachmentInput): Promise<Attachment> => {
+            const response = await attachmentApi.reject({ id }, { reason })
+
+            if (!response.IsSuccess) {
+                const apiError = response.result as CommonError
+                throw new Error(apiError.Message)
+            }
+
+            return response.result as Attachment
+        },
+        onSuccess: (attachment) => {
+            queryClient.invalidateQueries({
+                queryKey: ['attachments', 'list', {
+                    attachableType: attachment.attachableType,
+                    attachableId: attachment.attachableId,
+                }],
+            })
         },
         onError: (error: Error) => {
             handleApiError(error)

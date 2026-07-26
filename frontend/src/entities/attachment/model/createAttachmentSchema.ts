@@ -10,7 +10,18 @@ const ALLOWED_IMAGE_TYPES = [
 
 const ALLOWED_DOC_TYPES = ['application/pdf'] as const
 
-const ALLOWED_MIME_TYPES = [...ALLOWED_IMAGE_TYPES, ...ALLOWED_DOC_TYPES] as const
+const ALLOWED_MIME_TYPES = [
+    ...ALLOWED_IMAGE_TYPES,
+    ...ALLOWED_DOC_TYPES
+] as const
+
+export type AllowedMimeType = typeof ALLOWED_MIME_TYPES[number]
+
+export function isAllowedMimeType(
+    value: string
+): value is AllowedMimeType {
+    return ALLOWED_MIME_TYPES.includes(value as AllowedMimeType)
+}
 
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024
 const MAX_DOC_SIZE   = 25 * 1024 * 1024
