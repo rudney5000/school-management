@@ -190,7 +190,69 @@
       "viewAll": "Tout voir"
     },
     "enrollment": {
-      "title": "Inscriptions par niveau"
+      "title": "Inscriptions par niveau",
+      "students": {
+        "loading": "Kozwa makambo ya kokoma...",
+        "title": "Kokoma na kelasi",
+        "signed": "Etiami sinyatili",
+        "signedStale": "Etiami sinyatili (esili ngala)",
+        "complete": "Esili",
+        "draft": "Ebongisami nanu te",
+        "none": "Ezali te",
+        "manageDocuments": "Kobongisa mikanda",
+        "drawerTitle": "Dossier ya kokoma",
+        "drawerDescription": "Mikanda ya kondimisa, validation mpe sinyatili"
+      },
+      "documents": {
+        "pendingValidation": "Mikanda ezali kozela kondimama",
+        "signing": "Kotia sinyatili ezali kosalama...",
+        "resigning": "Kotia lisusu sinyatili na kokoma",
+        "signEnrollment": "Kotya sinyatili na kokoma",
+        "downloading": "Kokitisa...",
+        "downloadPdf": "Kokitisa PDF",
+        "pdfUnavailable": "Mokanda esengeli kozala na sinyatili liboso ya kokitisa yango",
+        "requiredValidation": "Mikanda nyonso oyo esengeli endimama liboso ya kotia sinyatili.",
+        "noPendingDocuments": "Mikanda ezali kozela kondimama te",
+        "signedStale": "Kokoma ezali na sinyatili (esili ngala)",
+        "signed": "Kokoma ezali na sinyatili",
+        "validate": "Kondima",
+        "reject": "Koboya",
+        "rejectTitle": "Koboya mokanda",
+        "rejectDescription": "Koma ntina oyo oboyi mokanda oyo.",
+        "rejectReasonLabel": "Ntina ya koboya",
+        "rejectReasonPlaceholder": "Limbolá mpo na nini oboyi mokanda oyo...",
+        "cancel": "Kolongola",
+        "rejecting": "Koboya ezali kosalama...",
+        "confirmReject": "Kondimisa koboya",
+        "title": "Mikanda esengeli",
+        "loading": "Kozwa...",
+        "loadingDocuments": "Kozwa Mikanda...",
+        "categories": {
+          "birth_certificate": "Certificat ya mbotama",
+          "medical_certificate": "Certificat ya monganga",
+          "previous_report": "Bulletin ya liboso",
+          "student_photo": "Foto ya mwana kelasi",
+          "parent_id": "Mokanda ya koyeba moboti",
+          "payment_receipt": "Reçu ya kofuta",
+          "other": "Mosusu"
+        },
+        "status": {
+          "missing": "Ezangi",
+          "pending": "Ezali kozela",
+          "validated": "Endimami",
+          "rejected": "Ebwakami"
+        },
+        "upload": {
+          "uploading": "Kozwa Mikanda...",
+          "drop": "Tia fichier awa",
+          "select": "to finá kofina"
+        }
+      },
+      "create": {
+        "chooseClass": "Pona kelasi",
+        "creating": "Kosala...",
+        "createEnrollment": "Kosala bokomisi ya mwana"
+      }
     },
     "attendances": {
       "title": "Taux de présence"

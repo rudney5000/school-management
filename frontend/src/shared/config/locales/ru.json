@@ -195,7 +195,69 @@
       "attendanceUpdated": "Обновлена посещаемость"
     },
     "enrollment": {
-      "title": "Зачисление по уровням"
+      "title": "Зачисление по уровням",
+      "students": {
+        "loading": "Загрузка записи...",
+        "title": "Зачисление",
+        "signed": "Подписано",
+        "signedStale": "Подписано (устарело)",
+        "complete": "Завершено",
+        "draft": "Черновик",
+        "none": "Нет",
+        "manageDocuments": "Управление документами",
+        "drawerTitle": "Досье зачисления",
+        "drawerDescription": "Подтверждающие документы, проверка и подпись"
+      },
+      "documents": {
+        "pendingValidation": "Документы, ожидающие проверки",
+        "signing": "Идет подписание...",
+        "resigning": "Повторно подписать зачисление",
+        "signEnrollment": "Подписать зачисление",
+        "downloading": "Скачивание...",
+        "downloadPdf": "Скачать PDF",
+        "pdfUnavailable": "Документ должен быть подписан перед скачиванием",
+        "requiredValidation": "Все необходимые документы должны быть проверены перед подписанием.",
+        "noPendingDocuments": "Нет документов, ожидающих проверки",
+        "signedStale": "Зачисление подписано (устарело)",
+        "signed": "Зачисление подписано",
+        "validate": "Проверить",
+        "reject": "Отклонить",
+        "rejectTitle": "Отклонить документ",
+        "rejectDescription": "Укажите причину отклонения документа.",
+        "rejectReasonLabel": "Причина отклонения",
+        "rejectReasonPlaceholder": "Объясните, почему документ отклонен...",
+        "cancel": "Отмена",
+        "rejecting": "Отклонение...",
+        "confirmReject": "Подтвердить отклонение",
+        "title": "Необходимые документы",
+        "loading": "Загрузка...",
+        "loadingDocuments": "Загрузка документов...",
+        "categories": {
+          "birth_certificate": "Свидетельство о рождении",
+          "medical_certificate": "Медицинская справка",
+          "previous_report": "Предыдущий табель",
+          "student_photo": "Фото ученика",
+          "parent_id": "Документ удостоверяющий личность родителя",
+          "payment_receipt": "Квитанция об оплате",
+          "other": "Другое"
+        },
+        "status": {
+          "missing": "Отсутствует",
+          "pending": "Ожидает проверки",
+          "validated": "Подтверждено",
+          "rejected": "Отклонено"
+        },
+        "upload": {
+          "uploading": "Загрузка документов...",
+          "drop": "Перетащите файл сюда",
+          "select": "или нажмите, чтобы выбрать"
+        }
+      },
+      "create": {
+        "chooseClass": "Выберите класс",
+        "creating": "Создание...",
+        "createEnrollment": "Создать запись о зачислении"
+      }
     },
     "charts": {
       "studentEnrollment": "Зачисление учеников",

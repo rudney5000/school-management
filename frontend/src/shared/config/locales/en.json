@@ -231,7 +231,69 @@
       "viewAll": "View all"
     },
     "enrollment": {
-      "title": "Enrollment by Level"
+      "title": "Enrollment by Level",
+      "students": {
+        "loading": "Loading enrollment...",
+        "title": "Enrollment",
+        "signed": "Signed",
+        "signedStale": "Signed (outdated)",
+        "complete": "Complete",
+        "draft": "Draft",
+        "none": "None",
+        "manageDocuments": "Manage documents",
+        "drawerTitle": "Enrollment file",
+        "drawerDescription": "Supporting documents, validation and signature"
+      },
+      "documents": {
+        "pendingValidation": "Documents awaiting validation",
+        "signing": "Signing in progress...",
+        "resigning": "Re-sign enrollment",
+        "signEnrollment": "Sign enrollment",
+        "downloading": "Downloading...",
+        "downloadPdf": "Download PDF",
+        "pdfUnavailable": "The document must be signed before downloading",
+        "requiredValidation": "All required documents must be validated before signing the enrollment.",
+        "noPendingDocuments": "No documents awaiting validation",
+        "signedStale": "Enrollment signed (outdated)",
+        "signed": "Enrollment signed",
+        "validate": "Validate",
+        "reject": "Reject",
+        "rejectTitle": "Reject document",
+        "rejectDescription": "Please provide the reason for rejecting this document.",
+        "rejectReasonLabel": "Rejection reason",
+        "rejectReasonPlaceholder": "Explain why this document is rejected...",
+        "cancel": "Cancel",
+        "rejecting": "Rejecting...",
+        "confirmReject": "Confirm rejection",
+        "title": "Required documents",
+        "loading": "Loading...",
+        "loadingDocuments": "Loading of documents",
+        "categories": {
+          "birth_certificate": "Birth certificate",
+          "medical_certificate": "Medical certificate",
+          "previous_report": "Previous report card",
+          "student_photo": "Student photo",
+          "parent_id": "Parent ID document",
+          "payment_receipt": "Payment receipt",
+          "other": "Other"
+        },
+        "status": {
+          "missing": "Missing",
+          "pending": "Pending",
+          "validated": "Validated",
+          "rejected": "Rejected"
+        },
+        "upload": {
+          "uploading": "Uploading documents...",
+          "drop": "Drag and drop a file here",
+          "select": "or click to select"
+        }
+      },
+      "create": {
+        "chooseClass": "Choose a class",
+        "creating": "Creating...",
+        "createEnrollment": "Create enrollment"
+      }
     },
     "students": {
       "form": {

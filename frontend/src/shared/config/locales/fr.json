@@ -233,7 +233,69 @@
       "viewAll": "Tout voir"
     },
     "enrollment": {
-      "title": "Inscriptions par niveau"
+      "title": "Inscriptions par niveau",
+      "students": {
+        "loading": "Chargement de l'inscription...",
+        "title": "Inscription",
+        "signed": "Signée",
+        "signedStale": "Signée (obsolète)",
+        "complete": "Complète",
+        "draft": "Brouillon",
+        "none": "Aucune",
+        "manageDocuments": "Gérer les documents",
+        "drawerTitle": "Dossier d'inscription",
+        "drawerDescription": "Pièces justificatives, validation et signature"
+      },
+      "documents": {
+        "pendingValidation": "Documents en attente de validation",
+        "signing": "Signature en cours...",
+        "resigning": "Re-signer l'inscription",
+        "signEnrollment": "Signer l'inscription",
+        "downloading": "Téléchargement...",
+        "downloadPdf": "Télécharger le PDF",
+        "pdfUnavailable": "Le document doit être signé avant d'être téléchargé",
+        "requiredValidation": "Toutes les pièces requises doivent être validées avant de pouvoir signer l'inscription.",
+        "noPendingDocuments": "Aucun document en attente de validation",
+        "signedStale": "Inscription signée (obsolète)",
+        "signed": "Inscription signée",
+        "validate": "Valider",
+        "reject": "Rejeter",
+        "rejectTitle": "Rejeter le document",
+        "rejectDescription": "Veuillez indiquer la raison du rejet de ce document.",
+        "rejectReasonLabel": "Raison du rejet",
+        "rejectReasonPlaceholder": "Expliquez pourquoi ce document est rejeté...",
+        "cancel": "Annuler",
+        "rejecting": "Rejet en cours...",
+        "confirmReject": "Confirmer le rejet",
+        "title": "Documents requis",
+        "loading": "Chargement...",
+        "loadingDocuments": "Chargement des documents...",
+        "categories": {
+          "birth_certificate": "Certificat de naissance",
+          "medical_certificate": "Certificat médical",
+          "previous_report": "Bulletin précédent",
+          "student_photo": "Photo de l'élève",
+          "parent_id": "Pièce d'identité du parent",
+          "payment_receipt": "Reçu de paiement",
+          "other": "Autre"
+        },
+        "status": {
+          "missing": "Manquant",
+          "pending": "En attente",
+          "validated": "Validé",
+          "rejected": "Rejeté"
+        },
+        "upload": {
+          "uploading": "Téléchargement en cours...",
+          "drop": "Glissez-déposez un fichier ici",
+          "select": "ou cliquez pour sélectionner"
+        }
+      },
+      "create": {
+        "chooseClass": "Choisir une classe",
+        "creating": "Création...",
+        "createEnrollment": "Créer l'inscription"
+      }
     },
     "students": {
       "form": {
