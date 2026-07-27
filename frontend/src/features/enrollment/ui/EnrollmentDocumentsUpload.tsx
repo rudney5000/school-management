@@ -27,7 +27,12 @@ export function EnrollmentDocumentsUpload({ enrollmentId }: EnrollmentDocumentsU
   })
 
   const getAttachmentByCategory = (category: AttachmentCategory) => {
-    return attachments?.find((a) => a.category === category)
+    const matches = attachments?.filter((a) => a.category === category) ?? []
+    if (matches.length === 0) return undefined
+
+    return matches.reduce((latest, current) =>
+        new Date(current.createdAt) > new Date(latest.createdAt) ? current : latest
+    )
   }
 
   const getStatusBadge = (category: AttachmentCategory) => {
@@ -89,6 +94,7 @@ export function EnrollmentDocumentsUpload({ enrollmentId }: EnrollmentDocumentsU
               attachableType="enrollment"
               attachableId={enrollmentId}
               category={category}
+              existingAttachment={getAttachmentByCategory(category)}
             />
           </div>
         ))}

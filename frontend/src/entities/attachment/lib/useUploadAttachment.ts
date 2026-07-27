@@ -1,23 +1,18 @@
 import {
-    useState,
     useCallback,
     useRef,
+    useState,
 } from 'react'
 import {
+    type AttachableType,
+    type Attachment,
+    type AttachmentCategory,
+    getImageDimensions,
+    useConfirmAttachment,
     attachmentApi
-} from '@entities/attachment/api/attachment.api'
-import { handleApiError } from '@shared/lib'
-import { isSuccess } from '@shared/helperClass/CommonResponse'
-import {
-    getImageDimensions
-} from '@entities/attachment/lib/getImageDimensions'
-import type {
-    Attachment
-} from '@entities/attachment/model/types'
-import type {
-    AttachableType,
-    AttachmentCategory,
-} from '@entities/attachment/model/types'
+} from '@entities/attachment'
+import {handleApiError} from '@shared/lib'
+import {isSuccess} from '@shared/helperClass/CommonResponse'
 import type {
     PresignUploadDto
 } from '@entities/attachment/model/createAttachmentSchema'
@@ -82,6 +77,7 @@ export function useUploadAttachment() {
     const [isUploading, setIsUploading] = useState(false)
     const [uploadProgress, setUploadProgress] = useState(0)
     const xhrRef = useRef<XMLHttpRequest | null>(null)
+    const confirmMutation = useConfirmAttachment()
 
     const cancel = useCallback(() => {
         xhrRef.current?.abort()
@@ -93,6 +89,7 @@ export function useUploadAttachment() {
         setIsUploading(true)
         setUploadProgress(0)
 
+        let result: Attachment | null = null
         try {
             const presignRes = await attachmentApi.presign({
                 filename:       file.name,
@@ -113,38 +110,37 @@ export function useUploadAttachment() {
 
             setUploadProgress(100)
 
-
             const isImage = file.type.startsWith('image/')
             const dimensions = isImage
                 ? await getImageDimensions(file)
                 : { width: 1, height: 1 }
 
-            const confirmRes = await attachmentApi.confirm({
-                attachableType,
-                attachableId,
-                category,
-                key,
-                filename: file.name,
-                mimeType: file.type,
-                size:     file.size,
-                width:    dimensions.width,
-                height:   dimensions.height,
-            })
-
-            if (!isSuccess(confirmRes)) {
-                throw new Error('Échec de la confirmation de l\'upload')
+            try {
+                result = await confirmMutation.mutateAsync({
+                    attachableType,
+                    attachableId,
+                    category,
+                    key,
+                    filename: file.name,
+                    mimeType: file.type,
+                    size: file.size,
+                    width: dimensions.width,
+                    height: dimensions.height,
+                })
+            } catch {
+                result = null
             }
 
-            return confirmRes.result
         } catch (err) {
             if (!(err instanceof UploadCancelledError)) {
                 handleApiError(err as Error)
             }
-            return null
+            result = null
         } finally {
             setIsUploading(false)
         }
-    }, [])
+        return result
+    }, [confirmMutation])
 
     return { upload, cancel, isUploading, uploadProgress }
 }

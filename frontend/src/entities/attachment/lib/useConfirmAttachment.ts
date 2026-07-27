@@ -26,12 +26,9 @@ export const useConfirmAttachment = () => {
 
             return response.result as Attachment
         },
-        onSuccess: (attachment) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ['attachments', 'list', {
-                    attachableType: attachment.attachableType,
-                    attachableId: attachment.attachableId,
-                }],
+                queryKey: ['attachments'],
             })
         },
         onError: (error: Error) => {
