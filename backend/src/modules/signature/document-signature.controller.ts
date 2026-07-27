@@ -41,6 +41,11 @@ export class DocumentSignaturesController {
         respond(res, data);
     });
 
+    getCertificateStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.getStatus('certificate', req.query as unknown as CertificateSignDto)
+        respond(res, data)
+    })
+
     signEnrollment = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const data = await this.service.sign('enrollment', req.body as EnrollmentSignDto, signContext(req));
         respond(res, data, 201);

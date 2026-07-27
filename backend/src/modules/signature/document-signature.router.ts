@@ -49,6 +49,16 @@ router.get(
     controller.getBulletinStatus,
 );
 
+router.get(
+    '/certificate/status',
+    authenticate,
+    authorize('admin', 'director', 'super_admin', 'teacher', 'parent', 'student'),
+    validate({
+        query: certificateSignSchema
+    }),
+    controller.getCertificateStatus,
+)
+
 router.post(
     '/enrollment',
     authenticate,
