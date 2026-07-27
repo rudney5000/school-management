@@ -62,9 +62,9 @@ export type CertificateSignParams = {
 
 export type BulletinPdfParams = BulletinSignParams & { locale: PdfLocale }
 
-export type EnrollmentPdfParams = EnrollmentSignParams & { locale: PdfLocale }
+export type EnrollmentPdfParams = EnrollmentSignParams & { locale: PdfLocale; preview?: boolean }
 
-export type CertificatePdfParams = CertificateSignParams & { locale: PdfLocale }
+export type CertificatePdfParams = CertificateSignParams & { locale: PdfLocale; preview?: boolean }
 
 export type DocumentPdfParamsMap = {
     bulletin:    BulletinPdfParams

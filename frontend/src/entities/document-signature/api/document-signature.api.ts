@@ -64,6 +64,13 @@ export class DocumentSignatureApi extends ApiWrapper {
         )
     }
 
+    getCertificateStatus(params: CertificateSignDto) {
+        return this.handleRequest<SignatureStatusResult>(
+            this._baseApi.get('/document-signatures/certificate/status', params),
+            (raw) => raw as SignatureStatusResult,
+        )
+    }
+
     signCertificate(payload: CertificateSignDto) {
         return this.handleRequest<DocumentSignature>(
             this._baseApi.post('/document-signatures/certificate', payload),
