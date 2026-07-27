@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import {
+  useEffect,
+  useState
+} from 'react'
 import {
   useValidateAttachment,
   useRejectAttachment
@@ -6,7 +9,8 @@ import {
 import {
   useEnrollmentSignatureStatus,
   useSignEnrollment,
-  useDownloadDocumentPdf
+  useDownloadDocumentPdf,
+  usePreviewDocumentPdf
 } from '@entities/document-signature'
 import { AttachmentCard } from '@entities/attachment/ui'
 import type {
@@ -21,6 +25,7 @@ import {
 } from '@shared/ui'
 import CustomDrawer from '@shared/ui/custom-drawer/custom-drawer'
 import {useTranslation} from "@shared/lib";
+import {Eye} from "lucide-react";
 
 const REQUIRED_CATEGORIES: AttachmentCategory[] = [
   'birth_certificate',
@@ -47,6 +52,9 @@ export function EnrollmentDocumentsValidation({
   const [selectedAttachment, setSelectedAttachment] = useState<Attachment | null>(null)
   const [rejectionReason, setRejectionReason] = useState('')
 
+  const [previewDrawerOpen, setPreviewDrawerOpen] = useState(false)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+
   const pendingAttachments = attachments.filter((a) => a.status === 'pending')
 
   const validateMutation = useValidateAttachment()
@@ -58,6 +66,7 @@ export function EnrollmentDocumentsValidation({
   })
   const signMutation = useSignEnrollment()
   const downloadPdf = useDownloadDocumentPdf()
+  const previewPdf = usePreviewDocumentPdf()
 
   const handleValidate = (attachmentId: string) => {
     validateMutation.mutate({ id: attachmentId })
@@ -88,6 +97,32 @@ export function EnrollmentDocumentsValidation({
     signMutation.mutate({ subSchoolId, enrollmentId, studentId })
   }
 
+  const handlePreviewPdf = () => {
+    previewPdf.mutate(
+        {
+          documentType: 'enrollment',
+          params: { subSchoolId, enrollmentId, studentId, locale: 'fr', preview: true },
+        },
+        {
+          onSuccess: (url) => {
+            setPreviewUrl(url)
+            setPreviewDrawerOpen(true)
+          },
+        }
+    )
+  }
+
+  const handleClosePreview = () => {
+    setPreviewDrawerOpen(false)
+  }
+
+  useEffect(() => {
+    if (!previewDrawerOpen && previewUrl) {
+      URL.revokeObjectURL(previewUrl)
+      setPreviewUrl(null)
+    }
+  }, [previewDrawerOpen])
+
   const handleDownloadPdf = () => {
     downloadPdf.mutate({
       documentType: 'enrollment',
@@ -107,11 +142,11 @@ export function EnrollmentDocumentsValidation({
 
   return (
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="space-y-3">
           <h2 className="text-lg font-semibold">
             {t("dashboard.enrollment.documents.pendingValidation")}
           </h2>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             {canSign && (
                 <Button
                     onClick={handleSignEnrollment}
@@ -125,6 +160,17 @@ export function EnrollmentDocumentsValidation({
                   }
                 </Button>
             )}
+
+            <Button
+                size="icon"
+                variant="outline"
+                onClick={handlePreviewPdf}
+                disabled={!allRequiredValidated || previewPdf.isPending}
+                title={!allRequiredValidated ? "Toutes les pièces requises doivent être validées pour prévisualiser" : 'Prévisualiser le document'}
+            >
+              <Eye className="h-4 w-4"/>
+            </Button>
+
             <Button
                 variant="outline"
                 onClick={handleDownloadPdf}
@@ -143,7 +189,6 @@ export function EnrollmentDocumentsValidation({
             </Button>
           </div>
         </div>
-
         {!allRequiredValidated && (
             <p className="text-sm text-muted-foreground">
               {t("dashboard.enrollment.documents.requiredValidation")}
@@ -178,16 +223,12 @@ export function EnrollmentDocumentsValidation({
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 
               {pendingAttachments.map((attachment) => (
-
                   <div
                       key={attachment.id}
                       className="space-y-2"
                   >
-
-                    <AttachmentCard attachment={attachment} />
-
+                    <AttachmentCard attachment={attachment}/>
                     <div className="flex gap-2">
-
                       <Button
                           size="sm"
                           variant="default"
@@ -197,8 +238,6 @@ export function EnrollmentDocumentsValidation({
                       >
                         {t("dashboard.enrollment.documents.validate")}
                       </Button>
-
-
                       <Button
                           size="sm"
                           variant="destructive"
@@ -208,15 +247,10 @@ export function EnrollmentDocumentsValidation({
                       >
                         {t("dashboard.enrollment.documents.reject")}
                       </Button>
-
                     </div>
-
                   </div>
-
               ))}
-
             </div>
-
         )}
 
         <CustomDrawer
@@ -258,6 +292,21 @@ export function EnrollmentDocumentsValidation({
               </Button>
             </div>
           </div>
+        </CustomDrawer>
+
+        <CustomDrawer
+            isOpen={previewDrawerOpen}
+            handleOpen={handleClosePreview}
+            drawerTitle="Aperçu du dossier d'inscription"
+            drawerDescription="Vérifiez le contenu avant de confirmer la signature."
+        >
+          {previewUrl && (
+              <iframe
+                  src={previewUrl}
+                  title="Aperçu PDF inscription"
+                  className="w-full h-[75vh] rounded-md border"
+              />
+          )}
         </CustomDrawer>
       </div>
   )
