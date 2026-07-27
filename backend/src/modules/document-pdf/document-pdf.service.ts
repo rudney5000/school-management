@@ -99,7 +99,7 @@ export class DocumentPdfService {
             signedAt: status.signature!.signedAt.toLocaleString(locale),
             verificationQrDataUrl,
             signatureImageUrl,
-            isStale: preview,
+            isStale: preview ? true : false,
         });
 
         return renderToBuffer(element);
