@@ -3,7 +3,6 @@ export type PdfLocale = typeof SUPPORTED_LOCALES[number];
 
 export type CertificateTypeKey = 'enrollment' | 'completion' | 'transfer' | 'conduct' | 'graduation';
 
-
 interface PdfLabels {
     signedElectronically: string;
     bulletinTitle: string;
@@ -19,6 +18,14 @@ interface PdfLabels {
     staleWarning: string;
     issuedOn: string;
     certificateTypes: Record<CertificateTypeKey, string>;
+    gender: string;
+    male: string;
+    female: string;
+    age: string;
+    years: string;
+    studentInformation: string;
+    enrollmentInformation: string;
+    draftWatermark: string;
 }
 
 const labels: Record<PdfLocale, PdfLabels> = {
@@ -43,6 +50,14 @@ const labels: Record<PdfLocale, PdfLabels> = {
             conduct: 'Certificat de bonne conduite',
             graduation: 'Attestation de fin de cycle',
         },
+        gender: 'Sexe',
+        male: 'Masculin',
+        female: 'Féminin',
+        age: 'Âge',
+        years: 'ans',
+        studentInformation: "Informations de l'élève",
+        enrollmentInformation: "Informations d'inscription",
+        draftWatermark: "BROUILLON — Document non signé, à titre de vérification uniquement"
     },
     en: {
         signedElectronically: 'Electronically signed',
@@ -65,6 +80,14 @@ const labels: Record<PdfLocale, PdfLabels> = {
             conduct: 'Certificate of Good Conduct',
             graduation: 'Graduation Certificate',
         },
+        gender: 'Gender',
+        male: 'Male',
+        female: 'Female',
+        age: 'Age',
+        years: 'years old',
+        studentInformation: 'Student Information',
+        enrollmentInformation: 'Enrollment Information',
+        draftWatermark: "DRAFT — Unsigned document, for verification purposes only"
     },
     ru: {
         signedElectronically: 'Подписано электронно',
@@ -87,6 +110,14 @@ const labels: Record<PdfLocale, PdfLabels> = {
             conduct: 'Справка о хорошем поведении',
             graduation: 'Свидетельство об окончании обучения',
         },
+        gender: 'Пол',
+        male: 'Мужской',
+        female: 'Женский',
+        age: 'Возраст',
+        years: 'лет',
+        studentInformation: 'Информация об учащемся',
+        enrollmentInformation: 'Информация о зачислении',
+        draftWatermark: "ЧЕРНОВИК — Документ не подписан, только для проверки"
     },
     ln: {
         signedElectronically: 'Esignami na motindo ya elektroniki',
@@ -109,6 +140,14 @@ const labels: Record<PdfLocale, PdfLabels> = {
             conduct: 'Mokanda ya etamboli ya malamu',
             graduation: 'Mokanda ya kosukisa boyekoli',
         },
+        gender: 'Ebosoni',
+        male: 'Mobali',
+        female: 'Mwasi',
+        age: 'Mbula',
+        years: 'mbula',
+        studentInformation: 'Nsango ya moyekoli',
+        enrollmentInformation: 'Nsango ya kokɔtisama',
+        draftWatermark: "MOKANDA YA LIBOSO — Esignami te, mpo na kotala kaka"
     },
 };
 

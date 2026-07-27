@@ -49,14 +49,25 @@ const styles = StyleSheet.create({
         fontSize: 8,
         textAlign: 'center',
     },
+    draftBanner: {
+        fontFamily: theme.font,
+        marginTop: 24,
+        marginHorizontal: 32,
+        padding: 8,
+        backgroundColor: theme.colors.rowAlt,
+        color: theme.colors.muted,
+        fontSize: 9,
+        textAlign: 'center',
+        borderTop: `1px solid ${theme.colors.border}`,
+    },
 });
 
 export interface SignatureBlockProps {
     locale: PdfLocale;
     signerName: string;
     signerRole: string;
-    signedAt: string;
-    verificationQrDataUrl: string;
+    signedAt: string | null;
+    verificationQrDataUrl: string | null;
     isStale?: boolean;
 }
 
@@ -79,7 +90,7 @@ export function SignatureBlock({
                     <Text style={styles.role}>{signerRole}</Text>
                     <Text style={styles.meta}>{signedAt}</Text>
                 </View>
-                <Image style={styles.qr} src={verificationQrDataUrl} />
+                {verificationQrDataUrl && <Image style={styles.qr} src={verificationQrDataUrl} />}
             </View>
             {isStale && <Text style={styles.staleBanner}>{t.staleWarning}</Text>}
         </View>
