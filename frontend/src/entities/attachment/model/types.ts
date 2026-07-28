@@ -1,4 +1,4 @@
-export type AttachableType = 'conversation' | 'message' | 'enrollment' | 'payment'
+export type AttachableType = 'conversation' | 'message' | 'enrollment' | 'payment' | 'teacher'
 
 export type AttachmentCategory =
     | 'birth_certificate'
@@ -6,8 +6,14 @@ export type AttachmentCategory =
     | 'previous_report'
     | 'parent_id'
     | 'student_photo'
+    | 'teacher_photo'
     | 'payment_receipt'
+    | 'diploma'
+    | 'criminal_record'
+    | 'resume'
+    | 'identity_document'
     | 'other'
+
 
 export type AttachmentStatus = 'pending' | 'validated' | 'rejected'
 

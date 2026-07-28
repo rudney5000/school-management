@@ -158,8 +158,7 @@ export function AttachmentUploadZone({
                     <div className="flex items-start gap-2">
                         <AlertTriangle className="h-4 w-4 shrink-0 text-destructive mt-0.5" />
                         <p className="text-xs text-destructive">
-                            Ce document est validé. Le supprimer invalidera la signature de
-                            l'inscription (elle devra être re-signée).
+                            {t("dashboard.enrollment.documents.upload.validatedDeleteWarning")}
                         </p>
                     </div>
                     <div className="flex gap-2 justify-end">
@@ -169,7 +168,7 @@ export function AttachmentUploadZone({
                             disabled={deleteMutation.isPending}
                             className="text-xs px-2 py-1 rounded border text-muted-foreground hover:bg-muted disabled:opacity-50"
                         >
-                            Annuler
+                            {t("dashboard.enrollment.documents.upload.cancel")}
                         </button>
                         <button
                             type="button"
@@ -177,7 +176,9 @@ export function AttachmentUploadZone({
                             disabled={deleteMutation.isPending}
                             className="text-xs px-2 py-1 rounded bg-destructive text-destructive-foreground hover:bg-destructive/90 disabled:opacity-50"
                         >
-                            {deleteMutation.isPending ? 'Suppression...' : 'Confirmer la suppression'}
+                            {deleteMutation.isPending
+                                ? t("dashboard.enrollment.documents.upload.deleting")
+                                : t("dashboard.enrollment.documents.upload.confirmDelete")}
                         </button>
                     </div>
                 </div>
@@ -200,11 +201,11 @@ export function AttachmentUploadZone({
                         onClick={handleDeleteClick}
                         disabled={deleteMutation.isPending}
                         className="shrink-0 text-muted-foreground hover:text-destructive disabled:opacity-50"
-                        aria-label="Supprimer le fichier"
+                        aria-label={t("dashboard.enrollment.documents.upload.deleteFile")}
                         title={
                             isValidated
-                                ? 'Document validé — la suppression invalidera la signature'
-                                : 'Supprimer le fichier'
+                                ? t("dashboard.enrollment.documents.upload.deleteValidatedFile")
+                                : t("dashboard.enrollment.documents.upload.deleteFile")
                         }
                     >
                         <X className="h-4 w-4" />
