@@ -37,7 +37,7 @@ const assignTeacherObjectSchema = z.object({
   hireDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD'),
   contractEndDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD').optional(),
   contractType: contractTypeSchema.optional(),
-  salary: z.number().positive().optional(),
+  salary: z.string().optional(),
   weeklyHours: z.number().int().positive().optional(),
   subjectsTaught: z.string().optional(),
   contractClauses: z.string().optional(),

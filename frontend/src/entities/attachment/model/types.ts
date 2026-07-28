@@ -1,19 +1,33 @@
-export type AttachableType = 'conversation' | 'message' | 'enrollment' | 'payment' | 'teacher'
+export const ATTACHABLE_TYPES = [
+    'message',
+    'conversation',
+    'enrollment',
+    'payment',
+    'teacher',
+] as const
+
+export type AttachableType =
+    typeof ATTACHABLE_TYPES[number]
+
+
+export const ATTACHMENT_CATEGORIES = [
+    'birth_certificate',
+    'medical_certificate',
+    'previous_report',
+    'parent_id',
+    'student_photo',
+    'teacher_photo',
+    'payment_receipt',
+    'diploma',
+    'criminal_record',
+    'resume',
+    'identity_document',
+    'other',
+] as const
+
 
 export type AttachmentCategory =
-    | 'birth_certificate'
-    | 'medical_certificate'
-    | 'previous_report'
-    | 'parent_id'
-    | 'student_photo'
-    | 'teacher_photo'
-    | 'payment_receipt'
-    | 'diploma'
-    | 'criminal_record'
-    | 'resume'
-    | 'identity_document'
-    | 'other'
-
+    typeof ATTACHMENT_CATEGORIES[number]
 
 export type AttachmentStatus = 'pending' | 'validated' | 'rejected'
 
