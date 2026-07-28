@@ -1,14 +1,14 @@
 import {ApiWrapper} from "@shared/api/ApiWrapper";
 import {baseApi} from "@shared/api/instance";
 import type {
-    TeacherParamsDto,
-    TeacherListQueryDto
-} from "@entities/teacher/model/dto";
-import type {
     AssignTeacherDto,
     CreateTeacherDto,
-    Teacher, UpdateAssignmentDto,
-    UpdateTeacherDto
+    Teacher,
+    UpdateAssignmentDto,
+    UpdateTeacherDto,
+    TeacherParamsDto,
+    TeacherListQueryDto,
+    TeacherDossierStatusDto
 } from "@entities/teacher";
 
 export class TeacherApi extends ApiWrapper {
@@ -27,6 +27,13 @@ export class TeacherApi extends ApiWrapper {
         return this.handleRequest<Teacher>(
             this._baseApi.get(`/teachers/${params.id}`),
             (raw) => raw as Teacher
+        )
+    }
+
+    getDossierStatus(params: { id: string; subSchoolId: string }) {
+        return this.handleRequest<TeacherDossierStatusDto>(
+            this._baseApi.get(`/teachers/${params.id}/dossier-status`, { subSchoolId: params.subSchoolId }),
+            (raw) => raw as TeacherDossierStatusDto,
         )
     }
 

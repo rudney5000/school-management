@@ -5,3 +5,8 @@ export type TeacherParamsDto = {
 export type TeacherListQueryDto = {
     subSchoolId: string
 }
+
+export type TeacherDossierStatusDto = {
+    isComplete: boolean
+    missing: string[]
+}
