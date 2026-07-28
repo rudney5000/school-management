@@ -3,6 +3,7 @@ import {
     Page,
     View,
     Text,
+    Image,
     StyleSheet
 } from '@react-pdf/renderer';
 import {
@@ -19,6 +20,7 @@ export interface EnrollmentDocumentProps {
     locale: PdfLocale;
     schoolName: string;
     studentFullName: string;
+    studentImageUrl: string | null;
     gender: 'male' | 'female';
     age: number;
     className: string;
@@ -36,9 +38,15 @@ const styles = StyleSheet.create({
         color: theme.colors.text,
     },
     header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
         borderBottom: `2px solid ${theme.colors.primary}`,
         paddingBottom: 16,
         marginBottom: 24,
+    },
+    headerText: {
+        flex: 1,
     },
     schoolName: {
         fontSize: 18,
@@ -47,10 +55,17 @@ const styles = StyleSheet.create({
     },
     documentTitle: {
         fontSize: 11,
-        color: '#71717a',
+        color: theme.colors.muted,
         marginTop: 4,
         textTransform: 'uppercase',
         letterSpacing: 1,
+    },
+    photo: {
+        width: 64,
+        height: 64,
+        borderRadius: 4,
+        objectFit: 'cover',
+        border: `1px solid ${theme.colors.border}`,
     },
     section: {
         marginBottom: 20,
@@ -58,7 +73,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 10,
         fontWeight: 'bold',
-        color: '#71717a',
+        color: theme.colors.muted,
         textTransform: 'uppercase',
         letterSpacing: 0.5,
         marginBottom: 8,
@@ -90,6 +105,7 @@ export function EnrollmentDocument({
                                        locale,
                                        schoolName,
                                        studentFullName,
+                                       studentImageUrl,
                                        gender,
                                        age,
                                        className,
@@ -108,8 +124,11 @@ export function EnrollmentDocument({
         <Document>
             <Page size="A4" style={styles.page}>
                 <View style={styles.header}>
-                    <Text style={styles.schoolName}>{schoolName}</Text>
-                    <Text style={styles.documentTitle}>{t.enrollmentTitle}</Text>
+                    <View style={styles.headerText}>
+                        <Text style={styles.schoolName}>{schoolName}</Text>
+                        <Text style={styles.documentTitle}>{t.enrollmentTitle}</Text>
+                    </View>
+                    {studentImageUrl && <Image style={styles.photo} src={studentImageUrl} />}
                 </View>
 
                 <View style={styles.section}>
