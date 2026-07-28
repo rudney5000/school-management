@@ -1,5 +1,5 @@
 {
-  "id": "4b4f4caf-7b94-4913-bbac-947b1c8eec9f",
+  "id": "84b5d7b9-f57e-4971-9ad6-b13978912083",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1381,6 +1381,43 @@
           "primaryKey": false,
           "notNull": true
         },
+        "contract_end_date": {
+          "name": "contract_end_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contract_type": {
+          "name": "contract_type",
+          "type": "contract_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "salary": {
+          "name": "salary",
+          "type": "numeric(12, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "weekly_hours": {
+          "name": "weekly_hours",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "subjects_taught": {
+          "name": "subjects_taught",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contract_clauses": {
+          "name": "contract_clauses",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "qualification": {
           "name": "qualification",
           "type": "text",
@@ -1523,6 +1560,34 @@
           "type": "date",
           "primaryKey": false,
           "notNull": true
+        },
+        "marital_status": {
+          "name": "marital_status",
+          "type": "marital_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "has_children": {
+          "name": "has_children",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "children_count": {
+          "name": "children_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "years_of_experience": {
+          "name": "years_of_experience",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
         },
         "created_at": {
           "name": "created_at",
@@ -5397,7 +5462,8 @@
         "conversation",
         "message",
         "enrollment",
-        "payment"
+        "payment",
+        "teacher"
       ]
     },
     "public.attachment_category": {
@@ -5410,6 +5476,10 @@
         "parent_id",
         "student_photo",
         "payment_receipt",
+        "diploma",
+        "criminal_record",
+        "resume",
+        "identity_document",
         "other"
       ]
     },
@@ -5449,6 +5519,15 @@
         "transfer",
         "conduct",
         "graduation"
+      ]
+    },
+    "public.contract_type": {
+      "name": "contract_type",
+      "schema": "public",
+      "values": [
+        "permanent",
+        "fixed_term",
+        "part_time"
       ]
     },
     "public.conversation_type": {
@@ -5538,6 +5617,16 @@
         "scheduled",
         "live",
         "ended"
+      ]
+    },
+    "public.marital_status": {
+      "name": "marital_status",
+      "schema": "public",
+      "values": [
+        "single",
+        "married",
+        "divorced",
+        "widowed"
       ]
     },
     "public.member_role": {
