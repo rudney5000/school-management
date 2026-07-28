@@ -295,6 +295,15 @@
         "chooseClass": "Choisir une classe",
         "creating": "Création...",
         "createEnrollment": "Créer l'inscription"
+      },
+      "upload": {
+        "cancelUpload": "Annuler l'upload",
+        "validatedDeleteWarning": "Ce document est validé. Le supprimer invalidera la signature de l'inscription (elle devra être re-signée).",
+        "cancel": "Annuler",
+        "deleting": "Suppression...",
+        "confirmDelete": "Confirmer la suppression",
+        "deleteFile": "Supprimer le fichier",
+        "deleteValidatedFile": "Document validé — la suppression invalidera la signature"
       }
     },
     "students": {
@@ -424,6 +433,45 @@
         "attendance": "Assiduité",
         "thisMonth": "Ce mois-ci",
         "quickActions": "Actions rapides"
+      },
+      "documents": {
+        "title": "Dossier de recrutement",
+        "loading": "Chargement...",
+        "missing": "Manquant",
+        "pending": "En attente",
+        "validated": "Validé",
+        "rejected": "Rejeté",
+        "categories": {
+          "identity_document": "Pièce d'identité",
+          "diploma": "Diplôme",
+          "criminal_record": "Casier judiciaire",
+          "resume": "Curriculum Vitae (CV)",
+          "teacher_photo": "Photo de l'enseignant",
+          "medical_certificate": "Certificat médical"
+        },
+        "validation": {
+          "title": "Documents en attente de validation",
+          "complete": "Dossier complet",
+          "empty": "Aucun document en attente de validation",
+          "validate": "Valider",
+          "reject": "Rejeter",
+          "rejectInProgress": "Rejet en cours...",
+          "confirmReject": "Confirmer le rejet",
+          "cancel": "Annuler",
+          "rejectDrawerTitle": "Rejeter le document",
+          "rejectDrawerDescription": "Veuillez indiquer la raison du rejet de ce document.",
+          "rejectReason": "Raison du rejet",
+          "rejectPlaceholder": "Expliquez pourquoi ce document est rejeté..."
+        },
+        "dossier": {
+          "title": "Dossier de recrutement",
+          "loading": "Chargement du dossier...",
+          "complete": "Complet",
+          "incomplete": "Incomplet",
+          "manageDocuments": "Gérer les documents",
+          "drawerTitle": "Dossier de recrutement",
+          "drawerDescription": "Pièces justificatives et validation"
+        }
       }
     },
     "parents": {

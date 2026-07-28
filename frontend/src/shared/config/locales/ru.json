@@ -257,6 +257,15 @@
         "chooseClass": "Выберите класс",
         "creating": "Создание...",
         "createEnrollment": "Создать запись о зачислении"
+      },
+      "upload": {
+        "cancelUpload": "Отменить загрузку",
+        "validatedDeleteWarning": "Этот документ уже подтверждён. Его удаление сделает подпись заявления недействительной, и документ потребуется подписать заново.",
+        "cancel": "Отмена",
+        "deleting": "Удаление...",
+        "confirmDelete": "Подтвердить удаление",
+        "deleteFile": "Удалить файл",
+        "deleteValidatedFile": "Подтверждённый документ — удаление сделает подпись недействительной"
       }
     },
     "charts": {
@@ -398,6 +407,45 @@
         "attendance": "Посещаемость",
         "thisMonth": "В этом месяце",
         "quickActions": "Быстрые действия"
+      },
+      "documents": {
+        "title": "Документы для трудоустройства",
+        "loading": "Загрузка...",
+        "missing": "Отсутствует",
+        "pending": "Ожидает проверки",
+        "validated": "Подтверждено",
+        "rejected": "Отклонено",
+        "categories": {
+          "identity_document": "Удостоверение личности",
+          "diploma": "Диплом",
+          "criminal_record": "Справка о несудимости",
+          "resume": "Резюме (CV)",
+          "teacher_photo": "Фото Учителя",
+          "medical_certificate": "Медицинская справка"
+        },
+        "validation": {
+          "title": "Документы, ожидающие проверки",
+          "complete": "Досье полностью готово",
+          "empty": "Нет документов, ожидающих проверки",
+          "validate": "Подтвердить",
+          "reject": "Отклонить",
+          "rejectInProgress": "Отклонение...",
+          "confirmReject": "Подтвердить отклонение",
+          "cancel": "Отмена",
+          "rejectDrawerTitle": "Отклонить документ",
+          "rejectDrawerDescription": "Укажите причину отклонения документа.",
+          "rejectReason": "Причина отклонения",
+          "rejectPlaceholder": "Объясните, почему документ отклонён..."
+        },
+        "dossier": {
+          "title": "Личное дело сотрудника",
+          "loading": "Загрузка досье...",
+          "complete": "Полное",
+          "incomplete": "Неполное",
+          "manageDocuments": "Управление документами",
+          "drawerTitle": "Личное дело сотрудника",
+          "drawerDescription": "Подтверждающие документы и проверка"
+        }
       }
     },
     "parents": {

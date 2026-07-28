@@ -252,6 +252,15 @@
         "chooseClass": "Pona kelasi",
         "creating": "Kosala...",
         "createEnrollment": "Kosala bokomisi ya mwana"
+      },
+      "upload": {
+        "cancelUpload": "Longola kotinda",
+        "validatedDeleteWarning": "Mokanda oyo endimami. Soki olongoli yango, signature ya inscription ekokoma lisusu na nguya te mpe esengeli kosignama lisusu.",
+        "cancel": "Longola",
+        "deleting": "Kolongola...",
+        "confirmDelete": "Ndima kolongola",
+        "deleteFile": "Longola fichier",
+        "deleteValidatedFile": "Mokanda endimami — kolongola yango ekolongola nguya ya signature"
       }
     },
     "attendances": {
@@ -385,6 +394,45 @@
         "attendance": "Bopesi ya bozali",
         "thisMonth": "Sanza oyo",
         "quickActions": "Misala ya mbangu"
+      },
+      "documents": {
+        "title": "Mikanda ya mosala",
+        "loading": "Kozwa...",
+        "missing": "Ezangi",
+        "pending": "Ezali kozela",
+        "validated": "Endimami",
+        "rejected": "Ebwakami",
+        "categories": {
+          "identity_document": "Mokanda ya bomoto",
+          "diploma": "Diploma",
+          "criminal_record": "Mokanda ya kozanga makambo ya mibeko",
+          "resume": "CV",
+          "teacher_photo": "Foto ya molakisi kelasi",
+          "medical_certificate": "Mokanda ya monganga"
+        },
+        "validation": {
+          "title": "Mikanda ezali kozela kondimama",
+          "complete": "Dosie esili mobimba",
+          "empty": "Mokanda moko te ezali kozela kondimama",
+          "validate": "Ndima",
+          "reject": "Bwaka",
+          "rejectInProgress": "Kobwaka...",
+          "confirmReject": "Ndima kobwaka",
+          "cancel": "Longola",
+          "rejectDrawerTitle": "Bwaka mokanda",
+          "rejectDrawerDescription": "Komá ntina ya kobwaka mokanda oyo.",
+          "rejectReason": "Ntina ya kobwaka",
+          "rejectPlaceholder": "Limbola mpo na nini mokanda oyo ebwakami..."
+        },
+        "dossier": {
+          "title": "Dosie ya mosala",
+          "loading": "Kozwa dosie...",
+          "complete": "Esili",
+          "incomplete": "Esili te",
+          "manageDocuments": "Bongisa mikanda",
+          "drawerTitle": "Dosie ya mosala",
+          "drawerDescription": "Mikanda ya lisungi mpe kondimama"
+        }
       }
     },
     "parents": {

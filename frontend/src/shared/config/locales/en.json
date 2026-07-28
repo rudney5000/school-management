@@ -293,6 +293,15 @@
         "chooseClass": "Choose a class",
         "creating": "Creating...",
         "createEnrollment": "Create enrollment"
+      },
+      "upload": {
+        "cancelUpload": "Cancel upload",
+        "validatedDeleteWarning": "This document has been validated. Deleting it will invalidate the enrollment signature (it will need to be signed again).",
+        "cancel": "Cancel",
+        "deleting": "Deleting...",
+        "confirmDelete": "Confirm deletion",
+        "deleteFile": "Delete file",
+        "deleteValidatedFile": "Validated document — deleting it will invalidate the signature"
       }
     },
     "students": {
@@ -427,6 +436,45 @@
         "attendance": "Attendance",
         "thisMonth": "This month",
         "quickActions": "Quick Actions"
+      },
+      "documents": {
+        "title": "Recruitment documents",
+        "loading": "Loading...",
+        "missing": "Missing",
+        "pending": "Pending",
+        "validated": "Validated",
+        "rejected": "Rejected",
+        "categories": {
+          "identity_document": "Identity document",
+          "diploma": "Diploma",
+          "criminal_record": "Criminal record",
+          "resume": "Curriculum Vitae (CV)",
+          "teacher_photo": "Teacher photo",
+          "medical_certificate": "Medical certificate"
+        },
+        "validation": {
+          "title": "Documents pending validation",
+          "complete": "Application complete",
+          "empty": "No documents pending validation",
+          "validate": "Validate",
+          "reject": "Reject",
+          "rejectInProgress": "Rejecting...",
+          "confirmReject": "Confirm rejection",
+          "cancel": "Cancel",
+          "rejectDrawerTitle": "Reject document",
+          "rejectDrawerDescription": "Please provide the reason for rejecting this document.",
+          "rejectReason": "Reason for rejection",
+          "rejectPlaceholder": "Explain why this document is being rejected..."
+        },
+        "dossier": {
+          "title": "Recruitment file",
+          "loading": "Loading file...",
+          "complete": "Complete",
+          "incomplete": "Incomplete",
+          "manageDocuments": "Manage documents",
+          "drawerTitle": "Recruitment file",
+          "drawerDescription": "Supporting documents and validation"
+        }
       }
     },
     "parents": {
