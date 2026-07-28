@@ -16,10 +16,14 @@ import {
 import {
     MessageAttachmentResolver
 } from "@/shared/utils/resolvers/attachments/message.resolver";
+import {
+    TeacherAttachmentResolver
+} from "@/shared/utils/resolvers/attachments/teacher.resolver";
 
 export const attachmentResolvers: Record<AttachableType, AttachmentContextResolver> = {
     conversation: new ConversationAttachmentResolver(),
     message:      new MessageAttachmentResolver(),
     enrollment:   new EnrollmentAttachmentResolver(),
     payment:      new PaymentAttachmentResolver(),
+    teacher:      new TeacherAttachmentResolver(),
 }
