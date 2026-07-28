@@ -5,6 +5,7 @@ import {
     certificateStatusQuerySchema,
     DocumentParamsMap,
     enrollmentSignSchema,
+    teacherContractStatusQuerySchema,
 } from "@/modules/signature/document-signature.schema";
 import {
     type DocumentType,
@@ -48,6 +49,12 @@ export const certificatePdfQuerySchema = certificateStatusQuerySchema.extend({
     preview: z.coerce.boolean().optional().default(false),
 });
 
+export const teacherContractPdfQuerySchema = teacherContractStatusQuerySchema.extend({
+    locale: localeSchema,
+    preview: z.coerce.boolean().optional().default(false),
+});
+
+export type TeacherContractPdfQueryDto = z.infer<typeof teacherContractPdfQuerySchema>;
 export type BulletinPdfQueryDto = z.infer<typeof bulletinPdfQuerySchema>;
 export type EnrollmentPdfQueryDto = z.infer<typeof enrollmentPdfQuerySchema>;
 export type CertificatePdfQueryDto = z.infer<typeof certificatePdfQuerySchema>;

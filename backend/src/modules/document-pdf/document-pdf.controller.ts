@@ -7,6 +7,7 @@ import type {
     BulletinPdfQueryDto,
     EnrollmentPdfQueryDto,
     CertificatePdfQueryDto,
+    TeacherContractPdfQueryDto,
 } from '@/modules/document-pdf/document-pdf.schema';
 import {
     DocumentPdfService
@@ -37,5 +38,11 @@ export class DocumentPdfController {
         const { locale, ...params } = req.query as unknown as CertificatePdfQueryDto;
         const buffer = await this.service.generate('certificate', params, locale);
         sendPdf(res, buffer, 'certificate.pdf');
+    });
+
+    getTeacherContractPdf = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const { locale, preview, ...params } = req.query as unknown as TeacherContractPdfQueryDto;
+        const buffer = await this.service.generate('teacher_contract', params, locale, preview);
+        sendPdf(res, buffer, 'teacher-contract.pdf');
     });
 }

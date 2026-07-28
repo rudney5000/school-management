@@ -43,6 +43,7 @@ export const enrollmentPdfStrategy: DocumentPdfStrategy<'enrollment'> = {
             locale,
             schoolName: subSchool?.name ?? 'École',
             studentFullName: `${student.firstName} ${student.lastName}`,
+            studentImageUrl: student.image ?? null,
             gender: student.gender,
             age: computeAge(student.dateOfBirth),
             className: classRow?.name ?? '—',
