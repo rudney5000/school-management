@@ -24,6 +24,7 @@ router.get(
   }),
   controller.getAll,
 );
+
 router.get(
   '/:id',
   authenticate,
@@ -34,6 +35,16 @@ router.get(
   }),
   controller.getById,
 );
+
+router.get('/:id/dossier-status',
+    authenticate,
+    authorize('admin', 'director', 'super_admin'),
+    validate({
+        params: teacherParamsSchema,
+        query: subSchoolQuerySchema,
+    }),
+    controller.getDossierStatus);
+
 router.post(
   '/',
   authenticate,
@@ -43,6 +54,7 @@ router.post(
   }),
   controller.create,
 );
+
 router.patch(
   '/:id',
   authenticate,
@@ -54,6 +66,7 @@ router.patch(
   }),
   controller.update,
 );
+
 router.delete(
   '/:id',
   authenticate,

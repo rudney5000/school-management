@@ -1,6 +1,13 @@
-import { and, eq } from 'drizzle-orm';
+import {
+    and,
+    eq
+} from 'drizzle-orm';
 import { db } from '@/db';
-import {teachers, teacherSchools} from '@/db/schema';
+import {
+    attachments,
+    teachers,
+    teacherSchools
+} from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
 import type {
     AssignTeacherDto,
@@ -8,6 +15,14 @@ import type {
     UpdateAssignmentDto,
     UpdateTeacherDto
 } from './teachers.schema';
+
+const REQUIRED_TEACHER_CATEGORIES = [
+    'identity_document',
+    'diploma',
+    'criminal_record',
+    'resume',
+    'medical_certificate',
+] as const
 
 export type TeacherRecord = typeof teachers.$inferSelect;
 
@@ -165,6 +180,32 @@ export class TeachersService {
                     eq(teacherSchools.subSchoolId, subSchoolId),
                 ),
             );
+    }
+
+    async getDossierStatus(teacherId: string, subSchoolId: string) {
+        await this.findById(teacherId, subSchoolId)
+
+        const docs = await db
+            .select({ category: attachments.category, status: attachments.status })
+            .from(attachments)
+            .where(and(
+                eq(attachments.attachableType, 'teacher'),
+                eq(attachments.attachableId, teacherId),
+            ))
+
+        const validatedCategories = new Set(
+            docs.filter((d) => d.status === 'validated').map((d) => d.category),
+        )
+        const missing = REQUIRED_TEACHER_CATEGORIES.filter((c) => !validatedCategories.has(c))
+
+        return { isComplete: missing.length === 0, missing }
+    }
+
+    async ensureTeacherDossierComplete(teacherId: string, subSchoolId: string): Promise<void> {
+        const { isComplete, missing } = await this.getDossierStatus(teacherId, subSchoolId)
+        if (!isComplete) {
+            throw new AppError('DOCUMENTS_INCOMPLETE', `Dossier incomplet : ${missing.join(', ')}`, 422)
+        }
     }
 
 }
