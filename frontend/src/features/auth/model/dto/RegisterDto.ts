@@ -1,6 +1,6 @@
-import type {LoginDto} from "@features/auth/model/dto/LoginDto.ts";
+import type {LoginDto} from "@features/auth/model/dto/LoginDto";
 
-export type UserRole = 'admin' | 'director' | 'teacher' | 'worker' | 'parent' | 'student'
+export type UserRole = 'admin' | 'super_admin' | 'director' | 'teacher' | 'worker' | 'parent' | 'student'
 
 export interface RegisterDto extends LoginDto {
     role: UserRole
