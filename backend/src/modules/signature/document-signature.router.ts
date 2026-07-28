@@ -10,7 +10,8 @@ import {
     documentSignatureParamsSchema,
     enrollmentSignSchema,
     enrollmentStatusQuerySchema,
-    revokeSignatureSchema
+    revokeSignatureSchema,
+    teacherContractSignSchema
 } from "@/modules/signature/document-signature.schema";
 import {
     DocumentSignaturesController
@@ -98,5 +99,25 @@ router.patch(
     }),
     controller.revoke,
 );
+
+router.post(
+    '/teacher-contract',
+    authenticate,
+    authorize('admin', 'director', 'super_admin'),
+    validate({
+        body: teacherContractSignSchema
+    }),
+    controller.signTeacherContract
+)
+
+router.get(
+    '/teacher-contract/status',
+    authenticate,
+    authorize('admin', 'director', 'super_admin', 'teacher'),
+    validate({
+        query: teacherContractSignSchema
+    }),
+    controller.getTeacherContractStatus
+)
 
 export { router as documentSignaturesRouter };

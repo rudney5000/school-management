@@ -6,7 +6,8 @@ import type {
     BulletinSignDto,
     CertificateSignDto,
     EnrollmentSignDto,
-    RevokeSignatureDto
+    RevokeSignatureDto,
+    TeacherContractSignDto
 } from '@/modules/signature/document-signature.schema'
 import {asyncHandler} from "@/shared/utils/async-handler";
 import {respond} from "@/shared/utils/respond";
@@ -59,6 +60,16 @@ export class DocumentSignaturesController {
     signCertificate = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const data = await this.service.sign('certificate', req.body as CertificateSignDto, signContext(req));
         respond(res, data, 201);
+    });
+
+    signTeacherContract = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.sign('teacher_contract', req.body as TeacherContractSignDto, signContext(req));
+        respond(res, data, 201);
+    });
+
+    getTeacherContractStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.getStatus('teacher_contract', req.query as unknown as TeacherContractSignDto);
+        respond(res, data);
     });
 
     revoke = asyncHandler(async (req: Request, res: Response): Promise<void> => {
