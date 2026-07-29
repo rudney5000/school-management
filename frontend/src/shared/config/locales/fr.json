@@ -289,7 +289,12 @@
           "uploading": "Téléchargement en cours...",
           "drop": "Glissez-déposez un fichier ici",
           "select": "ou cliquez pour sélectionner"
-        }
+        },
+        "previewDrawerTitle": "Aperçu du dossier d'inscription",
+        "previewDrawerDescription": "Vérifiez le contenu avant de confirmer la signature.",
+        "previewIframeTitle": "Aperçu PDF du dossier d'inscription",
+        "preview": "Prévisualiser le document",
+        "previewDisabled": "Toutes les pièces requises doivent être validées pour prévisualiser"
       },
       "create": {
         "chooseClass": "Choisir une classe",
@@ -461,7 +466,19 @@
           "rejectDrawerTitle": "Rejeter le document",
           "rejectDrawerDescription": "Veuillez indiquer la raison du rejet de ce document.",
           "rejectReason": "Raison du rejet",
-          "rejectPlaceholder": "Expliquez pourquoi ce document est rejeté..."
+          "rejectPlaceholder": "Expliquez pourquoi ce document est rejeté...",
+          "signingInProgress": "Signature en cours...",
+          "signContract": "Signer le contrat",
+          "resignContract": "Re-signer le contrat",
+          "preview": "Prévisualiser",
+          "previewDisabled": "Toutes les pièces requises doivent être validées",
+          "downloading": "Téléchargement...",
+          "downloadContract": "Télécharger le contrat",
+          "downloadDisabled": "Le contrat doit être signé avant d'être téléchargé",
+          "previewDrawerTitle": "Aperçu du contrat",
+          "previewDrawerDescription": "Vérifiez le contenu avant de confirmer la signature.",
+          "previewIframeTitle": "Aperçu du contrat"
+
         },
         "dossier": {
           "title": "Dossier de recrutement",

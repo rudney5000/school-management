@@ -246,7 +246,12 @@
           "uploading": "Kozwa Mikanda...",
           "drop": "Tia fichier awa",
           "select": "to finá kofina"
-        }
+        },
+        "previewDrawerTitle": "Botali ya dossier ya bokomisi liboso",
+        "previewDrawerDescription": "Talá malamu makambo nyonso liboso ya kondima kotya mokanda ya maboko.",
+        "previewIframeTitle": "Botali ya PDF ya dossier ya bokomisi",
+        "preview": "Talá mokanda liboso",
+        "previewDisabled": "Mikanda nyonso oyo esengeli esengeli kondimama liboso ya botali"
       },
       "create": {
         "chooseClass": "Pona kelasi",
@@ -422,7 +427,18 @@
           "rejectDrawerTitle": "Bwaka mokanda",
           "rejectDrawerDescription": "Komá ntina ya kobwaka mokanda oyo.",
           "rejectReason": "Ntina ya kobwaka",
-          "rejectPlaceholder": "Limbola mpo na nini mokanda oyo ebwakami..."
+          "rejectPlaceholder": "Limbola mpo na nini mokanda oyo ebwakami...",
+          "signingInProgress": "Kobanda kotya mokanda ya maboko...",
+          "signContract": "Tyá mokanda ya maboko na contrat",
+          "resignContract": "Tyá lisusu mokanda ya maboko na contrat",
+          "preview": "Talá liboso",
+          "previewDisabled": "Mikanda nyonso oyo esengeli esili kondimama",
+          "downloading": "Kokɔngola...",
+          "downloadContract": "Kokɔngola contrat",
+          "downloadDisabled": "Contrat esengeli kotyama mokanda ya maboko liboso ya kokɔngola yango",
+          "previewDrawerTitle": "Botali ya contrat liboso",
+          "previewDrawerDescription": "Talá malamu makambo nyonso liboso ya kondima kotya mokanda ya maboko.",
+          "previewIframeTitle": "Botali ya contrat liboso"
         },
         "dossier": {
           "title": "Dosie ya mosala",

@@ -16,9 +16,10 @@ const VALIDATOR_ROLES: UserRole[] = [
 
 interface TeacherDocumentsPanelProps {
     teacherId: string
+    subSchoolId: string
 }
 
-export function TeacherDocumentsPanel({ teacherId }: TeacherDocumentsPanelProps) {
+export function TeacherDocumentsPanel({ teacherId, subSchoolId }: TeacherDocumentsPanelProps) {
     const { t } = useTranslation()
     const { data: attachments, isLoading } = useAttachments({ attachableType: 'teacher', attachableId: teacherId })
     const role = useAppSelector((state) => state.auth.role)
@@ -35,7 +36,10 @@ export function TeacherDocumentsPanel({ teacherId }: TeacherDocumentsPanelProps)
         <div className="space-y-8">
             <TeacherDocumentsUpload teacherId={teacherId} />
             {canValidate && (
-                <TeacherDocumentsValidation attachments={attachments ?? []} />
+                <TeacherDocumentsValidation
+                    attachments={attachments ?? []}
+                    teacherId={teacherId}
+                    subSchoolId={subSchoolId} />
             )}
         </div>
     )

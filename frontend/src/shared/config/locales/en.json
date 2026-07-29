@@ -287,7 +287,12 @@
           "uploading": "Uploading documents...",
           "drop": "Drag and drop a file here",
           "select": "or click to select"
-        }
+        },
+        "previewDrawerTitle": "Enrollment file preview",
+        "previewDrawerDescription": "Review the content before confirming the signature.",
+        "previewIframeTitle": "Enrollment PDF preview",
+        "preview": "Preview document",
+        "previewDisabled": "All required documents must be validated before previewing"
       },
       "create": {
         "chooseClass": "Choose a class",
@@ -464,7 +469,18 @@
           "rejectDrawerTitle": "Reject document",
           "rejectDrawerDescription": "Please provide the reason for rejecting this document.",
           "rejectReason": "Reason for rejection",
-          "rejectPlaceholder": "Explain why this document is being rejected..."
+          "rejectPlaceholder": "Explain why this document is being rejected...",
+          "signingInProgress": "Signing...",
+          "signContract": "Sign contract",
+          "resignContract": "Re-sign contract",
+          "preview": "Preview",
+          "previewDisabled": "All required documents must be validated",
+          "downloading": "Downloading...",
+          "downloadContract": "Download contract",
+          "downloadDisabled": "The contract must be signed before it can be downloaded",
+          "previewDrawerTitle": "Contract preview",
+          "previewDrawerDescription": "Review the content before confirming the signature.",
+          "previewIframeTitle": "Contract preview"
         },
         "dossier": {
           "title": "Recruitment file",

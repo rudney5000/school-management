@@ -26,6 +26,8 @@ import {
 import CustomDrawer from '@shared/ui/custom-drawer/custom-drawer'
 import {useTranslation} from "@shared/lib";
 import {Eye} from "lucide-react";
+import {toPdfLocale} from "@shared/config/i18n/locale-config";
+import i18n from "@app/i18n/i18n";
 
 const REQUIRED_CATEGORIES: AttachmentCategory[] = [
   'birth_certificate',
@@ -101,7 +103,7 @@ export function EnrollmentDocumentsValidation({
     previewPdf.mutate(
         {
           documentType: 'enrollment',
-          params: { subSchoolId, enrollmentId, studentId, locale: 'fr', preview: true },
+          params: { subSchoolId, enrollmentId, studentId, locale: toPdfLocale(i18n.language), preview: true },
         },
         {
           onSuccess: (url) => {
@@ -126,7 +128,7 @@ export function EnrollmentDocumentsValidation({
   const handleDownloadPdf = () => {
     downloadPdf.mutate({
       documentType: 'enrollment',
-      params: { subSchoolId, enrollmentId, studentId, locale: 'fr' },
+      params: { subSchoolId, enrollmentId, studentId, locale: toPdfLocale(i18n.language) },
       filename: `inscription-${studentId}.pdf`,
     })
   }
@@ -166,9 +168,13 @@ export function EnrollmentDocumentsValidation({
                 variant="outline"
                 onClick={handlePreviewPdf}
                 disabled={!allRequiredValidated || previewPdf.isPending}
-                title={!allRequiredValidated ? "Toutes les pièces requises doivent être validées pour prévisualiser" : 'Prévisualiser le document'}
+                title={
+                  !allRequiredValidated
+                      ? t("dashboard.enrollment.documents.previewDisabled")
+                      : t("dashboard.enrollment.documents.preview")
+                }
             >
-              <Eye className="h-4 w-4"/>
+              <Eye className="h-4 w-4" />
             </Button>
 
             <Button
@@ -297,13 +303,13 @@ export function EnrollmentDocumentsValidation({
         <CustomDrawer
             isOpen={previewDrawerOpen}
             handleOpen={handleClosePreview}
-            drawerTitle="Aperçu du dossier d'inscription"
-            drawerDescription="Vérifiez le contenu avant de confirmer la signature."
+            drawerTitle={t("dashboard.enrollment.documents.previewDrawerTitle")}
+            drawerDescription={t("dashboard.enrollment.documents.previewDrawerDescription")}
         >
           {previewUrl && (
               <iframe
                   src={previewUrl}
-                  title="Aperçu PDF inscription"
+                  title={t("dashboard.enrollment.documents.previewIframeTitle")}
                   className="w-full h-[75vh] rounded-md border"
               />
           )}
