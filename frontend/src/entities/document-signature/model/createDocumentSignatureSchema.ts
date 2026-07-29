@@ -24,6 +24,11 @@ export const certificateSignSchema = z.object({
     studentId:     z.string().uuid(getErrorMessage('validation.invalidUuid')),
 })
 
+export const teacherContractSignSchema = z.object({
+    subSchoolId: z.string().uuid(getErrorMessage('validation.invalidUuid')),
+    teacherId:   z.string().uuid(getErrorMessage('validation.invalidUuid')),
+})
+
 export const batchSignBulletinSchema = bulletinSignSchema.omit({ studentId: true })
 
 export const revokeSignatureSchema = z.object({
@@ -45,6 +50,11 @@ export const certificatePdfQuerySchema = certificateSignSchema.extend({
     preview: z.boolean().optional(),
 })
 
+export const teacherContractPdfQuerySchema = teacherContractSignSchema.extend({
+    locale: pdfLocaleSchema,
+    preview: z.boolean().optional(),
+})
+
 export type BatchSignBulletinDto = z.infer<typeof batchSignBulletinSchema>
 export type BulletinSignDto    = z.infer<typeof bulletinSignSchema>
 export type EnrollmentSignDto  = z.infer<typeof enrollmentSignSchema>
@@ -53,3 +63,5 @@ export type RevokeSignatureDto = z.infer<typeof revokeSignatureSchema>
 export type BulletinPdfQueryDto    = z.infer<typeof bulletinPdfQuerySchema>
 export type EnrollmentPdfQueryDto  = z.infer<typeof enrollmentPdfQuerySchema>
 export type CertificatePdfQueryDto = z.infer<typeof certificatePdfQuerySchema>
+export type TeacherContractSignDto = z.infer<typeof teacherContractSignSchema>
+export type TeacherContractPdfQueryDto = z.infer<typeof teacherContractPdfQuerySchema>

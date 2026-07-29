@@ -16,6 +16,7 @@ import type {
     EnrollmentPdfQueryDto,
     EnrollmentSignDto,
     RevokeSignatureDto,
+    TeacherContractSignDto,
 } from '@entities/document-signature/model/createDocumentSignatureSchema'
 
 export interface BatchSignBulletinResult {
@@ -82,6 +83,20 @@ export class DocumentSignatureApi extends ApiWrapper {
         return this.handleRequest<DocumentSignature>(
             this._baseApi.patch(`/document-signatures/${params.id}/revoke`, payload),
             (raw) => raw as DocumentSignature,
+        )
+    }
+
+    signTeacherContract(payload: TeacherContractSignDto) {
+        return this.handleRequest<DocumentSignature>(
+            this._baseApi.post('/document-signatures/teacher-contract', payload),
+            (raw) => raw as DocumentSignature,
+        )
+    }
+
+    getTeacherContractStatus(params: TeacherContractSignDto) {
+        return this.handleRequest<SignatureStatusResult>(
+            this._baseApi.get('/document-signatures/teacher-contract/status', params),
+            (raw) => raw as SignatureStatusResult,
         )
     }
 
