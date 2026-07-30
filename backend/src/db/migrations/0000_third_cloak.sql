@@ -11,7 +11,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."attachment_category" AS ENUM('birth_certificate', 'medical_certificate', 'previous_report', 'parent_id', 'student_photo', 'payment_receipt', 'diploma', 'criminal_record', 'resume', 'identity_document', 'other');
+ CREATE TYPE "public"."attachment_category" AS ENUM('birth_certificate', 'medical_certificate', 'previous_report', 'parent_id', 'student_photo', 'teacher_photo', 'payment_receipt', 'diploma', 'criminal_record', 'resume', 'identity_document', 'other');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -328,6 +328,7 @@ CREATE TABLE IF NOT EXISTS "teachers" (
 	"gender" "gender" NOT NULL,
 	"date_of_birth" date NOT NULL,
 	"enrollment_date" date NOT NULL,
+	"image" varchar(512),
 	"marital_status" "marital_status",
 	"has_children" boolean DEFAULT false,
 	"children_count" integer DEFAULT 0,

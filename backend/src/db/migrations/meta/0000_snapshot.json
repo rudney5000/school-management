@@ -1,5 +1,5 @@
 {
-  "id": "84b5d7b9-f57e-4971-9ad6-b13978912083",
+  "id": "4ee6336a-caec-4421-b6ea-e581325051dd",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1560,6 +1560,12 @@
           "type": "date",
           "primaryKey": false,
           "notNull": true
+        },
+        "image": {
+          "name": "image",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": false
         },
         "marital_status": {
           "name": "marital_status",
@@ -5475,6 +5481,7 @@
         "previous_report",
         "parent_id",
         "student_photo",
+        "teacher_photo",
         "payment_receipt",
         "diploma",
         "criminal_record",
