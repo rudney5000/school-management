@@ -154,7 +154,13 @@ export const attachmentCategoryEnum = pgEnum("attachment_category", [
     "previous_report",
     "parent_id",
     "student_photo",
+    "teacher_photo",
     "payment_receipt",
+    "diploma",
+    "criminal_record",
+    "resume",
+    "identity_document",
+    "guardianship_proof",
     "other",
 ]);
 
@@ -169,4 +175,17 @@ export const attachableTypeEnum = pgEnum('attachable_type', [
     'message',
     'enrollment',
     'payment',
+    'teacher'
 ])
+
+export const contractTypeEnum = pgEnum('contract_type', [
+    'permanent',
+    'fixed_term',
+    'part_time'
+]);
+export const maritalStatusEnum = pgEnum('marital_status', [
+    'single',
+    'married',
+    'divorced',
+    'widowed'
+]);

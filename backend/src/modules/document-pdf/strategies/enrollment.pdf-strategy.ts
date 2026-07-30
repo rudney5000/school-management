@@ -3,7 +3,8 @@ import { db } from '@/db';
 import {
     enrollments,
     students,
-    classes
+    classes,
+    subSchools
 } from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
 import {
@@ -13,6 +14,16 @@ import {
     DocumentPdfStrategy
 } from "@/modules/document-pdf/document-pdf.schema";
 
+function computeAge(dateOfBirth: string | Date): number {
+    const dob = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const hasHadBirthdayThisYear =
+        today.getMonth() > dob.getMonth() ||
+        (today.getMonth() === dob.getMonth() && today.getDate() >= dob.getDate());
+    if (!hasHadBirthdayThisYear) age -= 1;
+    return age;
+}
 export const enrollmentPdfStrategy: DocumentPdfStrategy<'enrollment'> = {
     async buildDocument({ enrollmentId }, locale, signature) {
         const [enrollment] = await db.select().from(enrollments).where(eq(enrollments.id, enrollmentId));
@@ -21,14 +32,22 @@ export const enrollmentPdfStrategy: DocumentPdfStrategy<'enrollment'> = {
         }
 
         const [student] = await db.select().from(students).where(eq(students.id, enrollment.studentId));
+        if (!student) {
+            throw new AppError('NOT_FOUND', 'Élève introuvable', 404);
+        }
+
         const [classRow] = await db.select().from(classes).where(eq(classes.id, enrollment.classId));
+        const [subSchool] = await db.select().from(subSchools).where(eq(subSchools.id, student.subSchoolId));
 
         return EnrollmentDocument({
             locale,
-            schoolName: 'EduPulse',
+            schoolName: subSchool?.name ?? 'École',
             studentFullName: `${student.firstName} ${student.lastName}`,
+            studentImageUrl: student.image ?? null,
+            gender: student.gender,
+            age: computeAge(student.dateOfBirth),
             className: classRow?.name ?? '—',
-            enrollmentDate: student.enrollmentDate,
+            enrollmentDate: enrollment.enrollmentDate.toISOString(),
             dateOfBirth: student.dateOfBirth,
             signature,
         });

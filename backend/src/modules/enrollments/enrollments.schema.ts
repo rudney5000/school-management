@@ -19,7 +19,8 @@ export const enrollmentParamsSchema = z.object({
 });
 
 export const enrollmentQuerySchema = z.object({
-  classId: z.string().uuid('Invalid class ID').optional(),
+    classId: z.string().uuid('Invalid class ID').optional(),
+    studentId: z.string().uuid('Invalid student ID').optional(),
 });
 
 export type UpdateEnrollmentStatusDto = z.infer<typeof updateEnrollmentStatusSchema>;

@@ -8,21 +8,22 @@ import type {
 } from '@entities/document-signature/model/types'
 
 type DownloadPdfInput =
-    | { documentType: 'bulletin';    params: DocumentPdfParamsMap['bulletin'];    filename?: string }
-    | { documentType: 'enrollment';  params: DocumentPdfParamsMap['enrollment'];  filename?: string }
-    | { documentType: 'certificate'; params: DocumentPdfParamsMap['certificate']; filename?: string }
+    {
+        [K in keyof DocumentPdfParamsMap]: {
+        documentType: K
+        params: DocumentPdfParamsMap[K]
+        filename?: string
+    }
+    }[keyof DocumentPdfParamsMap]
 
 export const useDownloadDocumentPdf = () => {
     return useMutation({
         mutationFn: (input: DownloadPdfInput) => {
-            switch (input.documentType) {
-                case 'bulletin':
-                    return downloadDocumentPdf('bulletin', input.params, input.filename)
-                case 'enrollment':
-                    return downloadDocumentPdf('enrollment', input.params, input.filename)
-                case 'certificate':
-                    return downloadDocumentPdf('certificate', input.params, input.filename)
-            }
+            return downloadDocumentPdf(
+                input.documentType,
+                input.params,
+                input.filename
+            )
         },
         onError: (error: Error) => {
             handleApiError(error)

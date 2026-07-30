@@ -1,6 +1,7 @@
 import {
   eq,
-  and
+  and,
+  SQL
 } from 'drizzle-orm';
 import { db } from '@/db';
 import {
@@ -20,11 +21,15 @@ const REQUIRED_ENROLLMENT_CATEGORIES = [
 export type EnrollmentRecord = typeof enrollments.$inferSelect;
 
 export class EnrollmentsService {
-  async findAll(classId?: string): Promise<EnrollmentRecord[]> {
-    if (classId) {
-      return db.select().from(enrollments).where(eq(enrollments.classId, classId));
+  async findAll(filters: { classId?: string; studentId?: string }): Promise<EnrollmentRecord[]> {
+    const conditions: SQL[] = [];
+    if (filters.classId) conditions.push(eq(enrollments.classId, filters.classId));
+    if (filters.studentId) conditions.push(eq(enrollments.studentId, filters.studentId));
+
+    if (conditions.length === 0) {
+      return db.select().from(enrollments);
     }
-    return db.select().from(enrollments);
+    return db.select().from(enrollments).where(and(...conditions));
   }
 
   async findById(id: string): Promise<EnrollmentRecord> {
@@ -59,22 +64,9 @@ export class EnrollmentsService {
 
   async ensureEnrollmentCanBeSigned(enrollmentId: string): Promise<EnrollmentRecord> {
     const enrollment = await this.findById(enrollmentId);
+    const docsState = await this.getRequiredDocumentsState(enrollmentId);
 
-    const docs = await db
-        .select({ category: attachments.category, status: attachments.status })
-        .from(attachments)
-        .where(
-            and(
-                eq(attachments.attachableType, 'enrollment'),
-                eq(attachments.attachableId, enrollmentId),
-            ),
-        );
-
-    const validatedCategories = new Set(
-        docs.filter((d) => d.status === 'validated').map((d) => d.category),
-    );
-
-    const missing = REQUIRED_ENROLLMENT_CATEGORIES.filter((c) => !validatedCategories.has(c));
+    const missing = docsState.filter((d) => d.status === 'missing').map((d) => d.category);
 
     if (missing.length > 0) {
       throw new AppError(
@@ -85,5 +77,37 @@ export class EnrollmentsService {
     }
 
     return enrollment;
+  }
+
+  async getSignableSnapshot(enrollmentId: string) {
+    const enrollment = await this.findById(enrollmentId);
+    const docsState = await this.getRequiredDocumentsState(enrollmentId);
+
+    return { enrollment, docsState };
+  }
+
+  private async getRequiredDocumentsState(enrollmentId: string) {
+    const docs = await db
+        .select({
+          id:       attachments.id,
+          category: attachments.category,
+          status:   attachments.status,
+        })
+        .from(attachments)
+        .where(
+            and(
+                eq(attachments.attachableType, 'enrollment'),
+                eq(attachments.attachableId, enrollmentId),
+            ),
+        );
+
+    return REQUIRED_ENROLLMENT_CATEGORIES.map((category) => {
+      const match = docs.find((d) => d.category === category && d.status === 'validated');
+      return {
+        category,
+        attachmentId: match?.id ?? null,
+        status: match ? 'validated' : 'missing',
+      };
+    });
   }
 }

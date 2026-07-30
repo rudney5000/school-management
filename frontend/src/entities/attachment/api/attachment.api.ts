@@ -51,6 +51,13 @@ export class AttachmentApi extends ApiWrapper {
             (raw) => raw as Attachment,
         )
     }
+
+    remove(params: AttachmentParamsDto) {
+        return this.handleRequest<{ id: string }>(
+            this._baseApi.delete(`/attachments/${params.id}`),
+            (raw) => raw as { id: string },
+        )
+    }
 }
 
 export const attachmentApi = new AttachmentApi()

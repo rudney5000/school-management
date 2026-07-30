@@ -63,4 +63,14 @@ router.patch(
     controller.reject,
 )
 
+router.delete(
+    '/:id',
+    authenticate,
+    authorize('admin', 'director', 'teacher', 'student', 'worker', 'super_admin'),
+    validate({
+        params: attachmentParamsSchema
+    }),
+    controller.remove,
+)
+
 export { router as attachmentsRouter }

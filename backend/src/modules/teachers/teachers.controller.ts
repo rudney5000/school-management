@@ -70,4 +70,10 @@ export class TeachersController {
     await this.service.remove(req.params.id, subSchoolId);
     res.status(204).send();
   });
+
+  getDossierStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const subSchoolId = resolveSubSchoolId(req);
+    const data = await this.service.getDossierStatus(req.params.id, subSchoolId);
+    respond(res, data);
+  });
 }

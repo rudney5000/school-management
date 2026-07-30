@@ -5,13 +5,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."attachable_type" AS ENUM('conversation', 'message', 'enrollment', 'payment');
+ CREATE TYPE "public"."attachable_type" AS ENUM('conversation', 'message', 'enrollment', 'payment', 'teacher');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."attachment_category" AS ENUM('birth_certificate', 'medical_certificate', 'previous_report', 'parent_id', 'student_photo', 'payment_receipt', 'other');
+ CREATE TYPE "public"."attachment_category" AS ENUM('birth_certificate', 'medical_certificate', 'previous_report', 'parent_id', 'student_photo', 'teacher_photo', 'payment_receipt', 'diploma', 'criminal_record', 'resume', 'identity_document', 'other');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -36,6 +36,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  CREATE TYPE "public"."certificate_type" AS ENUM('enrollment', 'completion', 'transfer', 'conduct', 'graduation');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."contract_type" AS ENUM('permanent', 'fixed_term', 'part_time');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -90,6 +96,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  CREATE TYPE "public"."live_session_status" AS ENUM('scheduled', 'live', 'ended');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."marital_status" AS ENUM('single', 'married', 'divorced', 'widowed');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -294,6 +306,12 @@ CREATE TABLE IF NOT EXISTS "teacher_schools" (
 	"teacher_id" uuid NOT NULL,
 	"sub_school_id" uuid NOT NULL,
 	"hire_date" date NOT NULL,
+	"contract_end_date" date,
+	"contract_type" "contract_type",
+	"salary" numeric(12, 2),
+	"weekly_hours" integer,
+	"subjects_taught" text,
+	"contract_clauses" text,
 	"qualification" text,
 	"specialization" text,
 	"is_active" boolean DEFAULT true NOT NULL,
@@ -310,6 +328,11 @@ CREATE TABLE IF NOT EXISTS "teachers" (
 	"gender" "gender" NOT NULL,
 	"date_of_birth" date NOT NULL,
 	"enrollment_date" date NOT NULL,
+	"image" varchar(512),
+	"marital_status" "marital_status",
+	"has_children" boolean DEFAULT false,
+	"children_count" integer DEFAULT 0,
+	"years_of_experience" integer DEFAULT 0,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "teachers_email_unique" UNIQUE("email")

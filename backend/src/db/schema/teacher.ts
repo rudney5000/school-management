@@ -1,6 +1,22 @@
-import { pgTable, uuid, varchar, text, date, boolean, uniqueIndex, timestamp, index } from 'drizzle-orm/pg-core';
+import {
+    pgTable,
+    uuid,
+    varchar,
+    text,
+    date,
+    boolean,
+    uniqueIndex,
+    timestamp,
+    index,
+    integer,
+    numeric
+} from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import {genderEnum} from "@/db/schema/enums";
+import {
+    contractTypeEnum,
+    genderEnum,
+    maritalStatusEnum
+} from "@/db/schema/enums";
 import {courses} from "@/db/schema/courses";
 import {subSchools} from "@/db/schema/subSchool";
 
@@ -14,6 +30,11 @@ export const teachers = pgTable('teachers', {
     gender: genderEnum('gender').notNull(),
     dateOfBirth: date('date_of_birth').notNull(),
     enrollmentDate: date('enrollment_date').notNull(),
+    image: varchar('image', { length: 512 }),
+    maritalStatus: maritalStatusEnum('marital_status'),
+    hasChildren: boolean('has_children').default(false),
+    childrenCount: integer('children_count').default(0),
+    yearsOfExperience: integer('years_of_experience').default(0),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
 }, (table) => ({
@@ -27,6 +48,12 @@ export const teacherSchools = pgTable('teacher_schools', {
         .references(() => teachers.id, { onDelete: 'cascade' }),
     subSchoolId: uuid('sub_school_id').notNull(),
     hireDate: date('hire_date').notNull(),
+    contractEndDate: date('contract_end_date'),
+    contractType: contractTypeEnum('contract_type'),
+    salary: numeric('salary', { precision: 12, scale: 2 }),
+    weeklyHours: integer('weekly_hours'),
+    subjectsTaught: text('subjects_taught'),
+    contractClauses: text('contract_clauses'),
     qualification: text('qualification'),
     specialization: text('specialization'),
     isActive: boolean('is_active').default(true).notNull(),

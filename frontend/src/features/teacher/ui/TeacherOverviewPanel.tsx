@@ -17,13 +17,19 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@shared/ui";
-import type {Teacher} from "@entities/teacher";
+import type {Teacher} from "@entities/teacher"
+import {TeacherDossierCard} from "@features/teacher";
 
 type TeacherOverviewPanelProps = {
     teacher: Teacher | null
     onView?: (teacher: Teacher) => void
     onEdit?: (teacher: Teacher) => void
-    relatedTeachers?: Array<{ id: string; firstName: string; lastName: string; image?: string }>
+    relatedTeachers?: Array<{
+        id: string;
+        firstName: string;
+        lastName: string;
+        image?: string
+    }>
 }
 
 export function TeacherOverviewPanel({ teacher, onView, onEdit, relatedTeachers }: TeacherOverviewPanelProps) {
@@ -56,6 +62,13 @@ export function TeacherOverviewPanel({ teacher, onView, onEdit, relatedTeachers 
             emptyTitle={t('dashboard.teachers.overview.emptyTitle')}
             emptyDescription={t('dashboard.teachers.overview.emptyDescription')}
         />
+
+            {teacher && (
+                <TeacherDossierCard
+                    teacherId={teacher.id}
+                    subSchoolId={teacher.subSchoolId}
+                />
+            )}
 
             {relatedTeachers && relatedTeachers.length > 0 && (
                 <div className="rounded-2xl bg-white border border-zinc-100/80 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(23,85,236,0.04)] p-4">

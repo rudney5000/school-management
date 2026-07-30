@@ -1,7 +1,13 @@
 import { z } from 'zod'
 import { getErrorMessage } from '@shared/lib'
 
-export const DOCUMENT_TYPES = ['bulletin', 'enrollment', 'certificate'] as const
+export const DOCUMENT_TYPES = [
+    'bulletin',
+    'enrollment',
+    'certificate',
+    'teacher_contract',
+    'payment_receipt'
+] as const
 
 export const pdfLocaleSchema = z.enum(['fr', 'en', 'ru', 'ln'])
 
@@ -24,6 +30,17 @@ export const certificateSignSchema = z.object({
     studentId:     z.string().uuid(getErrorMessage('validation.invalidUuid')),
 })
 
+export const teacherContractSignSchema = z.object({
+    subSchoolId: z.string().uuid(getErrorMessage('validation.invalidUuid')),
+    teacherId:   z.string().uuid(getErrorMessage('validation.invalidUuid')),
+})
+
+export const paymentReceiptSignSchema = z.object({
+    subSchoolId: z.string().uuid(getErrorMessage('validation.invalidUuid')),
+    paymentId:   z.string().uuid(getErrorMessage('validation.invalidUuid')),
+    studentId:   z.string().uuid(getErrorMessage('validation.invalidUuid')),
+})
+
 export const batchSignBulletinSchema = bulletinSignSchema.omit({ studentId: true })
 
 export const revokeSignatureSchema = z.object({
@@ -32,16 +49,31 @@ export const revokeSignatureSchema = z.object({
 
 export const bulletinPdfQuerySchema = bulletinSignSchema.extend({
     locale: pdfLocaleSchema,
+    preview: z.boolean().optional(),
 })
 
 export const enrollmentPdfQuerySchema = enrollmentSignSchema.extend({
     locale: pdfLocaleSchema,
+    preview: z.boolean().optional(),
 })
 
 export const certificatePdfQuerySchema = certificateSignSchema.extend({
     locale: pdfLocaleSchema,
+    preview: z.boolean().optional(),
 })
 
+export const teacherContractPdfQuerySchema = teacherContractSignSchema.extend({
+    locale: pdfLocaleSchema,
+    preview: z.boolean().optional(),
+})
+
+export const paymentReceiptPdfQuerySchema = paymentReceiptSignSchema.extend({
+    locale: pdfLocaleSchema,
+    preview: z.boolean().optional(),
+})
+
+export type PaymentReceiptSignDto = z.infer<typeof paymentReceiptSignSchema>
+export type PaymentReceiptPdfQueryDto = z.infer<typeof paymentReceiptPdfQuerySchema>
 export type BatchSignBulletinDto = z.infer<typeof batchSignBulletinSchema>
 export type BulletinSignDto    = z.infer<typeof bulletinSignSchema>
 export type EnrollmentSignDto  = z.infer<typeof enrollmentSignSchema>
@@ -50,3 +82,5 @@ export type RevokeSignatureDto = z.infer<typeof revokeSignatureSchema>
 export type BulletinPdfQueryDto    = z.infer<typeof bulletinPdfQuerySchema>
 export type EnrollmentPdfQueryDto  = z.infer<typeof enrollmentPdfQuerySchema>
 export type CertificatePdfQueryDto = z.infer<typeof certificatePdfQuerySchema>
+export type TeacherContractSignDto = z.infer<typeof teacherContractSignSchema>
+export type TeacherContractPdfQueryDto = z.infer<typeof teacherContractPdfQuerySchema>

@@ -9,6 +9,8 @@ import {
     bulletinPdfQuerySchema,
     enrollmentPdfQuerySchema,
     certificatePdfQuerySchema,
+    teacherContractPdfQuerySchema,
+    paymentReceiptPdfQuerySchema,
 } from '@/modules/document-pdf/document-pdf.schema';
 
 const router = Router();
@@ -36,6 +38,22 @@ router.get(
     authorize('director', 'admin', 'student', 'parent', 'super_admin'),
     validate({ query: certificatePdfQuerySchema }),
     controller.getCertificatePdf,
+);
+
+router.get(
+    '/teacher-contract/pdf',
+    authenticate,
+    authorize('director', 'admin', 'super_admin', 'teacher'),
+    validate({ query: teacherContractPdfQuerySchema }),
+    controller.getTeacherContractPdf,
+);
+
+router.get(
+    '/payment-receipt/pdf',
+    authenticate,
+    authorize('admin', 'director', 'worker', 'parent'),
+    validate({ query: paymentReceiptPdfQuerySchema }),
+    controller.getPaymentReceiptPdf
 );
 
 export { router as documentPdfRouter };

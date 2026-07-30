@@ -8,6 +8,7 @@ export type Teacher = {
     gender: 'male' | 'female'
     image?: string
     dateOfBirth: string
+    subSchoolId: string
     hireDate: string
     qualification?: string | null
     specialization?: string | null

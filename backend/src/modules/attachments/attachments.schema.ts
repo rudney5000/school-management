@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import {attachments} from "@/db/schema";
 
 const ALLOWED_IMAGE_TYPES = [
     'image/jpeg',
@@ -10,17 +11,31 @@ const ALLOWED_DOC_TYPES   = ['application/pdf'] as const
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024
 const MAX_DOC_SIZE   = 25 * 1024 * 1024
 
+export type AttachmentStatus = typeof attachments.$inferSelect['status']
+
 export const attachmentCategorySchema = z.enum([
     "birth_certificate",
     "medical_certificate",
     "previous_report",
     "parent_id",
     "student_photo",
+    "teacher_photo",
     "payment_receipt",
+    "diploma",
+    "criminal_record",
+    "resume",
+    "identity_document",
+    "guardianship_proof",
     "other",
 ])
 
-export const attachableTypeSchema = z.enum(['conversation', 'message', 'enrollment', 'payment'])
+export const attachableTypeSchema = z.enum([
+    'conversation',
+    'message',
+    'enrollment',
+    'payment',
+    'teacher'
+])
 export type AttachableType = z.infer<typeof attachableTypeSchema>
 
 export const presignUploadSchema = z.object({

@@ -15,7 +15,11 @@ import type {
     CertificateSignDto,
     EnrollmentPdfQueryDto,
     EnrollmentSignDto,
+    PaymentReceiptPdfQueryDto,
+    PaymentReceiptSignDto,
     RevokeSignatureDto,
+    TeacherContractPdfQueryDto,
+    TeacherContractSignDto,
 } from '@entities/document-signature/model/createDocumentSignatureSchema'
 
 export interface BatchSignBulletinResult {
@@ -64,6 +68,13 @@ export class DocumentSignatureApi extends ApiWrapper {
         )
     }
 
+    getCertificateStatus(params: CertificateSignDto) {
+        return this.handleRequest<SignatureStatusResult>(
+            this._baseApi.get('/document-signatures/certificate/status', params),
+            (raw) => raw as SignatureStatusResult,
+        )
+    }
+
     signCertificate(payload: CertificateSignDto) {
         return this.handleRequest<DocumentSignature>(
             this._baseApi.post('/document-signatures/certificate', payload),
@@ -75,6 +86,20 @@ export class DocumentSignatureApi extends ApiWrapper {
         return this.handleRequest<DocumentSignature>(
             this._baseApi.patch(`/document-signatures/${params.id}/revoke`, payload),
             (raw) => raw as DocumentSignature,
+        )
+    }
+
+    signTeacherContract(payload: TeacherContractSignDto) {
+        return this.handleRequest<DocumentSignature>(
+            this._baseApi.post('/document-signatures/teacher-contract', payload),
+            (raw) => raw as DocumentSignature,
+        )
+    }
+
+    getTeacherContractStatus(params: TeacherContractSignDto) {
+        return this.handleRequest<SignatureStatusResult>(
+            this._baseApi.get('/document-signatures/teacher-contract/status', params),
+            (raw) => raw as SignatureStatusResult,
         )
     }
 
@@ -96,6 +121,36 @@ export class DocumentSignatureApi extends ApiWrapper {
 
     async downloadCertificatePdf(params: CertificatePdfQueryDto): Promise<Blob> {
         const response = await this._baseApi.axiosInstance.get('/document-pdf/certificate/pdf', {
+            params,
+            responseType: 'blob',
+        })
+        return response.data as Blob
+    }
+
+    async downloadTeacherContractPdf(params: TeacherContractPdfQueryDto): Promise<Blob> {
+        const response = await this._baseApi.axiosInstance.get('/document-pdf/teacher-contract/pdf', {
+            params,
+            responseType: 'blob',
+        })
+        return response.data as Blob
+    }
+
+    signPaymentReceipt(payload: PaymentReceiptSignDto) {
+        return this.handleRequest<DocumentSignature>(
+            this._baseApi.post('/document-signatures/payment-receipt', payload),
+            (raw) => raw as DocumentSignature,
+        )
+    }
+
+    getPaymentReceiptStatus(params: PaymentReceiptSignDto) {
+        return this.handleRequest<SignatureStatusResult>(
+            this._baseApi.get('/document-signatures/payment-receipt/status', params),
+            (raw) => raw as SignatureStatusResult,
+        )
+    }
+
+    async downloadPaymentReceiptPdf(params: PaymentReceiptPdfQueryDto): Promise<Blob> {
+        const response = await this._baseApi.axiosInstance.get('/document-pdf/payment-receipt/pdf', {
             params,
             responseType: 'blob',
         })

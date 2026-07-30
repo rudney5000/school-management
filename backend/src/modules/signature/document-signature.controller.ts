@@ -6,7 +6,9 @@ import type {
     BulletinSignDto,
     CertificateSignDto,
     EnrollmentSignDto,
-    RevokeSignatureDto
+    PaymentReceiptSignDto,
+    RevokeSignatureDto,
+    TeacherContractSignDto
 } from '@/modules/signature/document-signature.schema'
 import {asyncHandler} from "@/shared/utils/async-handler";
 import {respond} from "@/shared/utils/respond";
@@ -41,6 +43,11 @@ export class DocumentSignaturesController {
         respond(res, data);
     });
 
+    getCertificateStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.getStatus('certificate', req.query as unknown as CertificateSignDto)
+        respond(res, data)
+    })
+
     signEnrollment = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const data = await this.service.sign('enrollment', req.body as EnrollmentSignDto, signContext(req));
         respond(res, data, 201);
@@ -54,6 +61,26 @@ export class DocumentSignaturesController {
     signCertificate = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const data = await this.service.sign('certificate', req.body as CertificateSignDto, signContext(req));
         respond(res, data, 201);
+    });
+
+    signTeacherContract = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.sign('teacher_contract', req.body as TeacherContractSignDto, signContext(req));
+        respond(res, data, 201);
+    });
+
+    getTeacherContractStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.getStatus('teacher_contract', req.query as unknown as TeacherContractSignDto);
+        respond(res, data);
+    });
+
+    signPaymentReceipt = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.sign('payment_receipt', req.body as PaymentReceiptSignDto, signContext(req));
+        respond(res, data, 201);
+    });
+
+    getPaymentReceiptStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.getStatus('payment_receipt', req.query as unknown as PaymentReceiptSignDto);
+        respond(res, data);
     });
 
     revoke = asyncHandler(async (req: Request, res: Response): Promise<void> => {

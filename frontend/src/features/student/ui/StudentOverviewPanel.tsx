@@ -6,7 +6,10 @@ import {
     Eye,
     Users,
 } from 'lucide-react'
-import {type Student, useClassmates} from '@entities/student'
+import {
+    type Student,
+    useClassmates
+} from '@entities/student'
 import { useTranslation } from '@shared/lib'
 import {
     EntityOverviewPanel,
@@ -16,6 +19,7 @@ import {
     AvatarImage,
 } from "@shared/ui";
 import { getInitials } from '@shared/lib/getInitial'
+import {StudentEnrollmentCard} from "@features/enrollment";
 
 
 type StudentOverviewPanelProps = {
@@ -88,6 +92,12 @@ export function StudentOverviewPanel({ student, onView, onEdit }: StudentOvervie
                         })}
                     </div>
                 </div>
+            )}
+            {student && (
+                <StudentEnrollmentCard
+                    studentId={student.id}
+                    subSchoolId={student.subSchoolId}
+                />
             )}
         </div>
     )

@@ -64,6 +64,8 @@ type ResultsTableProps = {
     isOpeningPdfForStudent: (studentId: string) => boolean
     isDownloadingPdfForStudent: (studentId: string) => boolean
 }
+
+
 export function ResultsTable({
                                  sortedResults,
                                  classAverage,
@@ -80,6 +82,12 @@ export function ResultsTable({
                                  isDownloadingPdfForStudent,
 }: ResultsTableProps) {
     const { t } = useTranslation()
+
+    const signatureBadgeLabels = {
+        signed: t("dashboard.exams.results.signatureStatus.signed"),
+        notSigned: t("dashboard.exams.results.signatureStatus.notSigned"),
+        expired: t("dashboard.exams.results.signatureStatus.expired"),
+    }
 
     return (
         <Card>
@@ -162,7 +170,12 @@ export function ResultsTable({
                                     </TableCell>
                                     <TableCell className="text-center">
                                         <div className="flex flex-col items-center gap-1">
-                                            {status ? <SignatureBadge status={status} /> : <Badge variant="outline">…</Badge>}
+                                            {status
+                                                ? <SignatureBadge
+                                                    status={status}
+                                                    labels={signatureBadgeLabels}
+                                                    />
+                                                : <Badge variant="outline">…</Badge>}
                                             {canSign && (!isSigned || isStale) && (
                                                 <Button
                                                     variant="ghost" size="icon" className="size-6"

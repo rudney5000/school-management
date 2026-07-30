@@ -6,21 +6,20 @@ import {
 import {handleApiError} from "@shared/lib";
 
 type OpenPdfInput =
-    | { documentType: 'bulletin';    params: DocumentPdfParamsMap['bulletin'] }
-    | { documentType: 'enrollment';  params: DocumentPdfParamsMap['enrollment'] }
-    | { documentType: 'certificate'; params: DocumentPdfParamsMap['certificate'] }
+    {
+        [K in keyof DocumentPdfParamsMap]: {
+        documentType: K
+        params: DocumentPdfParamsMap[K]
+    }
+    }[keyof DocumentPdfParamsMap]
 
 export const useOpenDocumentPdf = () => {
     return useMutation({
         mutationFn: (input: OpenPdfInput) => {
-            switch (input.documentType) {
-                case 'bulletin':
-                    return openDocumentPdf('bulletin', input.params)
-                case 'enrollment':
-                    return openDocumentPdf('enrollment', input.params)
-                case 'certificate':
-                    return openDocumentPdf('certificate', input.params)
-            }
+            return openDocumentPdf(
+                input.documentType,
+                input.params
+            )
         },
         onError: (error: Error) => {
             handleApiError(error)
