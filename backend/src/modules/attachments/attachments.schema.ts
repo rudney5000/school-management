@@ -25,6 +25,7 @@ export const attachmentCategorySchema = z.enum([
     "criminal_record",
     "resume",
     "identity_document",
+    "guardianship_proof",
     "other",
 ])
 

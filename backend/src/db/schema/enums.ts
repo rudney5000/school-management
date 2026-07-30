@@ -160,6 +160,7 @@ export const attachmentCategoryEnum = pgEnum("attachment_category", [
     "criminal_record",
     "resume",
     "identity_document",
+    "guardianship_proof",
     "other",
 ]);
 
