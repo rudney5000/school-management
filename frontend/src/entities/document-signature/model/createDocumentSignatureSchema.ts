@@ -1,7 +1,12 @@
 import { z } from 'zod'
 import { getErrorMessage } from '@shared/lib'
 
-export const DOCUMENT_TYPES = ['bulletin', 'enrollment', 'certificate'] as const
+export const DOCUMENT_TYPES = [
+    'bulletin',
+    'enrollment',
+    'certificate',
+    'teacher_contract'
+] as const
 
 export const pdfLocaleSchema = z.enum(['fr', 'en', 'ru', 'ln'])
 

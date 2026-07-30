@@ -103,7 +103,13 @@ export function EnrollmentDocumentsValidation({
     previewPdf.mutate(
         {
           documentType: 'enrollment',
-          params: { subSchoolId, enrollmentId, studentId, locale: toPdfLocale(i18n.language), preview: true },
+          params: {
+            subSchoolId,
+            enrollmentId,
+            studentId,
+            locale: toPdfLocale(i18n.language),
+            preview: true
+          },
         },
         {
           onSuccess: (url) => {

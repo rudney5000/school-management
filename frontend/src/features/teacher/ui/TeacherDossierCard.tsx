@@ -64,7 +64,7 @@ export function TeacherDossierCard({ teacherId, subSchoolId }: TeacherDossierCar
                 drawerTitle={t("dashboard.teachers.documents.dossier.drawerTitle")}
                 drawerDescription={t("dashboard.teachers.documents.dossier.drawerDescription")}
             >
-                <TeacherDocumentsPanel teacherId={teacherId} />
+                <TeacherDocumentsPanel teacherId={teacherId}  subSchoolId={subSchoolId}/>
             </CustomDrawer>
         </div>
     )

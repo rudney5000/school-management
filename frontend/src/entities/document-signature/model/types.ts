@@ -73,5 +73,5 @@ export type DocumentPdfParamsMap = {
     bulletin:    BulletinPdfParams
     enrollment:  EnrollmentPdfParams
     certificate: CertificatePdfParams
-    teacher_contract: TeacherContractSignParams
+    teacher_contract: TeacherContractPdfParams
 }

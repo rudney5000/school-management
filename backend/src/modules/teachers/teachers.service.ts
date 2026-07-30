@@ -35,29 +35,55 @@ export type TeacherWithAssignment = {
     address: string | null;
     gender: 'male' | 'female';
     dateOfBirth: string;
+    image: string | null;
+    maritalStatus: 'single' | 'married' | 'divorced' | 'widowed' | null;
+    hasChildren: boolean | null;
+    childrenCount: number | null;
+    yearsOfExperience: number | null;
+    subSchoolId: string;
     hireDate: string;
+    contractEndDate: string | null;
+    contractType: 'permanent' | 'fixed_term' | 'part_time' | null;
+    salary: string | null;
+    weeklyHours: number | null;
+    subjectsTaught: string | null;
+    contractClauses: string | null;
     qualification: string | null;
     specialization: string | null;
     isActive: boolean;
 };
 
+const teacherWithAssignmentColumns = {
+    id: teachers.id,
+    firstName: teachers.firstName,
+    lastName: teachers.lastName,
+    email: teachers.email,
+    phone: teachers.phone,
+    address: teachers.address,
+    gender: teachers.gender,
+    dateOfBirth: teachers.dateOfBirth,
+    image: teachers.image,
+    maritalStatus: teachers.maritalStatus,
+    hasChildren: teachers.hasChildren,
+    childrenCount: teachers.childrenCount,
+    yearsOfExperience: teachers.yearsOfExperience,
+    subSchoolId: teacherSchools.subSchoolId,
+    hireDate: teacherSchools.hireDate,
+    contractEndDate: teacherSchools.contractEndDate,
+    contractType: teacherSchools.contractType,
+    salary: teacherSchools.salary,
+    weeklyHours: teacherSchools.weeklyHours,
+    subjectsTaught: teacherSchools.subjectsTaught,
+    contractClauses: teacherSchools.contractClauses,
+    qualification: teacherSchools.qualification,
+    specialization: teacherSchools.specialization,
+    isActive: teacherSchools.isActive,
+} as const;
+
 export class TeachersService {
     async findAll(subSchoolId: string): Promise<TeacherWithAssignment[]> {
         return db
-            .select({
-                id: teachers.id,
-                firstName: teachers.firstName,
-                lastName: teachers.lastName,
-                email: teachers.email,
-                phone: teachers.phone,
-                address: teachers.address,
-                gender: teachers.gender,
-                dateOfBirth: teachers.dateOfBirth,
-                hireDate: teacherSchools.hireDate,
-                qualification: teacherSchools.qualification,
-                specialization: teacherSchools.specialization,
-                isActive: teacherSchools.isActive,
-            })
+            .select(teacherWithAssignmentColumns)
             .from(teacherSchools)
             .innerJoin(teachers, eq(teacherSchools.teacherId, teachers.id))
             .where(
@@ -70,20 +96,7 @@ export class TeachersService {
 
     async findById(id: string, subSchoolId: string): Promise<TeacherWithAssignment> {
         const [row] = await db
-            .select({
-                id: teachers.id,
-                firstName: teachers.firstName,
-                lastName: teachers.lastName,
-                email: teachers.email,
-                phone: teachers.phone,
-                address: teachers.address,
-                gender: teachers.gender,
-                dateOfBirth: teachers.dateOfBirth,
-                hireDate: teacherSchools.hireDate,
-                qualification: teacherSchools.qualification,
-                specialization: teacherSchools.specialization,
-                isActive: teacherSchools.isActive,
-            })
+            .select(teacherWithAssignmentColumns)
             .from(teacherSchools)
             .innerJoin(teachers, eq(teacherSchools.teacherId, teachers.id))
             .where(
@@ -93,12 +106,16 @@ export class TeachersService {
                 ),
             );
 
-        if (!row) throw new AppError('NOT_FOUND', 'Enseignant introuvable', 404);
+        if (!row) throw new AppError(
+            'NOT_FOUND',
+            'Enseignant introuvable',
+            404
+        );
         return row;
     }
 
     async create(input: CreateTeacherWithAssignmentDto): Promise<TeacherWithAssignment> {
-        await db.transaction(async (tx) => {
+        const teacherId = await db.transaction(async (tx) => {
             const [teacher] = await tx
                 .insert(teachers)
                 .values({
@@ -110,6 +127,11 @@ export class TeachersService {
                     gender: input.gender,
                     dateOfBirth: input.dateOfBirth,
                     enrollmentDate: input.enrollmentDate,
+                    image: input.image,
+                    maritalStatus: input.maritalStatus,
+                    hasChildren: input.hasChildren,
+                    childrenCount: input.childrenCount,
+                    yearsOfExperience: input.yearsOfExperience,
                 })
                 .returning();
 
@@ -117,13 +139,21 @@ export class TeachersService {
                 teacherId: teacher.id,
                 subSchoolId: input.subSchoolId,
                 hireDate: input.hireDate,
+                contractEndDate: input.contractEndDate,
+                contractType: input.contractType,
+                salary: input.salary?.toString(),
+                weeklyHours: input.weeklyHours,
+                subjectsTaught: input.subjectsTaught,
+                contractClauses: input.contractClauses,
                 qualification: input.qualification,
                 specialization: input.specialization,
                 isActive: input.isActive,
             });
+
+            return teacher.id;
         });
 
-        return this.findById(input.subSchoolId, input.subSchoolId);
+        return this.findById(teacherId, input.subSchoolId);
     }
 
     async update(id: string, subSchoolId: string, input: UpdateTeacherDto): Promise<TeacherWithAssignment> {
@@ -142,7 +172,10 @@ export class TeachersService {
 
         await db
             .update(teacherSchools)
-            .set(input)
+            .set({
+                ...input,
+                salary: input.salary !== undefined ? input.salary?.toString() : undefined,
+            })
             .where(
                 and(
                     eq(teacherSchools.teacherId, id),
@@ -160,6 +193,12 @@ export class TeachersService {
                 teacherId,
                 subSchoolId: input.subSchoolId,
                 hireDate: input.hireDate,
+                contractEndDate: input.contractEndDate,
+                contractType: input.contractType,
+                salary: input.salary?.toString(),
+                weeklyHours: input.weeklyHours,
+                subjectsTaught: input.subjectsTaught,
+                contractClauses: input.contractClauses,
                 qualification: input.qualification,
                 specialization: input.specialization,
                 isActive: input.isActive,
@@ -168,6 +207,7 @@ export class TeachersService {
 
         return assignment;
     }
+
     async remove(id: string, subSchoolId: string): Promise<void> {
         await this.findById(id, subSchoolId);
 
@@ -204,7 +244,11 @@ export class TeachersService {
     async ensureTeacherDossierComplete(teacherId: string, subSchoolId: string): Promise<void> {
         const { isComplete, missing } = await this.getDossierStatus(teacherId, subSchoolId)
         if (!isComplete) {
-            throw new AppError('DOCUMENTS_INCOMPLETE', `Dossier incomplet : ${missing.join(', ')}`, 422)
+            throw new AppError(
+                'DOCUMENTS_INCOMPLETE',
+                `Dossier incomplet : ${missing.join(', ')}`,
+                422
+            )
         }
     }
 

@@ -16,6 +16,7 @@ import type {
     EnrollmentPdfQueryDto,
     EnrollmentSignDto,
     RevokeSignatureDto,
+    TeacherContractPdfQueryDto,
     TeacherContractSignDto,
 } from '@entities/document-signature/model/createDocumentSignatureSchema'
 
@@ -118,6 +119,14 @@ export class DocumentSignatureApi extends ApiWrapper {
 
     async downloadCertificatePdf(params: CertificatePdfQueryDto): Promise<Blob> {
         const response = await this._baseApi.axiosInstance.get('/document-pdf/certificate/pdf', {
+            params,
+            responseType: 'blob',
+        })
+        return response.data as Blob
+    }
+
+    async downloadTeacherContractPdf(params: TeacherContractPdfQueryDto): Promise<Blob> {
+        const response = await this._baseApi.axiosInstance.get('/document-pdf/teacher-contract/pdf', {
             params,
             responseType: 'blob',
         })

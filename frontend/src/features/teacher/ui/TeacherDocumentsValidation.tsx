@@ -97,7 +97,15 @@ export function TeacherDocumentsValidation({
 
     const handlePreviewPdf = () => {
         const params: TeacherContractPdfParams = { subSchoolId, teacherId, locale: toPdfLocale(i18n.language), preview: true }
-        previewPdf.mutate({ documentType: 'teacher_contract', params })
+        previewPdf.mutate(
+            { documentType: 'teacher_contract', params },
+            {
+                onSuccess: (url) => {
+                    setPreviewUrl(url)
+                    setPreviewDrawerOpen(true)
+                },
+            }
+        )
     }
 
     useEffect(() => {
