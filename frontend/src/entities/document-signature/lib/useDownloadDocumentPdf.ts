@@ -7,11 +7,14 @@ import type {
     DocumentPdfParamsMap
 } from '@entities/document-signature/model/types'
 
-type DownloadPdfInput<T extends keyof DocumentPdfParamsMap = keyof DocumentPdfParamsMap> = {
-    documentType: T
-    params: DocumentPdfParamsMap[T]
-    filename?: string
-}
+type DownloadPdfInput =
+    {
+        [K in keyof DocumentPdfParamsMap]: {
+        documentType: K
+        params: DocumentPdfParamsMap[K]
+        filename?: string
+    }
+    }[keyof DocumentPdfParamsMap]
 
 export const useDownloadDocumentPdf = () => {
     return useMutation({

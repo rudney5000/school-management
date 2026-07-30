@@ -15,6 +15,8 @@ import type {
     CertificateSignDto,
     EnrollmentPdfQueryDto,
     EnrollmentSignDto,
+    PaymentReceiptPdfQueryDto,
+    PaymentReceiptSignDto,
     RevokeSignatureDto,
     TeacherContractPdfQueryDto,
     TeacherContractSignDto,
@@ -127,6 +129,28 @@ export class DocumentSignatureApi extends ApiWrapper {
 
     async downloadTeacherContractPdf(params: TeacherContractPdfQueryDto): Promise<Blob> {
         const response = await this._baseApi.axiosInstance.get('/document-pdf/teacher-contract/pdf', {
+            params,
+            responseType: 'blob',
+        })
+        return response.data as Blob
+    }
+
+    signPaymentReceipt(payload: PaymentReceiptSignDto) {
+        return this.handleRequest<DocumentSignature>(
+            this._baseApi.post('/document-signatures/payment-receipt', payload),
+            (raw) => raw as DocumentSignature,
+        )
+    }
+
+    getPaymentReceiptStatus(params: PaymentReceiptSignDto) {
+        return this.handleRequest<SignatureStatusResult>(
+            this._baseApi.get('/document-signatures/payment-receipt/status', params),
+            (raw) => raw as SignatureStatusResult,
+        )
+    }
+
+    async downloadPaymentReceiptPdf(params: PaymentReceiptPdfQueryDto): Promise<Blob> {
+        const response = await this._baseApi.axiosInstance.get('/document-pdf/payment-receipt/pdf', {
             params,
             responseType: 'blob',
         })

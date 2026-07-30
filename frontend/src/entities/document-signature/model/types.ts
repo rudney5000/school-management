@@ -2,7 +2,8 @@ export const DOCUMENT_TYPES = [
     'bulletin',
     'enrollment',
     'certificate',
-    'teacher_contract'
+    'teacher_contract',
+    'payment_receipt'
 ] as const
 
 export type DocumentType = typeof DOCUMENT_TYPES[number]
@@ -61,6 +62,12 @@ export type TeacherContractSignParams = {
     teacherId: string
 }
 
+export type PaymentReceiptSignParams = {
+    subSchoolId: string
+    paymentId: string
+    studentId: string
+}
+
 export type BulletinPdfParams = BulletinSignParams & { locale: PdfLocale }
 
 export type EnrollmentPdfParams = EnrollmentSignParams & { locale: PdfLocale; preview?: boolean }
@@ -69,9 +76,12 @@ export type CertificatePdfParams = CertificateSignParams & { locale: PdfLocale; 
 
 export type TeacherContractPdfParams = TeacherContractSignParams & { locale: PdfLocale; preview?: boolean }
 
+export type PaymentReceiptPdfParams = PaymentReceiptSignParams & { locale: PdfLocale; preview?: boolean }
+
 export type DocumentPdfParamsMap = {
     bulletin:    BulletinPdfParams
     enrollment:  EnrollmentPdfParams
     certificate: CertificatePdfParams
     teacher_contract: TeacherContractPdfParams
+    payment_receipt: PaymentReceiptPdfParams
 }

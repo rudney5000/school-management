@@ -10,7 +10,8 @@ const PDF_FILENAMES: Record<DocumentType, string> = {
     bulletin:    'bulletin.pdf',
     enrollment:  'enrollment.pdf',
     certificate: 'certificate.pdf',
-    teacher_contract: 'contract.pdf'
+    teacher_contract: 'contract.pdf',
+    payment_receipt: 'recu-paiement.pdf',
 }
 
 type PdfFetcherMap = {
@@ -22,6 +23,7 @@ const pdfFetchers: PdfFetcherMap = {
     enrollment:  (params) => documentSignatureApi.downloadEnrollmentPdf(params),
     certificate: (params) => documentSignatureApi.downloadCertificatePdf(params),
     teacher_contract: (params) => documentSignatureApi.downloadTeacherContractPdf(params),
+    payment_receipt: (params) => documentSignatureApi.downloadPaymentReceiptPdf(params),
 }
 
 export async function fetchPdf<T extends DocumentType>(

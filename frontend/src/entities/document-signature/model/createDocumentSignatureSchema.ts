@@ -5,7 +5,8 @@ export const DOCUMENT_TYPES = [
     'bulletin',
     'enrollment',
     'certificate',
-    'teacher_contract'
+    'teacher_contract',
+    'payment_receipt'
 ] as const
 
 export const pdfLocaleSchema = z.enum(['fr', 'en', 'ru', 'ln'])
@@ -34,6 +35,12 @@ export const teacherContractSignSchema = z.object({
     teacherId:   z.string().uuid(getErrorMessage('validation.invalidUuid')),
 })
 
+export const paymentReceiptSignSchema = z.object({
+    subSchoolId: z.string().uuid(getErrorMessage('validation.invalidUuid')),
+    paymentId:   z.string().uuid(getErrorMessage('validation.invalidUuid')),
+    studentId:   z.string().uuid(getErrorMessage('validation.invalidUuid')),
+})
+
 export const batchSignBulletinSchema = bulletinSignSchema.omit({ studentId: true })
 
 export const revokeSignatureSchema = z.object({
@@ -60,6 +67,13 @@ export const teacherContractPdfQuerySchema = teacherContractSignSchema.extend({
     preview: z.boolean().optional(),
 })
 
+export const paymentReceiptPdfQuerySchema = paymentReceiptSignSchema.extend({
+    locale: pdfLocaleSchema,
+    preview: z.boolean().optional(),
+})
+
+export type PaymentReceiptSignDto = z.infer<typeof paymentReceiptSignSchema>
+export type PaymentReceiptPdfQueryDto = z.infer<typeof paymentReceiptPdfQuerySchema>
 export type BatchSignBulletinDto = z.infer<typeof batchSignBulletinSchema>
 export type BulletinSignDto    = z.infer<typeof bulletinSignSchema>
 export type EnrollmentSignDto  = z.infer<typeof enrollmentSignSchema>
