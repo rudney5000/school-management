@@ -15,6 +15,11 @@ const REQUIRED_CATEGORIES: AttachmentCategory[] = [
   'parent_id',
 ]
 
+const OPTIONAL_PARENT_CATEGORIES: AttachmentCategory[] = [
+  'parent_id',
+  'guardianship_proof',
+]
+
 interface EnrollmentDocumentsUploadProps {
   enrollmentId: string
 }
@@ -75,30 +80,57 @@ export function EnrollmentDocumentsUpload({ enrollmentId }: EnrollmentDocumentsU
   }
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-lg font-semibold">
-        {t("dashboard.enrollment.documents.title")}
-      </h2>
-      
-      <div className="space-y-4">
-        {REQUIRED_CATEGORIES.map((category) => (
-          <div key={category} className="space-y-2">
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-medium">
-                {t(`dashboard.enrollment.documents.categories.${category}`)}
-              </label>
-              {getStatusBadge(category)}
-            </div>
-            
-            <AttachmentUploadZone
-              attachableType="enrollment"
-              attachableId={enrollmentId}
-              category={category}
-              existingAttachment={getAttachmentByCategory(category)}
-            />
+      <div className="space-y-6">
+        <h2 className="text-lg font-semibold">
+          {t("dashboard.enrollment.documents.title")}
+        </h2>
+
+        <div className="space-y-4">
+          {REQUIRED_CATEGORIES.map((category) => (
+              <div key={category} className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium">
+                    {t(`dashboard.enrollment.documents.categories.${category}`)}
+                  </label>
+                  {getStatusBadge(category)}
+                </div>
+
+                <AttachmentUploadZone
+                    attachableType="enrollment"
+                    attachableId={enrollmentId}
+                    category={category}
+                    existingAttachment={getAttachmentByCategory(category)}
+                />
+              </div>
+          ))}
+        </div>
+
+        <div className="space-y-4 pt-4 border-t border-zinc-100">
+          <div>
+            <h3 className="text-sm font-semibold">
+              {t("dashboard.enrollment.documents.parentSection.title")}
+            </h3>
+            <p className="text-xs text-muted-foreground">
+              {t("dashboard.enrollment.documents.parentSection.optionalNotice")}
+            </p>
           </div>
-        ))}
+          {OPTIONAL_PARENT_CATEGORIES.map((category) => (
+              <div key={category} className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium">
+                    {t(`dashboard.enrollment.documents.categories.${category}`)}
+                  </label>
+                  {getStatusBadge(category)}
+                </div>
+                <AttachmentUploadZone
+                    attachableType="enrollment"
+                    attachableId={enrollmentId}
+                    category={category}
+                    existingAttachment={getAttachmentByCategory(category)}
+                />
+              </div>
+          ))}
+        </div>
       </div>
-    </div>
   )
 }

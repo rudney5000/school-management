@@ -46,7 +46,9 @@ export const attachmentCategorySchema = z.enum([
     "diploma",
     "criminal_record",
     "resume",
-    "identity_document"
+    "identity_document",
+    "guardianship_proof",
+    "other"
 ])
 
 export const presignUploadSchema = z.object({

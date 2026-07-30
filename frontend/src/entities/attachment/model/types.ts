@@ -22,6 +22,7 @@ export const ATTACHMENT_CATEGORIES = [
     'criminal_record',
     'resume',
     'identity_document',
+    'guardianship_proof',
     'other',
 ] as const
 
