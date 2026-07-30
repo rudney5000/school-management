@@ -54,6 +54,14 @@ interface PdfLabels {
     clauses: string;
     employer: string;
     employee: string;
+    receiptTitle: string;
+    receiptNumber: string;
+    amountPaid: string;
+    paymentInformation: string;
+    paymentType: string;
+    paymentDate: string;
+    description: string;
+    paymentTypes: Record<'TUITION' | 'CANTEEN' | 'UNIFORM' | 'EXAM_FEE' | 'TRANSPORT' | 'ACTIVITY' | 'OTHER', string>;
 }
 
 const labels: Record<PdfLocale, PdfLabels> = {
@@ -114,6 +122,22 @@ const labels: Record<PdfLocale, PdfLabels> = {
         clauses: 'Clauses particulières',
         employer: 'Employeur',
         employee: 'Employé(e)',
+        receiptTitle: 'Reçu de paiement',
+        receiptNumber: 'N° de reçu',
+        amountPaid: 'Montant payé',
+        paymentInformation: 'Détails du paiement',
+        paymentType: 'Type de paiement',
+        paymentDate: 'Date de paiement',
+        description: 'Description',
+        paymentTypes: {
+            TUITION: 'Frais de scolarité',
+            CANTEEN: 'Cantine',
+            UNIFORM: 'Uniforme',
+            EXAM_FEE: "Frais d'examen",
+            TRANSPORT: 'Transport',
+            ACTIVITY: 'Activité',
+            OTHER: 'Autre',
+        },
     },
     en: {
         signedElectronically: 'Electronically signed',
@@ -172,6 +196,22 @@ const labels: Record<PdfLocale, PdfLabels> = {
         clauses: 'Special Clauses',
         employer: 'Employer',
         employee: 'Employee',
+        receiptTitle: 'Payment Receipt',
+        receiptNumber: 'Receipt No.',
+        amountPaid: 'Amount Paid',
+        paymentInformation: 'Payment Details',
+        paymentType: 'Payment Type',
+        paymentDate: 'Payment Date',
+        description: 'Description',
+        paymentTypes: {
+            TUITION: 'Tuition Fees',
+            CANTEEN: 'Canteen',
+            UNIFORM: 'Uniform',
+            EXAM_FEE: 'Exam Fee',
+            TRANSPORT: 'Transport',
+            ACTIVITY: 'Activity',
+            OTHER: 'Other',
+        },
     },
     ru: {
         signedElectronically: 'Подписано электронно',
@@ -230,6 +270,22 @@ const labels: Record<PdfLocale, PdfLabels> = {
         clauses: 'Особые условия',
         employer: 'Работодатель',
         employee: 'Работник',
+        receiptTitle: 'Квитанция об оплате',
+        receiptNumber: '№ квитанции',
+        amountPaid: 'Оплаченная сумма',
+        paymentInformation: 'Детали платежа',
+        paymentType: 'Тип платежа',
+        paymentDate: 'Дата платежа',
+        description: 'Описание',
+        paymentTypes: {
+            TUITION: 'Плата за обучение',
+            CANTEEN: 'Столовая',
+            UNIFORM: 'Школьная форма',
+            EXAM_FEE: 'Экзаменационный сбор',
+            TRANSPORT: 'Транспорт',
+            ACTIVITY: 'Мероприятие',
+            OTHER: 'Другое',
+        },
     },
     ln: {
         signedElectronically: 'Esignami na motindo ya elektroniki',
@@ -288,6 +344,22 @@ const labels: Record<PdfLocale, PdfLabels> = {
         clauses: 'Malako ya sipesiali',
         employer: 'Nkolo mosala',
         employee: 'Mosali',
+        receiptTitle: 'Mokanda ya kofuta',
+        receiptNumber: 'Motango ya mokanda',
+        amountPaid: 'Mbongo oyo efutami',
+        paymentInformation: 'Makambo ya kofuta',
+        paymentType: 'Lolenge ya kofuta',
+        paymentDate: 'Mokolo ya kofuta',
+        description: 'Ndimbola',
+        paymentTypes: {
+            TUITION: 'Mbongo ya kelasi',
+            CANTEEN: 'Bileyi',
+            UNIFORM: 'Bilamba ya kelasi',
+            EXAM_FEE: 'Mbongo ya momekano',
+            TRANSPORT: 'Mituka',
+            ACTIVITY: 'Mosala ya libanda',
+            OTHER: 'Mosusu',
+        },
     },
 };
 
