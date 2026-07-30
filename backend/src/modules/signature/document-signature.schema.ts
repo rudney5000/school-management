@@ -5,6 +5,7 @@ export const DOCUMENT_TYPES = [
     'enrollment',
     'certificate',
     'teacher_contract',
+    'payment_receipt'
 ] as const
 
 export type DocumentType = typeof DOCUMENT_TYPES[number]
@@ -14,6 +15,7 @@ export interface DocumentParamsMap {
     enrollment: EnrollmentSignDto;
     certificate: CertificateSignDto;
     teacher_contract: TeacherContractSignDto;
+    payment_receipt: PaymentReceiptSignDto
 }
 
 export interface SignatureScope {
@@ -65,6 +67,11 @@ export const teacherContractSignSchema = z.object({
     teacherId:   z.string().uuid('Invalid teacher ID'),
 });
 
+export const paymentReceiptSignSchema = z.object({
+    subSchoolId: z.string().uuid('Invalid sub-school ID'),
+    paymentId:   z.string().uuid('Invalid payment ID'),
+    studentId:   z.string().uuid('Invalid student ID'),
+})
 
 export const documentTypeParamSchema = z.object({
     documentType: z.enum(DOCUMENT_TYPES),
@@ -82,6 +89,7 @@ export const signDocumentSchema = z.object({}).passthrough()
 export const teacherContractStatusQuerySchema = teacherContractSignSchema;
 export const batchSignBulletinSchema = bulletinSignSchema.omit({ studentId: true });
 
+export type PaymentReceiptSignDto = z.infer<typeof paymentReceiptSignSchema>
 export type DocumentSignatureParamsDto = z.infer<typeof documentSignatureParamsSchema>;
 export type RevokeSignatureDto         = z.infer<typeof revokeSignatureSchema>;
 export type BulletinSignDto    = z.infer<typeof bulletinSignSchema>;

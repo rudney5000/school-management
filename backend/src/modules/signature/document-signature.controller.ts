@@ -6,6 +6,7 @@ import type {
     BulletinSignDto,
     CertificateSignDto,
     EnrollmentSignDto,
+    PaymentReceiptSignDto,
     RevokeSignatureDto,
     TeacherContractSignDto
 } from '@/modules/signature/document-signature.schema'
@@ -69,6 +70,16 @@ export class DocumentSignaturesController {
 
     getTeacherContractStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const data = await this.service.getStatus('teacher_contract', req.query as unknown as TeacherContractSignDto);
+        respond(res, data);
+    });
+
+    signPaymentReceipt = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.sign('payment_receipt', req.body as PaymentReceiptSignDto, signContext(req));
+        respond(res, data, 201);
+    });
+
+    getPaymentReceiptStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.getStatus('payment_receipt', req.query as unknown as PaymentReceiptSignDto);
         respond(res, data);
     });
 

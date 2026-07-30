@@ -14,6 +14,9 @@ import {
 import {
     teacherContractSignatureStrategy
 } from "@/modules/signature/strategies/teacher-contract.strategy";
+import {
+    paymentReceiptSignatureStrategy
+} from "@/modules/signature/strategies/payment-receipt.strategy";
 
 type StrategyRegistry = {
     [K in DocumentType]: DocumentSignatureStrategy<K>
@@ -24,6 +27,7 @@ const signatureStrategyRegistry: StrategyRegistry = {
     enrollment: enrollmentSignatureStrategy,
     certificate: certificateSignatureStrategy,
     teacher_contract: teacherContractSignatureStrategy,
+    payment_receipt: paymentReceiptSignatureStrategy,
 }
 
 export function getSignatureStrategy<T extends DocumentType>(

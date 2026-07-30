@@ -10,6 +10,7 @@ import {
     documentSignatureParamsSchema,
     enrollmentSignSchema,
     enrollmentStatusQuerySchema,
+    paymentReceiptSignSchema,
     revokeSignatureSchema,
     teacherContractSignSchema
 } from "@/modules/signature/document-signature.schema";
@@ -118,6 +119,26 @@ router.get(
         query: teacherContractSignSchema
     }),
     controller.getTeacherContractStatus
+)
+
+router.post(
+    '/payment-receipt',
+    authenticate,
+    authorize('admin', 'director', 'worker'),
+    validate({
+        body: paymentReceiptSignSchema
+    }),
+    controller.signPaymentReceipt
+)
+
+router.get(
+    '/payment-receipt/status',
+    authenticate,
+    authorize('admin', 'director', 'worker', 'parent'),
+    validate({
+        query: paymentReceiptSignSchema
+    }),
+    controller.getPaymentReceiptStatus
 )
 
 export { router as documentSignaturesRouter };
