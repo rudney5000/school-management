@@ -26,9 +26,15 @@ type StudentOverviewPanelProps = {
     student: Student | null
     onView?: (student: Student) => void
     onEdit?: (student: Student) => void
+    isParent?: boolean
 }
 
-export function StudentOverviewPanel({ student, onView, onEdit }: StudentOverviewPanelProps) {
+export function StudentOverviewPanel({
+                                         student,
+                                         onView,
+                                         onEdit,
+                                         isParent = false
+}: StudentOverviewPanelProps) {
     const { t } = useTranslation()
     const { data: classmates } = useClassmates(student?.subSchoolId, student?.id)
 
@@ -93,7 +99,7 @@ export function StudentOverviewPanel({ student, onView, onEdit }: StudentOvervie
                     </div>
                 </div>
             )}
-            {student && (
+            {student && !isParent && (
                 <StudentEnrollmentCard
                     studentId={student.id}
                     subSchoolId={student.subSchoolId}

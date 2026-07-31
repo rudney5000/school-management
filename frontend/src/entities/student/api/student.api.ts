@@ -36,6 +36,13 @@ export class StudentApi extends ApiWrapper {
         )
     }
 
+    getMyChildren(subSchoolId: string) {
+        return this.handleRequest<Student[]>(
+            this._baseApi.get('/students/me/children', { subSchoolId }),
+            (raw) => raw as Student[]
+        )
+    }
+
     create(payload: CreateStudentDto){
         return this.handleRequest<Student>(
             this._baseApi.post('/students', payload),
