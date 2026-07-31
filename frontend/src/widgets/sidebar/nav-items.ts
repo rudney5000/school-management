@@ -257,7 +257,7 @@ export const workerNav: NavGroup[] = [
         ],
     },
     {
-        groupKey: 'nav.group.communication',
+        groupKey: 'nav.group.system',
         items: [
             {
                 labelKey: 'nav.messages',
