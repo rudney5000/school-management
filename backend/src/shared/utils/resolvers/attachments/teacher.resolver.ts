@@ -11,7 +11,7 @@ import {
 } from '@/shared/utils/resolvers/attachments/attachment-context-resolver'
 import {
     assertTeacherScopeAccess
-} from '@/shared/utils/resolvers/assert-teacher-scope-access'
+} from '@/shared/utils/assert-teacher-scope-access'
 
 export class TeacherAttachmentResolver implements AttachmentContextResolver {
     async resolve(userId: string, userRole: string, teacherId: string) {
