@@ -5,7 +5,7 @@ import {
 import { db } from '@/db';
 import {
     parentStudents,
-    students
+    students, users
 } from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
 import type {
@@ -119,4 +119,44 @@ export class StudentsService {
         ),
       );
   }
+
+    async resolveChildrenForParent(userId: string, subSchoolId: string) {
+        const [userRecord] = await db
+            .select({ parentId: users.parentId })
+            .from(users)
+            .where(eq(users.id, userId))
+            .limit(1);
+
+        if (!userRecord?.parentId) {
+            throw new AppError('FORBIDDEN', 'Aucun profil parent associé à ce compte', 403);
+        }
+
+        return db
+            .select({
+                id: students.id,
+                firstName: students.firstName,
+                lastName: students.lastName,
+                email: students.email,
+                phone: students.phone,
+                address: students.address,
+                gender: students.gender,
+                image: students.image,
+                dateOfBirth: students.dateOfBirth,
+                enrollmentDate: students.enrollmentDate,
+                subSchoolId: students.subSchoolId,
+                parentId: students.parentId,
+                isActive: students.isActive,
+                createdAt: students.createdAt,
+                updatedAt: students.updatedAt,
+            })
+            .from(students)
+            .innerJoin(parentStudents, eq(parentStudents.studentId, students.id))
+            .where(
+                and(
+                    eq(parentStudents.parentId, userRecord.parentId),
+                    eq(students.subSchoolId, subSchoolId),
+                    isNull(students.deletedAt),
+                ),
+            );
+    }
 }
