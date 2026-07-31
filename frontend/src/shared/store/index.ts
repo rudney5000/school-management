@@ -21,6 +21,8 @@ import {academicPeriodSlice} from "@entities/academic-period";
 import {chatSlice} from "@entities/chat";
 import {callUiSlice} from "@entities/video-call";
 import {liveSessionSlice} from "@entities/liveSession";
+import {attachmentSlice} from "@entities/attachment";
+import {documentSignatureSlice} from "@entities/document-signature";
 
 export const store = configureStore({
     reducer: {
@@ -45,6 +47,8 @@ export const store = configureStore({
         chat: chatSlice.reducer,
         callUi: callUiSlice.reducer,
         liveSession: liveSessionSlice.reducer,
+        attachment: attachmentSlice.reducer,
+        documentSignature: documentSignatureSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 })

@@ -15,7 +15,6 @@ export const createGradeSchema = z.object({
     comment:          z.string().max(500).optional().nullable(),
 })
 
-
 export const updateGradeSchema = createGradeSchema
     .partial()
     .omit({ studentId: true, courseId: true, academicPeriodId: true })

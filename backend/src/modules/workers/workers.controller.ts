@@ -1,12 +1,19 @@
-import type { Request, Response } from 'express';
+import type {
+  Request,
+  Response
+} from 'express';
 import { asyncHandler } from '@/shared/utils/async-handler';
 import { respond } from '@/shared/utils/respond';
 import type {
+  ConfirmSignatureImageDto,
   CreateWorkerDto,
+  PresignSignatureImageDto,
   SubSchoolQueryDto,
   UpdateWorkerDto,
 } from '@/modules/workers/workers.schema';
-import { WorkersService } from '@/modules/workers/workers.service';
+import {
+  WorkersService
+} from '@/modules/workers/workers.service';
 
 function resolveSubSchoolId(req: Request): string {
   if (req.user?.subSchoolId) {
@@ -49,5 +56,27 @@ export class WorkersController {
     const subSchoolId = resolveSubSchoolId(req);
     await this.service.remove(req.params.id, subSchoolId);
     res.status(204).send();
+  });
+
+  presignSignatureImage = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const subSchoolId = resolveSubSchoolId(req);
+    const workerId = await this.service.findWorkerIdByUserId(req.user!.id);
+    const data = await this.service.presignSignatureImage(
+        workerId,
+        subSchoolId,
+        req.body as PresignSignatureImageDto,
+    );
+    respond(res, data);
+  });
+
+  confirmSignatureImage = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const subSchoolId = resolveSubSchoolId(req);
+    const workerId = await this.service.findWorkerIdByUserId(req.user!.id);
+    const data = await this.service.confirmSignatureImage(
+        workerId,
+        subSchoolId,
+        req.body as ConfirmSignatureImageDto,
+    );
+    respond(res, data);
   });
 }

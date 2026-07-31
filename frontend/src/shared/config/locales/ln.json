@@ -190,7 +190,88 @@
       "viewAll": "Tout voir"
     },
     "enrollment": {
-      "title": "Inscriptions par niveau"
+      "title": "Inscriptions par niveau",
+      "students": {
+        "loading": "Kozwa makambo ya kokoma...",
+        "title": "Kokoma na kelasi",
+        "signed": "Etiami sinyatili",
+        "signedStale": "Etiami sinyatili (esili ngala)",
+        "complete": "Esili",
+        "draft": "Ebongisami nanu te",
+        "none": "Ezali te",
+        "manageDocuments": "Kobongisa mikanda",
+        "drawerTitle": "Dossier ya kokoma",
+        "drawerDescription": "Mikanda ya kondimisa, validation mpe sinyatili"
+      },
+      "documents": {
+        "pendingValidation": "Mikanda ezali kozela kondimama",
+        "signing": "Kotia sinyatili ezali kosalama...",
+        "resigning": "Kotia lisusu sinyatili na kokoma",
+        "signEnrollment": "Kotya sinyatili na kokoma",
+        "downloading": "Kokitisa...",
+        "downloadPdf": "Kokitisa PDF",
+        "pdfUnavailable": "Mokanda esengeli kozala na sinyatili liboso ya kokitisa yango",
+        "requiredValidation": "Mikanda nyonso oyo esengeli endimama liboso ya kotia sinyatili.",
+        "noPendingDocuments": "Mikanda ezali kozela kondimama te",
+        "signedStale": "Kokoma ezali na sinyatili (esili ngala)",
+        "signed": "Kokoma ezali na sinyatili",
+        "validate": "Kondima",
+        "reject": "Koboya",
+        "rejectTitle": "Koboya mokanda",
+        "rejectDescription": "Koma ntina oyo oboyi mokanda oyo.",
+        "rejectReasonLabel": "Ntina ya koboya",
+        "rejectReasonPlaceholder": "Limbolá mpo na nini oboyi mokanda oyo...",
+        "cancel": "Kolongola",
+        "rejecting": "Koboya ezali kosalama...",
+        "confirmReject": "Kondimisa koboya",
+        "title": "Mikanda esengeli",
+        "loading": "Kozwa...",
+        "loadingDocuments": "Kozwa Mikanda...",
+        "categories": {
+          "birth_certificate": "Certificat ya mbotama",
+          "medical_certificate": "Certificat ya monganga",
+          "previous_report": "Bulletin ya liboso",
+          "student_photo": "Foto ya mwana kelasi",
+          "parent_id": "Mokanda ya koyeba moboti",
+          "payment_receipt": "Reçu ya kofuta",
+          "guardianship_proof": "Mokanda ya bobateli mwana",
+          "other": "Mosusu"
+        },
+        "parentSection": {
+          "title": "Makambo ya moboti",
+          "optionalNotice": "Eteni oyo ezali ya kopona. Tondisa yango kaka soki mwana azali na moboti oyo akomami na système."
+        },
+        "status": {
+          "missing": "Ezangi",
+          "pending": "Ezali kozela",
+          "validated": "Endimami",
+          "rejected": "Ebwakami"
+        },
+        "upload": {
+          "uploading": "Kozwa Mikanda...",
+          "drop": "Tia fichier awa",
+          "select": "to finá kofina"
+        },
+        "previewDrawerTitle": "Botali ya dossier ya bokomisi liboso",
+        "previewDrawerDescription": "Talá malamu makambo nyonso liboso ya kondima kotya mokanda ya maboko.",
+        "previewIframeTitle": "Botali ya PDF ya dossier ya bokomisi",
+        "preview": "Talá mokanda liboso",
+        "previewDisabled": "Mikanda nyonso oyo esengeli esengeli kondimama liboso ya botali"
+      },
+      "create": {
+        "chooseClass": "Pona kelasi",
+        "creating": "Kosala...",
+        "createEnrollment": "Kosala bokomisi ya mwana"
+      },
+      "upload": {
+        "cancelUpload": "Longola kotinda",
+        "validatedDeleteWarning": "Mokanda oyo endimami. Soki olongoli yango, signature ya inscription ekokoma lisusu na nguya te mpe esengeli kosignama lisusu.",
+        "cancel": "Longola",
+        "deleting": "Kolongola...",
+        "confirmDelete": "Ndima kolongola",
+        "deleteFile": "Longola fichier",
+        "deleteValidatedFile": "Mokanda endimami — kolongola yango ekolongola nguya ya signature"
+      }
     },
     "attendances": {
       "title": "Taux de présence"
@@ -323,6 +404,56 @@
         "attendance": "Bopesi ya bozali",
         "thisMonth": "Sanza oyo",
         "quickActions": "Misala ya mbangu"
+      },
+      "documents": {
+        "title": "Mikanda ya mosala",
+        "loading": "Kozwa...",
+        "missing": "Ezangi",
+        "pending": "Ezali kozela",
+        "validated": "Endimami",
+        "rejected": "Ebwakami",
+        "categories": {
+          "identity_document": "Mokanda ya bomoto",
+          "diploma": "Diploma",
+          "criminal_record": "Mokanda ya kozanga makambo ya mibeko",
+          "resume": "CV",
+          "teacher_photo": "Foto ya molakisi kelasi",
+          "medical_certificate": "Mokanda ya monganga"
+        },
+        "validation": {
+          "title": "Mikanda ezali kozela kondimama",
+          "complete": "Dosie esili mobimba",
+          "empty": "Mokanda moko te ezali kozela kondimama",
+          "validate": "Ndima",
+          "reject": "Bwaka",
+          "rejectInProgress": "Kobwaka...",
+          "confirmReject": "Ndima kobwaka",
+          "cancel": "Longola",
+          "rejectDrawerTitle": "Bwaka mokanda",
+          "rejectDrawerDescription": "Komá ntina ya kobwaka mokanda oyo.",
+          "rejectReason": "Ntina ya kobwaka",
+          "rejectPlaceholder": "Limbola mpo na nini mokanda oyo ebwakami...",
+          "signingInProgress": "Kobanda kotya mokanda ya maboko...",
+          "signContract": "Tyá mokanda ya maboko na contrat",
+          "resignContract": "Tyá lisusu mokanda ya maboko na contrat",
+          "preview": "Talá liboso",
+          "previewDisabled": "Mikanda nyonso oyo esengeli esili kondimama",
+          "downloading": "Kokɔngola...",
+          "downloadContract": "Kokɔngola contrat",
+          "downloadDisabled": "Contrat esengeli kotyama mokanda ya maboko liboso ya kokɔngola yango",
+          "previewDrawerTitle": "Botali ya contrat liboso",
+          "previewDrawerDescription": "Talá malamu makambo nyonso liboso ya kondima kotya mokanda ya maboko.",
+          "previewIframeTitle": "Botali ya contrat liboso"
+        },
+        "dossier": {
+          "title": "Dosie ya mosala",
+          "loading": "Kozwa dosie...",
+          "complete": "Esili",
+          "incomplete": "Esili te",
+          "manageDocuments": "Bongisa mikanda",
+          "drawerTitle": "Dosie ya mosala",
+          "drawerDescription": "Mikanda ya lisungi mpe kondimama"
+        }
       }
     },
     "parents": {
@@ -755,12 +886,16 @@
       "title": "Bilembo ya masomo",
       "subtitle": "Talela bilembo na manota ya bana",
       "searchPlaceholder": "Koluka examen...",
+      "noExamSelected": "Ekzamɛ moko te eponami",
       "filters": {
         "all": "Nyonso",
         "scheduled": "Etíamí",
         "ongoing": "Ezalí kosálema",
         "completed": "Esílá",
-        "cancelled": "Esilisámí"
+        "cancelled": "Esilisámí",
+        "myExams": "Misala mpo na bana",
+        "allClasses": "Misala mpo na kelasi",
+        "allPeriods": "Tango ya koyekola"
       },
       "columns": {
         "title": "Examen",
@@ -768,7 +903,8 @@
         "date": "Mokolo",
         "type": "Lolenge",
         "status": "État",
-        "live": "lien"
+        "live": "lien",
+        "academicPeriod": "Tango ya koyekola"
       },
       "types": {
         "quiz": "Motuna",
@@ -810,7 +946,8 @@
         "coefficient": "Koefisiyán",
         "select": "Pona kosálí",
         "loading": "Kozela...",
-        "add": "Sala"
+        "add": "Sala",
+        "academicPeriod": "Tango ya koyekola"
       },
       "tabs": {
         "exams": "Masálisi",
@@ -836,7 +973,8 @@
         "studentsGraded": "bana-école batíamí manote",
         "average": "Ntálisi",
         "loading": "Kozela...",
-        "examNotFound": "Esálisi eyebáni te"
+        "examNotFound": "Esálisi eyebáni te",
+        "maxScore": "Note ya mpenza"
       },
       "results": {
         "title": "Bulletin ya barésulta",
@@ -862,7 +1000,20 @@
         "bestAverage": "Ntálisi ya malamu koleka",
         "passRate": "Proportion ya balongí",
         "students": "Bana-école",
-        "gradesCount": "manote"
+        "gradesCount": "manote",
+        "signature": "Kotia sinyatili",
+        "pdf": "PDF",
+        "sign": "Kotia sinyatili",
+        "reSign": "Kotia sinyatili lisusu",
+        "preview": "Kotala liboso",
+        "download": "Kokitisa",
+        "notSigned": "Etiami sinyatili te",
+        "pdfUnavailable": "PDF ezali te",
+        "signatureStatus": {
+          "signed": "Etiami sinyatili",
+          "notSigned": "Etiami sinyatili te",
+          "expired": "Esili ngala"
+        }
       },
       "statistics": {
         "title": "Statistiki ya barésulta",

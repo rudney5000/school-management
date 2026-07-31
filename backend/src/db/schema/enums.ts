@@ -1,6 +1,9 @@
 import { pgEnum } from 'drizzle-orm/pg-core';
 
-export const genderEnum = pgEnum('gender', ['male', 'female']);
+export const genderEnum = pgEnum('gender', [
+    'male',
+    'female'
+]);
 
 export const dayOfWeekEnum = pgEnum('day_of_week', [
     'MONDAY',
@@ -31,6 +34,7 @@ export const payrollStatusEnum = pgEnum('payroll_status', [
     'PAID',
     'CANCELLED',
 ]);
+
 export const paymentTypeEnum = pgEnum('payment_type', [
     'TUITION',
     'CANTEEN',
@@ -62,21 +66,24 @@ export const EventTypeEnum = pgEnum('event_type', [
     'OTHER',
 ]);
 
-export const attendanceTargetEnum = pgEnum(
-    'attendance_target',
-    [
+export const attendanceTargetEnum = pgEnum('attendance_target', [
         'student',
         'teacher'
-    ]
-);
+    ]);
 
-export const examTypeEnum = pgEnum(
-    "exam_type",
-    ["quiz", "midterm", "final", "homework", "oral"
+export const examTypeEnum = pgEnum("exam_type", [
+    "quiz",
+    "midterm",
+    "final",
+    "homework",
+    "oral"
     ])
-export const examStatusEnum = pgEnum(
-    "exam_status",
-    ["scheduled", "ongoing", "completed", "cancelled"
+
+export const examStatusEnum = pgEnum("exam_status", [
+    "scheduled",
+    "ongoing",
+    "completed",
+    "cancelled"
     ])
 
 export const gradeTypeEnum = pgEnum('grade_type', [
@@ -84,6 +91,7 @@ export const gradeTypeEnum = pgEnum('grade_type', [
     'participation',
     'project',
     'oral',
+    'exam'
 ])
 
 export const conversationTypeEnum = pgEnum('conversation_type', [
@@ -114,4 +122,70 @@ export const liveSessionStatusEnum = pgEnum('live_session_status', [
     'scheduled',
     'live',
     'ended'
+]);
+
+export const disputeStatusEnum = pgEnum('dispute_status', [
+    'pending',
+    'approved',
+    'rejected'
+])
+
+export const signatureStatusEnum = pgEnum('signature_status', [
+    'active',
+    'revoked'
+]);
+
+export const certificateTypeEnum = pgEnum('certificate_type', [
+    'enrollment',
+    'completion',
+    'transfer',
+    'conduct',
+    'graduation',
+]);
+
+export const enrollmentStatusEnum = pgEnum('enrollment_status', [
+    'draft',
+    'complete'
+]);
+
+export const attachmentCategoryEnum = pgEnum("attachment_category", [
+    "birth_certificate",
+    "medical_certificate",
+    "previous_report",
+    "parent_id",
+    "student_photo",
+    "teacher_photo",
+    "payment_receipt",
+    "diploma",
+    "criminal_record",
+    "resume",
+    "identity_document",
+    "guardianship_proof",
+    "other",
+]);
+
+export const attachmentStatusEnum = pgEnum('attachment_status', [
+    'pending',
+    'validated',
+    'rejected',
+]);
+
+export const attachableTypeEnum = pgEnum('attachable_type', [
+    'conversation',
+    'message',
+    'enrollment',
+    'payment',
+    'teacher'
+])
+
+export const contractTypeEnum = pgEnum('contract_type', [
+    'permanent',
+    'fixed_term',
+    'part_time'
+]);
+export const maritalStatusEnum = pgEnum('marital_status', [
+    'single',
+    'married',
+    'divorced',
+    'widowed'
 ]);

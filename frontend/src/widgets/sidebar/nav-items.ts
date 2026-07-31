@@ -275,6 +275,7 @@ export const workerNav: NavGroup[] = [
 
 export const navByRole: Record<UserRole, NavGroup[]> = {
     admin:   adminNav,
+    super_admin: adminNav,
     teacher: teacherNav,
     student: studentNav,
     director: directorNav,

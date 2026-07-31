@@ -22,9 +22,9 @@ export class ClassApi extends ApiWrapper {
         )
     }
 
-    getById(params: ClassParamsDto) {
+    getById(params: ClassParamsDto, subSchoolId: string) {
         return this.handleRequest<Class>(
-            this._baseApi.get(`/classes/${params.id}`),
+            this._baseApi.get(`/classes/${params.id}`, { subSchoolId }),
             (raw) => raw as Class
         )
     }

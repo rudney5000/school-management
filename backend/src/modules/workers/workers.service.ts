@@ -1,8 +1,27 @@
-import { and, eq } from 'drizzle-orm';
+import {
+    and,
+    eq
+} from 'drizzle-orm';
 import { db } from '@/db';
-import { workers } from '@/db/schema';
+import {
+    users,
+    workers
+} from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
-import type { CreateWorkerDto, UpdateWorkerDto } from './workers.schema';
+import type {
+    ConfirmSignatureImageDto,
+    CreateWorkerDto,
+    PresignSignatureImageDto,
+    UpdateWorkerDto
+} from './workers.schema';
+import {
+    BUCKET_NAME,
+    buildObjectKey,
+    s3Client
+} from "@/config/storage";
+import {randomUUID} from "crypto";
+import {PutObjectCommand} from "@aws-sdk/client-s3";
+import {getSignedUrl} from "@aws-sdk/s3-request-presigner";
 
 export type WorkerRecord = typeof workers.$inferSelect;
 
@@ -81,4 +100,46 @@ export class WorkersService {
       ),
     );
   }
+
+    async presignSignatureImage(workerId: string, subSchoolId: string, input: PresignSignatureImageDto) {
+        const worker = await this.findById(workerId, subSchoolId);
+
+        const extension = input.filename.split('.').pop();
+        const key = buildObjectKey(worker.subSchoolId, 'signatures', `${randomUUID()}.${extension}`);
+
+        const command = new PutObjectCommand({
+            Bucket: BUCKET_NAME,
+            Key: key,
+            ContentType: input.mimeType,
+            ContentLength: input.size,
+        });
+
+        const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 300 });
+        return { uploadUrl, key };
+    }
+
+    async confirmSignatureImage(workerId: string, subSchoolId: string, input: ConfirmSignatureImageDto) {
+        await this.findById(workerId, subSchoolId);
+
+        const [updated] = await db
+            .update(workers)
+            .set({ signatureImageKey: input.key })
+            .where(eq(workers.id, workerId))
+            .returning();
+
+        return updated;
+    }
+
+    async findWorkerIdByUserId(userId: string): Promise<string> {
+        const [row] = await db
+            .select({ workerId: users.workerId })
+            .from(users)
+            .where(eq(users.id, userId));
+
+        if (!row?.workerId) {
+            throw new AppError('NOT_FOUND', "Aucun profil employé associé à cet utilisateur", 404);
+        }
+
+        return row.workerId;
+    }
 }

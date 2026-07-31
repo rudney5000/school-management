@@ -231,7 +231,88 @@
       "viewAll": "View all"
     },
     "enrollment": {
-      "title": "Enrollment by Level"
+      "title": "Enrollment by Level",
+      "students": {
+        "loading": "Loading enrollment...",
+        "title": "Enrollment",
+        "signed": "Signed",
+        "signedStale": "Signed (outdated)",
+        "complete": "Complete",
+        "draft": "Draft",
+        "none": "None",
+        "manageDocuments": "Manage documents",
+        "drawerTitle": "Enrollment file",
+        "drawerDescription": "Supporting documents, validation and signature"
+      },
+      "documents": {
+        "pendingValidation": "Documents awaiting validation",
+        "signing": "Signing in progress...",
+        "resigning": "Re-sign enrollment",
+        "signEnrollment": "Sign enrollment",
+        "downloading": "Downloading...",
+        "downloadPdf": "Download PDF",
+        "pdfUnavailable": "The document must be signed before downloading",
+        "requiredValidation": "All required documents must be validated before signing the enrollment.",
+        "noPendingDocuments": "No documents awaiting validation",
+        "signedStale": "Enrollment signed (outdated)",
+        "signed": "Enrollment signed",
+        "validate": "Validate",
+        "reject": "Reject",
+        "rejectTitle": "Reject document",
+        "rejectDescription": "Please provide the reason for rejecting this document.",
+        "rejectReasonLabel": "Rejection reason",
+        "rejectReasonPlaceholder": "Explain why this document is rejected...",
+        "cancel": "Cancel",
+        "rejecting": "Rejecting...",
+        "confirmReject": "Confirm rejection",
+        "title": "Required documents",
+        "loading": "Loading...",
+        "loadingDocuments": "Loading of documents",
+        "categories": {
+          "birth_certificate": "Birth certificate",
+          "medical_certificate": "Medical certificate",
+          "previous_report": "Previous report card",
+          "student_photo": "Student photo",
+          "parent_id": "Parent ID document",
+          "payment_receipt": "Payment receipt",
+          "guardianship_proof": "Guardianship proof",
+          "other": "Other"
+        },
+        "parentSection": {
+          "title": "Parent Information",
+          "optionalNotice": "This section is optional. Complete it only if a parent is associated with the student."
+        },
+        "status": {
+          "missing": "Missing",
+          "pending": "Pending",
+          "validated": "Validated",
+          "rejected": "Rejected"
+        },
+        "upload": {
+          "uploading": "Uploading documents...",
+          "drop": "Drag and drop a file here",
+          "select": "or click to select"
+        },
+        "previewDrawerTitle": "Enrollment file preview",
+        "previewDrawerDescription": "Review the content before confirming the signature.",
+        "previewIframeTitle": "Enrollment PDF preview",
+        "preview": "Preview document",
+        "previewDisabled": "All required documents must be validated before previewing"
+      },
+      "create": {
+        "chooseClass": "Choose a class",
+        "creating": "Creating...",
+        "createEnrollment": "Create enrollment"
+      },
+      "upload": {
+        "cancelUpload": "Cancel upload",
+        "validatedDeleteWarning": "This document has been validated. Deleting it will invalidate the enrollment signature (it will need to be signed again).",
+        "cancel": "Cancel",
+        "deleting": "Deleting...",
+        "confirmDelete": "Confirm deletion",
+        "deleteFile": "Delete file",
+        "deleteValidatedFile": "Validated document — deleting it will invalidate the signature"
+      }
     },
     "students": {
       "form": {
@@ -365,6 +446,56 @@
         "attendance": "Attendance",
         "thisMonth": "This month",
         "quickActions": "Quick Actions"
+      },
+      "documents": {
+        "title": "Recruitment documents",
+        "loading": "Loading...",
+        "missing": "Missing",
+        "pending": "Pending",
+        "validated": "Validated",
+        "rejected": "Rejected",
+        "categories": {
+          "identity_document": "Identity document",
+          "diploma": "Diploma",
+          "criminal_record": "Criminal record",
+          "resume": "Curriculum Vitae (CV)",
+          "teacher_photo": "Teacher photo",
+          "medical_certificate": "Medical certificate"
+        },
+        "validation": {
+          "title": "Documents pending validation",
+          "complete": "Application complete",
+          "empty": "No documents pending validation",
+          "validate": "Validate",
+          "reject": "Reject",
+          "rejectInProgress": "Rejecting...",
+          "confirmReject": "Confirm rejection",
+          "cancel": "Cancel",
+          "rejectDrawerTitle": "Reject document",
+          "rejectDrawerDescription": "Please provide the reason for rejecting this document.",
+          "rejectReason": "Reason for rejection",
+          "rejectPlaceholder": "Explain why this document is being rejected...",
+          "signingInProgress": "Signing...",
+          "signContract": "Sign contract",
+          "resignContract": "Re-sign contract",
+          "preview": "Preview",
+          "previewDisabled": "All required documents must be validated",
+          "downloading": "Downloading...",
+          "downloadContract": "Download contract",
+          "downloadDisabled": "The contract must be signed before it can be downloaded",
+          "previewDrawerTitle": "Contract preview",
+          "previewDrawerDescription": "Review the content before confirming the signature.",
+          "previewIframeTitle": "Contract preview"
+        },
+        "dossier": {
+          "title": "Recruitment file",
+          "loading": "Loading file...",
+          "complete": "Complete",
+          "incomplete": "Incomplete",
+          "manageDocuments": "Manage documents",
+          "drawerTitle": "Recruitment file",
+          "drawerDescription": "Supporting documents and validation"
+        }
       }
     },
     "parents": {
@@ -682,12 +813,16 @@
       "title": "Exams",
       "subtitle": "Manage your exams and grades",
       "searchPlaceholder": "Search an exam...",
+      "noExamSelected": "No exam selected",
       "filters": {
         "all": "All",
         "scheduled": "Scheduled",
         "ongoing": "Ongoing",
         "completed": "Completed",
-        "cancelled": "Cancelled"
+        "cancelled": "Cancelled",
+        "myExams": "My Exams",
+        "allClasses": "All Classes",
+        "allPeriods": "All Periods"
       },
       "columns": {
         "title": "Exam",
@@ -695,7 +830,8 @@
         "date": "Date",
         "type": "Type",
         "status": "Status",
-        "live": "Link"
+        "live": "Link",
+        "academicPeriod": "Academic Period"
       },
       "types": {
         "quiz": "Quiz",
@@ -737,7 +873,8 @@
         "coefficient": "Coefficient",
         "select": "Select",
         "loading": "Loading...",
-        "add": "Add"
+        "add": "Add",
+        "academicPeriod": "Academic period"
       },
       "tabs": {
         "exams": "Exams",
@@ -763,7 +900,8 @@
         "studentsGraded": "students graded",
         "average": "Average",
         "loading": "Loading...",
-        "examNotFound": "Exam not found"
+        "examNotFound": "Exam not found",
+        "maxScore": "Max score"
       },
       "results": {
         "title": "Report Card",
@@ -789,7 +927,20 @@
         "bestAverage": "Best average",
         "passRate": "Pass rate",
         "students": "Students",
-        "gradesCount": "grades"
+        "gradesCount": "grades",
+        "signature": "Signature",
+        "pdf": "PDF",
+        "sign": "Sign",
+        "reSign": "Sign again",
+        "preview": "Preview",
+        "download": "Download",
+        "notSigned": "Not signed",
+        "pdfUnavailable": "PDF unavailable",
+        "signatureStatus": {
+          "signed": "Signed",
+          "notSigned": "Not signed",
+          "expired": "Expired"
+        }
       },
       "statistics": {
         "title": "Results Statistics",

@@ -1,3 +1,5 @@
+import type {PdfLocale} from "@entities/document-signature";
+
 export type Locale = 'ru' | 'fr' | 'en' | 'ln'
 
 export const SUPPORT_LOCALES: readonly Locale[] = ['ru', 'fr', 'en', 'ln'] as const
@@ -12,4 +14,8 @@ export const LOCALE_INFO: Record<Locale, { name: string; flag: string }> = {
     fr: { name: 'Français', flag: '🇫🇷' },
     en: { name: 'English', flag: '🇬🇧' },
     ln: { name: 'Lingála', flag: '🇨🇩' },
+}
+
+export function toPdfLocale(locale: string | undefined): PdfLocale {
+    return isSupportedLocale(locale) ? locale : DEFAULT_LOCALE
 }

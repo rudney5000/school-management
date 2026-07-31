@@ -20,7 +20,7 @@ const router = Router()
 router.get(
     '/',
     authenticate,
-    authorize('admin', 'director', 'teacher', 'student', 'super_admin'),
+    authorize('admin', 'director', 'teacher', 'student', 'parent', 'super_admin'),
     validate({
         query: subSchoolQuerySchema
     }),

@@ -4,13 +4,13 @@ import type {CommonError} from "@shared/helperClass/CommonError";
 import {useEffect} from "react";
 import {type Exam, examApi} from "@entities/exams";
 
-export const useExam = (examId?: string) => {
+export const useExam = (examId?: string, subSchoolId?: string) => {
     const query = useQuery<Exam, Error>({
-        queryKey: ['exams', examId],
+        queryKey: ['exams', examId, subSchoolId],
         enabled: !!examId,
         queryFn: async (): Promise<Exam> => {
             if (!examId) throw new Error("Exam ID is required");
-            const response = await examApi.getById({id: examId })
+            const response = await examApi.getById({ id: examId }, subSchoolId)
 
             if(!response.IsSuccess) {
                 const apiError = response.result as CommonError

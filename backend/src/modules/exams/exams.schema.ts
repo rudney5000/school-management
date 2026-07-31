@@ -3,6 +3,10 @@ import { z } from "zod"
 export const examTypeSchema = z.enum(["quiz", "midterm", "final", "homework", "oral"])
 export const examStatusSchema = z.enum(["scheduled", "ongoing", "completed", "cancelled"])
 
+export const subSchoolQuerySchema = z.object({
+    subSchoolId: z.string().uuid('Invalid sub-school ID'),
+});
+
 export const createExamSchema = z.object({
     subSchoolId:       z.string().uuid('Invalid sub-school ID'),
     title: z.string().min(2, "Too short").max(255),
@@ -14,12 +18,22 @@ export const createExamSchema = z.object({
     maxScore: z.coerce.number().positive().default(20).transform(v => String(v)),
     coefficient: z.coerce.number().positive().default(1).transform(v => String(v)),
     isLiveExam: z.boolean().optional().default(false),
+    retakeOfExamId: z.string().uuid('Invalid exam ID').optional(),
     liveUrl: z.string().url('Invalid URL').optional(),
+    academicPeriodId: z.string().uuid('Invalid academic period ID').optional(),
 })
 
 export const examParamsSchema = z.object({
     id: z.string().uuid('Invalid student ID'),
 });
+
+export const examResultsParamsSchema = z.object({
+    examId: z.string().uuid('Invalid exam ID'),
+})
+
+export const studentResultsParamsSchema = z.object({
+    studentId: z.string().uuid('Invalid student ID'),
+})
 
 export const updateExamSchema = createExamSchema
     .partial()
@@ -46,6 +60,12 @@ export const bulkUpsertExamResultsSchema = z.object({
     ).min(1),
 })
 
+export const examListQuerySchema = subSchoolQuerySchema.extend({
+    classId: z.string().uuid('Invalid class ID').optional(),
+    teacherOnly: z.coerce.boolean().optional(),
+})
+
+export type ExamListQueryInput = z.infer<typeof examListQuerySchema>
 export type CreateExamInput = z.infer<typeof createExamSchema>
 export type UpdateExamInput = z.infer<typeof updateExamSchema>
 export type UpsertExamResultInput = z.infer<typeof upsertExamResultSchema>

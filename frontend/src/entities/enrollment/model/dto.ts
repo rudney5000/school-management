@@ -5,6 +5,7 @@ export type CreateEnrollmentDto = {
 
 export type EnrollmentListQueryDto = {
     classId?: string
+    studentId?: string
 }
 
 export type EnrollmentParamsDto = {

@@ -233,7 +233,88 @@
       "viewAll": "Tout voir"
     },
     "enrollment": {
-      "title": "Inscriptions par niveau"
+      "title": "Inscriptions par niveau",
+      "students": {
+        "loading": "Chargement de l'inscription...",
+        "title": "Inscription",
+        "signed": "Signée",
+        "signedStale": "Signée (obsolète)",
+        "complete": "Complète",
+        "draft": "Brouillon",
+        "none": "Aucune",
+        "manageDocuments": "Gérer les documents",
+        "drawerTitle": "Dossier d'inscription",
+        "drawerDescription": "Pièces justificatives, validation et signature"
+      },
+      "documents": {
+        "pendingValidation": "Documents en attente de validation",
+        "signing": "Signature en cours...",
+        "resigning": "Re-signer l'inscription",
+        "signEnrollment": "Signer l'inscription",
+        "downloading": "Téléchargement...",
+        "downloadPdf": "Télécharger le PDF",
+        "pdfUnavailable": "Le document doit être signé avant d'être téléchargé",
+        "requiredValidation": "Toutes les pièces requises doivent être validées avant de pouvoir signer l'inscription.",
+        "noPendingDocuments": "Aucun document en attente de validation",
+        "signedStale": "Inscription signée (obsolète)",
+        "signed": "Inscription signée",
+        "validate": "Valider",
+        "reject": "Rejeter",
+        "rejectTitle": "Rejeter le document",
+        "rejectDescription": "Veuillez indiquer la raison du rejet de ce document.",
+        "rejectReasonLabel": "Raison du rejet",
+        "rejectReasonPlaceholder": "Expliquez pourquoi ce document est rejeté...",
+        "cancel": "Annuler",
+        "rejecting": "Rejet en cours...",
+        "confirmReject": "Confirmer le rejet",
+        "title": "Documents requis",
+        "loading": "Chargement...",
+        "loadingDocuments": "Chargement des documents...",
+        "categories": {
+          "birth_certificate": "Certificat de naissance",
+          "medical_certificate": "Certificat médical",
+          "previous_report": "Bulletin précédent",
+          "student_photo": "Photo de l'élève",
+          "parent_id": "Pièce d'identité du parent",
+          "payment_receipt": "Reçu de paiement",
+          "guardianship_proof": "Justificatif de tutelle",
+          "other": "Autre"
+        },
+        "parentSection": {
+          "title": "Informations du parent",
+          "optionalNotice": "Cette section est facultative. Remplissez-la uniquement si un parent est associé à l'élève."
+        },
+        "status": {
+          "missing": "Manquant",
+          "pending": "En attente",
+          "validated": "Validé",
+          "rejected": "Rejeté"
+        },
+        "upload": {
+          "uploading": "Téléchargement en cours...",
+          "drop": "Glissez-déposez un fichier ici",
+          "select": "ou cliquez pour sélectionner"
+        },
+        "previewDrawerTitle": "Aperçu du dossier d'inscription",
+        "previewDrawerDescription": "Vérifiez le contenu avant de confirmer la signature.",
+        "previewIframeTitle": "Aperçu PDF du dossier d'inscription",
+        "preview": "Prévisualiser le document",
+        "previewDisabled": "Toutes les pièces requises doivent être validées pour prévisualiser"
+      },
+      "create": {
+        "chooseClass": "Choisir une classe",
+        "creating": "Création...",
+        "createEnrollment": "Créer l'inscription"
+      },
+      "upload": {
+        "cancelUpload": "Annuler l'upload",
+        "validatedDeleteWarning": "Ce document est validé. Le supprimer invalidera la signature de l'inscription (elle devra être re-signée).",
+        "cancel": "Annuler",
+        "deleting": "Suppression...",
+        "confirmDelete": "Confirmer la suppression",
+        "deleteFile": "Supprimer le fichier",
+        "deleteValidatedFile": "Document validé — la suppression invalidera la signature"
+      }
     },
     "students": {
       "form": {
@@ -362,6 +443,57 @@
         "attendance": "Assiduité",
         "thisMonth": "Ce mois-ci",
         "quickActions": "Actions rapides"
+      },
+      "documents": {
+        "title": "Dossier de recrutement",
+        "loading": "Chargement...",
+        "missing": "Manquant",
+        "pending": "En attente",
+        "validated": "Validé",
+        "rejected": "Rejeté",
+        "categories": {
+          "identity_document": "Pièce d'identité",
+          "diploma": "Diplôme",
+          "criminal_record": "Casier judiciaire",
+          "resume": "Curriculum Vitae (CV)",
+          "teacher_photo": "Photo de l'enseignant",
+          "medical_certificate": "Certificat médical"
+        },
+        "validation": {
+          "title": "Documents en attente de validation",
+          "complete": "Dossier complet",
+          "empty": "Aucun document en attente de validation",
+          "validate": "Valider",
+          "reject": "Rejeter",
+          "rejectInProgress": "Rejet en cours...",
+          "confirmReject": "Confirmer le rejet",
+          "cancel": "Annuler",
+          "rejectDrawerTitle": "Rejeter le document",
+          "rejectDrawerDescription": "Veuillez indiquer la raison du rejet de ce document.",
+          "rejectReason": "Raison du rejet",
+          "rejectPlaceholder": "Expliquez pourquoi ce document est rejeté...",
+          "signingInProgress": "Signature en cours...",
+          "signContract": "Signer le contrat",
+          "resignContract": "Re-signer le contrat",
+          "preview": "Prévisualiser",
+          "previewDisabled": "Toutes les pièces requises doivent être validées",
+          "downloading": "Téléchargement...",
+          "downloadContract": "Télécharger le contrat",
+          "downloadDisabled": "Le contrat doit être signé avant d'être téléchargé",
+          "previewDrawerTitle": "Aperçu du contrat",
+          "previewDrawerDescription": "Vérifiez le contenu avant de confirmer la signature.",
+          "previewIframeTitle": "Aperçu du contrat"
+
+        },
+        "dossier": {
+          "title": "Dossier de recrutement",
+          "loading": "Chargement du dossier...",
+          "complete": "Complet",
+          "incomplete": "Incomplet",
+          "manageDocuments": "Gérer les documents",
+          "drawerTitle": "Dossier de recrutement",
+          "drawerDescription": "Pièces justificatives et validation"
+        }
       }
     },
     "parents": {
@@ -621,12 +753,16 @@
       "title": "Examens",
       "subtitle": "Gérez vos examens et les notes",
       "searchPlaceholder": "Rechercher un examen...",
+      "noExamSelected": "Aucun examen sélectionné",
       "filters": {
         "all": "Tous",
         "scheduled": "Planifiés",
         "ongoing": "En cours",
         "completed": "Terminés",
-        "cancelled": "Annulés"
+        "cancelled": "Annulés",
+        "myExams": "Mes examens",
+        "allClasses": "Toutes les classes",
+        "allPeriods": "Toutes les périodes"
       },
       "columns": {
         "title": "Examen",
@@ -634,7 +770,8 @@
         "date": "Date",
         "type": "Type",
         "status": "Statut",
-        "live": "Lien"
+        "live": "Lien",
+        "academicPeriod": "Période academique"
       },
       "types": {
         "quiz": "Quiz",
@@ -682,7 +819,8 @@
         "coefficient": "Coefficient",
         "select": "Sélectionner",
         "loading": "Chargement...",
-        "add": "Ajouter"
+        "add": "Ajouter",
+        "academicPeriod": "Période academique"
       },
       "gradeEntry": {
         "title": "Saisie des notes",
@@ -702,7 +840,8 @@
         "studentsGraded": "élèves notés",
         "average": "Moyenne",
         "loading": "Chargement...",
-        "examNotFound": "Examen non trouvé"
+        "examNotFound": "Examen non trouvé",
+        "maxScore": "Note maximale"
       },
       "results": {
         "title": "Bulletin de résultats",
@@ -728,7 +867,20 @@
         "bestAverage": "Meilleure moyenne",
         "passRate": "Taux de réussite",
         "students": "Élèves",
-        "gradesCount": "notes"
+        "gradesCount": "notes",
+        "signature": "Signature",
+        "pdf": "PDF",
+        "sign": "Signer",
+        "reSign": "Re-signer",
+        "preview": "Aperçu",
+        "download": "Télécharger",
+        "notSigned": "Non signé",
+        "pdfUnavailable": "PDF indisponible",
+        "signatureStatus": {
+          "signed": "Signé",
+          "notSigned": "Non signé",
+          "expired": "Périmé"
+        }
       },
       "statistics": {
         "title": "Statistiques des résultats",

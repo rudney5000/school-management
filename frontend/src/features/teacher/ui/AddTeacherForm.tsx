@@ -37,7 +37,7 @@ export const AddTeacherForm: React.FC<AddTeacherFormProps> = ({
                                                                   handleOpen,
                                                                   handleSuccess,
                                                                   submitButtonLabel,
-                                                              }) => {
+}) => {
     const { t } = useTranslation()
     const { subSchoolId } = useParams({ strict: false })
 

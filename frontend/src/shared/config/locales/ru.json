@@ -195,7 +195,88 @@
       "attendanceUpdated": "Обновлена посещаемость"
     },
     "enrollment": {
-      "title": "Зачисление по уровням"
+      "title": "Зачисление по уровням",
+      "students": {
+        "loading": "Загрузка записи...",
+        "title": "Зачисление",
+        "signed": "Подписано",
+        "signedStale": "Подписано (устарело)",
+        "complete": "Завершено",
+        "draft": "Черновик",
+        "none": "Нет",
+        "manageDocuments": "Управление документами",
+        "drawerTitle": "Досье зачисления",
+        "drawerDescription": "Подтверждающие документы, проверка и подпись"
+      },
+      "documents": {
+        "pendingValidation": "Документы, ожидающие проверки",
+        "signing": "Идет подписание...",
+        "resigning": "Повторно подписать зачисление",
+        "signEnrollment": "Подписать зачисление",
+        "downloading": "Скачивание...",
+        "downloadPdf": "Скачать PDF",
+        "pdfUnavailable": "Документ должен быть подписан перед скачиванием",
+        "requiredValidation": "Все необходимые документы должны быть проверены перед подписанием.",
+        "noPendingDocuments": "Нет документов, ожидающих проверки",
+        "signedStale": "Зачисление подписано (устарело)",
+        "signed": "Зачисление подписано",
+        "validate": "Проверить",
+        "reject": "Отклонить",
+        "rejectTitle": "Отклонить документ",
+        "rejectDescription": "Укажите причину отклонения документа.",
+        "rejectReasonLabel": "Причина отклонения",
+        "rejectReasonPlaceholder": "Объясните, почему документ отклонен...",
+        "cancel": "Отмена",
+        "rejecting": "Отклонение...",
+        "confirmReject": "Подтвердить отклонение",
+        "title": "Необходимые документы",
+        "loading": "Загрузка...",
+        "loadingDocuments": "Загрузка документов...",
+        "categories": {
+          "birth_certificate": "Свидетельство о рождении",
+          "medical_certificate": "Медицинская справка",
+          "previous_report": "Предыдущий табель",
+          "student_photo": "Фото ученика",
+          "parent_id": "Документ удостоверяющий личность родителя",
+          "payment_receipt": "Квитанция об оплате",
+          "guardianship_proof": "Документ об опекунстве",
+          "other": "Другое"
+        },
+        "parentSection": {
+          "title": "Информация о родителе",
+          "optionalNotice": "Этот раздел необязателен. Заполняйте его только в том случае, если к ученику привязан родитель."
+        },
+        "status": {
+          "missing": "Отсутствует",
+          "pending": "Ожидает проверки",
+          "validated": "Подтверждено",
+          "rejected": "Отклонено"
+        },
+        "upload": {
+          "uploading": "Загрузка документов...",
+          "drop": "Перетащите файл сюда",
+          "select": "или нажмите, чтобы выбрать"
+        }
+      },
+      "create": {
+        "chooseClass": "Выберите класс",
+        "creating": "Создание...",
+        "createEnrollment": "Создать запись о зачислении"
+      },
+      "upload": {
+        "cancelUpload": "Отменить загрузку",
+        "validatedDeleteWarning": "Этот документ уже подтверждён. Его удаление сделает подпись заявления недействительной, и документ потребуется подписать заново.",
+        "cancel": "Отмена",
+        "deleting": "Удаление...",
+        "confirmDelete": "Подтвердить удаление",
+        "deleteFile": "Удалить файл",
+        "deleteValidatedFile": "Подтверждённый документ — удаление сделает подпись недействительной"
+      },
+      "previewDrawerTitle": "Предварительный просмотр регистрационного досье",
+      "previewDrawerDescription": "Проверьте содержимое перед подтверждением подписи.",
+      "previewIframeTitle": "Предварительный просмотр PDF регистрационного досье",
+      "preview": "Предварительный просмотр документа",
+      "previewDisabled": "Для предварительного просмотра необходимо подтвердить все обязательные документы"
     },
     "charts": {
       "studentEnrollment": "Зачисление учеников",
@@ -336,6 +417,56 @@
         "attendance": "Посещаемость",
         "thisMonth": "В этом месяце",
         "quickActions": "Быстрые действия"
+      },
+      "documents": {
+        "title": "Документы для трудоустройства",
+        "loading": "Загрузка...",
+        "missing": "Отсутствует",
+        "pending": "Ожидает проверки",
+        "validated": "Подтверждено",
+        "rejected": "Отклонено",
+        "categories": {
+          "identity_document": "Удостоверение личности",
+          "diploma": "Диплом",
+          "criminal_record": "Справка о несудимости",
+          "resume": "Резюме (CV)",
+          "teacher_photo": "Фото Учителя",
+          "medical_certificate": "Медицинская справка"
+        },
+        "validation": {
+          "title": "Документы, ожидающие проверки",
+          "complete": "Досье полностью готово",
+          "empty": "Нет документов, ожидающих проверки",
+          "validate": "Подтвердить",
+          "reject": "Отклонить",
+          "rejectInProgress": "Отклонение...",
+          "confirmReject": "Подтвердить отклонение",
+          "cancel": "Отмена",
+          "rejectDrawerTitle": "Отклонить документ",
+          "rejectDrawerDescription": "Укажите причину отклонения документа.",
+          "rejectReason": "Причина отклонения",
+          "rejectPlaceholder": "Объясните, почему документ отклонён...",
+          "signingInProgress": "Подписание...",
+          "signContract": "Подписать договор",
+          "resignContract": "Подписать договор повторно",
+          "preview": "Предпросмотр",
+          "previewDisabled": "Все обязательные документы должны быть подтверждены",
+          "downloading": "Загрузка...",
+          "downloadContract": "Скачать договор",
+          "downloadDisabled": "Договор должен быть подписан перед скачиванием",
+          "previewDrawerTitle": "Предварительный просмотр договора",
+          "previewDrawerDescription": "Проверьте содержимое перед подтверждением подписи.",
+          "previewIframeTitle": "Предварительный просмотр договора"
+        },
+        "dossier": {
+          "title": "Личное дело сотрудника",
+          "loading": "Загрузка досье...",
+          "complete": "Полное",
+          "incomplete": "Неполное",
+          "manageDocuments": "Управление документами",
+          "drawerTitle": "Личное дело сотрудника",
+          "drawerDescription": "Подтверждающие документы и проверка"
+        }
       }
     },
     "parents": {
@@ -593,12 +724,16 @@
       "title": "Экзамены",
       "subtitle": "Управляйте экзаменами и оценками",
       "searchPlaceholder": "Найти экзамен...",
+      "noExamSelected": "Экзамен не выбран",
       "filters": {
         "all": "Все",
         "scheduled": "Запланированные",
         "ongoing": "Текущие",
         "completed": "Завершённые",
-        "cancelled": "Отменённые"
+        "cancelled": "Отменённые",
+        "myExams": "Мои экзамены",
+        "allClasses": "Все классы",
+        "allPeriods": "Все периоды"
       },
       "columns": {
         "title": "Экзамен",
@@ -606,7 +741,8 @@
         "date": "Дата",
         "type": "Тип",
         "status": "Статус",
-        "live": "Ссылка"
+        "live": "Ссылка",
+        "academicPeriod": "Учебный период"
       },
       "types": {
         "quiz": "Тест",
@@ -648,7 +784,8 @@
         "coefficient": "Коэффициент",
         "select": "Выберите",
         "loading": "Загрузка...",
-        "add": "Добавить"
+        "add": "Добавить",
+        "academicPeriod": "Учебный период"
       },
       "tabs": {
         "exams": "Экзамены",
@@ -674,7 +811,8 @@
         "studentsGraded": "учеников оценено",
         "average": "Среднее",
         "loading": "Загрузка...",
-        "examNotFound": "Экзамен не найден"
+        "examNotFound": "Экзамен не найден",
+        "maxScore": "Максимальный балл"
       },
       "results": {
         "title": "Табель успеваемости",
@@ -700,7 +838,20 @@
         "bestAverage": "Лучший средний балл",
         "passRate": "Процент сдавших",
         "students": "Ученики",
-        "gradesCount": "оценок"
+        "gradesCount": "оценок",
+        "signature": "Подпись",
+        "pdf": "PDF",
+        "sign": "Подписать",
+        "reSign": "Подписать повторно",
+        "preview": "Предпросмотр",
+        "download": "Скачать",
+        "notSigned": "Не подписано",
+        "pdfUnavailable": "PDF недоступен",
+        "signatureStatus": {
+          "signed": "Подписано",
+          "notSigned": "Не подписано",
+          "expired": "Просрочено"
+        }
       },
       "statistics": {
         "title": "Статистика результатов",
