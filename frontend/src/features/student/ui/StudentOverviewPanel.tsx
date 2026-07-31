@@ -99,10 +99,11 @@ export function StudentOverviewPanel({
                     </div>
                 </div>
             )}
-            {student && !isParent && (
+            {student && (
                 <StudentEnrollmentCard
                     studentId={student.id}
                     subSchoolId={student.subSchoolId}
+                    readOnly={isParent}
                 />
             )}
         </div>

@@ -16,9 +16,14 @@ import {useTranslation} from "@shared/lib";
 interface StudentEnrollmentCardProps {
     studentId: string
     subSchoolId: string
+    readOnly?: boolean
 }
 
-export function StudentEnrollmentCard({ studentId, subSchoolId }: StudentEnrollmentCardProps) {
+export function StudentEnrollmentCard({
+                                          studentId,
+                                          subSchoolId,
+                                          readOnly = false
+}: StudentEnrollmentCardProps) {
     const { t } = useTranslation()
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     const { enrollment, isLoading } = useStudentEnrollment(studentId)
@@ -66,36 +71,40 @@ export function StudentEnrollmentCard({ studentId, subSchoolId }: StudentEnrollm
                 )}
             </div>
 
-            {enrollment ? (
-                <Button
-                    size="sm"
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => setIsDrawerOpen(true)}
-                >
-                    {t("dashboard.enrollment.students.manageDocuments")}
-                </Button>
-            ) : (
-                <CreateEnrollmentForm
-                    studentId={studentId}
-                    subSchoolId={subSchoolId}
-                />
+            {!readOnly && (
+                enrollment ? (
+                    <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => setIsDrawerOpen(true)}
+                    >
+                        {t("dashboard.enrollment.students.manageDocuments")}
+                    </Button>
+                ) : (
+                    <CreateEnrollmentForm
+                        studentId={studentId}
+                        subSchoolId={subSchoolId}
+                    />
+                )
             )}
 
-            <CustomDrawer
-                isOpen={isDrawerOpen}
-                handleOpen={() => setIsDrawerOpen(!isDrawerOpen)}
-                drawerTitle={t("dashboard.enrollment.students.drawerTitle")}
-                drawerDescription={t("dashboard.enrollment.students.drawerDescription")}
-            >
-                {enrollment && (
-                    <EnrollmentDocumentsPanel
-                        enrollmentId={enrollment.id}
-                        subSchoolId={subSchoolId}
-                        studentId={studentId}
-                    />
-                )}
-            </CustomDrawer>
+            {!readOnly && (
+                <CustomDrawer
+                    isOpen={isDrawerOpen}
+                    handleOpen={() => setIsDrawerOpen(!isDrawerOpen)}
+                    drawerTitle={t("dashboard.enrollment.students.drawerTitle")}
+                    drawerDescription={t("dashboard.enrollment.students.drawerDescription")}
+                >
+                    {enrollment && (
+                        <EnrollmentDocumentsPanel
+                            enrollmentId={enrollment.id}
+                            subSchoolId={subSchoolId}
+                            studentId={studentId}
+                        />
+                    )}
+                </CustomDrawer>
+            )}
         </div>
     )
 }
