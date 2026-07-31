@@ -277,7 +277,12 @@
           "student_photo": "Photo de l'élève",
           "parent_id": "Pièce d'identité du parent",
           "payment_receipt": "Reçu de paiement",
+          "guardianship_proof": "Justificatif de tutelle",
           "other": "Autre"
+        },
+        "parentSection": {
+          "title": "Informations du parent",
+          "optionalNotice": "Cette section est facultative. Remplissez-la uniquement si un parent est associé à l'élève."
         },
         "status": {
           "missing": "Manquant",

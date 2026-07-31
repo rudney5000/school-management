@@ -275,7 +275,12 @@
           "student_photo": "Student photo",
           "parent_id": "Parent ID document",
           "payment_receipt": "Payment receipt",
+          "guardianship_proof": "Guardianship proof",
           "other": "Other"
+        },
+        "parentSection": {
+          "title": "Parent Information",
+          "optionalNotice": "This section is optional. Complete it only if a parent is associated with the student."
         },
         "status": {
           "missing": "Missing",

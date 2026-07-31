@@ -234,7 +234,12 @@
           "student_photo": "Foto ya mwana kelasi",
           "parent_id": "Mokanda ya koyeba moboti",
           "payment_receipt": "Reçu ya kofuta",
+          "guardianship_proof": "Mokanda ya bobateli mwana",
           "other": "Mosusu"
+        },
+        "parentSection": {
+          "title": "Makambo ya moboti",
+          "optionalNotice": "Eteni oyo ezali ya kopona. Tondisa yango kaka soki mwana azali na moboti oyo akomami na système."
         },
         "status": {
           "missing": "Ezangi",
