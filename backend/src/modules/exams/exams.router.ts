@@ -49,6 +49,16 @@ router.get(
     examsController.getById,
 );
 
+router.get(
+    '/me/children',
+    authenticate,
+    authorize('parent'),
+    validate({
+        query: subSchoolQuerySchema
+    }),
+    examsController.getMyChildrenExams,
+);
+
 router.post(
     '/',
     authenticate,
