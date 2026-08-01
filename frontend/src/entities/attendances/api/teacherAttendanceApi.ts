@@ -30,6 +30,13 @@ export class TeacherAttendanceApi extends ApiWrapper {
         );
     }
 
+    getMyChildrenTeachers(params: AttendanceQueryDto) {
+        return this.handleRequest<PaginatedAttendance<TeacherAttendance>>(
+            this._baseApi.get('/attendances/teachers/my-children-teachers', params ),
+            (raw) => raw as PaginatedAttendance<TeacherAttendance>,
+        );
+    }
+
     create(payload: CreateTeacherAttendanceDto) {
         return this.handleRequest<TeacherAttendance>(
             this._baseApi.post('/attendances/teachers', payload),

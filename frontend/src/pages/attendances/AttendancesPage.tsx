@@ -1,7 +1,16 @@
-import {useState, useEffect, useMemo} from "react"
+import {
+    useState,
+    useEffect,
+    useMemo
+} from "react"
 import { Search } from "lucide-react"
 import { useParams } from "@tanstack/react-router"
-import { useDispatch, useSelector } from "react-redux"
+import {
+    useDispatch,
+    useSelector
+} from "react-redux"
+import {format} from "date-fns";
+import {endOfMonth} from "date-fns/endOfMonth";
 import { AttendanceSummary } from "@/pages/attendances/ui/AttendanceSummary"
 import { AttendanceOverview } from "@/pages/attendances/ui/AttendanceOverview"
 import { AttendanceTable } from "@/pages/attendances/ui/attendance-table/AttendanceTable.tsx"
@@ -11,10 +20,9 @@ import { useClasses } from "@entities/class"
 import { useParents } from "@entities/parent"
 import { useTeachers } from "@entities/teacher"
 import {selectActiveTab} from "@entities/attendances";
-import {format} from "date-fns";
 import {useDateLocale} from "@shared/lib/date";
-import {endOfMonth} from "date-fns/endOfMonth";
 import {useTranslation} from "@shared/lib";
+import {useAppSelector} from "@shared/store/hooks";
 
 const ACCENT = "#1755EC"
 
@@ -25,6 +33,8 @@ export default function AttendancePage() {
     const dispatch = useDispatch()
     const { subSchoolId } = useParams({ strict: false })
     const activeTab = useSelector(selectActiveTab)
+    const role = useAppSelector((s) => s.auth.role)
+    const isParent = role === 'parent'
     const [page, setPage] = useState(1)
     const [pageSize] = useState(10)
     const [selectedClass, setSelectedClass] = useState<string>("")
@@ -61,18 +71,39 @@ export default function AttendancePage() {
     const fromDate = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`
     const toDate = format(endOfMonth(new Date(selectedYear, selectedMonth - 1)), 'yyyy-MM-dd')
 
-    const { data: classes = [] } = useClasses(subSchoolId)
-    const { data: parents = [] } = useParents(subSchoolId)
-    const { data: teachers = [] } = useTeachers(subSchoolId)
-    const { students, attendanceMap, chartData, loading } = useAttendanceData(subSchoolId, fromDate, toDate)
+    const { data: classes = [] } = useClasses(isParent ? undefined : subSchoolId)
+    const { data: parents = [] } = useParents(isParent ? undefined : subSchoolId)
+    const { data: teachers = [] } = useTeachers(isParent ? undefined : subSchoolId)
+    const { students, teacherAttendances, attendanceMap, chartData, loading } = useAttendanceData(subSchoolId, fromDate, toDate)
 
     useEffect(() => {
-        if (classes.length > 0 && !selectedClass) {
+        if (!isParent && classes.length > 0 && !selectedClass) {
             setSelectedClass(classes[0].id)
         }
-    }, [classes, selectedClass])
+    }, [classes, selectedClass, isParent])
 
     const tabData = useMemo(() => {
+        if (isParent) {
+            switch (activeTab) {
+                case "teachers": {
+                    const seen = new Map<string, { id: string; name: string; type: "teacher" }>()
+                    teacherAttendances.forEach((a) => {
+                        if (!seen.has(a.teacherId) && a.firstName && a.lastName) {
+                            seen.set(a.teacherId, {
+                                id: a.teacherId,
+                                name: `${a.firstName} ${a.lastName}`,
+                                type: "teacher",
+                            })
+                        }
+                    })
+                    return [...seen.values()]
+                }
+                case "students":
+                default:
+                    return students.map((s) => ({ id: s.id, name: `${s.firstName} ${s.lastName}`, type: "student" as const }))
+            }
+        }
+
         switch (activeTab) {
             case "students":
                 return students.map((s) => ({ id: s.id, name: `${s.firstName} ${s.lastName}`, type: "student" as const }))
@@ -83,7 +114,7 @@ export default function AttendancePage() {
             default:
                 return []
         }
-    }, [activeTab, students, teachers, parents])
+    }, [activeTab, students, teachers, parents, isParent, teacherAttendances])
 
     const totalPages = Math.ceil(tabData.length / pageSize)
     const pagedTabData = tabData.slice((page - 1) * pageSize, page * pageSize)
@@ -129,6 +160,7 @@ export default function AttendancePage() {
                         accent={ACCENT}
                         dispatch={dispatch}
                         monthOptions={monthOptions.map(o => o.label)}
+                        isParent={isParent}
                     />
                 </main>
             </div>

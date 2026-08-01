@@ -22,6 +22,8 @@ export type TeacherAttendance = {
     status:      AttendanceStatus;
     reason:      string | null;
     notedAt:     string;
+    firstName?:  string;
+    lastName?:   string;
 };
 
 export type PaginatedAttendance<T> = {
