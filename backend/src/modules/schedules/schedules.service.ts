@@ -1,9 +1,15 @@
 import {
     eq,
-    and, inArray
+    and,
+    inArray
 } from 'drizzle-orm';
 import { db } from '@/db';
-import {enrollments, parentStudents, schedules, users} from '@/db/schema';
+import {
+    enrollments,
+    parentStudents,
+    schedules,
+    users
+} from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
 import type {
     CreateScheduleDto,

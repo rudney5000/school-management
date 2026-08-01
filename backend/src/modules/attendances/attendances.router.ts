@@ -2,7 +2,10 @@ import { Router } from 'express';
 import { validate } from '@/shared/utils/validate';
 import { authenticate } from '@/middleware/authenticate';
 import { authorize } from '@/middleware/authorize';
-import {StudentAttendanceController, TeacherAttendanceController} from "@/modules/attendances/attendances.controller";
+import {
+    StudentAttendanceController,
+    TeacherAttendanceController
+} from "@/modules/attendances/attendances.controller";
 import {
     attendanceQuerySchema,
     bulkUpsertStudentAttendanceSchema,
@@ -18,6 +21,16 @@ import {
 
 const studentRouter = Router();
 const studentController = new StudentAttendanceController();
+
+studentRouter.get(
+    '/my-children',
+    authenticate,
+    authorize('parent'),
+    validate({
+        query: attendanceQuerySchema
+    }),
+    studentController.getMyChildrenAttendance,
+);
 
 studentRouter.get(
     '/',
@@ -85,6 +98,16 @@ studentRouter.delete(
 
 const teacherRouter = Router();
 const teacherController = new TeacherAttendanceController();
+
+teacherRouter.get(
+    '/my-children-teachers',
+    authenticate,
+    authorize('parent'),
+    validate({
+        query: attendanceQuerySchema
+    }),
+    teacherController.getMyChildrenTeachersAttendance,
+);
 
 teacherRouter.get(
     '/',
