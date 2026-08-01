@@ -913,7 +913,8 @@
         "midterm": "Ya kati",
         "final": "Ya suka",
         "homework": "Mosala ya ndako",
-        "oral": "Ya monoko"
+        "oral": "Ya monoko",
+        "exam": "Examen"
       },
       "statuses": {
         "scheduled": "Etiamé",
@@ -1051,6 +1052,18 @@
         "goodProgressDesc": "Ntálisi na proportion {{rate}}% ya balongí emonisi elongi ya malamu.",
         "noData": "Data ezali te",
         "noDataDesc": "Statistiki ekozala sima ya kotíya manote"
+      },
+      "reportCard": {
+        "title": "Mokanda ya bapunda",
+        "description": "Landelá bilanga ya bana na yo na kelasi",
+        "subtitle": "Bipunda ya bamekano",
+        "loading": "Kozela bipunda...",
+        "empty": "Bipunda ezali naino te",
+        "pending": "Ezali kozela",
+        "noChildren": "Mwana moko te akangami na compte oyo",
+        "resultCount": "biyano {{count}}",
+        "resultCount_plural": "biyano {{count}}",
+        "average": "Mwayene"
       }
     },
     "widgets": {

@@ -840,7 +840,8 @@
         "midterm": "Midterm",
         "final": "Final",
         "homework": "Homework",
-        "oral": "Oral"
+        "oral": "Oral",
+        "exam": "Examen"
       },
       "statuses": {
         "scheduled": "Scheduled",
@@ -980,6 +981,18 @@
         "noDataDesc": "Statistics will be available after grades are entered",
         "student": "student",
         "success": "success"
+      },
+      "reportCard": {
+        "title": "Report Card",
+        "description": "Track your children's academic results",
+        "subtitle": "Exam results",
+        "loading": "Loading results...",
+        "empty": "No results available yet",
+        "pending": "Pending",
+        "noChildren": "No children linked to this account",
+        "resultCount": "{{count}} result",
+        "resultCount_plural": "{{count}} results",
+        "average": "Average"
       }
     },
     "common": {

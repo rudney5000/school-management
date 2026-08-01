@@ -782,7 +782,8 @@
         "midterm": "Partiel",
         "final": "Final",
         "homework": "Devoir",
-        "oral": "Oral"
+        "oral": "Oral",
+        "exam": "Examen"
       },
       "statuses": {
         "scheduled": "Planifié",
@@ -845,7 +846,16 @@
         "average": "Moyenne",
         "loading": "Chargement...",
         "examNotFound": "Examen non trouvé",
-        "maxScore": "Note maximale"
+        "maxScore": "Note maximale",
+        "reportCard": {
+          "title": "Bulletin de notes",
+          "description": "Suivez les résultats de vos enfants",
+          "subtitle": "Résultats aux examens",
+          "loading": "Chargement des résultats...",
+          "empty": "Aucun résultat disponible pour le moment",
+          "pending": "En attente",
+          "noChildren": "Aucun enfant associé à ce compte"
+        }
       },
       "results": {
         "title": "Bulletin de résultats",
@@ -922,6 +932,18 @@
         "noDataDesc": "Les statistiques seront disponibles après la saisie des notes",
         "student": "Élève",
         "success": "Réussite"
+      },
+      "reportCard": {
+        "title": "Bulletin de notes",
+        "description": "Suivez les résultats de vos enfants",
+        "subtitle": "Résultats aux examens",
+        "loading": "Chargement des résultats...",
+        "empty": "Aucun résultat disponible pour le moment",
+        "pending": "En attente",
+        "noChildren": "Aucun enfant associé à ce compte",
+        "resultCount": "{{count}} résultat",
+        "resultCount_plural": "{{count}} résultats",
+        "average": "Moyenne"
       }
     },
     "common": {
