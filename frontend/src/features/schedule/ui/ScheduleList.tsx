@@ -35,7 +35,15 @@ const COURSE_COLORS = [
     'bg-[#FFE9EC] text-rose-700',
 ]
 
-const DAY_ORDER = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'] as const
+const DAY_ORDER = [
+    'SUNDAY',
+    'MONDAY',
+    'TUESDAY',
+    'WEDNESDAY',
+    'THURSDAY',
+    'FRIDAY',
+    'SATURDAY'
+] as const
 
 const getCourseColor = (courseId: string) => {
     const index = courseId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % COURSE_COLORS.length
@@ -155,14 +163,16 @@ export const ScheduleList: React.FC<ScheduleListProps> = ({
                                 {schedule.isLiveSession && schedule.liveUrl && (
                                     <div className="flex items-center gap-2 pt-2 border-t mb-3">
                                         <Radio className="w-3.5 h-3.5 text-red-500" />
-                                        <span className="text-xs font-medium text-red-600">Live disponible</span>
+                                        <span className="text-xs font-medium text-red-600">
+                                            {t('dashboard.courses.live.available')}
+                                        </span>
                                         <div className="ml-auto flex gap-1">
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
                                                 className="h-6 w-6"
                                                 onClick={() => window.open(schedule.liveUrl!, '_blank')}
-                                                title="Ouvrir le live"
+                                                title={t('dashboard.courses.actions.openLive')}
                                             >
                                                 <ExternalLink size={12} />
                                             </Button>
@@ -171,7 +181,7 @@ export const ScheduleList: React.FC<ScheduleListProps> = ({
                                                 size="icon"
                                                 className="h-6 w-6"
                                                 onClick={() => navigator.clipboard.writeText(schedule.liveUrl!)}
-                                                title="Copier le lien"
+                                                title={t('dashboard.courses.actions.copyLink')}
                                             >
                                                 <Copy size={12} />
                                             </Button>
