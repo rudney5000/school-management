@@ -1,8 +1,17 @@
 import type {Course} from "@entities/courses";
 import {Badge, Button} from "@shared/ui";
 import {Trash2, Copy, ExternalLink} from "lucide-react";
+import {useTranslation} from "@shared/lib";
 
-export function ListRow({ course, onEdit, onDelete }: { course: Course; onEdit: (c: Course) => void; onDelete: (id: string) => void }) {
+interface ListRowProps {
+    course: Course;
+    onEdit?: (c: Course) => void;
+    onDelete?: (id: string) => void
+}
+
+export function ListRow({ course, onEdit, onDelete }: ListRowProps) {
+    const { t } = useTranslation();
+
     return (
         <div className="flex items-center gap-4 px-5 py-3.5 hover:bg-muted/40 transition-colors">
             <div className="shrink-0 w-9 h-9 rounded-lg bg-secondary flex items-center justify-center text-sm font-bold text-muted-foreground">
@@ -20,12 +29,20 @@ export function ListRow({ course, onEdit, onDelete }: { course: Course; onEdit: 
             {course.teacher && (
                 <span className="text-xs text-muted-foreground shrink-0 hidden md:block">{course.teacher.firstName}</span>
             )}
-            <span className="text-sm font-semibold shrink-0">{course.credits} cr.</span>
+            <span className="text-sm font-semibold shrink-0">
+                {course.credits} {t('dashboard.courses.stats.creditsShort')}
+            </span>
             <Badge
                 variant={course.status === 'completed' ? 'success' : course.status === 'archived' ? 'muted' : 'blue'}
                 className="shrink-0"
             >
-                {course.status === 'active' ? 'Actif' : course.status === 'completed' ? 'Terminé' : 'Archivé'}
+                {
+                    course.status === 'active'
+                        ? t('dashboard.courses.status.active')
+                        : course.status === 'completed'
+                            ? t('dashboard.courses.status.completed')
+                            : t('dashboard.courses.status.archived')
+                }
             </Badge>
             {course.isDistanceCourse && course.liveUrl && (
                 <div className="flex gap-1 shrink-0">
@@ -34,7 +51,7 @@ export function ListRow({ course, onEdit, onDelete }: { course: Course; onEdit: 
                         size="icon"
                         className="h-8 w-8 text-red-500"
                         onClick={() => window.open(course.liveUrl, '_blank')}
-                        title="Ouvrir le live"
+                        title={t('dashboard.courses.actions.openLive')}
                     >
                         <ExternalLink size={13} />
                     </Button>
@@ -43,20 +60,26 @@ export function ListRow({ course, onEdit, onDelete }: { course: Course; onEdit: 
                         size="icon"
                         className="h-8 w-8"
                         onClick={() => navigator.clipboard.writeText(course.liveUrl!)}
-                        title="Copier le lien"
+                        title={t('dashboard.courses.actions.copyLink')}
                     >
                         <Copy size={13} />
                     </Button>
                 </div>
             )}
-            <div className="flex gap-1 shrink-0">
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => onEdit(course)}>
-                    <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                </Button>
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => onDelete(course.id)}>
-                    <Trash2 size={14} />
-                </Button>
-            </div>
+            {(onEdit || onDelete) && (
+                <div className="flex gap-1 shrink-0">
+                    {onEdit && (
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => onEdit(course)}>
+                            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </Button>
+                    )}
+                    {onDelete && (
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => onDelete(course.id)}>
+                            <Trash2 size={14} />
+                        </Button>
+                    )}
+                </div>
+            )}
         </div>
     );
 }
