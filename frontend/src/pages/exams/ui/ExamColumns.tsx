@@ -20,9 +20,9 @@ interface GetColumnsOptions {
     examToEdit: Exam | undefined
     courseMap: Map<string, string>
     academicPeriodMap: Map<string, string>
-    onViewGrades: (exam: Exam) => void
-    onEdit: (exam: Exam) => void
-    onDelete: (exam: Exam) => void
+    onViewGrades?: (exam: Exam) => void
+    onEdit?: (exam: Exam) => void
+    onDelete?: (exam: Exam) => void
 }
 
 export function getExamColumns({
@@ -33,7 +33,7 @@ export function getExamColumns({
                                    onEdit,
                                    onDelete
 }: GetColumnsOptions): ColumnDef<Exam>[] {
-    return [
+    const baseColumns: ColumnDef<Exam>[] = [
         {
             accessorKey: "title",
             header: t("dashboard.exams.columns.title"),
@@ -128,19 +128,25 @@ export function getExamColumns({
                 )
             },
         },
+    ]
+
+    if (!onEdit && !onDelete && !onViewGrades) {
+        return baseColumns
+    }
+
+    return [
+        ...baseColumns,
         {
             id: "actions",
             header: "",
-            cell: ({ row }) => {
-                return (
-                    <ActionsComponent<Exam>
-                        row={row}
-                        onEditAction={() => onEdit(row.original)}
-                        onDeleteAction={() => onDelete(row.original)}
-                        onViewAction={() => onViewGrades(row.original)}
-                    />
-                )
-            },
+            cell: ({ row }) => (
+                <ActionsComponent<Exam>
+                    row={row}
+                    onEditAction={onEdit ? () => onEdit(row.original) : undefined}
+                    onDeleteAction={onDelete ? () => onDelete(row.original) : undefined}
+                    onViewAction={onViewGrades ? () => onViewGrades(row.original) : undefined}
+                />
+            ),
         },
     ]
 }
