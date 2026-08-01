@@ -48,3 +48,12 @@ export interface ExamResult {
     createdAt: string
     updatedAt: string
 }
+
+export interface ExamResultWithExam extends ExamResult {
+    examTitle:   string
+    examType:    ExamType
+    examDate:    string
+    maxScore:    string
+    coefficient: string
+    courseId:    string
+}
