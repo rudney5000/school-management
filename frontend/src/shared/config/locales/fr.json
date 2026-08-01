@@ -624,7 +624,9 @@
       "actions": {
         "title": "Actions",
         "edit": "Modifier",
-        "delete": "Supprimer"
+        "delete": "Supprimer",
+        "openLive": "Ouvrir le live",
+        "copyLink": "Copier le lien"
       },
       "stats": {
         "lessons_one": "{{count}} leçon",
@@ -646,7 +648,9 @@
         "results_one": "{{count}} résultat",
         "results_few": "{{count}} résultats"
       },
-
+      "live": {
+        "available": "Live disponible"
+      },
       "empty": {
         "title": "Aucun cours trouvé",
         "description": "Essayez une autre recherche ou créez un nouveau cours."

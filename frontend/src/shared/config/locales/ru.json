@@ -592,7 +592,9 @@
       "actions": {
         "title": "Действия",
         "edit": "Редактировать",
-        "delete": "Удалить"
+        "delete": "Удалить",
+        "openLive": "Открыть трансляцию",
+        "copyLink": "Скопировать ссылку"
       },
       "stats": {
         "lessons_one": "{{count}} урок",

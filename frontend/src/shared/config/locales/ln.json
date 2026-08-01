@@ -575,7 +575,9 @@
       "actions": {
         "title": "Misala",
         "edit": "Bongisa",
-        "delete": "Longola"
+        "delete": "Longola",
+        "openLive": "Kofungola live",
+        "copyLink": "Kokoma kopi ya lien"
       },
       "stats": {
         "lessons_one": "{{count}} liteya",

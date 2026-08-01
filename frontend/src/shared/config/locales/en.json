@@ -610,7 +610,9 @@
       "actions": {
         "title": "Actions",
         "edit": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+        "openLive": "Open live",
+        "copyLink": "Copy link"
       },
       "stats": {
         "lessons_one": "{{count}} Lesson",
