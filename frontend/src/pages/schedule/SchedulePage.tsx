@@ -6,8 +6,8 @@ import {
 } from '@shared/ui'
 import { useTranslation } from '@shared/lib'
 import {
-    useSchedules,
-    type ScheduleWithRelations
+    type ScheduleWithRelations,
+    useSchedulesList
 } from '@entities/schedule'
 import {
     AddScheduleForm,
@@ -16,6 +16,7 @@ import {
     ScheduleList,
     ScheduleCalendar
 } from '@features/schedule'
+import {useAppSelector} from "@shared/store/hooks";
 
 const SchedulePage = () => {
     const { t } = useTranslation()
@@ -29,7 +30,10 @@ const SchedulePage = () => {
     const [scheduleToDelete, setScheduleToDelete] = React.useState<ScheduleWithRelations>()
     const [isSidebarOpen, setIsSidebarOpen] = React.useState(false)
 
-    const { data: schedules, isLoading, isError } = useSchedules(subSchoolId)
+    const role = useAppSelector((s) => s.auth.role)
+    const isParent = role === 'parent'
+
+    const { data: schedules, isLoading, isError } = useSchedulesList(subSchoolId)
 
     const handleMonthChange = (date: Date) => {
         setCurrentDate(date)
@@ -72,12 +76,14 @@ const SchedulePage = () => {
                     <p className="text-xs text-zinc-500 mt-0.5">{t('dashboard.schedules.subtitle')}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Button
-                        onClick={() => setIsAddOpen(true)}
-                        className="h-9 rounded-xl bg-[#1755EC] hover:bg-[#1755EC]/90 shadow-sm gap-2 px-4 text-sm"
-                    >
-                        {t('dashboard.schedules.changeRoutine')}
-                    </Button>
+                    {!isParent && (
+                        <Button
+                            onClick={() => setIsAddOpen(true)}
+                            className="h-9 rounded-xl bg-[#1755EC] hover:bg-[#1755EC]/90 shadow-sm gap-2 px-4 text-sm"
+                        >
+                            {t('dashboard.schedules.changeRoutine')}
+                        </Button>
+                    )}
                     <Button
                         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                         className="h-9 w-9 rounded-xl bg-zinc-100 hover:bg-zinc-200 flex items-center justify-center p-0"
@@ -96,8 +102,8 @@ const SchedulePage = () => {
             <div className={`${isSidebarOpen ? 'flex' : 'hidden'} lg:flex w-full lg:w-[280px] bg-white border-r border-zinc-200 flex-col lg:h-full h-auto max-h-[50vh] lg:max-h-none overflow-y-auto`}>
                 <ScheduleList
                     schedules={schedulesWithRelations}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
+                    onEdit={isParent ? undefined : handleEdit}
+                    onDelete={isParent ? undefined : handleDelete}
                 />
             </div>
 
@@ -107,12 +113,14 @@ const SchedulePage = () => {
                         <h1 className="text-2xl font-bold text-zinc-900">{t('dashboard.schedules.title')}</h1>
                         <p className="text-sm text-zinc-500 mt-1">{t('dashboard.schedules.subtitle')}</p>
                     </div>
-                    <Button
-                        onClick={() => setIsAddOpen(true)}
-                        className="h-10 rounded-xl bg-[#1755EC] hover:bg-[#1755EC]/90 shadow-sm gap-2 px-5"
-                    >
-                        {t('dashboard.schedules.changeRoutine')}
-                    </Button>
+                    {!isParent && (
+                        <Button
+                            onClick={() => setIsAddOpen(true)}
+                            className="h-10 rounded-xl bg-[#1755EC] hover:bg-[#1755EC]/90 shadow-sm gap-2 px-5"
+                        >
+                            {t('dashboard.schedules.changeRoutine')}
+                        </Button>
+                    )}
                 </div>
 
                 <div className="flex-1 overflow-hidden">
@@ -126,14 +134,16 @@ const SchedulePage = () => {
                 </div>
             </div>
 
-            <AddScheduleForm
-                isOpen={isAddOpen}
-                handleOpen={() => setIsAddOpen(!isAddOpen)}
-                handleSuccess={() => setIsAddOpen(false)}
-                submitButtonLabel={t('dashboard.common.confirm')}
-            />
+            {!isParent && (
+                <AddScheduleForm
+                    isOpen={isAddOpen}
+                    handleOpen={() => setIsAddOpen(!isAddOpen)}
+                    handleSuccess={() => setIsAddOpen(false)}
+                    submitButtonLabel={t('dashboard.common.confirm')}
+                />
+            )}
 
-            {scheduleToEdit && (
+            {!isParent && scheduleToEdit && (
                 <EditScheduleForm
                     schedule={scheduleToEdit}
                     isOpen={!!scheduleToEdit}
@@ -142,7 +152,7 @@ const SchedulePage = () => {
                 />
             )}
 
-            {scheduleToDelete && (
+            {!isParent && scheduleToDelete && (
                 <DeleteScheduleAlert
                     schedule={scheduleToDelete}
                     isOpen={!!scheduleToDelete}
