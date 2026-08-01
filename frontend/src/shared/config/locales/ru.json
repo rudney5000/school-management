@@ -761,10 +761,14 @@
         "cancelled": "Отменён"
       },
       "stats": {
-        "total": "Всего",
+        "total": "Всего экзаменов",
+        "totalHint": "Все статусы",
         "completed": "Завершено",
+        "completedHint": "За этот период",
         "scheduled": "Запланировано",
-        "average": "Средний балл"
+        "scheduledHint": "Предстоящие",
+        "average": "Средний балл",
+        "averageHint": "Завершённые экзамены"
       },
       "actions": {
         "new": "Новый экзамен"
@@ -904,7 +908,11 @@
         "resultCount_one": "{{count}} результат",
         "resultCount_few": "{{count}} результата",
         "resultCount_many": "{{count}} результатов",
-        "average": "Средний балл"
+        "average": "Средний балл",
+        "tabs": {
+          "results": "Результаты",
+          "upcoming": "Предстоящие экзамены"
+        }
       }
     },
     "common": {

@@ -792,10 +792,14 @@
         "cancelled": "Annulé"
       },
       "stats": {
-        "total": "Total",
+        "total": "Total examens",
+        "totalHint": "Tous statuts",
         "completed": "Terminés",
+        "completedHint": "Cette période",
         "scheduled": "Planifiés",
-        "average": "Moyenne de classe"
+        "scheduledHint": "À venir",
+        "average": "Moyenne",
+        "averageHint": "Examens terminés"
       },
       "actions": {
         "new": "Nouvel examen"
@@ -943,7 +947,11 @@
         "noChildren": "Aucun enfant associé à ce compte",
         "resultCount": "{{count}} résultat",
         "resultCount_plural": "{{count}} résultats",
-        "average": "Moyenne"
+        "average": "Moyenne",
+        "tabs": {
+          "results": "Résultats",
+          "upcoming": "Examens à venir"
+        }
       }
     },
     "common": {

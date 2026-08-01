@@ -923,10 +923,14 @@
         "cancelled": "Esilisami"
       },
       "stats": {
-        "total": "Nyonso",
+        "total": "Bamekano nyonso",
+        "totalHint": "Ba statut nyonso",
         "completed": "Esili",
-        "scheduled": "Etiamé",
-        "average": "Note ya mombongo"
+        "completedHint": "Eleko oyo",
+        "scheduled": "Ekomeka",
+        "scheduledHint": "Ekoya",
+        "average": "Mwayene",
+        "averageHint": "Bamekano esili"
       },
       "actions": {
         "new": "Examen ya sika"
@@ -1063,7 +1067,11 @@
         "noChildren": "Mwana moko te akangami na compte oyo",
         "resultCount": "biyano {{count}}",
         "resultCount_plural": "biyano {{count}}",
-        "average": "Mwayene"
+        "average": "Mwayene",
+        "tabs": {
+          "results": "Biyano",
+          "upcoming": "Bamekano ekoya"
+        }
       }
     },
     "widgets": {
