@@ -29,6 +29,13 @@ export class CourseApi extends ApiWrapper {
         )
     }
 
+    getMyChildrenCourses(subSchoolId: string) {
+        return this.handleRequest<Course[]>(
+            this._baseApi.get('/courses/me/children', { subSchoolId }),
+            (raw) => raw as Course[]
+        )
+    }
+
     create(payload: CreateCourseDto){
         return this.handleRequest<Course>(
             this._baseApi.post('/courses', payload),
