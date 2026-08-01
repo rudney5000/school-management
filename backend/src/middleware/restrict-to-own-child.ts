@@ -16,10 +16,16 @@ export const restrictToOwnChild = asyncHandler(
             return next();
         }
 
-        const studentId = (req.query.studentId as string | undefined) ?? req.body?.studentId;
+        const studentId = (req.params.studentId as string | undefined)
+            ?? (req.query.studentId as string | undefined)
+            ?? req.body?.studentId;
 
         if (!studentId) {
-            throw new AppError('BAD_REQUEST', 'studentId requis', 400);
+            throw new AppError(
+                'BAD_REQUEST',
+                'studentId requis',
+                400
+            );
         }
 
         const [userRecord] = await db
@@ -29,7 +35,11 @@ export const restrictToOwnChild = asyncHandler(
             .limit(1);
 
         if (!userRecord?.parentId) {
-            throw new AppError('FORBIDDEN', 'Accès refusé', 403);
+            throw new AppError(
+                'FORBIDDEN',
+                'Accès refusé',
+                403
+            );
         }
 
         const [link] = await db
@@ -42,9 +52,12 @@ export const restrictToOwnChild = asyncHandler(
             .limit(1);
 
         if (!link) {
-            throw new AppError('FORBIDDEN', 'Accès refusé', 403);
+            throw new AppError(
+                'FORBIDDEN',
+                'Accès refusé',
+                403
+            );
         }
-
         next();
     }
 );
