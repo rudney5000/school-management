@@ -5,8 +5,13 @@ import type {
   CreateScheduleDto,
   UpdateScheduleDto,
 } from '@/modules/schedules/schedules.schema';
-import { SchedulesService } from '@/modules/schedules/schedules.service';
-import type {SubSchoolQueryDto} from "@/modules/parents/parents.schema";
+import {
+  SchedulesService
+} from '@/modules/schedules/schedules.service';
+import type {
+  SubSchoolQueryDto
+} from "@/modules/parents/parents.schema";
+import {AppError} from "@/shared/errors/app-error";
 
 function resolveSubSchoolId(req: Request): string {
   if (req.user?.subSchoolId) {
@@ -21,6 +26,19 @@ export class SchedulesController {
   getAll = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const subSchoolId = resolveSubSchoolId(req);
     const data = await this.service.findAll(subSchoolId);
+    respond(res, data);
+  });
+
+  getMyChildrenSchedules = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    if (!req.user) {
+      throw new AppError(
+          'UNAUTHORIZED',
+          'Utilisateur non authentifié',
+          401
+      );
+    }
+    const subSchoolId = resolveSubSchoolId(req);
+    const data = await this.service.resolveSchedulesForParent(req.user.id, subSchoolId);
     respond(res, data);
   });
 

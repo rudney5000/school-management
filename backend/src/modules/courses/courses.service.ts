@@ -1,11 +1,16 @@
 import {
     and,
-    eq
+    eq,
+    inArray
 } from 'drizzle-orm';
 import { db } from '@/db';
 import {
+    classCourses,
     courseResources,
-    courses
+    courses,
+    enrollments,
+    parentStudents,
+    users
 } from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
 import type {
@@ -138,7 +143,11 @@ export class CoursesService {
         );
 
     if (!existing) {
-      throw new AppError('NOT_FOUND', 'Ressource introuvable', 404);
+      throw new AppError(
+          'NOT_FOUND',
+          'Ressource introuvable',
+          404
+      );
     }
 
     await db
@@ -147,4 +156,54 @@ export class CoursesService {
             eq(courseResources.id, id)
         );
   }
+
+    async resolveCoursesForParent(userId: string, subSchoolId: string) {
+        const [userRecord] = await db
+            .select({ parentId: users.parentId })
+            .from(users)
+            .where(eq(users.id, userId))
+            .limit(1);
+
+        if (!userRecord?.parentId) {
+            throw new AppError(
+                'FORBIDDEN',
+                'Aucun profil parent associé à ce compte',
+                403
+            );
+        }
+
+        const childLinks = await db
+            .select({ studentId: parentStudents.studentId })
+            .from(parentStudents)
+            .where(eq(parentStudents.parentId, userRecord.parentId));
+
+        const studentIds = childLinks.map((l) => l.studentId);
+        if (studentIds.length === 0) return [];
+
+        const childEnrollments = await db
+            .select({ classId: enrollments.classId })
+            .from(enrollments)
+            .where(inArray(enrollments.studentId, studentIds));
+
+        const classIds = [...new Set(childEnrollments.map((e) => e.classId))];
+        if (classIds.length === 0) return [];
+
+        const courseLinks = await db
+            .select({ courseId: classCourses.courseId })
+            .from(classCourses)
+            .where(inArray(classCourses.classId, classIds));
+
+        const courseIds = [...new Set(courseLinks.map((c) => c.courseId))];
+        if (courseIds.length === 0) return [];
+
+        return db
+            .select()
+            .from(courses)
+            .where(
+                and(
+                    inArray(courses.id, courseIds),
+                    eq(courses.subSchoolId, subSchoolId),
+                ),
+            );
+    }
 }
