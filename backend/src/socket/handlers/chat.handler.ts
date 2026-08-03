@@ -15,6 +15,7 @@ const chatService = new ChatService()
 
 export function registerChatHandlers(io: Server, socket: Socket, redis: Redis) {
     const userId = socket.data.userId
+    const userRole = socket.data.role
 
     socket.on('join_conversation', async (conversationId: string) => {
         try {
@@ -38,6 +39,7 @@ export function registerChatHandlers(io: Server, socket: Socket, redis: Redis) {
             const message = await chatService.sendMessage(
                 data.conversationId,
                 userId,
+                userRole,
                 data.input,
             )
 
@@ -195,6 +197,7 @@ export function registerChatHandlers(io: Server, socket: Socket, redis: Redis) {
                 data.messageId,
                 data.targetConversationId,
                 userId,
+                userRole
             )
             io.to(data.targetConversationId).emit('message:new', forwarded)
         } catch {
