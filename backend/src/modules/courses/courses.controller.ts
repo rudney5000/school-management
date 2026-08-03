@@ -36,6 +36,19 @@ export class CoursesController {
     respond(res, data);
   });
 
+  getMyChildrenCourses = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    if (!req.user) {
+      throw new AppError(
+          'UNAUTHORIZED',
+          'Utilisateur non authentifié',
+          401
+      );
+    }
+    const subSchoolId = resolveSubSchoolId(req);
+    const data = await this.service.resolveCoursesForParent(req.user.id, subSchoolId);
+    respond(res, data);
+  });
+
   create = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const data = await this.service.create(req.body as CreateCourseDto);
     respond(res, data, 201);

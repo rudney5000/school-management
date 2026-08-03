@@ -26,8 +26,8 @@ interface StudentColumnsOptions {
     t: TFunction
     studentToUpdate: Student | undefined
     studentToDelete: Student | undefined
-    onEdit: (student: Student) => void
-    onDelete: (student: Student) => void
+    onEdit?: (student: Student) => void
+    onDelete?: (student: Student) => void
     onView: (student: Student) => void
     onCancelEdit: () => void
     onCancelDelete: () => void
@@ -213,8 +213,8 @@ export function getStudentColumns({
                 <div>
                     <ActionsComponent<Student>
                         row={row}
-                        onEditAction={() => onEdit(row.original)}
-                        onDeleteAction={() => onDelete(row.original)}
+                        onEditAction={onEdit ? () => onEdit(row.original) : undefined}
+                        onDeleteAction={onDelete ? () => onDelete(row.original) : undefined}
                         onViewAction={() => onView(row.original)}
                     />
                     <EditStudentForm

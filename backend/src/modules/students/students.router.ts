@@ -17,23 +17,52 @@ router.get(
   '/',
   authenticate,
   authorize('admin', 'director', 'teacher', 'student', 'super_admin'),
-  validate({ query: subSchoolQuerySchema }),
+  validate({
+      query: subSchoolQuerySchema
+  }),
   controller.getAll,
 );
 router.get(
   '/:id',
   authenticate,
   authorize('admin', 'director', 'teacher', 'parent', 'student', 'super_admin'),
-  validate({ params: studentParamsSchema, query: subSchoolQuerySchema }),
+  validate({
+      params: studentParamsSchema,
+      query: subSchoolQuerySchema
+  }),
   controller.getById,
 );
+
+router.get(
+    '/unassigned',
+    authenticate,
+    authorize('admin', 'director', 'super_admin'),
+    validate({
+        query: subSchoolQuerySchema
+    }),
+    controller.getUnassigned,
+);
+
+router.get(
+    '/me/children',
+    authenticate,
+    authorize('parent'),
+    validate({
+        query: subSchoolQuerySchema
+    }),
+    controller.getMyChildren,
+);
+
 router.post(
   '/',
   authenticate,
   authorize('admin', 'director', 'super_admin'),
-  validate({ body: createStudentSchema }),
+  validate({
+      body: createStudentSchema
+  }),
   controller.create,
 );
+
 router.patch(
   '/:id',
   authenticate,
@@ -45,11 +74,15 @@ router.patch(
   }),
   controller.update,
 );
+
 router.delete(
   '/:id',
   authenticate,
   authorize('admin', 'director', 'super_admin'),
-  validate({ params: studentParamsSchema, query: subSchoolQuerySchema }),
+  validate({
+      params: studentParamsSchema,
+      query: subSchoolQuerySchema
+  }),
   controller.remove,
 );
 

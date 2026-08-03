@@ -133,10 +133,12 @@ export function ExamTableToolbar({
                     ))}
                 </div>
 
-                <Button size="sm" onClick={onNew} className="h-8 shrink-0">
-                    <Plus className="size-3"/>
-                    {t('dashboard.exams.actions.new')}
-                </Button>
+                {onNew && (
+                    <Button size="sm" onClick={onNew} className="h-8 shrink-0">
+                        <Plus className="size-3"/>
+                        {t('dashboard.exams.actions.new')}
+                    </Button>
+                )}
             </div>
         </div>
     )

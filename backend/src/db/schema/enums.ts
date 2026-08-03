@@ -99,6 +99,8 @@ export const conversationTypeEnum = pgEnum('conversation_type', [
     'group',
     'class',
     'course',
+    'announcement',
+    'parent_group',
 ])
 
 export const memberRoleEnum = pgEnum('member_role', [

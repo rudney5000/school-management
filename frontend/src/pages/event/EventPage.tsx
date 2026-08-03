@@ -1,6 +1,4 @@
-import {
-    useState
-} from "react"
+import { useState } from "react"
 import {
     format,
     startOfWeek,
@@ -61,6 +59,8 @@ export default function EventsPage() {
     const dateLocale = useDateLocale()
 
     const selectedSubSchoolId = useAppSelector((state) => state.subSchool.selectedSubSchoolId)
+    const role = useAppSelector((state) => state.auth.role)
+    const isParent = role === 'parent'
     
     const { data: events = [], isLoading: loading } = useEvents(selectedSubSchoolId || undefined)
     const createEventMutation = useCreateEvent()
@@ -185,18 +185,26 @@ export default function EventsPage() {
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="newest">{t('dashboard.events.newest')}</SelectItem>
-                                    <SelectItem value="oldest">{t('dashboard.events.oldest')}</SelectItem>
+                                    <SelectItem value="newest">
+                                        {t('dashboard.events.newest')}
+                                    </SelectItem>
+                                    <SelectItem value="oldest">
+                                        {t('dashboard.events.oldest')}
+                                    </SelectItem>
                                 </SelectContent>
                             </Select>
-                            <Button
-                                className="text-white gap-2"
-                                style={{ background: "oklch(0.50 0.22 275)" }}
-                                onClick={() => setDrawerOpen(true)}
-                            >
-                                <Plus className="size-4" />
-                                <span className="hidden sm:inline">{t('dashboard.events.addEvent')}</span>
-                            </Button>
+                            {!isParent && (
+                                <Button
+                                    className="text-white gap-2"
+                                    style={{ background: "oklch(0.50 0.22 275)" }}
+                                    onClick={() => setDrawerOpen(true)}
+                                >
+                                    <Plus className="size-4" />
+                                    <span className="hidden sm:inline">
+                                        {t('dashboard.events.addEvent')}
+                                    </span>
+                                </Button>
+                            )}
                         </div>
                     </div>
 
@@ -269,7 +277,7 @@ export default function EventsPage() {
                                 </Button>
                                 <span className="text-xs text-muted-foreground px-2 min-w-[130px] text-center">
                                     {format(ganttWindowStart, "dd MMM", { locale: dateLocale })} –{" "}
-                                                    {format(addDays(ganttWindowStart, WEEK_COUNT * 7 - 1), "dd MMM yyyy", { locale: dateLocale })}
+                                    {format(addDays(ganttWindowStart, WEEK_COUNT * 7 - 1), "dd MMM yyyy", { locale: dateLocale })}
                                 </span>
                                 <Button
                                     variant="outline"
@@ -386,12 +394,14 @@ export default function EventsPage() {
                                                     <Clock className="size-3" />
                                                     {format(new Date(ev.startDate), "dd MMM", { locale: dateLocale })}
                                                 </div>
-                                                <button
-                                                    className="text-muted-foreground hover:text-destructive transition-colors"
-                                                    onClick={() => handleDeleteClick(ev.id)}
-                                                >
-                                                    <Trash2 className="size-3" />
-                                                </button>
+                                                {!isParent && (
+                                                    <button
+                                                        className="text-muted-foreground hover:text-destructive transition-colors"
+                                                        onClick={() => handleDeleteClick(ev.id)}
+                                                    >
+                                                        <Trash2 className="size-3" />
+                                                    </button>
+                                                )}
                                             </div>
                                             <p className="font-semibold text-sm mb-1 line-clamp-1">
                                                 {ev.title}
@@ -404,14 +414,16 @@ export default function EventsPage() {
                                             {ev.isLiveEvent && ev.liveUrl && (
                                                 <div className="flex items-center gap-2 mb-2">
                                                     <Radio className="w-3 h-3 text-red-500" />
-                                                    <span className="text-xs font-medium text-red-600">Live disponible</span>
+                                                    <span className="text-xs font-medium text-red-600">
+                                                        {t('dashboard.courses.live.available')}
+                                                    </span>
                                                     <div className="ml-auto flex gap-1">
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
                                                             className="h-5 w-5"
                                                             onClick={() => window.open(ev.liveUrl!, '_blank')}
-                                                            title="Ouvrir le live"
+                                                            title={t('dashboard.courses.actions.openLive')}
                                                         >
                                                             <ExternalLink size={11} />
                                                         </Button>
@@ -420,7 +432,7 @@ export default function EventsPage() {
                                                             size="icon"
                                                             className="h-5 w-5"
                                                             onClick={() => navigator.clipboard.writeText(ev.liveUrl!)}
-                                                            title="Copier le lien"
+                                                            title={t('dashboard.courses.actions.copyLink')}
                                                         >
                                                             <Copy size={11} />
                                                         </Button>
@@ -467,12 +479,14 @@ export default function EventsPage() {
                                             <p className="font-semibold text-sm leading-tight line-clamp-1">
                                                 {ev.title}
                                             </p>
-                                            <button
-                                                className="text-muted-foreground hover:text-destructive transition-colors shrink-0 mt-0.5"
-                                                onClick={() => handleDeleteClick(ev.id)}
-                                            >
-                                                <Trash2 className="size-3" />
-                                            </button>
+                                            {!isParent && (
+                                                <button
+                                                    className="text-muted-foreground hover:text-destructive transition-colors shrink-0 mt-0.5"
+                                                    onClick={() => handleDeleteClick(ev.id)}
+                                                >
+                                                    <Trash2 className="size-3" />
+                                                </button>
+                                            )}
                                         </div>
                                         <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
                                             <Clock className="size-3 shrink-0" />
@@ -505,62 +519,70 @@ export default function EventsPage() {
                         </div>
                     )}
 
-                    <Button
-                        variant="outline"
-                        className="w-full mt-5 text-sm border-violet-200 hover:bg-violet-50"
-                        style={{ color: "oklch(0.50 0.22 275)" }}
-                        onClick={() => setDrawerOpen(true)}
-                    >
-                        <Plus className="size-3.5 mr-1" />
-                        {t('dashboard.events.addEvent')}
-                    </Button>
+                    {!isParent && (
+                        <Button
+                            className="text-white gap-2"
+                            style={{ background: "oklch(0.50 0.22 275)" }}
+                            onClick={() => setDrawerOpen(true)}
+                        >
+                            <Plus className="size-4" />
+                            <span className="hidden sm:inline">
+                                {t('dashboard.events.addEvent')}
+                            </span>
+                        </Button>
+                    )}
                 </aside>
             </div>
 
-    <CustomDrawer
-        isOpen={drawerOpen}
-        handleOpen={(open) => setDrawerOpen(open)}
-        drawerTitle={`${t('dashboard.events.title')}`}
-        drawerDescription={`${t('dashboard.events.createEvent')}`}
-        direction="right"
-    >
-        <AddEventForm
-            subSchoolId={selectedSubSchoolId || undefined}
-            onSubmit={handleAddEvent}
-            onCancel={() => setDrawerOpen(false)}
-            isPending={createEventMutation.isPending}
-        />
-    </CustomDrawer>
+            {!isParent && (
+                <CustomDrawer
+                    isOpen={drawerOpen}
+                    handleOpen={(open) => setDrawerOpen(open)}
+                    drawerTitle={`${t('dashboard.events.title')}`}
+                    drawerDescription={`${t('dashboard.events.createEvent')}`}
+                    direction="right"
+                >
+                    <AddEventForm
+                        subSchoolId={selectedSubSchoolId || undefined}
+                        onSubmit={handleAddEvent}
+                        onCancel={() => setDrawerOpen(false)}
+                        isPending={createEventMutation.isPending}
+                    />
+                </CustomDrawer>
+            )}
 
-    <CustomDrawer
-        isOpen={editDrawerOpen}
-        handleOpen={(open) => setEditDrawerOpen(open)}
-        drawerTitle={`${t('dashboard.events.editEvent')}`}
-        drawerDescription={`${t('dashboard.events.editEventDescription')}`}
-        direction="right"
-    >
-        {editingEvent && (
-            <EditEventForm
-                event={editingEvent}
-                subSchoolId={selectedSubSchoolId || undefined}
-                onSubmit={handleEditEvent}
-                onCancel={() => {
-                    setEditDrawerOpen(false)
-                    setEditingEvent(null)
-                }}
-                isPending={createEventMutation.isPending}
-            />
-        )}
-    </CustomDrawer>
+            {!isParent && (
+                <CustomDrawer
+                    isOpen={editDrawerOpen}
+                    handleOpen={(open) => setEditDrawerOpen(open)}
+                    drawerTitle={`${t('dashboard.events.editEvent')}`}
+                    drawerDescription={`${t('dashboard.events.editEventDescription')}`}
+                    direction="right"
+                >
+                    {editingEvent && (
+                        <EditEventForm
+                            event={editingEvent}
+                            subSchoolId={selectedSubSchoolId || undefined}
+                            onSubmit={handleEditEvent}
+                            onCancel={() => {
+                                setEditDrawerOpen(false)
+                                setEditingEvent(null)
+                            }}
+                            isPending={createEventMutation.isPending}
+                        />
+                    )}
+                </CustomDrawer>
+            )}
 
-    <DeleteAlertEvent
-        isOpen={deleteAlertOpen}
-        onOpenChange={setDeleteAlertOpen}
-        onClick={handleDeleteConfirm}
-        isLoading={deleteEventMutation.isPending}
-        eventName={deletingEventId ? events.find(e => e.id === deletingEventId)?.title : undefined}
-    />
-</div>
+            {!isParent && (
+                <DeleteAlertEvent
+                    isOpen={deleteAlertOpen}
+                    onOpenChange={setDeleteAlertOpen}
+                    onClick={handleDeleteConfirm}
+                    isLoading={deleteEventMutation.isPending}
+                    eventName={deletingEventId ? events.find(e => e.id === deletingEventId)?.title : undefined}
+                />
+            )}
+        </div>
     )
-
 }

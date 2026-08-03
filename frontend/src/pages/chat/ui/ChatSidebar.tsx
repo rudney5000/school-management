@@ -5,7 +5,7 @@ import {
     FileText,
     AlertCircle,
     Trash2,
-    Plus
+    Plus, Megaphone
 } from 'lucide-react'
 import {
     Badge,
@@ -24,6 +24,7 @@ interface ChatSidebarProps {
         groups: number
         direct: number
         archived: number
+        announcements: number
     }
 }
 
@@ -41,12 +42,13 @@ export function ChatSidebar({
     ]
 
     const categories = [
-        { id: 'all',      label: t('dashboard.chat.categories.all'),      icon: Inbox,       count: counts.all },
-        { id: 'starred',  label: t('dashboard.chat.categories.starred'),  icon: Star,        count: counts.starred },
-        { id: 'unread',   label: t('dashboard.chat.categories.unread'),   icon: Send,        count: counts.unread },
-        { id: 'groups',   label: t('dashboard.chat.categories.groups'),   icon: FileText,    count: counts.groups },
-        { id: 'direct',   label: t('dashboard.chat.categories.direct'),   icon: AlertCircle, count: counts.direct },
-        { id: 'archived', label: t('dashboard.chat.categories.archived'), icon: Trash2,      count: counts.archived },
+        { id: 'all',           label: t('dashboard.chat.categories.all'),            icon: Inbox,       count: counts.all },
+        { id: 'announcements',  label: t('dashboard.chat.categories.announcements'), icon: Megaphone,   count: counts.announcements },
+        { id: 'starred',       label: t('dashboard.chat.categories.starred'),        icon: Star,        count: counts.starred },
+        { id: 'unread',        label: t('dashboard.chat.categories.unread'),         icon: Send,        count: counts.unread },
+        { id: 'groups',        label: t('dashboard.chat.categories.groups'),         icon: FileText,    count: counts.groups },
+        { id: 'direct',        label: t('dashboard.chat.categories.direct'),         icon: AlertCircle, count: counts.direct },
+        { id: 'archived',      label: t('dashboard.chat.categories.archived'),       icon: Trash2,      count: counts.archived },
     ]
 
     return (

@@ -22,6 +22,13 @@ export class ScheduleApi extends ApiWrapper {
         )
     }
 
+    getMyChildrenSchedules(subSchoolId: string) {
+        return this.handleRequest<Schedule[]>(
+            this._baseApi.get('/schedules/me/children', { subSchoolId }),
+            (raw) => raw as Schedule[]
+        )
+    }
+
     getById(params: ScheduleParamsDto) {
         return this.handleRequest<Schedule>(
             this._baseApi.get(`/schedules/${params.id}`),

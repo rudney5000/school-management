@@ -14,6 +14,7 @@ export const createParentSchema = z.object({
   gender: z.enum(['male', 'female']),
   isActive: z.boolean().optional().default(true),
   subSchoolId: z.string().uuid('Invalid sub-school ID'),
+  studentIds: z.array(z.string().uuid()).optional(),
 });
 
 export const updateParentSchema = createParentSchema

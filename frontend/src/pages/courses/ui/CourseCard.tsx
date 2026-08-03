@@ -65,52 +65,58 @@ const colorMap: Record<CourseColor, { bg: string; text: string }> = {
     amber:   { bg: 'bg-amber-100',   text: 'text-amber-600' },
 };
 
-interface Props {
+interface CourseCardProps {
     course: Course;
-    onEdit: (course: Course) => void;
-    onDelete: (id: string) => void;
+    onEdit?: (course: Course) => void;
+    onDelete?: (id: string) => void;
 }
 
-export default function CourseCard({ course, onEdit, onDelete }: Props) {
-    const colors = colorMap[course.color];
+export default function CourseCard({ course, onEdit, onDelete }: CourseCardProps) {
     const { t } = useTranslation();
+    const colors = colorMap[course.color];
 
     return (
         <Card className="flex flex-col hover:shadow-md transition-shadow duration-200">
             <CardContent className="flex flex-col gap-4 p-5 flex-1">
                 <div className="flex items-start justify-between">
-                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${colors.bg} ${colors.text}`}>
+                    <div
+                        className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${colors.bg} ${colors.text}`}>
                         {iconMap[course.icon]}
                     </div>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground">
-                                <MoreHorizontal size={16} />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-36">
-                            <DropdownMenuLabel>
-                                {t('dashboard.courses.actions.title')}
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                onClick={() => onEdit(course)}
-                                className="gap-2 cursor-pointer"
-                            >
-                                <Edit2 size={13} />
-                                {t('dashboard.courses.actions.edit')}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                                onClick={() => onDelete(course.id)}
-                                className="gap-2 cursor-pointer text-destructive focus:text-destructive"
-                            >
-                                <Trash2 size={13} />
-                                {t('dashboard.courses.actions.delete')}
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    {(onEdit || onDelete) && (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground">
+                                    <MoreHorizontal size={16}/>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-36">
+                                <DropdownMenuLabel>
+                                    {t('dashboard.courses.actions.title')}
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator/>
+                                {onEdit && (
+                                    <DropdownMenuItem
+                                        onClick={() => onEdit(course)}
+                                        className="gap-2 cursor-pointer"
+                                    >
+                                        <Edit2 size={13}/>
+                                        {t('dashboard.courses.actions.edit')}
+                                    </DropdownMenuItem>
+                                )}
+                                {onDelete && (
+                                    <DropdownMenuItem
+                                        onClick={() => onDelete(course.id)}
+                                        className="gap-2 cursor-pointer text-destructive focus:text-destructive"
+                                    >
+                                        <Trash2 size={13}/>
+                                        {t('dashboard.courses.actions.delete')}
+                                    </DropdownMenuItem>
+                                )}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    )}
                 </div>
-
                 <div>
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
                         <h3 className="font-semibold text-foreground text-sm leading-tight">
@@ -130,7 +136,8 @@ export default function CourseCard({ course, onEdit, onDelete }: Props) {
                 {course.teacher && (
                     <div className="flex items-center gap-2">
                         <Avatar className="h-6 w-6">
-                            <AvatarImage src={course.teacher.image} alt={`${course.teacher.firstName} ${course.teacher.lastName}`} />
+                            <AvatarImage src={course.teacher.image}
+                                         alt={`${course.teacher.firstName} ${course.teacher.lastName}`}/>
                             <AvatarFallback className="text-[10px]">
                                 {course.teacher.firstName[0]}{course.teacher.lastName[0]}
                             </AvatarFallback>
@@ -143,48 +150,50 @@ export default function CourseCard({ course, onEdit, onDelete }: Props) {
 
                 <div className="flex items-center gap-4 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1.5">
-                    <BookMarked size={12} />
-                      {t('dashboard.courses.stats.lessons', { count: course.totalLessons })}
+                    <BookMarked size={12}/>
+                      {t('dashboard.courses.stats.lessons', {count: course.totalLessons})}
                   </span>
-                  <span className="flex items-center gap-1.5">
-                    <Clock size={12} />
-                      {course.totalHours}h
+                    <span className="flex items-center gap-1.5">
+                    <Clock size={12}/>
+                        {course.totalHours}h
                   </span>
-                  <span className="ml-auto text-xs font-semibold text-foreground">
+                    <span className="ml-auto text-xs font-semibold text-foreground">
                     {course.credits}
-                      {t('dashboard.courses.stats.creditsShort')}.
+                        {t('dashboard.courses.stats.creditsShort')}.
                   </span>
                 </div>
 
                 {course.isDistanceCourse && course.liveUrl && (
                     <div className="flex items-center gap-2 pt-2 border-t">
-                        <Radio className="w-3.5 h-3.5 text-red-500" />
-                        <span className="text-xs font-medium text-red-600">Live disponible</span>
+                        <Radio className="w-3.5 h-3.5 text-red-500"/>
+                        <span className="text-xs font-medium text-red-600">
+                            {t('dashboard.courses.live.available')}
+                        </span>
                         <div className="ml-auto flex gap-1">
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 className="h-7 w-7"
                                 onClick={() => window.open(course.liveUrl, '_blank')}
-                                title="Ouvrir le live"
+                                title={t('dashboard.courses.actions.openLive')}
                             >
-                                <ExternalLink size={13} />
+                                <ExternalLink size={13}/>
                             </Button>
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 className="h-7 w-7"
                                 onClick={() => navigator.clipboard.writeText(course.liveUrl!)}
-                                title="Copier le lien"
+                                title={t('dashboard.courses.actions.copyLink')}
                             >
-                                <Copy size={13} />
+                                <Copy size={13}/>
                             </Button>
                         </div>
                     </div>
                 )}
             </CardContent>
 
-            <Separator />
+            <Separator/>
 
             <CardFooter className="px-5 py-3">
                 {course.status === 'completed' ? (

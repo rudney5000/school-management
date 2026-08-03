@@ -6,7 +6,10 @@ import {
     boolean,
     uniqueIndex,
 } from 'drizzle-orm/pg-core';
-import {relations} from 'drizzle-orm';
+import {
+    relations,
+    sql
+} from 'drizzle-orm';
 import {
     conversationTypeEnum,
     memberRoleEnum,
@@ -26,7 +29,14 @@ export const conversations = pgTable('conversations', {
     createdBy:   uuid('created_by').notNull().references(() => users.id),
     createdAt:   timestamp('created_at').defaultNow().notNull(),
     updatedAt:   timestamp('updated_at').defaultNow().notNull(),
-})
+}, (table) => ({
+    uniqueAnnouncementPerSubSchool: uniqueIndex('uniq_announcement_per_subschool')
+        .on(table.subSchoolId)
+        .where(sql`${table.type} = 'announcement'`),
+    uniqueParentGroupPerClass: uniqueIndex('uniq_parent_group_per_class')
+        .on(table.classId)
+        .where(sql`${table.type} = 'parent_group'`),
+}))
 
 export const conversationMembers = pgTable('conversation_members', {
     id:             uuid('id').primaryKey().defaultRandom(),

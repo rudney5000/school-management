@@ -467,7 +467,10 @@
         "addTitle": "Moboti ya sika",
         "addDescription": "Tondela bisaleli oyo esengami.",
         "editTitle": "Kobongisa moboti",
-        "editDescription": "Longola bisaleli ya moboti."
+        "editDescription": "Longola bisaleli ya moboti.",
+        "selectGender": "Pona loti",
+        "selectChildren": "Pona bana",
+        "noUnassignedChildren": "Bana mosusu te"
       },
       "fields": {
         "firstName": "Nkombo ya liboso",
@@ -478,7 +481,8 @@
         "dateOfBirth": "Mokolo ya kobotama",
         "address": "Adilesi",
         "image": "Image",
-        "isActive": "Moyindami ya active"
+        "isActive": "Moyindami ya active",
+        "children": "Bana"
       },
       "columns": {
         "firstName": "Nkombo ya liboso",
@@ -516,7 +520,8 @@
         "completion": "Bosilisi",
         "attendance": "Bopesi ya bozali",
         "thisMonth": "Sanza oyo",
-        "quickActions": "Misala ya mbangu"
+        "quickActions": "Misala ya mbangu",
+        "children": "Bana"
       }
     },
     "classes": {
@@ -570,7 +575,9 @@
       "actions": {
         "title": "Misala",
         "edit": "Bongisa",
-        "delete": "Longola"
+        "delete": "Longola",
+        "openLive": "Kofungola live",
+        "copyLink": "Kokoma kopi ya lien"
       },
       "stats": {
         "lessons_one": "{{count}} liteya",
@@ -697,8 +704,18 @@
         "unread": "Basili kokota",
         "groups": "Ba groupe",
         "direct": "Ba message ya moboko",
-        "archived": "Ebatelami"
+        "archived": "Ebatelami",
+        "announcements": "Basango"
       },
+      "readOnlyAnnouncement": "Etuluku oyo ezali kaka mpo na basango ya eteyelo — kotánga kaka",
+      "newConversation": "Nsango ya sika",
+      "schoolStaff": "Bokambi ya eteyelo",
+      "teachers": "Balakisi",
+      "noContacts": "Ezali na moto te ya kosolola na ye sikoyo",
+      "roleAdmin": "Mokambi",
+      "roleDirector": "Mokonzi",
+      "roleSuperAdmin": "Mokambi monene",
+      "roleTeacher": "Molakisi",
       "loadingConversations": "Kozela ba conversation...",
       "noConversations": "Conversation moko te sikoyo",
       "selectConversation": "Pona conversation moko",
@@ -906,7 +923,8 @@
         "midterm": "Ya kati",
         "final": "Ya suka",
         "homework": "Mosala ya ndako",
-        "oral": "Ya monoko"
+        "oral": "Ya monoko",
+        "exam": "Examen"
       },
       "statuses": {
         "scheduled": "Etiamé",
@@ -915,10 +933,14 @@
         "cancelled": "Esilisami"
       },
       "stats": {
-        "total": "Nyonso",
+        "total": "Bamekano nyonso",
+        "totalHint": "Ba statut nyonso",
         "completed": "Esili",
-        "scheduled": "Etiamé",
-        "average": "Note ya mombongo"
+        "completedHint": "Eleko oyo",
+        "scheduled": "Ekomeka",
+        "scheduledHint": "Ekoya",
+        "average": "Mwayene",
+        "averageHint": "Bamekano esili"
       },
       "actions": {
         "new": "Examen ya sika"
@@ -1044,6 +1066,22 @@
         "goodProgressDesc": "Ntálisi na proportion {{rate}}% ya balongí emonisi elongi ya malamu.",
         "noData": "Data ezali te",
         "noDataDesc": "Statistiki ekozala sima ya kotíya manote"
+      },
+      "reportCard": {
+        "title": "Mokanda ya bapunda",
+        "description": "Landelá bilanga ya bana na yo na kelasi",
+        "subtitle": "Bipunda ya bamekano",
+        "loading": "Kozela bipunda...",
+        "empty": "Bipunda ezali naino te",
+        "pending": "Ezali kozela",
+        "noChildren": "Mwana moko te akangami na compte oyo",
+        "resultCount": "biyano {{count}}",
+        "resultCount_plural": "biyano {{count}}",
+        "average": "Mwayene",
+        "tabs": {
+          "results": "Biyano",
+          "upcoming": "Bamekano ekoya"
+        }
       }
     },
     "widgets": {

@@ -16,22 +16,25 @@ import {
     Separator,
     Spinner
 } from '@/shared/ui';
-import type {Course} from "@entities/courses";
-import { useCourses } from "@entities/courses";
+import {
+    type Course,
+    type CourseStatus,
+    useCoursesList
+} from "@entities/courses";
 import {
     AddCourseForm,
     EditCourseForm,
     DeleteCourseAlert
 } from "@features/courses";
-import type {CourseStatus} from "@entities/courses/model/constants";
 import {useTranslation} from "@shared/lib";
 import CourseCard from "@/pages/courses/ui/CourseCard";
 import {ListRow} from "@/pages/courses/ui";
 import i18n from "@app/i18n/i18n";
+import {useAppSelector} from "@shared/store/hooks";
 
 export default function CoursesPage() {
+    const { t } = useTranslation();
     const { subSchoolId } = useParams({ strict: false });
-    const { data: courses = [], isLoading } = useCourses(subSchoolId);
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState<CourseStatus | 'all'>('all');
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -39,7 +42,12 @@ export default function CoursesPage() {
     const [editCourse, setEditCourse] = useState<Course | null>(null);
     const [deleteCourse, setDeleteCourse] = useState<Course | null>(null);
 
-    const { t } = useTranslation();
+    const role = useAppSelector((s) => s.auth.role);
+    const isParent = role === 'parent';
+
+    const { data: courses = [], isLoading } = useCoursesList(subSchoolId);
+
+
     const filtered = useMemo(() => {
         return courses.filter(c => {
             const q = search.toLowerCase();
@@ -112,11 +120,18 @@ export default function CoursesPage() {
                             <List size={15} />
                         </Button>
                     </div>
-                    <Button size="sm" onClick={handleOpenCreate} className="gap-1.5 shrink-0">
-                        <Plus size={15} /> <span className="hidden sm:inline">
-                        {t('dashboard.courses.add')}
-                    </span>
-                    </Button>
+                    {!isParent && (
+                        <Button
+                            size="sm"
+                            onClick={handleOpenCreate}
+                            className="gap-1.5 shrink-0"
+                        >
+                            <Plus size={15} />
+                            <span className="hidden sm:inline">
+                                {t('dashboard.courses.add')}
+                            </span>
+                        </Button>
+                    )}
                 </div>
             </header>
 
@@ -182,8 +197,8 @@ export default function CoursesPage() {
                             <CourseCard
                                 key={course.id}
                                 course={course}
-                                onEdit={handleEdit}
-                                onDelete={(id) => setDeleteCourse(courses.find(c => c.id === id) ?? null)}
+                                onEdit={isParent ? undefined : handleEdit}
+                                onDelete={isParent ? undefined : (id) => setDeleteCourse(courses.find(c => c.id === id) ?? null)}
                             />
                         ))}
                     </div>
@@ -194,8 +209,8 @@ export default function CoursesPage() {
                                 {i > 0 && <Separator />}
                                 <ListRow
                                     course={course}
-                                    onEdit={handleEdit}
-                                    onDelete={(id) => setDeleteCourse(courses.find(c => c.id === id) ?? null)}
+                                    onEdit={isParent ? undefined : handleEdit}
+                                    onDelete={isParent ? undefined : (id) => setDeleteCourse(courses.find(c => c.id === id) ?? null)}
                                 />
                             </div>
                         ))}
@@ -203,13 +218,15 @@ export default function CoursesPage() {
                 )}
             </main>
 
-            <AddCourseForm
-                isOpen={addModalOpen}
-                handleOpen={() => setAddModalOpen(false)}
-                handleSuccess={() => setAddModalOpen(false)}
-            />
+            {!isParent && (
+                <AddCourseForm
+                    isOpen={addModalOpen}
+                    handleOpen={() => setAddModalOpen(false)}
+                    handleSuccess={() => setAddModalOpen(false)}
+                />
+            )}
 
-            {editCourse && (
+            {!isParent && editCourse && (
                 <EditCourseForm
                     course={editCourse}
                     isOpen={!!editCourse}
@@ -218,7 +235,7 @@ export default function CoursesPage() {
                 />
             )}
 
-            {deleteCourse && (
+            {!isParent && deleteCourse && (
                 <DeleteCourseAlert
                     course={deleteCourse}
                     isOpen={!!deleteCourse}

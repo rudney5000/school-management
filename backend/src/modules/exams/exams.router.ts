@@ -18,6 +18,9 @@ import {
     subSchoolQuerySchema,
     updateStudentSchema
 } from "@/modules/students/students.schema";
+import {
+    restrictToOwnChild
+} from "@/middleware/restrict-to-own-child";
 
 
 const examsController = new ExamsController()
@@ -44,6 +47,16 @@ router.get(
         query: subSchoolQuerySchema
     }),
     examsController.getById,
+);
+
+router.get(
+    '/me/children',
+    authenticate,
+    authorize('parent'),
+    validate({
+        query: subSchoolQuerySchema
+    }),
+    examsController.getMyChildrenExams,
 );
 
 router.post(
@@ -91,11 +104,12 @@ router.get(
 router.get(
     '/students/:studentId/results',
     authenticate,
-    authorize('admin', 'director', 'teacher', 'student', 'super_admin'),
+    authorize('admin', 'director', 'teacher', 'student', 'parent', 'super_admin'),
     validate({
         params: studentResultsParamsSchema,
         query: subSchoolQuerySchema
     }),
+    restrictToOwnChild,
     examResultsController.getByStudent,
 );
 

@@ -1,5 +1,8 @@
 import React, {useMemo} from 'react'
-import { useNavigate, useParams } from '@tanstack/react-router'
+import {
+    useNavigate,
+    useParams
+} from '@tanstack/react-router'
 import {
     UserCheck,
     UserPlus,
@@ -12,7 +15,7 @@ import {
 } from '@shared/ui/data-table'
 import {
     type Student,
-    useStudents
+    useStudentsList
 } from '@entities/student'
 import {
     AddStudentForm,
@@ -20,22 +23,30 @@ import {
 } from '@features/student'
 import { useTranslation } from '@shared/lib'
 import i18n from '@app/i18n/i18n'
-import {getStudentColumns} from "@/pages/student/ui/StudentColumns";
-import {StudentsTable} from "@/pages/student/ui/StudentsTable";
+import {
+    getStudentColumns
+} from "@/pages/student/ui/StudentColumns";
+import {
+    StudentsTable
+} from "@/pages/student/ui/StudentsTable";
+import {useAppSelector} from "@shared/store/hooks";
 
 const StudentsPage = () => {
+    const { t } = useTranslation()
     const [isCreateOpen, setIsCreateOpen] = React.useState(false)
     const [studentToUpdate, setStudentToUpdate] = React.useState<Student>()
     const [studentToDelete, setStudentToDelete] = React.useState<Student>()
     const navigate = useNavigate()
-    const { t } = useTranslation()
+
+    const role = useAppSelector((s) => s.auth.role)
+    const isParent = role === 'parent'
 
     const locale = i18n.language
     const { subSchoolId } = useParams({
         from: '/$locale/dashboard/sub-schools/$subSchoolId/students',
     })
 
-    const { data, isLoading, isError } = useStudents(subSchoolId)
+    const { data, isLoading, isError } = useStudentsList(subSchoolId)
 
     const stats = React.useMemo<StatCardItem[]>(() => {
         const students = data ?? []
@@ -101,8 +112,8 @@ const StudentsPage = () => {
         t,
         studentToUpdate,
         studentToDelete,
-        onEdit: setStudentToUpdate,
-        onDelete: setStudentToDelete,
+        onEdit: isParent ? undefined : setStudentToUpdate,
+        onDelete: isParent ? undefined : setStudentToDelete,
         onView: handleViewStudent,
         onCancelEdit: () => setStudentToUpdate(undefined),
         onCancelDelete: () => setStudentToDelete(undefined),
@@ -125,22 +136,26 @@ const StudentsPage = () => {
                     student={student}
                     onView={handleViewStudent}
                     onEdit={setStudentToUpdate}
+                    isParent={isParent}
                 />
             )}
         >
-            <AddStudentForm
-                isOpen={isCreateOpen}
-                handleOpen={() => setIsCreateOpen(!isCreateOpen)}
-                handleSuccess={() => setIsCreateOpen(false)}
-                submitButtonLabel={t('dashboard.students.add')}
-            />
-
-            <Button
-                onClick={() => setIsCreateOpen(!isCreateOpen)}
-                className="h-10 rounded-2xl bg-[#1755EC] hover:bg-[#1755EC]/90 shadow-sm gap-2 px-5"
-            >
-                + {t('dashboard.students.add_student')}
-            </Button>
+            {!isParent && (
+                <>
+                    <AddStudentForm
+                        isOpen={isCreateOpen}
+                        handleOpen={() => setIsCreateOpen(!isCreateOpen)}
+                        handleSuccess={() => setIsCreateOpen(false)}
+                        submitButtonLabel={t('dashboard.students.add')}
+                    />
+                    <Button
+                        onClick={() => setIsCreateOpen(!isCreateOpen)}
+                        className="h-10 rounded-2xl bg-[#1755EC] hover:bg-[#1755EC]/90 shadow-sm gap-2 px-5"
+                    >
+                        + {t('dashboard.students.add_student')}
+                    </Button>
+                </>
+            )}
         </StudentsTable>
     )
 }

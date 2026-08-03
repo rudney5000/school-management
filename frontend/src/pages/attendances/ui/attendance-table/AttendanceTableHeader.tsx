@@ -20,6 +20,7 @@ interface AttendanceTableHeaderProps {
     selectedMonth: string
     setSelectedMonth: (value: string) => void
     monthOptions: string[]
+    isParent?: boolean
 }
 
 export function AttendanceTableHeader({
@@ -30,7 +31,8 @@ export function AttendanceTableHeader({
                                           setSelectedClass,
                                           selectedMonth,
                                           setSelectedMonth,
-                                          monthOptions
+                                          monthOptions,
+                                          isParent = false,
 }: AttendanceTableHeaderProps) {
 
     const { t } = useTranslation()
@@ -55,22 +57,26 @@ export function AttendanceTableHeader({
                         >
                             {t('dashboard.attendance.table.tabs.teachers')}
                         </TabsTrigger>
-                        <TabsTrigger value="staff" className="h-7 px-3 text-xs">
-                            {t('dashboard.attendance.table.tabs.staff')}
-                        </TabsTrigger>
+                        {!isParent && (
+                            <TabsTrigger value="staff" className="h-7 px-3 text-xs">
+                                {t('dashboard.attendance.table.tabs.staff')}
+                            </TabsTrigger>
+                        )}
                     </TabsList>
                 </Tabs>
 
-                <Select value={selectedClass} onValueChange={setSelectedClass}>
-                    <SelectTrigger className="h-8 w-full sm:w-28 text-xs border border-border rounded-lg">
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {classes.map((cls) => (
-                            <SelectItem key={cls.id} value={cls.id}>{cls.name}</SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+                {!isParent && (
+                    <Select value={selectedClass} onValueChange={setSelectedClass}>
+                        <SelectTrigger className="h-8 w-full sm:w-28 text-xs border border-border rounded-lg">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {classes.map((cls) => (
+                                <SelectItem key={cls.id} value={cls.id}>{cls.name}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                )}
 
                 <Select value={selectedMonth} onValueChange={setSelectedMonth}>
                     <SelectTrigger className="h-8 w-full sm:w-28 text-xs border border-border rounded-lg">

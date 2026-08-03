@@ -35,6 +35,7 @@ interface AttendanceTableProps {
     accent: string
     dispatch: AppDispatch
     monthOptions: string[]
+    isParent?: boolean
 }
 
 export function AttendanceTable({
@@ -54,7 +55,8 @@ export function AttendanceTable({
                                     totalPages,
                                     accent,
                                     dispatch,
-                                    monthOptions
+                                    monthOptions,
+                                    isParent = false,
 }: AttendanceTableProps) {
     const { t } = useTranslation()
     const { canEdit } = useAppSelector(selectAttendancePermission)
@@ -88,6 +90,7 @@ export function AttendanceTable({
                 selectedMonth={selectedMonth}
                 setSelectedMonth={setSelectedMonth}
                 monthOptions={monthOptions}
+                isParent={isParent}
             />
 
             <div className="overflow-x-auto">

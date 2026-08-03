@@ -510,7 +510,10 @@
         "addTitle": "New parent",
         "addDescription": "Fill in the required information.",
         "editTitle": "Edit parent",
-        "editDescription": "Update parent information."
+        "editDescription": "Update parent information.",
+        "selectGender": "Select gender",
+        "selectChildren": "Select children",
+        "noUnassignedChildren": "No unassigned children"
       },
       "fields": {
         "firstName": "First name",
@@ -521,7 +524,8 @@
         "dateOfBirth": "Date of birth",
         "address": "Address",
         "image": "Image",
-        "isActive": "Active parent"
+        "isActive": "Active parent",
+        "children": "Children"
       },
       "gender": {
         "male": "Male",
@@ -553,7 +557,8 @@
         "completion": "Completion",
         "attendance": "Attendance",
         "thisMonth": "This month",
-        "quickActions": "Quick Actions"
+        "quickActions": "Quick Actions",
+        "children": "Children"
       }
     },
     "classes": {
@@ -605,7 +610,9 @@
       "actions": {
         "title": "Actions",
         "edit": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+        "openLive": "Open live",
+        "copyLink": "Copy link"
       },
       "stats": {
         "lessons_one": "{{count}} Lesson",
@@ -833,7 +840,8 @@
         "midterm": "Midterm",
         "final": "Final",
         "homework": "Homework",
-        "oral": "Oral"
+        "oral": "Oral",
+        "exam": "Examen"
       },
       "statuses": {
         "scheduled": "Scheduled",
@@ -842,10 +850,14 @@
         "cancelled": "Cancelled"
       },
       "stats": {
-        "total": "Total",
+        "total": "Total exams",
+        "totalHint": "All statuses",
         "completed": "Completed",
+        "completedHint": "This period",
         "scheduled": "Scheduled",
-        "average": "Class average"
+        "scheduledHint": "Upcoming",
+        "average": "Average",
+        "averageHint": "Completed exams"
       },
       "actions": {
         "new": "New exam"
@@ -973,6 +985,22 @@
         "noDataDesc": "Statistics will be available after grades are entered",
         "student": "student",
         "success": "success"
+      },
+      "reportCard": {
+        "title": "Report Card",
+        "description": "Track your children's academic results",
+        "subtitle": "Exam results",
+        "loading": "Loading results...",
+        "empty": "No results available yet",
+        "pending": "Pending",
+        "noChildren": "No children linked to this account",
+        "resultCount": "{{count}} result",
+        "resultCount_plural": "{{count}} results",
+        "average": "Average",
+        "tabs": {
+          "results": "Results",
+          "upcoming": "Upcoming exams"
+        }
       }
     },
     "common": {
@@ -1028,8 +1056,18 @@
         "unread": "Unread",
         "groups": "Groups",
         "direct": "Direct Messages",
-        "archived": "Archived"
+        "archived": "Archived",
+        "announcements": "Announcements"
       },
+      "readOnlyAnnouncement": "This channel is for school announcements — read only",
+      "newConversation": "New message",
+      "schoolStaff": "Administration",
+      "teachers": "Teachers",
+      "noContacts": "No contacts available right now",
+      "roleAdmin": "Administrator",
+      "roleDirector": "Director",
+      "roleSuperAdmin": "Super Administrator",
+      "roleTeacher": "Teacher",
       "loadingConversations": "Loading conversations...",
       "noConversations": "No conversations yet",
       "selectConversation": "Select a conversation",

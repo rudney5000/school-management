@@ -32,6 +32,17 @@ router.get(
   }),
   controller.getById,
 );
+
+router.get(
+    '/me/children',
+    authenticate,
+    authorize('parent'),
+    validate({
+        query: subSchoolQuerySchema
+    }),
+    controller.getMyChildrenCourses,
+);
+
 router.post(
   '/',
   authenticate,
@@ -41,6 +52,7 @@ router.post(
   }),
   controller.create,
 );
+
 router.patch(
   '/:id',
   authenticate,
@@ -52,11 +64,15 @@ router.patch(
   }),
   controller.update,
 );
+
 router.delete(
   '/:id',
   authenticate,
   authorize('admin', 'director', 'teacher', 'super_admin'),
-  validate({ params: courseParamsSchema, query: subSchoolQuerySchema }),
+  validate({
+      params: courseParamsSchema,
+      query: subSchoolQuerySchema
+  }),
   controller.remove,
 );
 

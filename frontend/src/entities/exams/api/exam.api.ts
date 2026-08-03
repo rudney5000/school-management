@@ -7,6 +7,7 @@ import type {
     ExamListQueryDto,
     ExamParamsDto,
     ExamResult,
+    ExamResultWithExam,
     UpdateExamDto
 } from "@entities/exams";
 
@@ -26,6 +27,13 @@ export class ExamApi extends ApiWrapper {
         return this.handleRequest<Exam>(
             this._baseApi.get(`/exams/${params.id}`, subSchoolId ? { subSchoolId } : undefined),
             (raw) => raw as Exam
+        )
+    }
+
+    getMyChildrenExams(subSchoolId: string) {
+        return this.handleRequest<Exam[]>(
+            this._baseApi.get('/exams/me/children', { subSchoolId }),
+            (raw) => raw as Exam[]
         )
     }
 
@@ -57,10 +65,10 @@ export class ExamApi extends ApiWrapper {
         )
     }
 
-    getResultsByStudent(studentId: string) {
-        return this.handleRequest<ExamResult[]>(
-            this._baseApi.get(`/exams/students/${studentId}/results`),
-            (raw) => raw as ExamResult[]
+    getResultsByStudent(studentId: string, subSchoolId: string) {
+        return this.handleRequest<ExamResultWithExam[]>(
+            this._baseApi.get(`/exams/students/${studentId}/results`, { subSchoolId }),
+            (raw) => raw as ExamResultWithExam[]
         )
     }
 

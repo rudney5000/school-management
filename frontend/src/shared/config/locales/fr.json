@@ -508,13 +508,24 @@
         "addTitle": "Nouveau parent",
         "addDescription": "Remplissez les informations requises.",
         "editTitle": "Modifier le parent",
-        "editDescription": "Mettez à jour les informations du parent."
+        "editDescription": "Mettez à jour les informations du parent.",
+        "selectGender": "Sélectionner le genre",
+        "selectChildren": "Sélectionner les enfants",
+        "noUnassignedChildren": "Aucun enfant non assigné"
       },
       "fields": {
         "firstName": "Prénom",
         "lastName": "Nom",
         "email": "Email",
-        "phone": "Téléphone"
+        "phone": "Téléphone",
+        "gender": "Genre",
+        "dateOfBirth": "Date de naissance",
+        "image": "Photo",
+        "status": "Statut",
+        "parent": "Parent",
+        "contact": "contact",
+        "isActive": "parent active",
+        "children": "Enfants"
       },
       "columns": {
         "firstName": "Prénom",
@@ -534,7 +545,7 @@
         "female": "Femme"
       },
       "stats": {
-        "total": "Total parents",
+        "total": "Total des parents",
         "active": "Parents actifs",
         "inactive": "Parents inactifs",
         "new": "Nouveaux parents",
@@ -547,7 +558,8 @@
         "completion": "Complétion",
         "attendance": "Assiduité",
         "thisMonth": "Ce mois-ci",
-        "quickActions": "Actions rapides"
+        "quickActions": "Actions rapides",
+        "children": "Enfants"
       },
       "status": {
         "active": "Actif",
@@ -612,7 +624,9 @@
       "actions": {
         "title": "Actions",
         "edit": "Modifier",
-        "delete": "Supprimer"
+        "delete": "Supprimer",
+        "openLive": "Ouvrir le live",
+        "copyLink": "Copier le lien"
       },
       "stats": {
         "lessons_one": "{{count}} leçon",
@@ -634,7 +648,9 @@
         "results_one": "{{count}} résultat",
         "results_few": "{{count}} résultats"
       },
-
+      "live": {
+        "available": "Live disponible"
+      },
       "empty": {
         "title": "Aucun cours trouvé",
         "description": "Essayez une autre recherche ou créez un nouveau cours."
@@ -766,7 +782,8 @@
         "midterm": "Partiel",
         "final": "Final",
         "homework": "Devoir",
-        "oral": "Oral"
+        "oral": "Oral",
+        "exam": "Examen"
       },
       "statuses": {
         "scheduled": "Planifié",
@@ -775,10 +792,14 @@
         "cancelled": "Annulé"
       },
       "stats": {
-        "total": "Total",
+        "total": "Total examens",
+        "totalHint": "Tous statuts",
         "completed": "Terminés",
+        "completedHint": "Cette période",
         "scheduled": "Planifiés",
-        "average": "Moyenne de classe"
+        "scheduledHint": "À venir",
+        "average": "Moyenne",
+        "averageHint": "Examens terminés"
       },
       "actions": {
         "new": "Nouvel examen"
@@ -829,7 +850,16 @@
         "average": "Moyenne",
         "loading": "Chargement...",
         "examNotFound": "Examen non trouvé",
-        "maxScore": "Note maximale"
+        "maxScore": "Note maximale",
+        "reportCard": {
+          "title": "Bulletin de notes",
+          "description": "Suivez les résultats de vos enfants",
+          "subtitle": "Résultats aux examens",
+          "loading": "Chargement des résultats...",
+          "empty": "Aucun résultat disponible pour le moment",
+          "pending": "En attente",
+          "noChildren": "Aucun enfant associé à ce compte"
+        }
       },
       "results": {
         "title": "Bulletin de résultats",
@@ -906,6 +936,22 @@
         "noDataDesc": "Les statistiques seront disponibles après la saisie des notes",
         "student": "Élève",
         "success": "Réussite"
+      },
+      "reportCard": {
+        "title": "Bulletin de notes",
+        "description": "Suivez les résultats de vos enfants",
+        "subtitle": "Résultats aux examens",
+        "loading": "Chargement des résultats...",
+        "empty": "Aucun résultat disponible pour le moment",
+        "pending": "En attente",
+        "noChildren": "Aucun enfant associé à ce compte",
+        "resultCount": "{{count}} résultat",
+        "resultCount_plural": "{{count}} résultats",
+        "average": "Moyenne",
+        "tabs": {
+          "results": "Résultats",
+          "upcoming": "Examens à venir"
+        }
       }
     },
     "common": {
@@ -960,8 +1006,18 @@
         "unread": "Non lus",
         "groups": "Groupes",
         "direct": "Messages directs",
-        "archived": "Archivés"
+        "archived": "Archivés",
+        "announcements": "Annonces"
       },
+      "readOnlyAnnouncement": "Ce canal est réservé aux annonces de l'école — lecture seule",
+      "newConversation": "Nouveau message",
+      "schoolStaff": "Direction & administration",
+      "teachers": "Enseignants",
+      "noContacts": "Aucun contact disponible pour le moment",
+      "roleAdmin": "Administrateur",
+      "roleDirector": "Directeur",
+      "roleSuperAdmin": "Administrateur général",
+      "roleTeacher": "Enseignant",
       "loadingConversations": "Chargement des conversations...",
       "noConversations": "Aucune conversation pour le moment",
       "selectConversation": "Sélectionner une conversation",

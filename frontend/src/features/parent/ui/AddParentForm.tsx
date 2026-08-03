@@ -11,6 +11,12 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
+    MultiSelect,
+    SelectTrigger,
+    SelectValue,
+    SelectItem,
+    SelectContent,
+    Select,
 } from '@shared/ui'
 import {
     createParentSchema,
@@ -19,15 +25,16 @@ import {
 } from '@entities/parent'
 import CustomDrawer from "@shared/ui/custom-drawer/custom-drawer"
 import { useTranslation } from "@shared/lib"
+import {useUnassignedStudents} from "@entities/student";
 
-type Props = {
+type AddParentFormProps = {
     isOpen?: boolean
     handleOpen?: () => void
     handleSuccess?: () => void
     submitButtonLabel?: string
 }
 
-export const AddParentForm: React.FC<Props> = ({
+export const AddParentForm: React.FC<AddParentFormProps> = ({
                                                    isOpen,
                                                    handleOpen,
                                                    handleSuccess,
@@ -35,6 +42,8 @@ export const AddParentForm: React.FC<Props> = ({
                                                }) => {
     const { t } = useTranslation()
     const { subSchoolId } = useParams({ strict: false })
+    const { data: unassignedStudents } = useUnassignedStudents(subSchoolId)
+
 
     const form = useForm<CreateParentDto>({
         resolver: zodResolver(createParentSchema),
@@ -91,11 +100,56 @@ export const AddParentForm: React.FC<Props> = ({
 
                     <FormField
                         control={form.control}
+                        name="gender"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{t('dashboard.parents.fields.gender')}</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={field.onChange} value={field.value}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder={t('dashboard.parents.form.selectGender')} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="male">{t('dashboard.teachers.gender.male')}</SelectItem>
+                                            <SelectItem value="female">{t('dashboard.teachers.gender.female')}</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
                         name="email"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>{t('dashboard.parents.fields.email')}</FormLabel>
                                 <FormControl><Input {...field} type="email" /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="studentIds"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{t('dashboard.parents.fields.children')}</FormLabel>
+                                <FormControl>
+                                    <MultiSelect
+                                        items={(unassignedStudents ?? []).map(s => ({
+                                            value: s.id,
+                                            label: `${s.firstName} ${s.lastName}`,
+                                        }))}
+                                        selected={field.value ?? []}
+                                        onChange={field.onChange}
+                                        placeholder={t('dashboard.parents.form.selectChildren')}
+                                        emptyText={t('dashboard.parents.form.noUnassignedChildren')}
+                                    />
+                                </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}

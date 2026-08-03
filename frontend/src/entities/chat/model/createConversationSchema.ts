@@ -1,6 +1,13 @@
 import { z } from 'zod'
 
-export const conversationTypeSchema = z.enum(['dm', 'group', 'class', 'course'])
+export const conversationTypeSchema = z.enum([
+    'dm',
+    'group',
+    'class',
+    'course',
+    'announcement',
+    'parent_group'
+])
 
 export const createConversationSchema = z.object({
     type:        conversationTypeSchema.default('group'),

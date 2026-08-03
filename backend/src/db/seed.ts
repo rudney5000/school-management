@@ -37,7 +37,7 @@ import {
 } from './schema';
 import {
     and,
-    eq
+    eq, inArray
 } from 'drizzle-orm';
 import {
     examResults,
@@ -549,6 +549,63 @@ async function seed() {
         }
     }
 
+    const unassignedStudentsData = [
+        {
+            firstName: 'Grace',
+            lastName: 'Kabila',
+            email: 'grace.kabila@saintjoseph.cd',
+            gender: 'female' as const,
+            dateOfBirth: '2012-05-10',
+        },
+        {
+            firstName: 'David',
+            lastName: 'Mukendi',
+            email: 'david.mukendi@saintjoseph.cd',
+            gender: 'male' as const,
+            dateOfBirth: '2011-02-18',
+        },
+        {
+            firstName: 'Esther',
+            lastName: 'Ilunga',
+            email: 'esther.ilunga@saintjoseph.cd',
+            gender: 'female' as const,
+            dateOfBirth: '2009-11-03',
+        },
+        {
+            firstName: 'Joseph',
+            lastName: 'Tshibangu',
+            email: 'joseph.tshibangu@saintjoseph.cd',
+            gender: 'male' as const,
+            dateOfBirth: '2013-08-25',
+        },
+        {
+            firstName: 'Chantal',
+            lastName: 'Mbala',
+            email: 'chantal.mbala@saintjoseph.cd',
+            gender: 'female' as const,
+            dateOfBirth: '2010-04-14',
+        },
+    ];
+
+    const insertedUnassignedStudents: (typeof students.$inferSelect)[] = [];
+
+    for (const s of unassignedStudentsData) {
+        const [existing] = await db.select().from(students)
+            .where(eq(students.email, s.email));
+
+        if (!existing) {
+            const [inserted] = await db.insert(students).values({
+                ...s,
+                enrollmentDate: '2024-09-01',
+                subSchoolId: subSchool.id,
+            }).returning();
+            insertedUnassignedStudents.push(inserted);
+            console.log(`✓ Student (sans parent) créé: ${s.firstName} ${s.lastName}`);
+        } else {
+            insertedUnassignedStudents.push(existing);
+            console.log(`~ Student déjà existant: ${s.firstName} ${s.lastName}`);
+        }
+    }
     await db.delete(users).where(eq(users.email, 'sophie.kabila@saintjoseph.cd')).catch(() => {});
     await db.delete(parents).where(eq(parents.email, 'sophie.kabila@saintjoseph.cd')).catch(() => {});
 
@@ -578,6 +635,79 @@ async function seed() {
         .onConflictDoNothing();
     console.log('✓ Parent-students links created');
 
+    await db.update(students)
+        .set({ parentId: parent.id })
+        .where(inArray(students.id, [student.id, student2.id]));
+    console.log('✓ students.parentId synchronisé');
+
+    const additionalParentsData = [
+        {
+            firstName: 'Jean-Pierre',
+            lastName: 'Mbuyi',
+            email: 'jeanpierre.mbuyi@saintjoseph.cd',
+            phone: '+243 82 333 4444',
+            gender: 'male' as const,
+            address: 'Kinshasa, RDC',
+            childIndexes: [1],
+        },
+        {
+            firstName: 'Alphonsine',
+            lastName: 'Kalonji',
+            email: 'alphonsine.kalonji@saintjoseph.cd',
+            phone: '+243 89 555 6666',
+            gender: 'female' as const,
+            address: 'Kinshasa, RDC',
+            childIndexes: [2, 3],
+        },
+        {
+            firstName: 'Robert',
+            lastName: 'Nzuzi',
+            email: 'robert.nzuzi@saintjoseph.cd',
+            phone: '+243 84 777 8888',
+            gender: 'male' as const,
+            address: 'Kinshasa, RDC',
+            childIndexes: [],
+        },
+    ];
+
+    for (const p of additionalParentsData) {
+        await db.delete(users).where(eq(users.email, p.email)).catch(() => {});
+        await db.delete(parents).where(eq(parents.email, p.email)).catch(() => {});
+
+        const [newParent] = await db.insert(parents).values({
+            firstName: p.firstName,
+            lastName: p.lastName,
+            email: p.email,
+            phone: p.phone,
+            gender: p.gender,
+            address: p.address,
+            subSchoolId: subSchool.id,
+        }).returning();
+
+        await db.insert(users).values({
+            email: p.email,
+            password: hashedPassword,
+            role: 'parent',
+            parentId: newParent.id,
+        });
+        console.log(`✓ Parent user: ${p.email}`);
+
+        if (p.childIndexes.length > 0) {
+            const childIds = p.childIndexes.map(i => insertedUnassignedStudents[i].id);
+
+            await db.insert(parentStudents)
+                .values(childIds.map(studentId => ({ parentId: newParent.id, studentId })))
+                .onConflictDoNothing();
+
+            await db.update(students)
+                .set({ parentId: newParent.id })
+                .where(inArray(students.id, childIds));
+
+            console.log(`✓ ${childIds.length} enfant(s) lié(s) à ${p.firstName} ${p.lastName}`);
+        } else {
+            console.log(`~ ${p.firstName} ${p.lastName} créé sans enfant (test état vide)`);
+        }
+    }
 
     const [existingSchedule1] = await db.select().from(schedules)
         .where(and(
@@ -1967,6 +2097,124 @@ async function seed() {
         }
     } else {
         console.log('⚠ Users manquants, skip live sessions seed');
+    }
+
+    // ─── Chat : canaux parents (announcement + parent_group) ───
+    const sophieUserForChat = await db.query.users.findFirst({
+        where: eq(users.email, 'sophie.kabila@saintjoseph.cd')
+    })
+    const jeanPierreUserForChat = await db.query.users.findFirst({
+        where: eq(users.email, 'jeanpierre.mbuyi@saintjoseph.cd')
+    })
+    const alphonsineUserForChat = await db.query.users.findFirst({
+        where: eq(users.email, 'alphonsine.kalonji@saintjoseph.cd')
+    })
+    const robertUserForChat = await db.query.users.findFirst({
+        where: eq(users.email, 'robert.nzuzi@saintjoseph.cd')
+    })
+
+    const allParentUsersForChat = [
+        sophieUserForChat,
+        jeanPierreUserForChat,
+        alphonsineUserForChat,
+        robertUserForChat,
+    ].filter((u): u is typeof users.$inferSelect => !!u)
+
+    if (adminUserForChat && allParentUsersForChat.length > 0) {
+        const [existingAnnouncement] = await db.select().from(conversations)
+            .where(and(
+                eq(conversations.type, 'announcement'),
+                eq(conversations.subSchoolId, subSchool.id),
+            ))
+
+        const announcementChannel = existingAnnouncement ?? (await db.insert(conversations).values({
+            type: 'announcement',
+            name: 'Annonces — Parents',
+            description: 'Annonces officielles de l\'école destinées aux parents',
+            subSchoolId: subSchool.id,
+            createdBy: adminUserForChat.id,
+        }).returning())[0]
+
+        await db.insert(conversationMembers).values([
+            { conversationId: announcementChannel.id, userId: adminUserForChat.id, role: 'admin' },
+            ...allParentUsersForChat.map(u => ({
+                conversationId: announcementChannel.id,
+                userId: u.id,
+                role: 'member' as const,
+            })),
+        ]).onConflictDoNothing()
+
+        await db.insert(messages).values([
+            {
+                conversationId: announcementChannel.id,
+                senderId: adminUserForChat.id,
+                type: 'text',
+                content: 'Bienvenue chers parents sur le canal d\'annonces officielles du Groupe Scolaire Saint-Joseph.',
+            },
+            {
+                conversationId: announcementChannel.id,
+                senderId: adminUserForChat.id,
+                type: 'text',
+                content: 'Réunion des parents d\'élèves prévue le 15 décembre à 15h00 dans la cour principale.',
+            },
+        ]).onConflictDoNothing()
+
+        console.log('✓ Canal announcement créé: Annonces — Parents')
+    } else {
+        console.log('⚠ Admin ou parents manquants, skip announcement seed')
+    }
+
+    if (sophieUserForChat && enrollmentMarie) {
+        const [existingParentGroupA] = await db.select().from(conversations)
+            .where(and(
+                eq(conversations.type, 'parent_group'),
+                eq(conversations.classId, classA.id),
+            ))
+
+        const parentGroupA = existingParentGroupA ?? (await db.insert(conversations).values({
+            type: 'parent_group',
+            name: `Parents — ${classA.name}`,
+            description: 'Espace d\'échange entre parents de la classe',
+            classId: classA.id,
+            subSchoolId: subSchool.id,
+            createdBy: adminUserForChat?.id ?? teacherUserForChat!.id,
+        }).returning())[0]
+
+        await db.insert(conversationMembers)
+            .values({ conversationId: parentGroupA.id, userId: sophieUserForChat.id, role: 'member' })
+            .onConflictDoNothing()
+
+        await db.insert(messages).values({
+            conversationId: parentGroupA.id,
+            senderId: sophieUserForChat.id,
+            type: 'text',
+            content: 'Bonjour à tous, quelqu\'un sait si le cours d\'anglais de jeudi est maintenu ?',
+        }).onConflictDoNothing()
+
+        console.log(`✓ Parent group créé: Parents — ${classA.name}`)
+    }
+
+    if (sophieUserForChat && enrollmentPaul) {
+        const [existingParentGroupB] = await db.select().from(conversations)
+            .where(and(
+                eq(conversations.type, 'parent_group'),
+                eq(conversations.classId, classB.id),
+            ))
+
+        const parentGroupB = existingParentGroupB ?? (await db.insert(conversations).values({
+            type: 'parent_group',
+            name: `Parents — ${classB.name}`,
+            description: 'Espace d\'échange entre parents de la classe',
+            classId: classB.id,
+            subSchoolId: subSchool.id,
+            createdBy: adminUserForChat?.id ?? teacherUserForChat!.id,
+        }).returning())[0]
+
+        await db.insert(conversationMembers)
+            .values({ conversationId: parentGroupB.id, userId: sophieUserForChat.id, role: 'member' })
+            .onConflictDoNothing()
+
+        console.log(`✓ Parent group créé: Parents — ${classB.name}`)
     }
 
     console.log('\n✓ Seed completed. Test credentials (password: password123):');

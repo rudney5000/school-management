@@ -1,14 +1,20 @@
 import { useMemo } from "react"
 import {
+    useMyChildrenStudentAttendances,
+    useMyChildrenTeacherAttendances,
     useStudentAttendances,
     useTeacherAttendances
 } from "@entities/attendances"
-import { useStudents } from "@entities/student"
+import {
+    useMyChildren,
+    useStudents
+} from "@entities/student"
 import type {
     StudentAttendance,
     TeacherAttendance,
     AttendanceStatus
 } from "@entities/attendances/model/types"
+import {useAppSelector} from "@shared/store/hooks";
 
 interface ChartData {
     month: string
@@ -18,23 +24,41 @@ interface ChartData {
 }
 
 export function useAttendanceData(subSchoolId: string | undefined, fromDate: string, toDate: string) {
-    const { data: students = [], isLoading: loadingStudentsData } = useStudents(subSchoolId)
-    
-    const { data: studentAttendances, isLoading: loadingStudents } = useStudentAttendances({
-        subSchoolId: subSchoolId || '',
-        from: fromDate,
-        to: toDate,
-        page: 1,
-        limit: 100,
-    })
+    const role = useAppSelector((s) => s.auth.role)
+    const isParent = role === 'parent'
 
-    const { data: teacherAttendances, isLoading: loadingTeachers } = useTeacherAttendances({
+    const { data: allStudents = [], isLoading: loadingAllStudents } = useStudents(
+        isParent ? undefined : subSchoolId
+    )
+    const { data: myChildren = [], isLoading: loadingMyChildren } = useMyChildren(
+        isParent ? (subSchoolId ?? '') : ''
+    )
+
+    const commonParams = {
         subSchoolId: subSchoolId || '',
         from: fromDate,
         to: toDate,
         page: 1,
         limit: 100,
-    })
+    }
+
+    const { data: studentAttendancesAll, isLoading: loadingStudentsAll } = useStudentAttendances(
+        isParent ? { ...commonParams, subSchoolId: '' } : commonParams
+    )
+    const { data: studentAttendancesMine, isLoading: loadingStudentsMine } = useMyChildrenStudentAttendances(
+        isParent ? commonParams : { ...commonParams, subSchoolId: '' }
+    )
+
+    const { data: teacherAttendancesAll, isLoading: loadingTeachersAll } = useTeacherAttendances(
+        isParent ? { ...commonParams, subSchoolId: '' } : commonParams
+    )
+    const { data: teacherAttendancesMine, isLoading: loadingTeachersMine } = useMyChildrenTeacherAttendances(
+        isParent ? commonParams : { ...commonParams, subSchoolId: '' }
+    )
+
+    const students = isParent ? myChildren : allStudents
+    const studentAttendances = isParent ? studentAttendancesMine : studentAttendancesAll
+    const teacherAttendances = isParent ? teacherAttendancesMine : teacherAttendancesAll
 
     const attendanceMap = useMemo(() => {
         const map = new Map<string, AttendanceStatus>()
@@ -57,7 +81,9 @@ export function useAttendanceData(subSchoolId: string | undefined, fromDate: str
         teacherAttendances: teacherAttendances?.data || [],
         attendanceMap,
         chartData,
-        loading: loadingStudents || loadingTeachers || loadingStudentsData,
+        loading:
+            (isParent ? loadingStudentsMine || loadingTeachersMine || loadingMyChildren
+                : loadingStudentsAll || loadingTeachersAll || loadingAllStudents),
     }
 }
 

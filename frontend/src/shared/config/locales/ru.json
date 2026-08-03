@@ -480,7 +480,10 @@
         "addTitle": "Новый родитель",
         "addDescription": "Заполните необходимую информацию.",
         "editTitle": "Редактировать родителя",
-        "editDescription": "Обновите информацию о родителе."
+        "editDescription": "Обновите информацию о родителе.",
+        "selectGender": "Выберите пол",
+        "selectChildren": "Выберите детей",
+        "noUnassignedChildren": "Нет непривязанных детей"
       },
       "fields": {
         "firstName": "Имя",
@@ -491,7 +494,8 @@
         "dateOfBirth": "Дата рождения",
         "address": "Адрес",
         "image": "Изображение",
-        "isActive": "Активный родители"
+        "isActive": "Активный родители",
+        "children": "Дети"
       },
       "columns": {
         "firstName": "Имя",
@@ -533,7 +537,8 @@
         "completion": "Выполнение",
         "attendance": "Посещаемость",
         "thisMonth": "В этом месяце",
-        "quickActions": "Быстрые действия"
+        "quickActions": "Быстрые действия",
+        "children": "Дети"
       }
     },
     "classes": {
@@ -587,7 +592,9 @@
       "actions": {
         "title": "Действия",
         "edit": "Редактировать",
-        "delete": "Удалить"
+        "delete": "Удалить",
+        "openLive": "Открыть трансляцию",
+        "copyLink": "Скопировать ссылку"
       },
       "stats": {
         "lessons_one": "{{count}} урок",
@@ -744,7 +751,8 @@
         "midterm": "Промежуточный",
         "final": "Финальный",
         "homework": "Домашнее задание",
-        "oral": "Устный"
+        "oral": "Устный",
+        "exam": "экзамен"
       },
       "statuses": {
         "scheduled": "Запланирован",
@@ -753,10 +761,14 @@
         "cancelled": "Отменён"
       },
       "stats": {
-        "total": "Всего",
+        "total": "Всего экзаменов",
+        "totalHint": "Все статусы",
         "completed": "Завершено",
+        "completedHint": "За этот период",
         "scheduled": "Запланировано",
-        "average": "Средний балл"
+        "scheduledHint": "Предстоящие",
+        "average": "Средний балл",
+        "averageHint": "Завершённые экзамены"
       },
       "actions": {
         "new": "Новый экзамен"
@@ -884,6 +896,23 @@
         "noDataDesc": "Статистика будет доступна после ввода оценок",
         "student": "студент",
         "success": "Успех"
+      },
+      "reportCard": {
+        "title": "Табель успеваемости",
+        "description": "Следите за результатами ваших детей",
+        "subtitle": "Результаты экзаменов",
+        "loading": "Загрузка результатов...",
+        "empty": "Результаты пока недоступны",
+        "pending": "В ожидании",
+        "noChildren": "К этому аккаунту не привязаны дети",
+        "resultCount_one": "{{count}} результат",
+        "resultCount_few": "{{count}} результата",
+        "resultCount_many": "{{count}} результатов",
+        "average": "Средний балл",
+        "tabs": {
+          "results": "Результаты",
+          "upcoming": "Предстоящие экзамены"
+        }
       }
     },
     "common": {
@@ -938,8 +967,18 @@
         "unread": "Непрочитанные",
         "groups": "Группы",
         "direct": "Личные сообщения",
-        "archived": "Архив"
+        "archived": "Архив",
+        "announcements": "Объявления"
       },
+      "readOnlyAnnouncement": "Этот канал предназначен только для школьных объявлений — только чтение",
+      "newConversation": "Новое сообщение",
+      "schoolStaff": "Администрация",
+      "teachers": "Учителя",
+      "noContacts": "Пока нет доступных контактов",
+      "roleAdmin": "Администратор",
+      "roleDirector": "Директор",
+      "roleSuperAdmin": "Главный администратор",
+      "roleTeacher": "Учитель",
       "loadingConversations": "Загрузка бесед...",
       "noConversations": "Бесед пока нет",
       "selectConversation": "Выберите беседу",

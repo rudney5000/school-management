@@ -13,6 +13,7 @@ import {
     CreateExamInput,
     UpdateExamInput
 } from "@/modules/exams/exams.schema";
+import {AppError} from "@/shared/errors/app-error";
 
 function resolveSubSchoolId(req: Request): string {
     if (req.user?.subSchoolId) return req.user.subSchoolId
@@ -36,6 +37,19 @@ export class ExamsController {
     getById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const subSchoolId = resolveSubSchoolId(req)
         const data = await this.service.findById(req.params.id, subSchoolId)
+        respond(res, data)
+    })
+
+    getMyChildrenExams = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        if (!req.user) {
+            throw new AppError(
+                'UNAUTHORIZED',
+                'Utilisateur non authentifié',
+                401
+            )
+        }
+        const subSchoolId = resolveSubSchoolId(req)
+        const data = await this.service.resolveExamsForParent(req.user.id, subSchoolId)
         respond(res, data)
     })
 

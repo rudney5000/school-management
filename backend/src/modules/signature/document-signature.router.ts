@@ -17,6 +17,7 @@ import {
 import {
     DocumentSignaturesController
 } from "@/modules/signature/document-signature.controller";
+import {restrictToOwnChild} from "@/middleware/restrict-to-own-child";
 
 const router = Router();
 const controller = new DocumentSignaturesController();
@@ -48,6 +49,7 @@ router.get(
     validate({
         query: bulletinStatusQuerySchema
     }),
+    restrictToOwnChild,
     controller.getBulletinStatus,
 );
 
@@ -58,6 +60,7 @@ router.get(
     validate({
         query: certificateSignSchema
     }),
+    restrictToOwnChild,
     controller.getCertificateStatus,
 )
 
@@ -77,6 +80,7 @@ router.get(
     validate({
         query: enrollmentStatusQuerySchema
     }),
+    restrictToOwnChild,
     controller.getEnrollmentStatus,
 );
 
@@ -138,6 +142,7 @@ router.get(
     validate({
         query: paymentReceiptSignSchema
     }),
+    restrictToOwnChild,
     controller.getPaymentReceiptStatus
 )
 

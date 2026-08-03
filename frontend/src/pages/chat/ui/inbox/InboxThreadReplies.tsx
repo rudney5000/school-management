@@ -7,18 +7,22 @@ import {
 } from '@shared/ui'
 import { cn } from '@shared/lib'
 import {Send} from "lucide-react";
-import {useThreadReplies} from "@entities/chat/lib/useThreadReplies";
+import {
+    useThreadReplies
+} from "@entities/chat/lib/useThreadReplies";
 
 interface InboxThreadRepliesProps {
     threadId: string
     conversationId: string
     currentUserId: string | null
+    readOnly?: boolean
 }
 
 export function InboxThreadReplies({
                                        threadId,
                                        conversationId,
-                                       currentUserId
+                                       currentUserId,
+                                       readOnly
 }: InboxThreadRepliesProps) {
     const { replies, isLoading, replyToThread } = useThreadReplies(conversationId, threadId)
     const [replyText, setReplyText] = useState('')
@@ -68,32 +72,34 @@ export function InboxThreadReplies({
                     </div>
                 )
             })}
-            <div className="flex items-center gap-2 mt-2">
-                <input
-                    className="flex-1 text-xs bg-muted rounded-full px-3 py-1.5 focus:outline-none"
-                    placeholder="Reply in thread..."
-                    value={replyText}
-                    onChange={e => setReplyText(e.target.value)}
-                    onKeyDown={e => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                            e.preventDefault()
+            {!readOnly && (
+                <div className="flex items-center gap-2 mt-2">
+                    <input
+                        className="flex-1 text-xs bg-muted rounded-full px-3 py-1.5 focus:outline-none"
+                        placeholder="Reply in thread..."
+                        value={replyText}
+                        onChange={e => setReplyText(e.target.value)}
+                        onKeyDown={e => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                                e.preventDefault()
+                                replyToThread({content: replyText, type: 'text'})
+                                setReplyText('')
+                            }
+                        }}
+                    />
+                    <Button
+                        size="icon-sm"
+                        className="rounded-full"
+                        onClick={() => {
                             replyToThread({content: replyText, type: 'text'})
                             setReplyText('')
-                        }
-                    }}
-                />
-                <Button
-                    size="icon-sm"
-                    className="rounded-full"
-                    onClick={() => {
-                        replyToThread({content: replyText, type: 'text'})
-                        setReplyText('')
-                    }}
-                    disabled={!replyText.trim()}
-                >
-                    <Send className="size-3.5"/>
-                </Button>
-            </div>
+                        }}
+                        disabled={!replyText.trim()}
+                    >
+                        <Send className="size-3.5"/>
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }

@@ -19,7 +19,11 @@ import {
     Switch
 } from '@shared/ui'
 
-import {createStudentSchema, type CreateStudentDto, useCreateStudent} from '@entities/student'
+import {
+    createStudentSchema,
+    type CreateStudentDto,
+    useCreateStudent
+} from '@entities/student'
 import CustomDrawer from "@shared/ui/custom-drawer/custom-drawer";
 import {useTranslation} from "@shared/lib";
 

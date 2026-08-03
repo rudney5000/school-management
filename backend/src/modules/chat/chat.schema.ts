@@ -1,8 +1,25 @@
 import { z } from 'zod'
 
-export const conversationTypeSchema = z.enum(['dm', 'group', 'class', 'course'])
-export const memberRoleSchema = z.enum(['admin', 'member'])
-export const messageTypeSchema = z.enum(['text', 'image', 'file', 'system'])
+export const conversationTypeSchema = z.enum([
+    'dm',
+    'group',
+    'class',
+    'course',
+    'announcement',
+    'parent_group'
+])
+
+export const memberRoleSchema = z.enum([
+    'admin',
+    'member'
+])
+
+export const messageTypeSchema = z.enum([
+    'text',
+    'image',
+    'file',
+    'system'
+])
 
 export const createConversationSchema = z.object({
     type:        conversationTypeSchema.default('group'),
@@ -56,13 +73,18 @@ export const messagesQuerySchema = z.object({
     before: z.string().uuid().optional(),
 })
 
-export type ForwardMessageInput = z.infer<typeof forwardMessageSchema>
+export const contactableStaffQuerySchema = z.object({
+    studentId: z.string().uuid().optional(),
+})
+
+export type ForwardMessageInput     = z.infer<typeof forwardMessageSchema>
 export type CreateConversationInput = z.infer<typeof createConversationSchema>
 export type UpdateConversationInput = z.infer<typeof updateConversationSchema>
 export type SendMessageInput        = z.infer<typeof sendMessageSchema>
 export type EditMessageInput        = z.infer<typeof editMessageSchema>
 export type AddReactionInput        = z.infer<typeof addReactionSchema>
 export type AddMembersInput         = z.infer<typeof addMembersSchema>
+export type ContactableStaffQuery   = z.infer<typeof contactableStaffQuerySchema>
 
 export type UploadedFile = {
     key:       string

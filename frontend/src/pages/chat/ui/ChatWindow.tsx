@@ -11,6 +11,7 @@ interface ChatWindowProps {
     activeConversationId: string | null
     messages: Message[]
     currentUserId: string | null
+    currentUserRole: string | null
     subSchoolId: string
     isLoadingMessages: boolean
     messageText: string
@@ -18,11 +19,14 @@ interface ChatWindowProps {
     onSend: (attachments?: UploadedFile[]) => void
 }
 
+const STAFF_ROLES = ['admin', 'director', 'super_admin']
+
 export function ChatWindow({
                                activeConversation,
                                activeConversationId,
                                messages,
                                currentUserId,
+                               currentUserRole,
                                isLoadingMessages,
                                subSchoolId,
                                messageText,
@@ -37,6 +41,9 @@ export function ChatWindow({
             </div>
         )
     }
+
+    const isReadOnly = activeConversation.type === 'announcement'
+        && !STAFF_ROLES.includes(currentUserRole ?? '')
 
     if (activeConversation.type === 'dm') {
         return (
@@ -60,10 +67,12 @@ export function ChatWindow({
             activeConversationId={activeConversationId}
             messages={messages}
             currentUserId={currentUserId}
+            currentUserRole={currentUserRole}
             isLoadingMessages={isLoadingMessages}
             messageText={messageText}
             onMessageChange={onMessageChange}
             onSend={onSend}
+            readOnly={isReadOnly}
         />
     )
 }

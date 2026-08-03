@@ -8,7 +8,7 @@ import {
 } from "@/shared/utils/resolvers/attachments/attachment-context-resolver";
 import {
     assertStudentScopeAccess
-} from "@/shared/utils/resolvers/assert-student-scope-access";
+} from "@/shared/utils/assert-student-scope-access";
 
 export class EnrollmentAttachmentResolver implements AttachmentContextResolver {
     async resolve(userId: string, userRole: string, enrollmentId: string) {

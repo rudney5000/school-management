@@ -1,6 +1,6 @@
 import {
     and,
-    eq,
+    eq, inArray,
     sql
 } from 'drizzle-orm'
 import { db } from '@/db'
@@ -22,7 +22,7 @@ import {
 } from "@/modules/grades/grades.service";
 import {
     courses,
-    enrollments,
+    enrollments, parentStudents,
     users
 } from "@/db/schema";
 
@@ -136,6 +136,48 @@ export class ExamsService {
             .where(
                 and(
                     eq(exams.id, id),
+                    eq(exams.subSchoolId, subSchoolId),
+                )
+            )
+    }
+
+    async resolveExamsForParent(userId: string, subSchoolId: string): Promise<ExamRecord[]> {
+        const [userRecord] = await db
+            .select({ parentId: users.parentId })
+            .from(users)
+            .where(eq(users.id, userId))
+            .limit(1)
+
+        if (!userRecord?.parentId) {
+            throw new AppError(
+                'FORBIDDEN',
+                'Aucun profil parent associé à ce compte',
+                403
+            )
+        }
+
+        const childLinks = await db
+            .select({ studentId: parentStudents.studentId })
+            .from(parentStudents)
+            .where(eq(parentStudents.parentId, userRecord.parentId))
+
+        const studentIds = childLinks.map(l => l.studentId)
+        if (studentIds.length === 0) return []
+
+        const childEnrollments = await db
+            .select({ classId: enrollments.classId })
+            .from(enrollments)
+            .where(inArray(enrollments.studentId, studentIds))
+
+        const classIds = [...new Set(childEnrollments.map(e => e.classId))]
+        if (classIds.length === 0) return []
+
+        return db
+            .select()
+            .from(exams)
+            .where(
+                and(
+                    inArray(exams.classId, classIds),
                     eq(exams.subSchoolId, subSchoolId),
                 )
             )

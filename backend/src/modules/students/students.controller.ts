@@ -7,6 +7,7 @@ import {
   UpdateStudentDto,
 } from '@/modules/students/students.schema';
 import {StudentsService} from "@/modules/students/students.service";
+import {AppError} from "@/shared/errors/app-error";
 
 function resolvesSubSchoolId(req: Request): string {
   if (req.user?.subSchoolId) {
@@ -30,6 +31,26 @@ export class StudentsController {
     respond(res, data);
   });
 
+  getUnassigned = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const subSchoolId = resolvesSubSchoolId(req);
+    const data = await this.service.findUnassigned(subSchoolId);
+    respond(res, data);
+  });
+
+  getMyChildren = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    if (!req.user) {
+      throw new AppError(
+          'UNAUTHORIZED',
+          'Utilisateur non authentifié',
+          401
+      );
+    }
+
+    const { subSchoolId } = req.query as { subSchoolId: string };
+    const children = await this.service.resolveChildrenForParent(req.user.id, subSchoolId);
+    respond(res, children);
+  });
+
   create = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const data = await this.service.create(req.body as CreateStudentDto);
     respond(res, data, 201);
@@ -50,4 +71,5 @@ export class StudentsController {
     await this.service.softDelete(req.params.id, subSchoolId);
     res.status(204).send();
   });
+
 }

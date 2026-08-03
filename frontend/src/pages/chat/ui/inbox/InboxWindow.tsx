@@ -15,10 +15,12 @@ interface InboxWindowProps {
     activeConversationId: string | null
     messages: Message[]
     currentUserId: string | null
+    currentUserRole: string | null
     isLoadingMessages: boolean
     messageText: string
     onMessageChange: (text: string) => void
     onSend: (attachments?: UploadedFile[]) => void
+    readOnly?: boolean
 }
 
 export function InboxWindow({
@@ -26,10 +28,12 @@ export function InboxWindow({
                                 activeConversationId,
                                 messages,
                                 currentUserId,
+                                currentUserRole,
                                 isLoadingMessages,
                                 messageText,
                                 onMessageChange,
-                                onSend
+                                onSend,
+                                readOnly
 }: InboxWindowProps) {
     const { t } = useTranslation()
     const [selectedMessage, setSelectedMessage] = useState<Message | null>(null)
@@ -88,9 +92,11 @@ export function InboxWindow({
                             message={selectedMessage}
                             conversation={activeConversation}
                             currentUserId={currentUserId}
+                            currentUserRole={currentUserRole}
                             replyOpen={replyOpen}
                             onReplyOpen={() => setReplyOpen(true)}
                             onReplyClose={() => setReplyOpen(false)}
+                            readOnly={readOnly}
                         />
                     ) : (
                         <div className="flex flex-1 items-center justify-center text-muted-foreground text-sm">
@@ -98,14 +104,21 @@ export function InboxWindow({
                         </div>
                     )}
                 </div>
-                <MessageInput
-                    messageText={messageText}
-                    activeConversation={activeConversation}
-                    activeConversationId={activeConversationId}
-                    onChange={onMessageChange}
-                    onSend={onSend}
-                    currentUserId={currentUserId}
-                />
+
+                {readOnly ? (
+                    <div className="p-4 text-center text-sm text-muted-foreground border-t">
+                        {t('dashboard.chat.readOnlyAnnouncement')}
+                    </div>
+                ) : (
+                    <MessageInput
+                        messageText={messageText}
+                        activeConversation={activeConversation}
+                        activeConversationId={activeConversationId}
+                        onChange={onMessageChange}
+                        onSend={onSend}
+                        currentUserId={currentUserId}
+                    />
+                )}
             </div>
         </div>
     )
