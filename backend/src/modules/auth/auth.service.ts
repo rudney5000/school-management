@@ -131,7 +131,7 @@ export class AuthService {
         };
     }
 
-    private async resolveContext(user: typeof users.$inferSelect): Promise<{
+    async resolveContext(user: typeof users.$inferSelect): Promise<{
         schoolId: string;
         subSchoolId?: string;
     }> {

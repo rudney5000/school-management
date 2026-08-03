@@ -1,14 +1,37 @@
-import {and, eq, inArray} from 'drizzle-orm';
+import {
+    and,
+    eq,
+    inArray
+} from 'drizzle-orm';
 import { db } from '@/db';
-import {parents, parentStudents, students} from '@/db/schema';
-import { AppError } from '@/shared/errors/app-error';
-import type { CreateParentDto, UpdateParentDto } from './parents.schema';
-import {StudentRecord} from "@/modules/students/students.service";
+import {
+    classes,
+    enrollments,
+    parents,
+    parentStudents,
+    students
+} from '@/db/schema';
+import {
+    AppError
+} from '@/shared/errors/app-error';
+import type {
+    CreateParentDto,
+    UpdateParentDto
+} from './parents.schema';
+import {
+    StudentRecord
+} from "@/modules/students/students.service";
+import {
+    ChatProvisioningService
+} from "@/modules/chat/chat-provisioning.service";
 
 export type ParentRecord = typeof parents.$inferSelect;
 export type ChildSummary = Pick<StudentRecord, 'id' | 'firstName' | 'lastName'>;
 
 export class ParentsService {
+
+    private readonly chatProvisioning = new ChatProvisioningService()
+
     async findAll(subSchoolId: string) {
         try {
             const rows = await db
@@ -42,7 +65,11 @@ export class ParentsService {
 
             return [...map.values()];
         } catch (error) {
-            throw new AppError('INTERNAL_ERROR', 'Erreur lors de la récupération des parents', 500);
+            throw new AppError(
+                'INTERNAL_ERROR',
+                'Erreur lors de la récupération des parents',
+                500
+            );
         }
     }
 
@@ -55,7 +82,11 @@ export class ParentsService {
                     eq(parents.subSchoolId, subSchoolId)
                 ),
         );
-        if (!parent) throw new AppError('NOT_FOUND', 'Parent introuvable', 404);
+        if (!parent) throw new AppError(
+            'NOT_FOUND',
+            'Parent introuvable',
+            404
+        );
 
         const rows = await db
             .select({ id: students.id, firstName: students.firstName, lastName: students.lastName })
@@ -67,7 +98,15 @@ export class ParentsService {
     }
 
     async create(input: CreateParentDto): Promise<ParentRecord & { children: ChildSummary[] }> {
-        return db.transaction(async (tx) => {
+        if (!input.userId) {
+            throw new AppError(
+                'BAD_REQUEST',
+                'userId requis pour créer un parent',
+                400
+            );
+        }
+
+        const result = await db.transaction(async (tx) => {
             const [parent] = await tx.insert(parents).values({
                 userId: input.userId,
                 firstName: input.firstName,
@@ -93,7 +132,7 @@ export class ParentsService {
                     throw new AppError(
                         'CONFLICT',
                         'Un ou plusieurs élèves ont déjà un parent assigné',
-                        409,
+                        409
                     );
                 }
 
@@ -111,8 +150,14 @@ export class ParentsService {
                     .where(inArray(students.id, input.studentIds));
             }
 
-            return { ...parent, children };
+            return { parent, children };
         });
+
+        if (input.studentIds?.length) {
+            await this.provisionChatForNewParent(input.userId, result.parent.id, input.studentIds);
+        }
+
+        return { ...result.parent, children: result.children };
     }
 
   async update(
@@ -147,4 +192,16 @@ export class ParentsService {
       ),
     );
   }
+
+    private async provisionChatForNewParent(parentUserId: string, parentId: string, studentIds: string[]) {
+        const classLinks = await db
+            .select({ studentId: enrollments.studentId, classId: enrollments.classId, subSchoolId: classes.subSchoolId })
+            .from(enrollments)
+            .innerJoin(classes, eq(classes.id, enrollments.classId))
+            .where(inArray(enrollments.studentId, studentIds))
+
+        for (const link of classLinks) {
+            await this.chatProvisioning.onParentLinked(parentUserId, link.studentId, link.subSchoolId, link.classId)
+        }
+    }
 }

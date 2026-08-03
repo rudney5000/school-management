@@ -14,8 +14,11 @@ import {
     messageParamsSchema,
     messagesQuerySchema,
     forwardMessageSchema,
+    contactableStaffQuerySchema,
 } from './chat.schema'
-import { subSchoolQuerySchema } from '@/modules/students/students.schema'
+import {
+    subSchoolQuerySchema
+} from '@/modules/students/students.schema'
 
 const controller = new ChatController()
 const router = Router()
@@ -40,6 +43,16 @@ router.get(
         params: conversationParamsSchema
     }),
     controller.getConversation,
+)
+
+router.get(
+    '/contactable-staff',
+    authenticate,
+    authorize('parent'),
+    validate({
+        query: contactableStaffQuerySchema
+    }),
+    controller.getContactableStaff,
 )
 
 router.post(

@@ -9,7 +9,7 @@ import {
     AddReactionInput,
     AddMembersInput,
     editMessageSchema,
-    ForwardMessageInput,
+    ForwardMessageInput, ContactableStaffQuery,
 } from './chat.schema'
 
 function resolveSubSchoolId(req: Request): string {
@@ -32,7 +32,7 @@ export class ChatController {
     })
 
     createConversation = asyncHandler(async (req: Request, res: Response) => {
-        const data = await this.service.create(req.body as CreateConversationInput, req.user!.id)
+        const data = await this.service.create(req.body as CreateConversationInput, req.user!.id, req.user!.role)
         respond(res, data, 201)
     })
 
@@ -70,9 +70,16 @@ export class ChatController {
         const data = await this.service.sendMessage(
             req.params.id,
             req.user!.id,
+            req.user!.role,
             req.body as SendMessageInput,
         )
         respond(res, data, 201)
+    })
+
+    getContactableStaff = asyncHandler(async (req: Request, res: Response) => {
+        const { studentId } = req.query as ContactableStaffQuery
+        const data = await this.service.findContactableStaff(req.user!.id, req.user!.role, studentId)
+        respond(res, data)
     })
 
     editMessage = asyncHandler(async (req: Request, res: Response) => {
@@ -140,6 +147,7 @@ export class ChatController {
             req.params.messageId,
             targetConversationId,
             req.user!.id,
+            req.user!.role,
         )
         respond(res, data, 201)
     })
@@ -156,6 +164,7 @@ export class ChatController {
         const data = await this.service.replyToThread(
             req.params.messageId,
             req.user!.id,
+            req.user!.role,
             req.body as SendMessageInput,
         )
         respond(res, data, 201)

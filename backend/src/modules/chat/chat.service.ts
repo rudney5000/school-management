@@ -7,7 +7,9 @@ import {
     inArray
 } from 'drizzle-orm'
 import { db } from '@/db'
-import { AppError } from '@/shared/errors/app-error'
+import {
+    AppError
+} from '@/shared/errors/app-error'
 import {
     conversations,
     conversationMembers,
@@ -26,11 +28,25 @@ import type {
     EditMessageInput,
     UploadedFile,
 } from './chat.schema'
-import {attachments} from "@/db/schema";
-import {getAttachmentUrl} from "@/config/storage";
+import {
+    attachments,
+    classes,
+    enrollments,
+    parents,
+    parentStudents, students,
+    teacherSchools,
+    users, workers
+} from "@/db/schema";
+import {
+    getAttachmentUrl
+} from "@/config/storage";
+import {
+    AuthService
+} from "@/modules/auth/auth.service";
 
 export class ChatService {
 
+    private readonly authService = new AuthService()
     async findUserConversations(userId: string, subSchoolId: string) {
         const memberRows = await db
             .select({ conversationId: conversationMembers.conversationId })
@@ -62,15 +78,48 @@ export class ChatService {
             },
         })
 
-        if (!conversation) throw new AppError('NOT_FOUND', 'Conversation introuvable', 404)
+        if (!conversation) throw new AppError(
+            'NOT_FOUND',
+            'Conversation introuvable',
+            404
+        )
 
         const isMember = conversation.members.some(m => m.userId === userId)
-        if (!isMember) throw new AppError('FORBIDDEN', 'Accès refusé', 403)
+        if (!isMember) throw new AppError(
+            'FORBIDDEN',
+            'Accès refusé',
+            403
+        )
 
         return conversation
     }
 
-    async create(input: CreateConversationInput, createdBy: string) {
+    async create(input: CreateConversationInput, createdBy: string, creatorRole: string) {
+        if (creatorRole === 'parent') {
+            if (input.type !== 'dm') {
+                throw new AppError(
+                    'FORBIDDEN',
+                    'Les parents ne peuvent créer que des messages directs',
+                    403
+                )
+            }
+            if (input.memberIds.length !== 1) {
+                throw new AppError(
+                    'BAD_REQUEST',
+                    'Un seul destinataire autorisé',
+                    400
+                )
+            }
+            await this.assertParentCanMessageStaff(createdBy, input.memberIds[0])
+        }
+
+        if (creatorRole === 'teacher' && input.type === 'dm' && input.memberIds.length === 1) {
+            const target = await db.query.users.findFirst({ where: eq(users.id, input.memberIds[0]) })
+            if (target?.role === 'parent') {
+                await this.assertTeacherLinkedToParent(createdBy, input.memberIds[0])
+            }
+        }
+
         if (input.type === 'dm' && input.memberIds.length === 1) {
             const existing = await this.findExistingDm(createdBy, input.memberIds[0])
             if (existing) return existing
@@ -161,8 +210,16 @@ export class ChatService {
         return this.attachMessageAttachments(rows)
     }
 
-    async sendMessage(conversationId: string, senderId: string, input: SendMessageInput) {
-        await this.assertMember(conversationId, senderId)
+    async sendMessage(conversationId: string, senderId: string, senderRole: string, input: SendMessageInput) {
+        const conversation = await this.assertMemberAndGetConversation(conversationId, senderId)
+
+        if (conversation.type === 'announcement' && !['admin', 'director', 'super_admin'].includes(senderRole)) {
+            throw new AppError(
+                'FORBIDDEN',
+                'Ce canal est en lecture seule',
+                403
+            )
+        }
 
         const [message] = await db
             .insert(messages)
@@ -201,7 +258,11 @@ export class ChatService {
 
     async editMessage(messageId: string, userId: string, input: EditMessageInput) {
         const message = await this.findMessageOrFail(messageId)
-        if (message.senderId !== userId) throw new AppError('FORBIDDEN', 'Accès refusé', 403)
+        if (message.senderId !== userId) throw new AppError(
+            'FORBIDDEN',
+            'Accès refusé',
+            403
+        )
 
         const [updated] = await db
             .update(messages)
@@ -214,7 +275,11 @@ export class ChatService {
 
     async deleteMessage(messageId: string, userId: string) {
         const message = await this.findMessageOrFail(messageId)
-        if (message.senderId !== userId) throw new AppError('FORBIDDEN', 'Accès refusé', 403)
+        if (message.senderId !== userId) throw new AppError(
+            'FORBIDDEN',
+            'Accès refusé',
+            403
+        )
 
         const [deleted] = await db
             .update(messages)
@@ -287,9 +352,17 @@ export class ChatService {
             ))
     }
 
-    async forwardMessage(messageId: string, targetConversationId: string, senderId: string) {
+    async forwardMessage(messageId: string, targetConversationId: string, senderId: string, senderRole: string) {
         const original = await this.findMessageOrFail(messageId)
-        await this.assertMember(targetConversationId, senderId)
+        const targetConversation = await this.assertMemberAndGetConversation(targetConversationId, senderId)
+
+        if (targetConversation.type === 'announcement' && !['admin', 'director', 'super_admin'].includes(senderRole)) {
+            throw new AppError(
+                'FORBIDDEN',
+                'Ce canal est en lecture seule',
+                403
+            )
+        }
 
         const [forwarded] = await db.insert(messages).values({
             conversationId: targetConversationId,
@@ -316,9 +389,17 @@ export class ChatService {
         })
     }
 
-    async replyToThread(threadId: string, senderId: string, input: SendMessageInput) {
+    async replyToThread(threadId: string, senderId: string, senderRole: string, input: SendMessageInput) {
         const root = await this.findMessageOrFail(threadId)
-        await this.assertMember(root.conversationId, senderId)
+        const conversation = await this.assertMemberAndGetConversation(root.conversationId, senderId)
+
+        if (conversation.type === 'announcement' && !['admin', 'director', 'super_admin'].includes(senderRole)) {
+            throw new AppError(
+                'FORBIDDEN',
+                'Ce canal est en lecture seule',
+                403
+            )
+        }
 
         const [reply] = await db.insert(messages).values({
             conversationId: root.conversationId,
@@ -348,6 +429,71 @@ export class ChatService {
         )
     }
 
+    async findContactableStaff(userId: string, role: string, studentId?: string) {
+        if (role !== 'parent') {
+            throw new AppError(
+                'FORBIDDEN',
+                'Accès refusé',
+                403
+            )
+        }
+
+        const parentRecord = await db.query.parents.findFirst({ where: eq(parents.userId, userId) })
+        if (!parentRecord) throw new AppError(
+            'FORBIDDEN',
+            'Accès refusé',
+            403
+        )
+
+        const childrenLinks = await db
+            .select({ studentId: parentStudents.studentId })
+            .from(parentStudents)
+            .where(and(
+                eq(parentStudents.parentId, parentRecord.id),
+                studentId ? eq(parentStudents.studentId, studentId) : undefined,
+            ))
+
+        if (studentId && childrenLinks.length === 0) {
+            throw new AppError(
+                'FORBIDDEN',
+                'Accès refusé',
+                403
+            )
+        }
+        if (childrenLinks.length === 0) return { staff: [], teachers: [] }
+
+        const childStudents = await db
+            .select({ id: students.id, subSchoolId: students.subSchoolId })
+            .from(students)
+            .where(inArray(students.id, childrenLinks.map(c => c.studentId)))
+
+        const subSchoolIds = [...new Set(childStudents.map(s => s.subSchoolId))]
+
+        const staff = await db
+            .select({ id: users.id, email: users.email, role: users.role })
+            .from(users)
+            .innerJoin(workers, eq(workers.id, users.workerId))
+            .where(and(
+                inArray(users.role, ['admin', 'director', 'super_admin']),
+                inArray(workers.subSchoolId, subSchoolIds),
+            ))
+
+        const teachersRaw = await db
+            .select({ id: users.id, email: users.email, role: users.role })
+            .from(teacherSchools)
+            .innerJoin(users, eq(users.teacherId, teacherSchools.teacherId))
+            .where(inArray(teacherSchools.subSchoolId, subSchoolIds))
+
+        const seen = new Set<string>()
+        const teachers = teachersRaw.filter(t => {
+            if (seen.has(t.id)) return false
+            seen.add(t.id)
+            return true
+        })
+
+        return { staff, teachers }
+    }
+
     private async findExistingDm(userA: string, userB: string) {
         const rows = await db
             .select({ conversationId: conversationMembers.conversationId })
@@ -370,14 +516,34 @@ export class ChatService {
         })
     }
 
-    private async assertMember(conversationId: string, userId: string) {
+    private async assertMember(conversationId: string, userId: string): Promise<void> {
         const member = await db.query.conversationMembers.findFirst({
             where: and(
                 eq(conversationMembers.conversationId, conversationId),
                 eq(conversationMembers.userId, userId),
             ),
         })
-        if (!member) throw new AppError('FORBIDDEN', 'Accès refusé', 403)
+        if (!member) throw new AppError(
+            'FORBIDDEN',
+            'Accès refusé',
+            403
+        )
+    }
+
+    private async assertMemberAndGetConversation(conversationId: string, userId: string) {
+        const member = await db.query.conversationMembers.findFirst({
+            where: and(
+                eq(conversationMembers.conversationId, conversationId),
+                eq(conversationMembers.userId, userId),
+            ),
+            with: { conversation: true },
+        })
+        if (!member) throw new AppError(
+            'FORBIDDEN',
+            'Accès refusé',
+            403
+        )
+        return member.conversation
     }
 
     private async assertAdmin(conversationId: string, userId: string) {
@@ -388,14 +554,22 @@ export class ChatService {
             ),
         })
         if (!member || member.role !== 'admin')
-            throw new AppError('FORBIDDEN', 'Action réservée aux admins', 403)
+            throw new AppError(
+                'FORBIDDEN',
+                'Action réservée aux admins',
+                403
+            )
     }
 
     private async findMessageOrFail(messageId: string) {
         const message = await db.query.messages.findFirst({
             where: eq(messages.id, messageId),
         })
-        if (!message) throw new AppError('NOT_FOUND', 'Message introuvable', 404)
+        if (!message) throw new AppError(
+            'NOT_FOUND',
+            'Message introuvable',
+            404
+        )
         return message
     }
 
@@ -442,5 +616,96 @@ export class ChatService {
             ...m,
             attachments: byMessageId.get(m.id) ?? [],
         }))
+    }
+
+    private async assertParentCanMessageStaff(parentUserId: string, targetUserId: string) {
+        const target = await db.query.users.findFirst({ where: eq(users.id, targetUserId) })
+        if (!target) throw new AppError(
+            'FORBIDDEN',
+            'Destinataire invalide',
+            403
+        )
+
+        if (target.role === 'teacher') {
+            await this.assertTeacherLinkedToParent(targetUserId, parentUserId)
+            return
+        }
+
+        if (['admin', 'director', 'super_admin'].includes(target.role)) {
+            const parentUser = await db.query.users.findFirst({ where: eq(users.id, parentUserId) })
+            if (!parentUser) throw new AppError(
+                'FORBIDDEN',
+                'Accès refusé',
+                403
+            )
+
+            const targetContext = await this.authService.resolveContext(target)
+            const parentContext = await this.authService.resolveContext(parentUser)
+
+            if (!targetContext.subSchoolId || targetContext.subSchoolId !== parentContext.subSchoolId) {
+                throw new AppError(
+                    'FORBIDDEN',
+                    'Ce membre du staff n\'appartient pas à votre établissement',
+                    403
+                )
+            }
+            return
+        }
+
+        throw new AppError(
+            'FORBIDDEN',
+            'Destinataire invalide',
+            403
+        )
+    }
+
+    async resolveParentId(userId: string): Promise<string> {
+        const [user] = await db
+            .select({ parentId: users.parentId })
+            .from(users)
+            .where(eq(users.id, userId))
+            .limit(1)
+
+        if (!user?.parentId) throw new AppError(
+            'FORBIDDEN',
+            'Accès refusé',
+            403
+        )
+        return user.parentId
+    }
+
+    private async assertTeacherLinkedToParent(teacherUserId: string, parentUserId: string) {
+        const [teacherUser] = await db
+            .select({ teacherId: users.teacherId })
+            .from(users)
+            .where(eq(users.id, teacherUserId))
+            .limit(1)
+
+        if (!teacherUser?.teacherId) throw new AppError(
+            'FORBIDDEN',
+            'Accès refusé',
+            403
+        )
+
+        const parentId = await this.resolveParentId(parentUserId)
+
+        const teachesChild = await db
+            .select()
+            .from(parentStudents)
+            .innerJoin(students, eq(students.id, parentStudents.studentId))
+            .innerJoin(teacherSchools, and(
+                eq(teacherSchools.teacherId, teacherUser.teacherId),
+                eq(teacherSchools.subSchoolId, students.subSchoolId),
+            ))
+            .where(eq(parentStudents.parentId, parentId))
+            .limit(1)
+
+        if (!teachesChild.length) {
+            throw new AppError(
+                'FORBIDDEN',
+                'Accès refusé',
+                403
+            )
+        }
     }
 }
