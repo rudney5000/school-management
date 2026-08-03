@@ -23,10 +23,14 @@ import { useConversations } from '@entities/chat'
 import { useMessages } from '@entities/chat'
 import { useSocket } from '@entities/chat'
 import { useChatActions } from '@entities/chat'
-import { selectUserId } from '@features/auth/model/selectors'
+import {
+    selectRole,
+    selectUserId
+} from '@features/auth/model/selectors'
 
 export function useChatPage() {
     const dispatch = useAppDispatch()
+    const currentUserRole = useAppSelector(selectRole)
     const [selectedCategory, setSelectedCategory] = useState('all')
     const [messageText, setMessageText] = useState('')
 
@@ -50,10 +54,11 @@ export function useChatPage() {
     }, shallowEqual)
 
     const counts = useMemo(() => ({
-        all:      conversations.length,
-        groups:   conversations.filter(c => c.type === 'group' || c.type === 'class' || c.type === 'course').length,
-        direct:   conversations.filter(c => c.type === 'dm').length,
-        unread:   Object.values(unreadByConv).reduce((a, b) => a + b, 0),
+        all:           conversations.length,
+        groups:        conversations.filter(c => c.type === 'group' || c.type === 'class' || c.type === 'course').length,
+        direct:        conversations.filter(c => c.type === 'dm').length,
+        announcements: conversations.filter(c => c.type === 'announcement' || c.type === 'parent_group').length,
+        unread:        Object.values(unreadByConv).reduce((a, b) => a + b, 0),
         starred:  0,
         archived: 0,
     }), [conversations, unreadByConv])
@@ -103,6 +108,7 @@ export function useChatPage() {
         messages,
         onlineUsers,
         currentUserId,
+        currentUserRole,
         unreadByConv,
         counts,
         isLoadingConversations,

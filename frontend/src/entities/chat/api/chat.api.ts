@@ -11,7 +11,22 @@ import type {
     EditMessageInput,
     SendMessageInput
 } from "@entities/chat/model/createConversationSchema";
-import type {AttachmentUploadResult, PresignUploadInput} from "@entities/chat/model/dto.ts";
+import type {
+    AttachmentUploadResult,
+    PresignUploadInput
+} from "@entities/chat/model/dto.ts";
+
+export interface ContactableUser {
+    id: string
+    email: string
+    role: 'admin' | 'director' | 'super_admin' | 'teacher'
+}
+
+export interface ContactableStaffResponse {
+    staff: ContactableUser[]
+    teachers: ContactableUser[]
+}
+
 
 export class ChatApi extends ApiWrapper {
     constructor() {
@@ -29,6 +44,13 @@ export class ChatApi extends ApiWrapper {
         return this.handleRequest<Conversation>(
             this._baseApi.get(`/chats/${id}`),
             (raw) => raw as Conversation,
+        )
+    }
+
+    getContactableStaff(studentId?: string) {
+        return this.handleRequest<ContactableStaffResponse>(
+            this._baseApi.get('/chats/contactable-staff', studentId ? { studentId } : undefined),
+            (raw) => raw as ContactableStaffResponse,
         )
     }
 

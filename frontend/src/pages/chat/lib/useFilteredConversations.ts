@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
-import type { Conversation } from '@entities/chat'
+import type {
+    Conversation
+} from '@entities/chat'
 
 export function useFilteredConversations(
     conversations: Conversation[],
@@ -14,6 +16,10 @@ export function useFilteredConversations(
                 )
             case 'direct':
                 return conversations.filter(c => c.type === 'dm')
+            case 'announcements':
+                return conversations.filter(c =>
+                    c.type === 'announcement' || c.type === 'parent_group'
+                )
             case 'unread':
                 return conversations.filter(c => (unreadByConv[c.id] ?? 0) > 0)
             default:

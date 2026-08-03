@@ -33,6 +33,7 @@ interface InboxMessageViewProps {
     replyOpen: boolean
     onReplyOpen: () => void
     onReplyClose: () => void
+    readOnly?: boolean
 }
 
 export function InboxMessageView({
@@ -41,7 +42,8 @@ export function InboxMessageView({
                                      currentUserId,
                                      replyOpen,
                                      onReplyOpen,
-                                     onReplyClose
+                                     onReplyClose,
+                                     readOnly
 }: InboxMessageViewProps) {
     const { t } = useTranslation()
     const [threadOpen, setThreadOpen] = useState(false)
@@ -54,14 +56,16 @@ export function InboxMessageView({
         <div className="flex flex-1 flex-col overflow-hidden">
             <div className="flex items-center justify-between border-b border-border px-5 py-2.5">
                 <div className="flex items-center gap-1">
-                    <Button
-                        variant="ghost" size="sm"
-                        className="gap-1.5 text-muted-foreground"
-                        onClick={onReplyOpen}
-                    >
-                        <Reply className="size-3.5" />
-                        {t('dashboard.chat.reply')}
-                    </Button>
+                    {!readOnly && (
+                        <Button
+                            variant="ghost" size="sm"
+                            className="gap-1.5 text-muted-foreground"
+                            onClick={onReplyOpen}
+                        >
+                            <Reply className="size-3.5" />
+                            {t('dashboard.chat.reply')}
+                        </Button>
+                    )}
                     <Button
                         variant="ghost" size="sm"
                         className="gap-1.5 text-muted-foreground"
@@ -155,13 +159,14 @@ export function InboxMessageView({
                                 threadId={message.id}
                                 conversationId={conversation.id}
                                 currentUserId={currentUserId}
+                                readOnly={readOnly}
                             />
                         )}
                     </div>
                 </div>
             </ScrollArea>
 
-            {replyOpen && (
+            {replyOpen && !readOnly && (
                 <InboxReplyComposer
                     message={message}
                     conversation={conversation}

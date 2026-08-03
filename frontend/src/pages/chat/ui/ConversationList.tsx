@@ -1,3 +1,4 @@
+import {useState} from "react";
 import {
     Search,
     SlidersHorizontal,
@@ -9,17 +10,23 @@ import {
     ScrollArea,
     Spinner
 } from '@shared/ui'
-import { ConversationItem } from './ConversationItem'
+import {
+    ConversationItem
+} from './ConversationItem'
 import type {
     Conversation,
     Message
 } from '@entities/chat'
 import { useTranslation } from '@shared/lib'
+import {
+    NewConversationDialog
+} from "@/pages/chat/ui/NewConversationDialog";
 
 interface ConversationListProps {
     conversations: Conversation[]
     activeConversationId: string | null
     currentUserId: string | null
+    currentUserRole: string | null
     onlineUsers: string[]
     unreadByConv: Record<string, number>
     messages: Message[]
@@ -31,6 +38,7 @@ export function ConversationList({
                                      conversations,
                                      activeConversationId,
                                      currentUserId,
+                                     currentUserRole,
                                      onlineUsers,
                                      unreadByConv,
                                      messages,
@@ -38,6 +46,8 @@ export function ConversationList({
                                      onSelect
 }: ConversationListProps) {
     const { t } = useTranslation()
+    const [newConvOpen, setNewConvOpen] = useState(false)
+
     return (
         <div className="flex w-80 shrink-0 flex-col border-r border-border bg-background">
             <div className="flex items-center gap-2 p-3">
@@ -51,7 +61,11 @@ export function ConversationList({
                 <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
                     <SlidersHorizontal className="size-4" />
                 </Button>
-                <Button size="icon-sm" className="rounded-full bg-primary text-primary-foreground">
+                <Button
+                    size="icon-sm"
+                    className="rounded-full bg-primary text-primary-foreground"
+                    onClick={() => setNewConvOpen(true)}
+                >
                     <Plus className="size-4" />
                 </Button>
             </div>
@@ -89,6 +103,13 @@ export function ConversationList({
                     )}
                 </div>
             </ScrollArea>
+
+            {currentUserRole === 'parent' && (
+                <NewConversationDialog
+                    open={newConvOpen}
+                    onClose={() => setNewConvOpen(false)}
+                />
+            )}
         </div>
     )
 }
