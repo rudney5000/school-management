@@ -2099,6 +2099,124 @@ async function seed() {
         console.log('⚠ Users manquants, skip live sessions seed');
     }
 
+    // ─── Chat : canaux parents (announcement + parent_group) ───
+    const sophieUserForChat = await db.query.users.findFirst({
+        where: eq(users.email, 'sophie.kabila@saintjoseph.cd')
+    })
+    const jeanPierreUserForChat = await db.query.users.findFirst({
+        where: eq(users.email, 'jeanpierre.mbuyi@saintjoseph.cd')
+    })
+    const alphonsineUserForChat = await db.query.users.findFirst({
+        where: eq(users.email, 'alphonsine.kalonji@saintjoseph.cd')
+    })
+    const robertUserForChat = await db.query.users.findFirst({
+        where: eq(users.email, 'robert.nzuzi@saintjoseph.cd')
+    })
+
+    const allParentUsersForChat = [
+        sophieUserForChat,
+        jeanPierreUserForChat,
+        alphonsineUserForChat,
+        robertUserForChat,
+    ].filter((u): u is typeof users.$inferSelect => !!u)
+
+    if (adminUserForChat && allParentUsersForChat.length > 0) {
+        const [existingAnnouncement] = await db.select().from(conversations)
+            .where(and(
+                eq(conversations.type, 'announcement'),
+                eq(conversations.subSchoolId, subSchool.id),
+            ))
+
+        const announcementChannel = existingAnnouncement ?? (await db.insert(conversations).values({
+            type: 'announcement',
+            name: 'Annonces — Parents',
+            description: 'Annonces officielles de l\'école destinées aux parents',
+            subSchoolId: subSchool.id,
+            createdBy: adminUserForChat.id,
+        }).returning())[0]
+
+        await db.insert(conversationMembers).values([
+            { conversationId: announcementChannel.id, userId: adminUserForChat.id, role: 'admin' },
+            ...allParentUsersForChat.map(u => ({
+                conversationId: announcementChannel.id,
+                userId: u.id,
+                role: 'member' as const,
+            })),
+        ]).onConflictDoNothing()
+
+        await db.insert(messages).values([
+            {
+                conversationId: announcementChannel.id,
+                senderId: adminUserForChat.id,
+                type: 'text',
+                content: 'Bienvenue chers parents sur le canal d\'annonces officielles du Groupe Scolaire Saint-Joseph.',
+            },
+            {
+                conversationId: announcementChannel.id,
+                senderId: adminUserForChat.id,
+                type: 'text',
+                content: 'Réunion des parents d\'élèves prévue le 15 décembre à 15h00 dans la cour principale.',
+            },
+        ]).onConflictDoNothing()
+
+        console.log('✓ Canal announcement créé: Annonces — Parents')
+    } else {
+        console.log('⚠ Admin ou parents manquants, skip announcement seed')
+    }
+
+    if (sophieUserForChat && enrollmentMarie) {
+        const [existingParentGroupA] = await db.select().from(conversations)
+            .where(and(
+                eq(conversations.type, 'parent_group'),
+                eq(conversations.classId, classA.id),
+            ))
+
+        const parentGroupA = existingParentGroupA ?? (await db.insert(conversations).values({
+            type: 'parent_group',
+            name: `Parents — ${classA.name}`,
+            description: 'Espace d\'échange entre parents de la classe',
+            classId: classA.id,
+            subSchoolId: subSchool.id,
+            createdBy: adminUserForChat?.id ?? teacherUserForChat!.id,
+        }).returning())[0]
+
+        await db.insert(conversationMembers)
+            .values({ conversationId: parentGroupA.id, userId: sophieUserForChat.id, role: 'member' })
+            .onConflictDoNothing()
+
+        await db.insert(messages).values({
+            conversationId: parentGroupA.id,
+            senderId: sophieUserForChat.id,
+            type: 'text',
+            content: 'Bonjour à tous, quelqu\'un sait si le cours d\'anglais de jeudi est maintenu ?',
+        }).onConflictDoNothing()
+
+        console.log(`✓ Parent group créé: Parents — ${classA.name}`)
+    }
+
+    if (sophieUserForChat && enrollmentPaul) {
+        const [existingParentGroupB] = await db.select().from(conversations)
+            .where(and(
+                eq(conversations.type, 'parent_group'),
+                eq(conversations.classId, classB.id),
+            ))
+
+        const parentGroupB = existingParentGroupB ?? (await db.insert(conversations).values({
+            type: 'parent_group',
+            name: `Parents — ${classB.name}`,
+            description: 'Espace d\'échange entre parents de la classe',
+            classId: classB.id,
+            subSchoolId: subSchool.id,
+            createdBy: adminUserForChat?.id ?? teacherUserForChat!.id,
+        }).returning())[0]
+
+        await db.insert(conversationMembers)
+            .values({ conversationId: parentGroupB.id, userId: sophieUserForChat.id, role: 'member' })
+            .onConflictDoNothing()
+
+        console.log(`✓ Parent group créé: Parents — ${classB.name}`)
+    }
+
     console.log('\n✓ Seed completed. Test credentials (password: password123):');
     console.log('  Admin   → admin@saintjoseph.cd');
     console.log('  Director   → directeur@saintjoseph.cd');
