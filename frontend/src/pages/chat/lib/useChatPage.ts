@@ -30,6 +30,7 @@ import {
 
 export function useChatPage() {
     const dispatch = useAppDispatch()
+    const currentUserId = useAppSelector(selectUserId)
     const currentUserRole = useAppSelector(selectRole)
     const [selectedCategory, setSelectedCategory] = useState('all')
     const [messageText, setMessageText] = useState('')
@@ -38,7 +39,6 @@ export function useChatPage() {
     const conversations = useAppSelector(selectConversations, shallowEqual)
     const activeConversation = useAppSelector(selectActiveConversation)
     const activeConversationId = useAppSelector((state) => state.chat.activeConversationId)
-    const currentUserId = useAppSelector(selectUserId)
     const onlineUsers = useAppSelector(selectOnlineUsers, shallowEqual)
 
     const messages = useAppSelector(

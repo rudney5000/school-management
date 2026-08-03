@@ -67,6 +67,7 @@ export function ChatWindow({
             activeConversationId={activeConversationId}
             messages={messages}
             currentUserId={currentUserId}
+            currentUserRole={currentUserRole}
             isLoadingMessages={isLoadingMessages}
             messageText={messageText}
             onMessageChange={onMessageChange}

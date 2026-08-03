@@ -15,6 +15,7 @@ interface InboxWindowProps {
     activeConversationId: string | null
     messages: Message[]
     currentUserId: string | null
+    currentUserRole: string | null
     isLoadingMessages: boolean
     messageText: string
     onMessageChange: (text: string) => void
@@ -27,6 +28,7 @@ export function InboxWindow({
                                 activeConversationId,
                                 messages,
                                 currentUserId,
+                                currentUserRole,
                                 isLoadingMessages,
                                 messageText,
                                 onMessageChange,
@@ -90,6 +92,7 @@ export function InboxWindow({
                             message={selectedMessage}
                             conversation={activeConversation}
                             currentUserId={currentUserId}
+                            currentUserRole={currentUserRole}
                             replyOpen={replyOpen}
                             onReplyOpen={() => setReplyOpen(true)}
                             onReplyClose={() => setReplyOpen(false)}

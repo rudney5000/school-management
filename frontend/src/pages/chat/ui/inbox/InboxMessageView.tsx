@@ -30,6 +30,7 @@ interface InboxMessageViewProps {
     message: Message
     conversation: Conversation
     currentUserId: string | null
+    currentUserRole: string | null
     replyOpen: boolean
     onReplyOpen: () => void
     onReplyClose: () => void
@@ -40,6 +41,7 @@ export function InboxMessageView({
                                      message,
                                      conversation,
                                      currentUserId,
+                                     currentUserRole,
                                      replyOpen,
                                      onReplyOpen,
                                      onReplyClose,
@@ -177,6 +179,7 @@ export function InboxMessageView({
             {forwardOpen && (
                 <ForwardDialog
                     message={message}
+                    currentUserRole={currentUserRole}
                     onForward={(targetId) => {
                         forwardMessage(message, targetId)
                         setForwardOpen(false)

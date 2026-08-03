@@ -22,6 +22,7 @@ export function ChatPage() {
         messages,
         onlineUsers,
         currentUserId,
+        currentUserRole,
         unreadByConv,
         counts,
         isLoadingConversations,
@@ -70,6 +71,7 @@ export function ChatPage() {
                         isLoading={isLoadingConversations}
                         onSelect={handleSelectConversationMobile}
                         currentUserId={currentUserId}
+                        currentUserRole={currentUserRole}
                     />
                 </div>
 
@@ -93,6 +95,7 @@ export function ChatPage() {
                             activeConversationId={activeConversationId}
                             messages={messages}
                             currentUserId={currentUserId}
+                            currentUserRole={currentUserRole}
                             subSchoolId={activeConversation.subSchoolId}
                             isLoadingMessages={isLoadingMessages}
                             messageText={messageText}

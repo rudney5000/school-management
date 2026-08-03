@@ -26,24 +26,34 @@ import { useTranslation } from '@shared/lib'
 
 interface ForwardDialogProps {
     message: Message
+    currentUserRole: string | null
     onForward: (targetConversationId: string) => void
     onClose: () => void
 }
 
-export function ForwardDialog({ message, onForward, onClose }: ForwardDialogProps) {
+const STAFF_ROLES = ['admin', 'director', 'super_admin']
+
+export function ForwardDialog({
+                                  message,
+                                  onForward,
+                                  onClose,
+                                  currentUserRole
+}: ForwardDialogProps) {
     const { t } = useTranslation()
     const [search, setSearch] = useState('')
     const [selectedId, setSelectedId] = useState<string | null>(null)
     const [isForwarding, setIsForwarding] = useState(false)
 
     const conversations = useAppSelector(selectConversations)
-
+    const canTargetAnnouncement = STAFF_ROLES.includes(currentUserRole ?? '')
     const filtered = useMemo(() =>
-            conversations.filter(c =>
-                c.name?.toLowerCase().includes(search.toLowerCase()) ||
-                c.members.some(m => m.user.email?.toLowerCase().includes(search.toLowerCase()))
-            ),
-        [conversations, search]
+            conversations
+                .filter(c => canTargetAnnouncement || c.type !== 'announcement')
+                .filter(c =>
+                    c.name?.toLowerCase().includes(search.toLowerCase()) ||
+                    c.members.some(m => m.user.email?.toLowerCase().includes(search.toLowerCase()))
+                ),
+        [conversations, search, canTargetAnnouncement]
     )
 
     const handleForward = async () => {
@@ -119,6 +129,8 @@ export function ForwardDialog({ message, onForward, onClose }: ForwardDialogProp
                             group: t('dashboard.chat.types.group'),
                             class: t('dashboard.chat.types.class'),
                             course: t('dashboard.chat.types.course'),
+                            announcement: t('dashboard.chat.types.announcement'),
+                            parent_group: t('dashboard.chat.types.parentGroup'),
                         }[conv.type]
 
                         return (
