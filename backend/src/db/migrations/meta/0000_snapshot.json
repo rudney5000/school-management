@@ -1,5 +1,5 @@
 {
-  "id": "4ee6336a-caec-4421-b6ea-e581325051dd",
+  "id": "055f6b4f-23d7-48d4-bcd8-96afa800909c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -358,7 +358,40 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "uniq_announcement_per_subschool": {
+          "name": "uniq_announcement_per_subschool",
+          "columns": [
+            {
+              "expression": "sub_school_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"conversations\".\"type\" = 'announcement'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "uniq_parent_group_per_class": {
+          "name": "uniq_parent_group_per_class",
+          "columns": [
+            {
+              "expression": "class_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"conversations\".\"type\" = 'parent_group'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "conversations_created_by_users_id_fk": {
           "name": "conversations_created_by_users_id_fk",
@@ -5487,6 +5520,7 @@
         "criminal_record",
         "resume",
         "identity_document",
+        "guardianship_proof",
         "other"
       ]
     },
@@ -5544,7 +5578,9 @@
         "dm",
         "group",
         "class",
-        "course"
+        "course",
+        "announcement",
+        "parent_group"
       ]
     },
     "public.day_of_week": {

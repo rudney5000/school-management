@@ -11,7 +11,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."attachment_category" AS ENUM('birth_certificate', 'medical_certificate', 'previous_report', 'parent_id', 'student_photo', 'teacher_photo', 'payment_receipt', 'diploma', 'criminal_record', 'resume', 'identity_document', 'other');
+ CREATE TYPE "public"."attachment_category" AS ENUM('birth_certificate', 'medical_certificate', 'previous_report', 'parent_id', 'student_photo', 'teacher_photo', 'payment_receipt', 'diploma', 'criminal_record', 'resume', 'identity_document', 'guardianship_proof', 'other');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -47,7 +47,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."conversation_type" AS ENUM('dm', 'group', 'class', 'course');
+ CREATE TYPE "public"."conversation_type" AS ENUM('dm', 'group', 'class', 'course', 'announcement', 'parent_group');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -1271,6 +1271,8 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_conversation_member" ON "conversation_members" USING btree ("conversation_id","user_id");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "uniq_announcement_per_subschool" ON "conversations" USING btree ("sub_school_id") WHERE "conversations"."type" = 'announcement';--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "uniq_parent_group_per_class" ON "conversations" USING btree ("class_id") WHERE "conversations"."type" = 'parent_group';--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_archive" ON "message_archives" USING btree ("message_id","user_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_reaction" ON "message_reactions" USING btree ("message_id","user_id","emoji");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_message_read_receipt" ON "message_read_receipts" USING btree ("message_id","user_id");--> statement-breakpoint
