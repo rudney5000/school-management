@@ -108,6 +108,7 @@ export const studentNav: NavGroup[] = [
         items: [
             { labelKey: 'nav.assessments',   icon: TrendingUp,      path: '/sub-schools/$subSchoolId/assessments' },
             { labelKey: 'nav.attendances',    icon: ClipboardList,   path: '/sub-schools/$subSchoolId/attendances' },
+            { labelKey: 'nav.reports',       icon: BarChart3,       path: '/sub-schools/$subSchoolId/reports' }
         ],
     },
     {
