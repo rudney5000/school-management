@@ -11,7 +11,7 @@ export interface AttachmentContextResolver {
     resolve(userId: string, userRole: string, attachableId: string): Promise<AttachmentContext>
 }
 
-export const reportAttachmentResolver: AttachmentContextResolver = {
+export class ReportAttachmentResolver implements AttachmentContextResolver {
     async resolve(userId: string, userRole: string, attachableId: string): Promise<AttachmentContext> {
         const [report] = await db
             .select({
@@ -22,11 +22,7 @@ export const reportAttachmentResolver: AttachmentContextResolver = {
             .where(eq(reports.id, attachableId))
 
         if (!report) {
-            throw new AppError(
-                'NOT_FOUND',
-                'Signalement introuvable',
-                404
-            )
+            throw new AppError('NOT_FOUND', 'Signalement introuvable', 404)
         }
 
         const isManager = ['admin', 'director', 'super_admin'].includes(userRole)
@@ -41,5 +37,5 @@ export const reportAttachmentResolver: AttachmentContextResolver = {
         }
 
         return { subSchoolId: report.subSchoolId }
-    },
+    }
 }

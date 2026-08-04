@@ -3,7 +3,7 @@ import type {
 } from '@/modules/attachments/attachments.schema'
 import {
     AttachmentContextResolver,
-    reportAttachmentResolver
+    ReportAttachmentResolver
 } from "@/shared/utils/resolvers/attachments/attachment-context-resolver";
 import {
     ConversationAttachmentResolver
@@ -27,5 +27,5 @@ export const attachmentResolvers: Record<AttachableType, AttachmentContextResolv
     enrollment:   new EnrollmentAttachmentResolver(),
     payment:      new PaymentAttachmentResolver(),
     teacher:      new TeacherAttachmentResolver(),
-    report:       new reportAttachmentResolver()
+    report:       new ReportAttachmentResolver()
 }
