@@ -23,6 +23,7 @@ import {callUiSlice} from "@entities/video-call";
 import {liveSessionSlice} from "@entities/liveSession";
 import {attachmentSlice} from "@entities/attachment";
 import {documentSignatureSlice} from "@entities/document-signature";
+import {reportSlice} from "@entities/report";
 
 export const store = configureStore({
     reducer: {
@@ -49,6 +50,7 @@ export const store = configureStore({
         liveSession: liveSessionSlice.reducer,
         attachment: attachmentSlice.reducer,
         documentSignature: documentSignatureSlice.reducer,
+        report: reportSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 })

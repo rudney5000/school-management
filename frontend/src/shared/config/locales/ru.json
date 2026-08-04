@@ -138,7 +138,7 @@
     "courses": "Курсы",
     "exams": "Экзамены",
     "assessments": "Оценки",
-    "reports": "Отчёты",
+    "reports": "Обращения",
     "events": "События",
     "teachers": "Учителя",
     "students": "Ученики",
@@ -1191,6 +1191,143 @@
         "new": "Новое",
         "noEventsThisWeek": "Нет событий на этой неделе",
         "past": "Прошло"
+      }
+    },
+
+    "reports": {
+      "title": "Обращения",
+      "subtitle": "Отслеживание обращений учеников, родителей и учителей",
+      "noReports": "Обращения не найдены",
+      "viewDetails": "Подробнее",
+      "list": {
+        "anonymous": "Аноним",
+        "identified": "Указан"
+      },
+      "role": {
+        "teacher": "Учитель",
+        "staff": "Сотрудник",
+        "director": "Директор",
+        "student": "Ученик / Одноклассник",
+        "other": "Другое"
+      },
+      "filters": {
+        "status": "Статус",
+        "allStatuses": "Все статусы",
+        "category": "Категория",
+        "allCategories": "Все категории",
+        "all": "Все",
+        "dateFrom": "С",
+        "dateTo": "По",
+        "reset": "Сбросить",
+        "apply": "Применить"
+      },
+      "status": {
+        "new": "Новое",
+        "in_review": "На рассмотрении",
+        "resolved": "Решено",
+        "dismissed": "Отклонено"
+      },
+      "category": {
+        "harassment": "Домогательство",
+        "behavior": "Поведение",
+        "material": "Материально-техническая база",
+        "security": "Безопасность",
+        "teacher_absence": "Отсутствие учителя",
+        "other": "Другое"
+      },
+      "involvedPersonRole": {
+        "teacher": "Учитель",
+        "staff": "Сотрудник",
+        "director": "Директор",
+        "student": "Ученик / Одноклассник",
+        "other": "Другое"
+      },
+      "form": {
+        "title": "Сообщить о проблеме",
+        "subtitle": "Опишите ситуацию, ваше обращение будет рассмотрено администрацией",
+        "category": "Категория",
+        "categoryPlaceholder": "Выберите категорию",
+        "otherCategoryLabel": "Уточните категорию",
+        "otherCategoryPlaceholder": "Опишите категорию проблемы",
+        "description": "Описание",
+        "descriptionPlaceholder": "Подробно опишите проблему (минимум 10 символов)",
+        "involvedPersonName": "Имя причастного лица",
+        "involvedPersonNamePlaceholder": "Имя учителя, сотрудника, директора или одноклассника",
+        "involvedPersonRole": "Роль причастного лица",
+        "involvedPersonRolePlaceholder": "Выберите роль",
+        "relatedStudent": "Ребёнок",
+        "relatedStudentPlaceholder": "Выберите ребёнка (необязательно)",
+        "anonymous": "Анонимное обращение",
+        "anonymousHint": "Ваша личность не будет передана администрации",
+        "attachments": "Вложения",
+        "attachmentsHint": "Добавьте фото или документы в подтверждение (необязательно)",
+        "submit": "Отправить обращение",
+        "submitting": "Отправка...",
+        "successTitle": "Обращение отправлено",
+        "successMessage": "Ваше обращение передано администрации",
+        "trackingTokenNotice": "Сохраните этот код для отслеживания анонимного обращения",
+        "errorMessage": "Произошла ошибка при отправке обращения",
+        "involvedPerson": "Имя причастного лица",
+        "involvedPersonPlaceholder": "Имя учителя, сотрудника, директора или одноклассника",
+        "rolePlaceholder": "Выберите роль",
+        "isAnonymous": "Анонимное обращение",
+        "cancel": "Отмена"
+      },
+      "table": {
+        "columns": {
+          "date": "Дата",
+          "category": "Категория",
+          "subSchool": "Школа",
+          "status": "Статус",
+          "reporter": "Отправитель",
+          "actions": "Действия"
+        },
+        "anonymousReporter": "Аноним",
+        "viewDetails": "Подробнее",
+        "noReports": "Обращения не найдены"
+      },
+      "detail": {
+        "title": "Детали обращения",
+        "reportedBy": "Отправитель",
+        "anonymousReporter": "Анонимное обращение",
+        "involvedPerson": "Причастное лицо",
+        "relatedStudent": "Ребёнок",
+        "description": "Описание",
+        "category": "Категория",
+        "status": "Статус",
+        "history": "История",
+        "changeStatus": "Изменить статус",
+        "resolutionNote": "Комментарий по решению",
+        "resolutionNotePlaceholder": "Добавьте комментарий о решении по обращению",
+        "assignTo": "Назначить",
+        "attachments": "Вложения",
+        "save": "Сохранить",
+        "cancel": "Отмена",
+        "createdAt": "Дата создания",
+        "loading": "Загрузка...",
+        "isAnonymous": "Анонимное обращение",
+        "yes": "Да",
+        "no": "Нет",
+        "resolvedAt": "Решено",
+        "updateStatus": "Обновить статус",
+        "newStatusPlaceholder": "Выберите новый статус",
+        "notePlaceholder": "Добавьте комментарий (необязательно)",
+        "updating": "Обновление...",
+        "update": "Обновить"
+      },
+      "notifications": {
+        "newReport": "Получено новое обращение",
+        "statusUpdated": "Статус обращения обновлён"
+      },
+      "tracking": {
+        "title": "Отследить моё обращение",
+        "subtitle": "Введите код, полученный при отправке анонимного обращения",
+        "tokenPlaceholder": "Код отслеживания",
+        "search": "Поиск",
+        "notFound": "Обращение с этим кодом не найдено",
+        "status": "Статус",
+        "submittedOn": "Отправлено",
+        "resolutionNote": "Комментарий администрации"
       }
     }
   },
