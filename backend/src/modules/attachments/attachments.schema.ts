@@ -26,6 +26,7 @@ export const attachmentCategorySchema = z.enum([
     "resume",
     "identity_document",
     "guardianship_proof",
+    "report_evidence",
     "other",
 ])
 
@@ -34,8 +35,10 @@ export const attachableTypeSchema = z.enum([
     'message',
     'enrollment',
     'payment',
-    'teacher'
+    'teacher',
+    'report'
 ])
+
 export type AttachableType = z.infer<typeof attachableTypeSchema>
 
 export const presignUploadSchema = z.object({
