@@ -5,13 +5,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."attachable_type" AS ENUM('conversation', 'message', 'enrollment', 'payment', 'teacher');
+ CREATE TYPE "public"."attachable_type" AS ENUM('conversation', 'message', 'enrollment', 'payment', 'teacher', 'report');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."attachment_category" AS ENUM('birth_certificate', 'medical_certificate', 'previous_report', 'parent_id', 'student_photo', 'teacher_photo', 'payment_receipt', 'diploma', 'criminal_record', 'resume', 'identity_document', 'guardianship_proof', 'other');
+ CREATE TYPE "public"."attachment_category" AS ENUM('birth_certificate', 'medical_certificate', 'previous_report', 'parent_id', 'student_photo', 'teacher_photo', 'payment_receipt', 'diploma', 'criminal_record', 'resume', 'identity_document', 'guardianship_proof', 'report_evidence', 'other');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -95,6 +95,12 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ CREATE TYPE "public"."involved_person_role" AS ENUM('teacher', 'staff', 'director', 'student', 'other');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "public"."live_session_status" AS ENUM('scheduled', 'live', 'ended');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -132,6 +138,24 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  CREATE TYPE "public"."payroll_status" AS ENUM('PENDING', 'PAID', 'CANCELLED');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."report_category" AS ENUM('harassment', 'behavior', 'material', 'security', 'teacher_absence', 'other');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."report_status" AS ENUM('new', 'in_review', 'resolved', 'dismissed');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."reporter_role" AS ENUM('student', 'parent', 'teacher', 'staff');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -696,6 +720,39 @@ CREATE TABLE IF NOT EXISTS "certificates" (
 	"content" text NOT NULL,
 	"issued_by" uuid,
 	"issued_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "report_status_history" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"report_id" uuid NOT NULL,
+	"from_status" "report_status",
+	"to_status" "report_status" NOT NULL,
+	"changed_by_id" uuid NOT NULL,
+	"note" text,
+	"created_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "reports" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"school_id" uuid NOT NULL,
+	"sub_school_id" uuid NOT NULL,
+	"reporter_id" uuid,
+	"reporter_role" "reporter_role" NOT NULL,
+	"is_anonymous" boolean DEFAULT false NOT NULL,
+	"tracking_token" uuid DEFAULT gen_random_uuid() NOT NULL,
+	"category" "report_category" NOT NULL,
+	"other_category_label" text,
+	"description" text NOT NULL,
+	"involved_person_name" text,
+	"involved_person_role" "involved_person_role",
+	"related_student_id" uuid,
+	"status" "report_status" DEFAULT 'new' NOT NULL,
+	"assigned_to_id" uuid,
+	"resolution_note" text,
+	"resolved_at" timestamp,
+	"resolved_by_id" uuid,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
@@ -1270,6 +1327,54 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "report_status_history" ADD CONSTRAINT "report_status_history_report_id_reports_id_fk" FOREIGN KEY ("report_id") REFERENCES "public"."reports"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "report_status_history" ADD CONSTRAINT "report_status_history_changed_by_id_users_id_fk" FOREIGN KEY ("changed_by_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "reports" ADD CONSTRAINT "reports_school_id_schools_id_fk" FOREIGN KEY ("school_id") REFERENCES "public"."schools"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "reports" ADD CONSTRAINT "reports_sub_school_id_sub_schools_id_fk" FOREIGN KEY ("sub_school_id") REFERENCES "public"."sub_schools"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "reports" ADD CONSTRAINT "reports_reporter_id_users_id_fk" FOREIGN KEY ("reporter_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "reports" ADD CONSTRAINT "reports_related_student_id_students_id_fk" FOREIGN KEY ("related_student_id") REFERENCES "public"."students"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "reports" ADD CONSTRAINT "reports_assigned_to_id_users_id_fk" FOREIGN KEY ("assigned_to_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "reports" ADD CONSTRAINT "reports_resolved_by_id_users_id_fk" FOREIGN KEY ("resolved_by_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_conversation_member" ON "conversation_members" USING btree ("conversation_id","user_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_announcement_per_subschool" ON "conversations" USING btree ("sub_school_id") WHERE "conversations"."type" = 'announcement';--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "uniq_parent_group_per_class" ON "conversations" USING btree ("class_id") WHERE "conversations"."type" = 'parent_group';--> statement-breakpoint
@@ -1328,4 +1433,6 @@ CREATE UNIQUE INDEX IF NOT EXISTS "unique_active_signature_by_id" ON "document_s
 CREATE UNIQUE INDEX IF NOT EXISTS "unique_active_bulletin_per_student" ON "document_signatures" USING btree ("class_id","student_id",(document_ref->>'academicPeriodId')) WHERE status = 'active' AND document_type = 'bulletin' AND student_id IS NOT NULL;--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "unique_active_bulletin_per_class" ON "document_signatures" USING btree ("class_id",(document_ref->>'academicPeriodId')) WHERE status = 'active' AND document_type = 'bulletin' AND student_id IS NULL;--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "idx_certificates_student" ON "certificates" USING btree ("student_id");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "idx_certificates_sub_school" ON "certificates" USING btree ("sub_school_id");
+CREATE INDEX IF NOT EXISTS "idx_certificates_sub_school" ON "certificates" USING btree ("sub_school_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "reports_sub_school_status_idx" ON "reports" USING btree ("sub_school_id","status");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "reports_tracking_token_idx" ON "reports" USING btree ("tracking_token");

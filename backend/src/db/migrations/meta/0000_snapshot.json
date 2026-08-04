@@ -1,5 +1,5 @@
 {
-  "id": "055f6b4f-23d7-48d4-bcd8-96afa800909c",
+  "id": "3f798caa-49f9-4163-9671-04c5efd2a324",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -5477,6 +5477,345 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
+    },
+    "public.report_status_history": {
+      "name": "report_status_history",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "report_id": {
+          "name": "report_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "from_status": {
+          "name": "from_status",
+          "type": "report_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "to_status": {
+          "name": "to_status",
+          "type": "report_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "changed_by_id": {
+          "name": "changed_by_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "note": {
+          "name": "note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "report_status_history_report_id_reports_id_fk": {
+          "name": "report_status_history_report_id_reports_id_fk",
+          "tableFrom": "report_status_history",
+          "tableTo": "reports",
+          "columnsFrom": [
+            "report_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "report_status_history_changed_by_id_users_id_fk": {
+          "name": "report_status_history_changed_by_id_users_id_fk",
+          "tableFrom": "report_status_history",
+          "tableTo": "users",
+          "columnsFrom": [
+            "changed_by_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.reports": {
+      "name": "reports",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "school_id": {
+          "name": "school_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sub_school_id": {
+          "name": "sub_school_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reporter_id": {
+          "name": "reporter_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reporter_role": {
+          "name": "reporter_role",
+          "type": "reporter_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_anonymous": {
+          "name": "is_anonymous",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "tracking_token": {
+          "name": "tracking_token",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "category": {
+          "name": "category",
+          "type": "report_category",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "other_category_label": {
+          "name": "other_category_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "involved_person_name": {
+          "name": "involved_person_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "involved_person_role": {
+          "name": "involved_person_role",
+          "type": "involved_person_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "related_student_id": {
+          "name": "related_student_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "report_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'new'"
+        },
+        "assigned_to_id": {
+          "name": "assigned_to_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "resolution_note": {
+          "name": "resolution_note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "resolved_at": {
+          "name": "resolved_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "resolved_by_id": {
+          "name": "resolved_by_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "reports_sub_school_status_idx": {
+          "name": "reports_sub_school_status_idx",
+          "columns": [
+            {
+              "expression": "sub_school_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "reports_tracking_token_idx": {
+          "name": "reports_tracking_token_idx",
+          "columns": [
+            {
+              "expression": "tracking_token",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "reports_school_id_schools_id_fk": {
+          "name": "reports_school_id_schools_id_fk",
+          "tableFrom": "reports",
+          "tableTo": "schools",
+          "columnsFrom": [
+            "school_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "reports_sub_school_id_sub_schools_id_fk": {
+          "name": "reports_sub_school_id_sub_schools_id_fk",
+          "tableFrom": "reports",
+          "tableTo": "sub_schools",
+          "columnsFrom": [
+            "sub_school_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "reports_reporter_id_users_id_fk": {
+          "name": "reports_reporter_id_users_id_fk",
+          "tableFrom": "reports",
+          "tableTo": "users",
+          "columnsFrom": [
+            "reporter_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "reports_related_student_id_students_id_fk": {
+          "name": "reports_related_student_id_students_id_fk",
+          "tableFrom": "reports",
+          "tableTo": "students",
+          "columnsFrom": [
+            "related_student_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "reports_assigned_to_id_users_id_fk": {
+          "name": "reports_assigned_to_id_users_id_fk",
+          "tableFrom": "reports",
+          "tableTo": "users",
+          "columnsFrom": [
+            "assigned_to_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "reports_resolved_by_id_users_id_fk": {
+          "name": "reports_resolved_by_id_users_id_fk",
+          "tableFrom": "reports",
+          "tableTo": "users",
+          "columnsFrom": [
+            "resolved_by_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     }
   },
   "enums": {
@@ -5502,7 +5841,8 @@
         "message",
         "enrollment",
         "payment",
-        "teacher"
+        "teacher",
+        "report"
       ]
     },
     "public.attachment_category": {
@@ -5521,6 +5861,7 @@
         "resume",
         "identity_document",
         "guardianship_proof",
+        "report_evidence",
         "other"
       ]
     },
@@ -5653,6 +5994,17 @@
         "exam"
       ]
     },
+    "public.involved_person_role": {
+      "name": "involved_person_role",
+      "schema": "public",
+      "values": [
+        "teacher",
+        "staff",
+        "director",
+        "student",
+        "other"
+      ]
+    },
     "public.live_session_status": {
       "name": "live_session_status",
       "schema": "public",
@@ -5720,6 +6072,38 @@
         "PENDING",
         "PAID",
         "CANCELLED"
+      ]
+    },
+    "public.report_category": {
+      "name": "report_category",
+      "schema": "public",
+      "values": [
+        "harassment",
+        "behavior",
+        "material",
+        "security",
+        "teacher_absence",
+        "other"
+      ]
+    },
+    "public.report_status": {
+      "name": "report_status",
+      "schema": "public",
+      "values": [
+        "new",
+        "in_review",
+        "resolved",
+        "dismissed"
+      ]
+    },
+    "public.reporter_role": {
+      "name": "reporter_role",
+      "schema": "public",
+      "values": [
+        "student",
+        "parent",
+        "teacher",
+        "staff"
       ]
     },
     "public.role": {

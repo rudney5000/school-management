@@ -30,6 +30,12 @@ export function initSocketServer(httpServer: HttpServer): SocketServer {
 
         socket.broadcast.emit('user:online', { userId: socket.data.userId })
 
+        socket.join(`user:${socket.data.userId}`)
+
+        if (['admin', 'super_admin', 'director'].includes(socket.data.role)) {
+            socket.join(`reports:admins:${socket.data.subSchoolId}`)
+        }
+
         registerChatHandlers(io, socket, pubClient)
 
         socket.on('disconnect', () => {

@@ -163,6 +163,7 @@ export const attachmentCategoryEnum = pgEnum("attachment_category", [
     "resume",
     "identity_document",
     "guardianship_proof",
+    "report_evidence",
     "other",
 ]);
 
@@ -177,7 +178,8 @@ export const attachableTypeEnum = pgEnum('attachable_type', [
     'message',
     'enrollment',
     'payment',
-    'teacher'
+    'teacher',
+    'report'
 ])
 
 export const contractTypeEnum = pgEnum('contract_type', [
@@ -185,9 +187,41 @@ export const contractTypeEnum = pgEnum('contract_type', [
     'fixed_term',
     'part_time'
 ]);
+
 export const maritalStatusEnum = pgEnum('marital_status', [
     'single',
     'married',
     'divorced',
     'widowed'
+]);
+
+export const reportCategoryEnum = pgEnum("report_category", [
+    "harassment",
+    "behavior",
+    "material",
+    "security",
+    "teacher_absence",
+    "other",
+]);
+
+export const reportStatusEnum = pgEnum("report_status", [
+    "new",
+    "in_review",
+    "resolved",
+    "dismissed",
+]);
+
+export const reporterRoleEnum = pgEnum("reporter_role", [
+    "student",
+    "parent",
+    "teacher",
+    "staff"
+]);
+
+export const involvedPersonRoleEnum = pgEnum("involved_person_role", [
+    "teacher",
+    "staff",
+    "director",
+    "student",
+    "other",
 ]);

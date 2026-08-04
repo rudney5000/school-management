@@ -208,6 +208,12 @@ const chatRoute = createRoute({
     component: lazyRouteComponent(() => import('@/pages/chat/ChatPage').then(m => ({ default: m.ChatPage }))),
 })
 
+const reportsRoute = createRoute({
+    getParentRoute: () => subSchoolRoute,
+    path: 'reports',
+    component: lazyRouteComponent(() => import('@/pages/reports').then(m => ({ default: m.ReportsPage }))),
+})
+
 const routeTree = rootRoute.addChildren([
     indexRedirectRoute,
     localeRoute.addChildren([
@@ -238,6 +244,7 @@ const routeTree = rootRoute.addChildren([
                     attendancesRoute,
                     assessmentsRoute,
                     chatRoute,
+                    reportsRoute,
                 ]),
             ])
     ])

@@ -184,7 +184,7 @@
     "courses":     "Cours",
     "exams":       "Examens",
     "assessments": "Évaluations",
-    "reports":     "Rapports",
+    "reports":    "Signalements",
     "teachers":    "Enseignants",
     "students":    "Élèves",
     "parents":     "Parents",
@@ -1231,6 +1231,142 @@
         "noEventsThisWeek": "Aucun événement cette semaine",
         "past": "Passé"
       }
+    },
+    "reports": {
+      "title": "Signalements",
+      "subtitle": "Suivi des signalements des élèves, parents et enseignants",
+      "noReports": "Aucun signalement trouvé",
+      "viewDetails": "Voir le détail",
+      "list": {
+        "anonymous": "Anonyme",
+        "identified": "Identifié"
+      },
+      "role": {
+        "teacher": "Enseignant",
+        "staff": "Personnel administratif",
+        "director": "Directeur",
+        "student": "Élève / Camarade",
+        "other": "Autre"
+      },
+      "filters": {
+        "status": "Statut",
+        "allStatuses": "Tous les statuts",
+        "category": "Catégorie",
+        "allCategories": "Toutes les catégories",
+        "all": "Tous",
+        "dateFrom": "Du",
+        "dateTo": "Au",
+        "reset": "Réinitialiser",
+        "apply": "Appliquer"
+      },
+      "status": {
+        "new": "Nouveau",
+        "in_review": "En cours d'examen",
+        "resolved": "Résolu",
+        "dismissed": "Rejeté"
+      },
+      "category": {
+        "harassment": "Harcèlement",
+        "behavior": "Comportement",
+        "material": "Matériel / Infrastructure",
+        "security": "Sécurité",
+        "teacher_absence": "Absence d'enseignant",
+        "other": "Autre"
+      },
+      "involvedPersonRole": {
+        "teacher": "Enseignant",
+        "staff": "Personnel administratif",
+        "director": "Directeur",
+        "student": "Élève / Camarade",
+        "other": "Autre"
+      },
+      "form": {
+        "title": "Signaler un problème",
+        "subtitle": "Décrivez la situation, votre signalement sera examiné par l'administration",
+        "category": "Catégorie",
+        "categoryPlaceholder": "Sélectionnez une catégorie",
+        "otherCategoryLabel": "Précisez la catégorie",
+        "otherCategoryPlaceholder": "Décrivez la catégorie du problème",
+        "description": "Description",
+        "descriptionPlaceholder": "Décrivez le problème en détail (minimum 10 caractères)",
+        "involvedPersonName": "Nom de la personne concernée",
+        "involvedPersonNamePlaceholder": "Nom du professeur, du membre du personnel, du directeur ou du camarade",
+        "involvedPersonRole": "Rôle de la personne concernée",
+        "involvedPersonRolePlaceholder": "Sélectionnez un rôle",
+        "relatedStudent": "Enfant concerné",
+        "relatedStudentPlaceholder": "Sélectionnez un enfant (optionnel)",
+        "anonymous": "Signalement anonyme",
+        "anonymousHint": "Votre identité ne sera pas communiquée à l'administration",
+        "attachments": "Pièces jointes",
+        "attachmentsHint": "Ajoutez des photos ou documents pour appuyer votre signalement (optionnel)",
+        "successTitle": "Signalement envoyé",
+        "successMessage": "Votre signalement a été transmis à l'administration",
+        "trackingTokenNotice": "Conservez ce code pour suivre votre signalement de manière anonyme",
+        "errorMessage": "Une erreur est survenue lors de l'envoi du signalement",
+        "otherCategory": "Précisez la catégorie",
+        "involvedPerson": "Nom de la personne concernée",
+        "involvedPersonPlaceholder": "Nom du professeur, du membre du personnel, du directeur ou du camarade",
+        "isAnonymous": "Signalement anonyme",
+        "cancel": "Annuler",
+        "submitting": "Envoi en cours...",
+        "submit": "Envoyer le signalement"
+      },
+      "table": {
+        "columns": {
+          "date": "Date",
+          "category": "Catégorie",
+          "subSchool": "École",
+          "status": "Statut",
+          "reporter": "Signalé par",
+          "actions": "Actions"
+        },
+        "anonymousReporter": "Anonyme",
+        "viewDetails": "Voir le détail",
+        "noReports": "Aucun signalement trouvé"
+      },
+      "detail": {
+        "title": "Détail du signalement",
+        "reportedBy": "Signalé par",
+        "anonymousReporter": "Signalement anonyme",
+        "involvedPerson": "Personne concernée",
+        "relatedStudent": "Enfant concerné",
+        "description": "Description",
+        "category": "Catégorie",
+        "status": "Statut",
+        "history": "Historique",
+        "changeStatus": "Changer le statut",
+        "resolutionNote": "Note de résolution",
+        "resolutionNotePlaceholder": "Ajoutez une note sur la résolution du signalement",
+        "assignTo": "Assigner à",
+        "attachments": "Pièces jointes",
+        "save": "Enregistrer",
+        "cancel": "Annuler",
+        "loading": "Chargement...",
+        "createdAt": "Date de création",
+        "isAnonymous": "Signalement anonyme",
+        "yes": "Oui",
+        "no": "Non",
+        "resolvedAt": "Résolu le",
+        "updateStatus": "Mettre à jour le statut",
+        "newStatusPlaceholder": "Sélectionnez un nouveau statut",
+        "notePlaceholder": "Ajoutez une note (optionnel)",
+        "updating": "Mise à jour...",
+        "update": "Mettre à jour"
+      },
+      "notifications": {
+        "newReport": "Nouveau signalement reçu",
+        "statusUpdated": "Le statut du signalement a été mis à jour"
+      },
+      "tracking": {
+        "title": "Suivre mon signalement",
+        "subtitle": "Entrez le code reçu lors de votre signalement anonyme",
+        "tokenPlaceholder": "Code de suivi",
+        "search": "Rechercher",
+        "notFound": "Aucun signalement trouvé avec ce code",
+        "status": "Statut",
+        "submittedOn": "Envoyé le",
+        "resolutionNote": "Note de l'administration"
+      }
     }
   },
   "theme": {
@@ -1349,6 +1485,86 @@
             "question": "Comment se passe la facturation?",
             "answer": "Facturation annuelle ou mensuelle au choix. Paiement par carte bancaire, virement ou chèque. Réduction de 15% pour engagement annuel. Factures disponibles dans l'espace administrateur."
           }
+        }
+      },
+      "reports": {
+        "title": "Signalements",
+        "subtitle": "Gérer et consulter tous les signalements",
+        "loading": "Chargement...",
+        "error": "Une erreur est survenue",
+        "noReports": "Aucun signalement trouvé",
+        "newReport": "Nouveau signalement",
+        "createReport": "Créer un signalement",
+        "viewDetails": "Voir détails",
+        "filters": {
+          "status": "Statut",
+          "category": "Catégorie",
+          "dateFrom": "Date de début",
+          "allStatuses": "Tous les statuts",
+          "allCategories": "Toutes les catégories",
+          "all": "Tous"
+        },
+        "status": {
+          "new": "Nouveau",
+          "in_review": "En cours",
+          "resolved": "Résolu",
+          "dismissed": "Rejeté"
+        },
+        "category": {
+          "harassment": "Harcèlement",
+          "behavior": "Comportement",
+          "material": "Matériel",
+          "security": "Sécurité",
+          "teacher_absence": "Absence enseignant",
+          "other": "Autre"
+        },
+        "form": {
+          "title": "Créer un signalement",
+          "category": "Catégorie",
+          "categoryPlaceholder": "Sélectionner une catégorie",
+          "otherCategory": "Autre catégorie",
+          "otherCategoryPlaceholder": "Précisez la catégorie",
+          "description": "Description",
+          "descriptionPlaceholder": "Décrivez le signalement...",
+          "involvedPerson": "Personne concernée (optionnel)",
+          "involvedPersonPlaceholder": "Nom de la personne",
+          "involvedPersonRole": "Rôle de la personne (optionnel)",
+          "rolePlaceholder": "Sélectionner un rôle",
+          "isAnonymous": "Signalement anonyme",
+          "cancel": "Annuler",
+          "submit": "Envoyer",
+          "submitting": "Envoi..."
+        },
+        "role": {
+          "teacher": "Enseignant",
+          "staff": "Personnel",
+          "director": "Directeur",
+          "student": "Élève",
+          "other": "Autre"
+        },
+        "detail": {
+          "title": "Détails du signalement",
+          "category": "Catégorie",
+          "description": "Description",
+          "involvedPerson": "Personne concernée",
+          "createdAt": "Date de création",
+          "isAnonymous": "Anonyme",
+          "yes": "Oui",
+          "no": "Non",
+          "resolutionNote": "Note de résolution",
+          "resolvedAt": "Résolu le",
+          "updateStatus": "Changer le statut",
+          "newStatus": "Nouveau statut",
+          "newStatusPlaceholder": "Nouveau statut",
+          "note": "Note (optionnel)",
+          "notePlaceholder": "Note...",
+          "update": "Mettre à jour",
+          "updating": "Mise à jour...",
+          "loading": "Chargement..."
+        },
+        "list": {
+          "anonymous": "Anonyme",
+          "identified": "Identifié"
         }
       }
     },

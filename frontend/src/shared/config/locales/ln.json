@@ -66,7 +66,7 @@
     "courses": "Mateya",
     "exams": "Ba examen",
     "assessments": "Bomekoli",
-    "reports": "Ba rapport",
+    "reports":    "Bopesi sango",
     "teachers": "Balakisi",
     "students": "Bayekoli",
     "parents": "Baboti",
@@ -1165,6 +1165,142 @@
         "new": "Sika",
         "noEventsThisWeek": "Evenement te ya sémene ya sikawa",
         "past": "Ekíaki"
+      }
+    },
+    "reports": {
+      "title": "Bopesi sango",
+      "subtitle": "Kolanda ba sango oyo bana-kelasi, baboti mpe balakisi bapesi",
+      "noReports": "Sango moko te ezwami",
+      "viewDetails": "Talá makambo nyonso",
+      "list": {
+        "anonymous": "Kombo te",
+        "identified": "Nkombo eyebani"
+      },
+      "role": {
+        "teacher": "Molakisi",
+        "staff": "Mosali ya kelasi",
+        "director": "Mokambi",
+        "student": "Moyekoli / Moninga ya kelasi",
+        "other": "Mosusu"
+      },
+      "filters": {
+        "status": "Etata",
+        "allStatuses": "Etata nyonso",
+        "category": "Lolenge",
+        "allCategories": "Balolenge nyonso",
+        "all": "Nyonso",
+        "dateFrom": "Banda",
+        "dateTo": "Kino",
+        "reset": "Bandela lisusu",
+        "apply": "Sala"
+      },
+      "status": {
+        "new": "Ya sika",
+        "in_review": "Ezali kotalama",
+        "resolved": "Esili kosilisama",
+        "dismissed": "Eboyami"
+      },
+      "category": {
+        "harassment": "Konyokolo",
+        "behavior": "Ezaleli",
+        "material": "Biloko / Ndako ya kelasi",
+        "security": "Libateli",
+        "teacher_absence": "Kozanga ya molakisi",
+        "other": "Mosusu"
+      },
+      "involvedPersonRole": {
+        "teacher": "Molakisi",
+        "staff": "Mosali ya kelasi",
+        "director": "Mokambi",
+        "student": "Moyekoli / Moninga ya kelasi",
+        "other": "Mosusu"
+      },
+      "form": {
+        "title": "Pesa sango ya likambo",
+        "subtitle": "Limbola likambo yango, sango na yo ekotalama na bakambi ya kelasi",
+        "category": "Lolenge",
+        "categoryPlaceholder": "Pona lolenge",
+        "otherCategoryLabel": "Limbola lolenge",
+        "otherCategoryPlaceholder": "Limbola lolenge ya likambo",
+        "description": "Limbola",
+        "descriptionPlaceholder": "Limbola likambo malamu (nkombo 10 na se te)",
+        "involvedPersonName": "Nkombo ya moto oyo alandi na likambo",
+        "involvedPersonNamePlaceholder": "Nkombo ya molakisi, mosali, mokambi to moninga ya kelasi",
+        "involvedPersonRole": "Mokumba ya moto oyo alandi na likambo",
+        "involvedPersonRolePlaceholder": "Pona mokumba",
+        "relatedStudent": "Mwana oyo alandi",
+        "relatedStudentPlaceholder": "Pona mwana (esengeli te)",
+        "anonymous": "Sango na kombo te",
+        "anonymousHint": "Nkombo na yo ekoyebana te epai ya bakambi",
+        "attachments": "Bibombelo",
+        "attachmentsHint": "Bakisa fɔto to mikanda mpo na kolendisa sango na yo (esengeli te)",
+        "submit": "Tinda sango",
+        "submitting": "Ezali kotindama...",
+        "successTitle": "Sango etindami",
+        "successMessage": "Sango na yo ekomeli bakambi ya kelasi",
+        "trackingTokenNotice": "Batela penza kode oyo mpo na kolanda sango na yo ya kombo te",
+        "errorMessage": "Mabe moko esalemi na kotinda sango",
+        "involvedPerson": "Nkombo ya moto oyo alandi na likambo",
+        "involvedPersonPlaceholder": "Nkombo ya molakisi, mosali, mokambi to moninga ya kelasi",
+        "rolePlaceholder": "Pona mokumba",
+        "isAnonymous": "Sango na kombo te",
+        "cancel": "Boya"
+      },
+      "table": {
+        "columns": {
+          "date": "Mokolo",
+          "category": "Lolenge",
+          "subSchool": "Kelasi",
+          "status": "Etata",
+          "reporter": "Oyo apesi sango",
+          "actions": "Misala"
+        },
+        "anonymousReporter": "Kombo te",
+        "viewDetails": "Talá makambo nyonso",
+        "noReports": "Sango moko te ezwami"
+      },
+      "detail": {
+        "title": "Makambo ya sango",
+        "reportedBy": "Oyo apesi sango",
+        "anonymousReporter": "Sango na kombo te",
+        "involvedPerson": "Moto oyo alandi",
+        "relatedStudent": "Mwana oyo alandi",
+        "description": "Limbola",
+        "category": "Lolenge",
+        "status": "Etata",
+        "history": "Istwaire",
+        "changeStatus": "Bongola etata",
+        "resolutionNote": "Maloba ya kosukisa",
+        "resolutionNotePlaceholder": "Bakisa maloba na ndenge likambo esili kosilisama",
+        "assignTo": "Pesa na",
+        "attachments": "Bibombelo",
+        "save": "Bomba",
+        "cancel": "Boya",
+        "loading": "Ezali kozela...",
+        "createdAt": "Mokolo ya kokelama",
+        "isAnonymous": "Sango na kombo te",
+        "yes": "Ee",
+        "no": "Te",
+        "resolvedAt": "Esili kosilisama mokolo",
+        "updateStatus": "Bongisa etata",
+        "newStatusPlaceholder": "Pona etata ya sika",
+        "notePlaceholder": "Bakisa maloba (esengeli te)",
+        "updating": "Ezali kobongisama...",
+        "update": "Bongisa"
+      },
+      "notifications": {
+        "newReport": "Sango ya sika eyei",
+        "statusUpdated": "Etata ya sango ebongwani"
+      },
+      "tracking": {
+        "title": "Landa sango na ngai",
+        "subtitle": "Kotisa kode oyo ozwaki na ntango otindaki sango na kombo te",
+        "tokenPlaceholder": "Kode ya kolanda",
+        "search": "Luka",
+        "notFound": "Sango moko te ezwami na kode oyo",
+        "status": "Etata",
+        "submittedOn": "Etindami mokolo",
+        "resolutionNote": "Maloba ya bakambi"
       }
     }
   },

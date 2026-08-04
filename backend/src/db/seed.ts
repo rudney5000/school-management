@@ -33,7 +33,7 @@ import {
     liveSessionViewers,
     enrollments,
     classCourses,
-    certificates,
+    certificates, reports, reportStatusHistory,
 } from './schema';
 import {
     and,
@@ -2215,6 +2215,163 @@ async function seed() {
             .onConflictDoNothing()
 
         console.log(`✓ Parent group créé: Parents — ${classB.name}`)
+    }
+
+    if (studentUserForChat && student2UserForChat && teacherUserForChat && sophieUserForChat) {
+        const david = insertedUnassignedStudents[0];
+
+        const sampleReports = [
+            {
+                reporterUser: null,
+                reporterRole: 'student' as const,
+                isAnonymous: true,
+                category: 'harassment' as const,
+                otherCategoryLabel: null,
+                description: 'Un élève de la classe se moque régulièrement de moi et de mes camarades pendant la récréation, ça devient difficile à supporter.',
+                involvedPersonName: null,
+                involvedPersonRole: 'student' as const,
+                relatedStudentId: null as string | null,
+                status: 'new' as const,
+                resolutionNote: null as string | null,
+            },
+            {
+                reporterUser: sophieUserForChat,
+                reporterRole: 'parent' as const,
+                isAnonymous: false,
+                category: 'behavior' as const,
+                otherCategoryLabel: null,
+                description: 'Mon fils Paul revient souvent perturbé après les cours de mathématiques, il évoque des remarques désobligeantes d\'un enseignant envers certains élèves.',
+                involvedPersonName: 'Jean Muamba',
+                involvedPersonRole: 'teacher' as const,
+                relatedStudentId: student2.id,
+                status: 'in_review' as const,
+                resolutionNote: null as string | null,
+            },
+            {
+                reporterUser: teacherUserForChat,
+                reporterRole: 'teacher' as const,
+                isAnonymous: false,
+                category: 'material' as const,
+                otherCategoryLabel: null,
+                description: 'Le rétroprojecteur de la salle 12 ne fonctionne plus depuis deux semaines, ce qui gêne le déroulement des cours de mathématiques.',
+                involvedPersonName: null,
+                involvedPersonRole: null,
+                relatedStudentId: null as string | null,
+                status: 'new' as const,
+                resolutionNote: null as string | null,
+            },
+            {
+                reporterUser: student2UserForChat,
+                reporterRole: 'student' as const,
+                isAnonymous: true,
+                category: 'security' as const,
+                otherCategoryLabel: null,
+                description: 'La porte de secours du bâtiment B reste bloquée en permanence, ce qui pourrait poser problème en cas d\'évacuation.',
+                involvedPersonName: null,
+                involvedPersonRole: null,
+                relatedStudentId: null as string | null,
+                status: 'resolved' as const,
+                resolutionNote: 'Porte réparée par le service technique le 12 novembre. Vérification effectuée.',
+            },
+            {
+                reporterUser: jeanPierreUserForChat,
+                reporterRole: 'parent' as const,
+                isAnonymous: false,
+                category: 'teacher_absence' as const,
+                otherCategoryLabel: null,
+                description: 'Le cours d\'anglais du jeudi a été annulé trois fois de suite ce mois-ci sans information préalable aux parents.',
+                involvedPersonName: null,
+                involvedPersonRole: 'teacher' as const,
+                relatedStudentId: david?.id ?? null,
+                status: 'new' as const,
+                resolutionNote: null as string | null,
+            },
+            {
+                reporterUser: studentUserForChat,
+                reporterRole: 'student' as const,
+                isAnonymous: false,
+                category: 'other' as const,
+                otherCategoryLabel: 'Bruit excessif à la cantine',
+                description: 'Le niveau sonore à la cantine pendant la pause déjeuner rend les repas très inconfortables, surtout pour les plus jeunes.',
+                involvedPersonName: null,
+                involvedPersonRole: null,
+                relatedStudentId: null as string | null,
+                status: 'dismissed' as const,
+                resolutionNote: 'Signalement hors du cadre du dispositif de signalement, redirigé vers le service restauration.',
+            },
+            {
+                reporterUser: teacherUserForChat,
+                reporterRole: 'teacher' as const,
+                isAnonymous: false,
+                category: 'harassment' as const,
+                otherCategoryLabel: null,
+                description: 'J\'ai constaté des comportements d\'intimidation répétés d\'un groupe d\'élèves envers un camarade plus jeune dans la cour.',
+                involvedPersonName: null,
+                involvedPersonRole: 'student' as const,
+                relatedStudentId: null as string | null,
+                status: 'resolved' as const,
+                resolutionNote: 'Entretien mené avec les élèves concernés et leurs parents. Situation apaisée, suivi prévu ce trimestre.',
+            },
+            {
+                reporterUser: alphonsineUserForChat,
+                reporterRole: 'parent' as const,
+                isAnonymous: true,
+                category: 'behavior' as const,
+                otherCategoryLabel: null,
+                description: 'Un membre du personnel administratif a eu un ton inapproprié avec moi lors d\'un échange concernant les frais scolaires.',
+                involvedPersonName: null,
+                involvedPersonRole: 'staff' as const,
+                relatedStudentId: null as string | null,
+                status: 'new' as const,
+                resolutionNote: null as string | null,
+            },
+        ];
+
+        for (const r of sampleReports) {
+            const [existing] = await db.select().from(reports)
+                .where(and(
+                    eq(reports.subSchoolId, subSchool.id),
+                    eq(reports.category, r.category),
+                    eq(reports.description, r.description),
+                ));
+
+            if (!existing) {
+                const [inserted] = await db.insert(reports).values({
+                    schoolId: school.id,
+                    subSchoolId: subSchool.id,
+                    reporterId: r.isAnonymous ? null : (r.reporterUser?.id ?? null),
+                    reporterRole: r.reporterRole,
+                    isAnonymous: r.isAnonymous,
+                    category: r.category,
+                    otherCategoryLabel: r.otherCategoryLabel,
+                    description: r.description,
+                    involvedPersonName: r.involvedPersonName,
+                    involvedPersonRole: r.involvedPersonRole,
+                    relatedStudentId: r.relatedStudentId,
+                    status: r.status,
+                    resolutionNote: r.resolutionNote,
+                    ...(r.status === 'resolved' || r.status === 'dismissed'
+                        ? { resolvedAt: new Date(), resolvedById: adminUserForChat?.id ?? directorUser?.id ?? null }
+                        : {}),
+                }).returning();
+
+                if (r.status !== 'new') {
+                    await db.insert(reportStatusHistory).values({
+                        reportId: inserted.id,
+                        fromStatus: 'new',
+                        toStatus: r.status,
+                        changedById: adminUserForChat?.id ?? directorUser?.id ?? inserted.id,
+                        note: r.resolutionNote,
+                    });
+                }
+
+                console.log(`✓ Report created: [${r.category}/${r.reporterRole}${r.isAnonymous ? '/anonyme' : ''}] ${r.status}`);
+            } else {
+                console.log(`~ Report already exists: [${r.category}/${r.reporterRole}]`);
+            }
+        }
+    } else {
+        console.log('⚠ Users manquants, skip reports seed');
     }
 
     console.log('\n✓ Seed completed. Test credentials (password: password123):');

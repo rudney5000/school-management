@@ -35,6 +35,7 @@ import {videoCallsRouter} from "@/modules/videoCalls/videoCalls.router";
 import {liveSessionsRouter} from "@/modules/liveSessions/liveSessions.router";
 import {documentSignaturesRouter} from "@/modules/signature/document-signature.router";
 import {documentPdfRouter} from "@/modules/document-pdf/document-pdf.router";
+import {reportsRouter} from "@/modules/reports/reports.router";
 
 export function createApp(): express.Application {
   const app = express();
@@ -75,6 +76,7 @@ export function createApp(): express.Application {
   app.use('/api/academic-periods', academicPeriodsRouter)
   app.use('/api/grades', gradesRouter)
   app.use('/api/chats', chatRouter)
+  app.use('/api/reports', reportsRouter)
   app.use('/api/attachments', attachmentsRouter)
   app.use('/api/video-calls', videoCallsRouter)
   app.use('/api/live-sessions', liveSessionsRouter)

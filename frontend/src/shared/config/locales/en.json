@@ -185,6 +185,7 @@
     "exams": "Exams",
     "events": "Events",
     "finance": "Finance",
+    "reports":  "Reports",
     "calendar": "Calendar",
     "attendances": "Attendance",
     "chat": "Chat",
@@ -1205,6 +1206,142 @@
         "noEventsThisWeek": "No events this week",
         "past": "Past"
       }
+    },
+    "reports": {
+      "title": "Reports",
+      "subtitle": "Track reports from students, parents and teachers",
+      "noReports": "No reports found",
+      "viewDetails": "View details",
+      "list": {
+        "anonymous": "Anonymous",
+        "identified": "Identified"
+      },
+      "role": {
+        "teacher": "Teacher",
+        "staff": "Staff member",
+        "director": "Director",
+        "student": "Student / Classmate",
+        "other": "Other"
+      },
+      "filters": {
+        "status": "Status",
+        "allStatuses": "All statuses",
+        "category": "Category",
+        "allCategories": "All categories",
+        "all": "All",
+        "dateFrom": "From",
+        "dateTo": "To",
+        "reset": "Reset",
+        "apply": "Apply"
+      },
+      "status": {
+        "new": "New",
+        "in_review": "Under review",
+        "resolved": "Resolved",
+        "dismissed": "Dismissed"
+      },
+      "category": {
+        "harassment": "Harassment",
+        "behavior": "Behavior",
+        "material": "Material / Infrastructure",
+        "security": "Security",
+        "teacher_absence": "Teacher absence",
+        "other": "Other"
+      },
+      "involvedPersonRole": {
+        "teacher": "Teacher",
+        "staff": "Staff member",
+        "director": "Director",
+        "student": "Student / Classmate",
+        "other": "Other"
+      },
+      "form": {
+        "title": "Report a problem",
+        "subtitle": "Describe the situation, your report will be reviewed by the administration",
+        "category": "Category",
+        "categoryPlaceholder": "Select a category",
+        "otherCategoryLabel": "Specify category",
+        "otherCategoryPlaceholder": "Describe the category of the issue",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe the issue in detail (minimum 10 characters)",
+        "involvedPersonName": "Name of the person involved",
+        "involvedPersonNamePlaceholder": "Teacher, staff member, director or classmate name",
+        "involvedPersonRole": "Role of the person involved",
+        "involvedPersonRolePlaceholder": "Select a role",
+        "relatedStudent": "Related child",
+        "relatedStudentPlaceholder": "Select a child (optional)",
+        "anonymous": "Anonymous report",
+        "anonymousHint": "Your identity will not be shared with the administration",
+        "attachments": "Attachments",
+        "attachmentsHint": "Add photos or documents to support your report (optional)",
+        "submit": "Submit report",
+        "submitting": "Submitting...",
+        "successTitle": "Report submitted",
+        "successMessage": "Your report has been sent to the administration",
+        "trackingTokenNotice": "Keep this code to track your anonymous report",
+        "errorMessage": "An error occurred while submitting the report",
+        "involvedPerson": "Name of the person involved",
+        "involvedPersonPlaceholder": "Teacher, staff member, director or classmate name",
+        "rolePlaceholder": "Select a role",
+        "isAnonymous": "Anonymous report",
+        "cancel": "Cancel"
+      },
+      "table": {
+        "columns": {
+          "date": "Date",
+          "category": "Category",
+          "subSchool": "School",
+          "status": "Status",
+          "reporter": "Reported by",
+          "actions": "Actions"
+        },
+        "anonymousReporter": "Anonymous",
+        "viewDetails": "View details",
+        "noReports": "No reports found"
+      },
+      "detail": {
+        "title": "Report details",
+        "reportedBy": "Reported by",
+        "anonymousReporter": "Anonymous report",
+        "involvedPerson": "Person involved",
+        "relatedStudent": "Related child",
+        "description": "Description",
+        "category": "Category",
+        "status": "Status",
+        "history": "History",
+        "changeStatus": "Change status",
+        "resolutionNote": "Resolution note",
+        "resolutionNotePlaceholder": "Add a note about the resolution of this report",
+        "assignTo": "Assign to",
+        "attachments": "Attachments",
+        "save": "Save",
+        "cancel": "Cancel",
+        "loading": "Loading...",
+        "createdAt": "Created on",
+        "isAnonymous": "Anonymous report",
+        "yes": "Yes",
+        "no": "No",
+        "resolvedAt": "Resolved on",
+        "updateStatus": "Update status",
+        "newStatusPlaceholder": "Select a new status",
+        "notePlaceholder": "Add a note (optional)",
+        "updating": "Updating...",
+        "update": "Update"
+      },
+      "notifications": {
+        "newReport": "New report received",
+        "statusUpdated": "Report status has been updated"
+      },
+      "tracking": {
+        "title": "Track my report",
+        "subtitle": "Enter the code you received when submitting your anonymous report",
+        "tokenPlaceholder": "Tracking code",
+        "search": "Search",
+        "notFound": "No report found with this code",
+        "status": "Status",
+        "submittedOn": "Submitted on",
+        "resolutionNote": "Administration note"
+      }
     }
   },
   "theme": {
@@ -1323,6 +1460,86 @@
             "question": "How does billing work?",
             "answer": "Annual or monthly billing at your choice. Payment by credit card, bank transfer or check. 15% discount for annual commitment. Invoices available in the admin space."
           }
+        }
+      },
+      "reports": {
+        "title": "Reports",
+        "subtitle": "Manage and view all reports",
+        "loading": "Loading...",
+        "error": "An error occurred",
+        "noReports": "No reports found",
+        "newReport": "New report",
+        "createReport": "Create report",
+        "viewDetails": "View details",
+        "filters": {
+          "status": "Status",
+          "category": "Category",
+          "dateFrom": "Start date",
+          "allStatuses": "All statuses",
+          "allCategories": "All categories",
+          "all": "All"
+        },
+        "status": {
+          "new": "New",
+          "in_review": "In review",
+          "resolved": "Resolved",
+          "dismissed": "Dismissed"
+        },
+        "category": {
+          "harassment": "Harassment",
+          "behavior": "Behavior",
+          "material": "Material",
+          "security": "Security",
+          "teacher_absence": "Teacher absence",
+          "other": "Other"
+        },
+        "form": {
+          "title": "Create a report",
+          "category": "Category",
+          "categoryPlaceholder": "Select a category",
+          "otherCategory": "Other category",
+          "otherCategoryPlaceholder": "Specify the category",
+          "description": "Description",
+          "descriptionPlaceholder": "Describe the report...",
+          "involvedPerson": "Involved person (optional)",
+          "involvedPersonPlaceholder": "Person's name",
+          "involvedPersonRole": "Person's role (optional)",
+          "rolePlaceholder": "Select a role",
+          "isAnonymous": "Anonymous report",
+          "cancel": "Cancel",
+          "submit": "Submit",
+          "submitting": "Submitting..."
+        },
+        "role": {
+          "teacher": "Teacher",
+          "staff": "Staff",
+          "director": "Director",
+          "student": "Student",
+          "other": "Other"
+        },
+        "detail": {
+          "title": "Report details",
+          "category": "Category",
+          "description": "Description",
+          "involvedPerson": "Involved person",
+          "createdAt": "Created at",
+          "isAnonymous": "Anonymous",
+          "yes": "Yes",
+          "no": "No",
+          "resolutionNote": "Resolution note",
+          "resolvedAt": "Resolved at",
+          "updateStatus": "Change status",
+          "newStatus": "New status",
+          "newStatusPlaceholder": "New status",
+          "note": "Note (optional)",
+          "notePlaceholder": "Note...",
+          "update": "Update",
+          "updating": "Updating...",
+          "loading": "Loading..."
+        },
+        "list": {
+          "anonymous": "Anonymous",
+          "identified": "Identified"
         }
       }
     },
