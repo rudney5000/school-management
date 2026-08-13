@@ -29,7 +29,7 @@
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "drizzle-orm": "^0.32.2",
+    "drizzle-orm": "^0.45.2",
     "express": "^4.18.2",
     "helmet": "^7.1.0",
     "ioredis": "^5.11.1",
@@ -51,11 +51,11 @@
     "@types/qrcode": "^1.5.5",
     "@types/react": "^18.3.1",
     "@types/socket.io": "^3.0.2",
-    "drizzle-kit": "^0.23.2",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^8.56.0",
+    "sharp": "^0.35.3",
     "tsc-alias": "^1.8.8",
     "tsx": "^4.7.0",
-    "typescript": "^5.3.3",
-    "sharp": "^0.35.3"
+    "typescript": "^5.3.3"
   }
 }

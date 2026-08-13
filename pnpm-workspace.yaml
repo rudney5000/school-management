@@ -5,6 +5,8 @@ packages:
 
 allowBuilds:
   '@swc/core': false
+  core-js: true
+  esbuild: true
 
 overrides:
   '@react-pdf/renderer>react': '18.3.1'

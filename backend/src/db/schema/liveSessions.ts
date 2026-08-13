@@ -59,7 +59,6 @@ export const liveSessions = pgTable('live_sessions', {
         'check_live_session_at_most_one_target',
         sql`(
         (${table.courseId} IS NOT NULL)::int +
-        (${table.classId} IS NOT NULL)::int +
         (${table.scheduleId} IS NOT NULL)::int +
         (${table.eventId} IS NOT NULL)::int +
         (${table.examId} IS NOT NULL)::int +
