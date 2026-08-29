@@ -2,6 +2,10 @@ import * as React from "react"
 
 import { cn } from "@shared/lib/utils"
 
+// TODO: Fix invisible input text on OS dark mode — Input component
+// doesn't set an explicit text color, so it inherits white text from
+// the browser's color-scheme default. Add `text-foreground` to Input's
+// className and verify `--foreground` / `color-scheme` in globals.css.
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
     <input
