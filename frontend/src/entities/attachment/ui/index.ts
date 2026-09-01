@@ -1,2 +1,2 @@
-export * from './AttachmentUploadZone'
-export * from './AttachmentCard'
+export * from './AttachmentUploadZone';
+export * from './AttachmentCard';

@@ -1,21 +1,21 @@
-import type {PdfLocale} from "@entities/document-signature";
+import type { PdfLocale } from '@entities/document-signature';
 
-export type Locale = 'ru' | 'fr' | 'en' | 'ln'
+export type Locale = 'ru' | 'fr' | 'en' | 'ln';
 
-export const SUPPORT_LOCALES: readonly Locale[] = ['ru', 'fr', 'en', 'ln'] as const
-export const DEFAULT_LOCALE: Locale = 'ru'
+export const SUPPORT_LOCALES: readonly Locale[] = ['ru', 'fr', 'en', 'ln'] as const;
+export const DEFAULT_LOCALE: Locale = 'ru';
 
 export function isSupportedLocale(lang: string | undefined): lang is Locale {
-    return !!lang && SUPPORT_LOCALES.includes(lang as Locale)
+  return !!lang && SUPPORT_LOCALES.includes(lang as Locale);
 }
 
 export const LOCALE_INFO: Record<Locale, { name: string; flag: string }> = {
-    ru: { name: 'Русский', flag: '🇷🇺' },
-    fr: { name: 'Français', flag: '🇫🇷' },
-    en: { name: 'English', flag: '🇬🇧' },
-    ln: { name: 'Lingála', flag: '🇨🇩' },
-}
+  ru: { name: 'Русский', flag: '🇷🇺' },
+  fr: { name: 'Français', flag: '🇫🇷' },
+  en: { name: 'English', flag: '🇬🇧' },
+  ln: { name: 'Lingála', flag: '🇨🇩' },
+};
 
 export function toPdfLocale(locale: string | undefined): PdfLocale {
-    return isSupportedLocale(locale) ? locale : DEFAULT_LOCALE
+  return isSupportedLocale(locale) ? locale : DEFAULT_LOCALE;
 }

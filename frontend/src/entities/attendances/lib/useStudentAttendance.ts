@@ -6,24 +6,24 @@ import type { StudentAttendance } from '@entities/attendances';
 import { useEffect } from 'react';
 
 export const useStudentAttendance = (id: string, subSchoolId: string) => {
-    const query = useQuery<StudentAttendance, Error>({
-        queryKey: ['student-attendance', id],
-        queryFn: async () => {
-            const response = await studentAttendanceApi.getById({ id }, subSchoolId);
-            if (!response.IsSuccess) {
-                const apiError = response.result as CommonError;
-                throw new Error(apiError.Message);
-            }
-            return response.result as StudentAttendance;
-        },
-        enabled: !!id && !!subSchoolId,
-    });
+  const query = useQuery<StudentAttendance, Error>({
+    queryKey: ['student-attendance', id],
+    queryFn: async () => {
+      const response = await studentAttendanceApi.getById({ id }, subSchoolId);
+      if (!response.IsSuccess) {
+        const apiError = response.result as CommonError;
+        throw new Error(apiError.Message);
+      }
+      return response.result as StudentAttendance;
+    },
+    enabled: !!id && !!subSchoolId,
+  });
 
-    useEffect(() => {
-        if (query.isError && query.error && !query.data) {
-            handleApiError(query.error);
-        }
-    }, [query.isError, query.error]);
+  useEffect(() => {
+    if (query.isError && query.error && !query.data) {
+      handleApiError(query.error);
+    }
+  }, [query.isError, query.error]);
 
-    return query;
+  return query;
 };

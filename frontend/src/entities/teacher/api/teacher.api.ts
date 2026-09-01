@@ -1,75 +1,74 @@
-import {ApiWrapper} from "@shared/api/ApiWrapper";
-import {baseApi} from "@shared/api/instance";
+import { ApiWrapper } from '@shared/api/ApiWrapper';
+import { baseApi } from '@shared/api/instance';
 import type {
-    AssignTeacherDto,
-    CreateTeacherDto,
-    Teacher,
-    UpdateAssignmentDto,
-    UpdateTeacherDto,
-    TeacherParamsDto,
-    TeacherListQueryDto,
-    TeacherDossierStatusDto
-} from "@entities/teacher";
+  AssignTeacherDto,
+  CreateTeacherDto,
+  Teacher,
+  UpdateAssignmentDto,
+  UpdateTeacherDto,
+  TeacherParamsDto,
+  TeacherListQueryDto,
+  TeacherDossierStatusDto,
+} from '@entities/teacher';
 
 export class TeacherApi extends ApiWrapper {
-    constructor() {
-        super(baseApi);
-    }
+  constructor() {
+    super(baseApi);
+  }
 
-    getAll(params?: TeacherListQueryDto) {
-        return this.handleRequest<Teacher[]>(
-            this._baseApi.get('/teachers', params ),
-            (raw) => raw as Teacher[]
-        )
-    }
+  getAll(params?: TeacherListQueryDto) {
+    return this.handleRequest<Teacher[]>(
+      this._baseApi.get('/teachers', params),
+      (raw) => raw as Teacher[],
+    );
+  }
 
-    getById(params: TeacherParamsDto) {
-        return this.handleRequest<Teacher>(
-            this._baseApi.get(`/teachers/${params.id}`),
-            (raw) => raw as Teacher
-        )
-    }
+  getById(params: TeacherParamsDto) {
+    return this.handleRequest<Teacher>(
+      this._baseApi.get(`/teachers/${params.id}`),
+      (raw) => raw as Teacher,
+    );
+  }
 
-    getDossierStatus(params: { id: string; subSchoolId: string }) {
-        return this.handleRequest<TeacherDossierStatusDto>(
-            this._baseApi.get(`/teachers/${params.id}/dossier-status`, { subSchoolId: params.subSchoolId }),
-            (raw) => raw as TeacherDossierStatusDto,
-        )
-    }
+  getDossierStatus(params: { id: string; subSchoolId: string }) {
+    return this.handleRequest<TeacherDossierStatusDto>(
+      this._baseApi.get(`/teachers/${params.id}/dossier-status`, {
+        subSchoolId: params.subSchoolId,
+      }),
+      (raw) => raw as TeacherDossierStatusDto,
+    );
+  }
 
-    create(payload: CreateTeacherDto){
-        return this.handleRequest<Teacher>(
-            this._baseApi.post('/teachers', payload),
-            (raw) => raw as Teacher
-        )
-    }
+  create(payload: CreateTeacherDto) {
+    return this.handleRequest<Teacher>(
+      this._baseApi.post('/teachers', payload),
+      (raw) => raw as Teacher,
+    );
+  }
 
-    update(id: string, payload: UpdateTeacherDto, subSchoolId: string){
-        return this.handleRequest<Teacher>(
-            this._baseApi.patch(`/teachers/${id}`, payload, {subSchoolId} ),
-            (raw) => raw as Teacher
-        )
-    }
+  update(id: string, payload: UpdateTeacherDto, subSchoolId: string) {
+    return this.handleRequest<Teacher>(
+      this._baseApi.patch(`/teachers/${id}`, payload, { subSchoolId }),
+      (raw) => raw as Teacher,
+    );
+  }
 
-    updateAssignment(id: string, payload: UpdateAssignmentDto, subSchoolId: string) {
-        return this.handleRequest<Teacher>(
-            this._baseApi.patch(`/teachers/${id}/assignment`, payload,  { subSchoolId }),
-            (raw) => raw as Teacher
-        )
-    }
+  updateAssignment(id: string, payload: UpdateAssignmentDto, subSchoolId: string) {
+    return this.handleRequest<Teacher>(
+      this._baseApi.patch(`/teachers/${id}/assignment`, payload, { subSchoolId }),
+      (raw) => raw as Teacher,
+    );
+  }
 
-    assign(id: string, payload: AssignTeacherDto) {
-        return this.handleRequest<Teacher>(
-            this._baseApi.post(`/teachers/${id}/assign`, payload),
-            (raw) => raw as Teacher
-        )
-    }
+  assign(id: string, payload: AssignTeacherDto) {
+    return this.handleRequest<Teacher>(
+      this._baseApi.post(`/teachers/${id}/assign`, payload),
+      (raw) => raw as Teacher,
+    );
+  }
 
-    delete(id: string, subSchoolId: string) {
-        return this.handleRequest(
-            this._baseApi.delete(`/teachers/${id}`, {subSchoolId}),
-            undefined
-        )
-    }
+  delete(id: string, subSchoolId: string) {
+    return this.handleRequest(this._baseApi.delete(`/teachers/${id}`, { subSchoolId }), undefined);
+  }
 }
-export const teacherApi = new TeacherApi()
+export const teacherApi = new TeacherApi();

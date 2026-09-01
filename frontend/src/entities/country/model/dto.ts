@@ -1,10 +1,10 @@
 export type CreateCountryDto = {
-    name: string
-    code: string
-}
+  name: string;
+  code: string;
+};
 
-export type UpdateCountryDto = Partial<CreateCountryDto>
+export type UpdateCountryDto = Partial<CreateCountryDto>;
 
 export type CountryParamsDto = {
-    id: string
-}
+  id: string;
+};

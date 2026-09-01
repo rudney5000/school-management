@@ -32,6 +32,9 @@ jobs:
       - name: Typecheck
         run: pnpm -r typecheck
 
+      - name: Check formatting
+        run: pnpm format:check
+
   test-backend:
     runs-on: ubuntu-latest
     services:

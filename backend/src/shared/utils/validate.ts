@@ -38,14 +38,7 @@ export function validate(schemas: ValidationSchemas) {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        next(
-          new AppError(
-            'VALIDATION_ERROR',
-            'Données invalides',
-            400,
-            formatZodIssues(error),
-          ),
-        );
+        next(new AppError('VALIDATION_ERROR', 'Données invalides', 400, formatZodIssues(error)));
         return;
       }
       next(error);

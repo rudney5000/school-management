@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import {EventTypeEnum} from "@/db/schema";
+import { EventTypeEnum } from '@/db/schema';
 
 export const createEventSchema = z.object({
   title: z.string().min(3),
@@ -24,9 +24,7 @@ export const eventParamsSchema = z.object({
   id: z.string().uuid('Invalid event ID'),
 });
 
-export const updateEventSchema = createEventSchema
-    .omit({ subSchoolId: true })
-    .partial();
+export const updateEventSchema = createEventSchema.omit({ subSchoolId: true }).partial();
 
 export type UpdateEventDto = z.infer<typeof updateEventSchema>;
 export type CreateEventDto = z.infer<typeof createEventSchema>;

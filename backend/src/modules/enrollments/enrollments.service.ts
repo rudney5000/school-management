@@ -1,13 +1,6 @@
-import {
-  eq,
-  and,
-  SQL
-} from 'drizzle-orm';
+import { eq, and, SQL } from 'drizzle-orm';
 import { db } from '@/db';
-import {
-  attachments,
-  enrollments
-} from '@/db/schema';
+import { attachments, enrollments } from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
 import type { CreateEnrollmentDto } from './enrollments.schema';
 
@@ -29,14 +22,14 @@ export class EnrollmentsService {
     if (conditions.length === 0) {
       return db.select().from(enrollments);
     }
-    return db.select().from(enrollments).where(and(...conditions));
+    return db
+      .select()
+      .from(enrollments)
+      .where(and(...conditions));
   }
 
   async findById(id: string): Promise<EnrollmentRecord> {
-    const [enrollment] = await db
-      .select()
-      .from(enrollments)
-      .where(eq(enrollments.id, id));
+    const [enrollment] = await db.select().from(enrollments).where(eq(enrollments.id, id));
 
     if (!enrollment) {
       throw new AppError('NOT_FOUND', 'Inscription introuvable', 404);
@@ -47,12 +40,12 @@ export class EnrollmentsService {
 
   async create(input: CreateEnrollmentDto): Promise<EnrollmentRecord> {
     const [enrollment] = await db
-        .insert(enrollments)
-        .values({
-          studentId: input.studentId,
-          classId: input.classId,
-        })
-        .returning();
+      .insert(enrollments)
+      .values({
+        studentId: input.studentId,
+        classId: input.classId,
+      })
+      .returning();
 
     return enrollment;
   }
@@ -70,9 +63,9 @@ export class EnrollmentsService {
 
     if (missing.length > 0) {
       throw new AppError(
-          'DOCUMENTS_INCOMPLETE',
-          `Pièces manquantes ou non validées : ${missing.join(', ')}`,
-          422,
+        'DOCUMENTS_INCOMPLETE',
+        `Pièces manquantes ou non validées : ${missing.join(', ')}`,
+        422,
       );
     }
 
@@ -88,18 +81,18 @@ export class EnrollmentsService {
 
   private async getRequiredDocumentsState(enrollmentId: string) {
     const docs = await db
-        .select({
-          id:       attachments.id,
-          category: attachments.category,
-          status:   attachments.status,
-        })
-        .from(attachments)
-        .where(
-            and(
-                eq(attachments.attachableType, 'enrollment'),
-                eq(attachments.attachableId, enrollmentId),
-            ),
-        );
+      .select({
+        id: attachments.id,
+        category: attachments.category,
+        status: attachments.status,
+      })
+      .from(attachments)
+      .where(
+        and(
+          eq(attachments.attachableType, 'enrollment'),
+          eq(attachments.attachableId, enrollmentId),
+        ),
+      );
 
     return REQUIRED_ENROLLMENT_CATEGORIES.map((category) => {
       const match = docs.find((d) => d.category === category && d.status === 'validated');

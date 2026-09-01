@@ -1,60 +1,50 @@
-import {ApiWrapper} from "@shared/api/ApiWrapper";
-import {baseApi} from "@shared/api/instance";
-import type {
-    ScheduleParamsDto,
-    ScheduleListQueryDto
-} from "@entities/schedule/model/dto";
-import type {
-    CreateScheduleDto,
-    Schedule,
-    UpdateScheduleDto
-} from "@entities/schedule";
+import { ApiWrapper } from '@shared/api/ApiWrapper';
+import { baseApi } from '@shared/api/instance';
+import type { ScheduleParamsDto, ScheduleListQueryDto } from '@entities/schedule/model/dto';
+import type { CreateScheduleDto, Schedule, UpdateScheduleDto } from '@entities/schedule';
 
 export class ScheduleApi extends ApiWrapper {
-    constructor() {
-        super(baseApi);
-    }
+  constructor() {
+    super(baseApi);
+  }
 
-    getAll(params?: ScheduleListQueryDto) {
-        return this.handleRequest<Schedule[]>(
-            this._baseApi.get('/schedules', params ),
-            (raw) => raw as Schedule[]
-        )
-    }
+  getAll(params?: ScheduleListQueryDto) {
+    return this.handleRequest<Schedule[]>(
+      this._baseApi.get('/schedules', params),
+      (raw) => raw as Schedule[],
+    );
+  }
 
-    getMyChildrenSchedules(subSchoolId: string) {
-        return this.handleRequest<Schedule[]>(
-            this._baseApi.get('/schedules/me/children', { subSchoolId }),
-            (raw) => raw as Schedule[]
-        )
-    }
+  getMyChildrenSchedules(subSchoolId: string) {
+    return this.handleRequest<Schedule[]>(
+      this._baseApi.get('/schedules/me/children', { subSchoolId }),
+      (raw) => raw as Schedule[],
+    );
+  }
 
-    getById(params: ScheduleParamsDto) {
-        return this.handleRequest<Schedule>(
-            this._baseApi.get(`/schedules/${params.id}`),
-            (raw) => raw as Schedule
-        )
-    }
+  getById(params: ScheduleParamsDto) {
+    return this.handleRequest<Schedule>(
+      this._baseApi.get(`/schedules/${params.id}`),
+      (raw) => raw as Schedule,
+    );
+  }
 
-    create(payload: CreateScheduleDto){
-        return this.handleRequest<Schedule>(
-            this._baseApi.post('/schedules', payload),
-            (raw) => raw as Schedule
-        )
-    }
+  create(payload: CreateScheduleDto) {
+    return this.handleRequest<Schedule>(
+      this._baseApi.post('/schedules', payload),
+      (raw) => raw as Schedule,
+    );
+  }
 
-    update(id: string, payload: UpdateScheduleDto, subSchoolId: string){
-        return this.handleRequest<Schedule>(
-            this._baseApi.patch(`/schedules/${id}`, payload, {subSchoolId} ),
-            (raw) => raw as Schedule
-        )
-    }
+  update(id: string, payload: UpdateScheduleDto, subSchoolId: string) {
+    return this.handleRequest<Schedule>(
+      this._baseApi.patch(`/schedules/${id}`, payload, { subSchoolId }),
+      (raw) => raw as Schedule,
+    );
+  }
 
-    delete(id: string, subSchoolId: string) {
-        return this.handleRequest(
-            this._baseApi.delete(`/schedules/${id}`, {subSchoolId}),
-            undefined
-        )
-    }
+  delete(id: string, subSchoolId: string) {
+    return this.handleRequest(this._baseApi.delete(`/schedules/${id}`, { subSchoolId }), undefined);
+  }
 }
-export const scheduleApi = new ScheduleApi()
+export const scheduleApi = new ScheduleApi();

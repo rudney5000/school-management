@@ -16,10 +16,10 @@ export const authenticate = (req: Request, _res: Response, next: NextFunction): 
   try {
     const payload = jwt.verify(token, env.JWT_ACCESS_SECRET) as TokenPayload;
     req.user = {
-      id:          payload.id,
-      email:       payload.email,
-      role:        payload.role,
-      schoolId:    payload.schoolId,
+      id: payload.id,
+      email: payload.email,
+      role: payload.role,
+      schoolId: payload.schoolId,
       subSchoolId: payload.subSchoolId,
     };
     next();

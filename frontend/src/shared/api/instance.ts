@@ -1,5 +1,5 @@
-import { BaseApi } from './BaseApi'
+import { BaseApi } from './BaseApi';
 
-export const baseApi = new BaseApi(import.meta.env.VITE_API_URL || '/api')
+export const baseApi = new BaseApi(import.meta.env.VITE_API_URL || '/api');
 
-export { BaseApi }
+export { BaseApi };

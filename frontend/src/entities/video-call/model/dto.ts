@@ -1,19 +1,19 @@
 export type VideoCallParamsDto = {
-    id: string
-}
+  id: string;
+};
 
 export type VideoCallListQueryDto = {
-    subSchoolId: string
-}
+  subSchoolId: string;
+};
 
 import { z } from 'zod';
 
 export const createSessionSchema = z.object({
-    conversationId: z.string().uuid().optional(),
+  conversationId: z.string().uuid().optional(),
 });
 
 export const sessionParamsSchema = z.object({
-    sessionId: z.string().uuid(),
+  sessionId: z.string().uuid(),
 });
 
 export type CreateSessionDto = z.infer<typeof createSessionSchema>;

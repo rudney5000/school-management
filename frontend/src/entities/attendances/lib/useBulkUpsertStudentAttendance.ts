@@ -5,22 +5,22 @@ import type { BulkUpsertStudentAttendanceDto, StudentAttendance } from '@entitie
 import type { CommonError } from '@shared/helperClass/CommonError';
 
 export const useBulkUpsertStudentAttendance = () => {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation<StudentAttendance[], Error, BulkUpsertStudentAttendanceDto>({
-        mutationFn: async (dto) => {
-            const response = await studentAttendanceApi.bulkUpsert(dto);
-            if (!response.IsSuccess) {
-                const apiError = response.result as CommonError;
-                throw new Error(apiError.Message);
-            }
-            return response.result as StudentAttendance[];
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['student-attendances'] });
-        },
-        onError: (error) => {
-            handleApiError(error);
-        },
-    });
+  return useMutation<StudentAttendance[], Error, BulkUpsertStudentAttendanceDto>({
+    mutationFn: async (dto) => {
+      const response = await studentAttendanceApi.bulkUpsert(dto);
+      if (!response.IsSuccess) {
+        const apiError = response.result as CommonError;
+        throw new Error(apiError.Message);
+      }
+      return response.result as StudentAttendance[];
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['student-attendances'] });
+    },
+    onError: (error) => {
+      handleApiError(error);
+    },
+  });
 };

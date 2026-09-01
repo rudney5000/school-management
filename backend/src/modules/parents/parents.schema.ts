@@ -17,9 +17,7 @@ export const createParentSchema = z.object({
   studentIds: z.array(z.string().uuid()).optional(),
 });
 
-export const updateParentSchema = createParentSchema
-  .partial()
-  .omit({ subSchoolId: true });
+export const updateParentSchema = createParentSchema.partial().omit({ subSchoolId: true });
 
 export const parentParamsSchema = z.object({
   id: z.string().uuid('Invalid parent ID'),

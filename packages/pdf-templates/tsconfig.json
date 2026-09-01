@@ -10,9 +10,7 @@
     "noEmit": false,
     "allowImportingTsExtensions": false,
     "noEmitOnError": true,
-    "types": [
-      "node"
-    ]
+    "types": ["node"]
   },
   "include": ["src"]
 }

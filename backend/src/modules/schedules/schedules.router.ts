@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import { validate } from '@/shared/utils/validate';
-import {
-    SchedulesController
-} from '@/modules/schedules/schedules.controller';
+import { SchedulesController } from '@/modules/schedules/schedules.controller';
 import {
   createScheduleSchema,
   scheduleParamsSchema,
@@ -21,19 +19,14 @@ router.get(
   controller.getAll,
 );
 
-router.get(
-    '/me/children',
-    authenticate,
-    authorize('parent'),
-    controller.getMyChildrenSchedules,
-);
+router.get('/me/children', authenticate, authorize('parent'), controller.getMyChildrenSchedules);
 
 router.get(
   '/:id',
   authenticate,
   authorize('admin', 'director', 'teacher', 'parent'),
   validate({
-      params: scheduleParamsSchema
+    params: scheduleParamsSchema,
   }),
   controller.getById,
 );
@@ -43,7 +36,7 @@ router.post(
   authenticate,
   authorize('admin'),
   validate({
-      body: createScheduleSchema
+    body: createScheduleSchema,
   }),
   controller.create,
 );
@@ -64,7 +57,7 @@ router.delete(
   authenticate,
   authorize('admin'),
   validate({
-      params: scheduleParamsSchema
+    params: scheduleParamsSchema,
   }),
   controller.remove,
 );

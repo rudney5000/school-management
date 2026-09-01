@@ -1,12 +1,9 @@
 import { Router } from 'express';
 import { validate } from '@/shared/utils/validate';
-import {
-    createEventSchema,
-    eventParamsSchema
-} from "@/modules/events/events.schema";
+import { createEventSchema, eventParamsSchema } from '@/modules/events/events.schema';
 import { authenticate } from '@/middleware/authenticate';
 import { authorize } from '@/middleware/authorize';
-import {EventsController} from "@/modules/events/events.controller";
+import { EventsController } from '@/modules/events/events.controller';
 
 const router = Router();
 const controller = new EventsController();

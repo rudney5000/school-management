@@ -48,19 +48,16 @@ export class TeachersController {
   });
 
   assign = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const data = await this.service.assignToSchool(
-        req.params.id,
-        req.body as AssignTeacherDto,
-    );
+    const data = await this.service.assignToSchool(req.params.id, req.body as AssignTeacherDto);
     respond(res, data, 201);
   });
 
   updateAssignment = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const subSchoolId = resolveSubSchoolId(req);
     const data = await this.service.updateAssignment(
-        req.params.id,
-        subSchoolId,
-        req.body as UpdateAssignmentDto,
+      req.params.id,
+      subSchoolId,
+      req.body as UpdateAssignmentDto,
     );
     respond(res, data);
   });

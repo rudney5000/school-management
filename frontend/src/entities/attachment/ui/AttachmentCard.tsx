@@ -1,9 +1,9 @@
-import { Badge } from '@shared/ui/badge'
-import { Card } from '@shared/ui/card'
-import type { Attachment } from '../model/types'
+import { Badge } from '@shared/ui/badge';
+import { Card } from '@shared/ui/card';
+import type { Attachment } from '../model/types';
 
 interface AttachmentCardProps {
-  attachment: Attachment
+  attachment: Attachment;
 }
 
 const statusConfig = {
@@ -19,11 +19,11 @@ const statusConfig = {
     label: 'Rejeté',
     variant: 'destructive' as const,
   },
-}
+};
 
 export function AttachmentCard({ attachment }: AttachmentCardProps) {
-  const config = statusConfig[attachment.status]
-  const isImage = attachment.mimeType.startsWith('image/')
+  const config = statusConfig[attachment.status];
+  const isImage = attachment.mimeType.startsWith('image/');
 
   return (
     <Card className="p-4">
@@ -42,23 +42,19 @@ export function AttachmentCard({ attachment }: AttachmentCardProps) {
               <span className="text-4xl">📄</span>
             </div>
           )}
-          
-          <p className="text-sm font-medium text-foreground truncate">
-            {attachment.filename}
-          </p>
+
+          <p className="text-sm font-medium text-foreground truncate">{attachment.filename}</p>
           <p className="text-xs text-muted-foreground mt-1">
             {(attachment.size / 1024).toFixed(1)} KB
           </p>
-          
+
           {attachment.status === 'rejected' && attachment.rejectionReason && (
-            <p className="text-xs text-destructive mt-2">
-              Raison: {attachment.rejectionReason}
-            </p>
+            <p className="text-xs text-destructive mt-2">Raison: {attachment.rejectionReason}</p>
           )}
         </div>
-        
+
         <Badge variant={config.variant}>{config.label}</Badge>
       </div>
     </Card>
-  )
+  );
 }

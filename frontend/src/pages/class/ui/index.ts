@@ -1,2 +1,2 @@
-export * from './EmptyDetailPanel'
-export * from './ClassDetailPanel'
+export * from './EmptyDetailPanel';
+export * from './ClassDetailPanel';

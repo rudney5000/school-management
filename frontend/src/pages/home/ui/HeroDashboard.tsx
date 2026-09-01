@@ -15,7 +15,7 @@ export const HeroDashboard: React.FC<HeroDashboardProps> = ({
   onCtaClick,
 }) => {
   const { t } = useTranslation();
-  
+
   const defaultTitle = title || t('home.dashboard.title');
   const defaultDescription = description || t('home.dashboard.description');
   const defaultCtaText = ctaText || t('home.dashboard.cta');

@@ -1,10 +1,21 @@
-import { pgTable, uuid, text, boolean, varchar, timestamp, index, primaryKey } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  uuid,
+  text,
+  boolean,
+  varchar,
+  timestamp,
+  index,
+  primaryKey,
+} from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import {subSchools} from "@/db/schema/subSchool";
-import {students} from "@/db/schema/students";
-import {genderEnum} from "@/db/schema/enums";
+import { subSchools } from '@/db/schema/subSchool';
+import { students } from '@/db/schema/students';
+import { genderEnum } from '@/db/schema/enums';
 
-export const parents = pgTable('parents', {
+export const parents = pgTable(
+  'parents',
+  {
     id: uuid('id').primaryKey().defaultRandom(),
     userId: uuid('user_id'),
     firstName: varchar('first_name', { length: 100 }).notNull(),
@@ -15,29 +26,41 @@ export const parents = pgTable('parents', {
     image: text('image'),
     address: text('address'),
     isActive: boolean('is_active').default(true).notNull(),
-    subSchoolId: uuid('sub_school_id').notNull().references(() => subSchools.id, { onDelete: 'cascade' }),
+    subSchoolId: uuid('sub_school_id')
+      .notNull()
+      .references(() => subSchools.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
-}, (table) => ({
-    idx_parents_sub_school: index('idx_parents_sub_school').on(table.subSchoolId)
-}));
+  },
+  (table) => ({
+    idx_parents_sub_school: index('idx_parents_sub_school').on(table.subSchoolId),
+  }),
+);
 
-export const parentStudents = pgTable('parent_students', {
-    parentId: uuid('parent_id').notNull().references(() => parents.id, { onDelete: 'cascade' }),
-    studentId: uuid('student_id').notNull().references(() => students.id, { onDelete: 'cascade' }),
+export const parentStudents = pgTable(
+  'parent_students',
+  {
+    parentId: uuid('parent_id')
+      .notNull()
+      .references(() => parents.id, { onDelete: 'cascade' }),
+    studentId: uuid('student_id')
+      .notNull()
+      .references(() => students.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
-}, (table) => ({
+  },
+  (table) => ({
     pk: primaryKey({ columns: [table.parentId, table.studentId] }),
-}));
+  }),
+);
 
 export const parentStudentsRelations = relations(parentStudents, ({ one }) => ({
-    parent: one(parents, { fields: [parentStudents.parentId], references: [parents.id] }),
-    student: one(students, { fields: [parentStudents.studentId], references: [students.id] }),
+  parent: one(parents, { fields: [parentStudents.parentId], references: [parents.id] }),
+  student: one(students, { fields: [parentStudents.studentId], references: [students.id] }),
 }));
 
 export const parentsRelations = relations(parents, ({ one, many }) => ({
-    subSchool: one(subSchools, {
-        fields: [parents.subSchoolId],
-        references: [subSchools.id],
-    }),
-    parentStudents: many(parentStudents),
+  subSchool: one(subSchools, {
+    fields: [parents.subSchoolId],
+    references: [subSchools.id],
+  }),
+  parentStudents: many(parentStudents),
 }));

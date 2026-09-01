@@ -12,9 +12,7 @@ export type DepartmentRecord = typeof departments.$inferSelect;
 
 export class DepartmentsService {
   async findAll(query: DepartmentListQueryDto): Promise<DepartmentRecord[]> {
-    const conditions = query.countryId
-      ? eq(departments.countryId, query.countryId)
-      : undefined;
+    const conditions = query.countryId ? eq(departments.countryId, query.countryId) : undefined;
 
     if (conditions) {
       return db.select().from(departments).where(conditions);
@@ -24,10 +22,7 @@ export class DepartmentsService {
   }
 
   async findById(id: string): Promise<DepartmentRecord> {
-    const [department] = await db
-      .select()
-      .from(departments)
-      .where(eq(departments.id, id));
+    const [department] = await db.select().from(departments).where(eq(departments.id, id));
 
     if (!department) {
       throw new AppError('NOT_FOUND', 'Département introuvable', 404);

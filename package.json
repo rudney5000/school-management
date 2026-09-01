@@ -12,7 +12,9 @@
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
     "typecheck": "pnpm -r typecheck",
-    "prepare": "husky install"
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -23,21 +25,30 @@
   },
   "homepage": "https://github.com/rudney5000/school-management#readme",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.19.0",
-    "@typescript-eslint/parser": "^6.19.0",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.68.0",
+    "@typescript-eslint/parser": "^8.68.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.2",
     "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "prettier": "^3.2.4",
+    "lint-staged": "^15.5.2",
+    "prettier": "^3.8.3",
     "typescript": "^5.3.3"
   },
   "engines": {
-    "node": ">=20.0.0",
-    "pnpm": ">=8.0.0"
+    "node": ">=22.13",
+    "pnpm": ">=11.0.0"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": ["eslint --fix", "prettier --write"],
-    "*.{json,css,md}": ["prettier --write"]
+    "backend/**/*.ts": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "frontend/**/*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   }
 }

@@ -1,17 +1,8 @@
-import {
-    and,
-    eq,
-    isNull} from 'drizzle-orm';
+import { and, eq, isNull } from 'drizzle-orm';
 import { db } from '@/db';
-import {
-    parentStudents,
-    students, users
-} from '@/db/schema';
+import { parentStudents, students, users } from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
-import type {
-    CreateStudentDto,
-    UpdateStudentDto
-} from './students.schema';
+import type { CreateStudentDto, UpdateStudentDto } from './students.schema';
 
 export type StudentRecord = typeof students.$inferSelect;
 
@@ -20,24 +11,14 @@ export class StudentsService {
     return db
       .select()
       .from(students)
-      .where(
-        and(
-          eq(students.subSchoolId, subSchoolId),
-            isNull(students.deletedAt)
-        ),
-      );
+      .where(and(eq(students.subSchoolId, subSchoolId), isNull(students.deletedAt)));
   }
 
   async findById(id: string, subSchoolId: string): Promise<StudentRecord> {
     const [student] = await db
       .select()
       .from(students)
-      .where(
-        and(
-          eq(students.id, id),
-          eq(students.subSchoolId, subSchoolId),
-        ),
-      );
+      .where(and(eq(students.id, id), eq(students.subSchoolId, subSchoolId)));
 
     if (!student) {
       throw new AppError('NOT_FOUND', 'Élève introuvable', 404);
@@ -46,47 +27,50 @@ export class StudentsService {
     return student;
   }
 
-    async findUnassigned(subSchoolId: string): Promise<StudentRecord[]> {
-        return db.select().from(students).where(
-            and(
-                eq(students.subSchoolId, subSchoolId),
-                isNull(students.parentId),
-                isNull(students.deletedAt),
-            ),
-        );
-    }
+  async findUnassigned(subSchoolId: string): Promise<StudentRecord[]> {
+    return db
+      .select()
+      .from(students)
+      .where(
+        and(
+          eq(students.subSchoolId, subSchoolId),
+          isNull(students.parentId),
+          isNull(students.deletedAt),
+        ),
+      );
+  }
 
-    async create(input: CreateStudentDto): Promise<StudentRecord> {
-        return db.transaction(async (tx) => {
-            const [student] = await tx.insert(students).values({
-                subSchoolId: input.subSchoolId,
-                parentId: input.parentId,
-                firstName: input.firstName,
-                lastName: input.lastName,
-                email: input.email,
-                phone: input.phone,
-                address: input.address,
-                gender: input.gender,
-                dateOfBirth: input.dateOfBirth,
-                enrollmentDate: input.enrollmentDate,
-                isActive: input.isActive,
-            }).returning();
+  async create(input: CreateStudentDto): Promise<StudentRecord> {
+    return db.transaction(async (tx) => {
+      const [student] = await tx
+        .insert(students)
+        .values({
+          subSchoolId: input.subSchoolId,
+          parentId: input.parentId,
+          firstName: input.firstName,
+          lastName: input.lastName,
+          email: input.email,
+          phone: input.phone,
+          address: input.address,
+          gender: input.gender,
+          dateOfBirth: input.dateOfBirth,
+          enrollmentDate: input.enrollmentDate,
+          isActive: input.isActive,
+        })
+        .returning();
 
-            if (input.parentId) {
-                await tx.insert(parentStudents)
-                    .values({ parentId: input.parentId, studentId: student.id })
-                    .onConflictDoNothing();
-            }
+      if (input.parentId) {
+        await tx
+          .insert(parentStudents)
+          .values({ parentId: input.parentId, studentId: student.id })
+          .onConflictDoNothing();
+      }
 
-            return student;
-        });
-    }
+      return student;
+    });
+  }
 
-  async update(
-    id: string,
-    subSchoolId: string,
-    input: UpdateStudentDto,
-  ): Promise<StudentRecord> {
+  async update(id: string, subSchoolId: string, input: UpdateStudentDto): Promise<StudentRecord> {
     await this.findById(id, subSchoolId);
 
     const [student] = await db
@@ -95,12 +79,7 @@ export class StudentsService {
         ...input,
         updatedAt: new Date(),
       })
-      .where(
-        and(
-          eq(students.id, id),
-          eq(students.subSchoolId, subSchoolId),
-        ),
-      )
+      .where(and(eq(students.id, id), eq(students.subSchoolId, subSchoolId)))
       .returning();
 
     return student;
@@ -112,51 +91,46 @@ export class StudentsService {
     await db
       .update(students)
       .set({ deletedAt: new Date() })
+      .where(and(eq(students.id, id), eq(students.subSchoolId, subSchoolId)));
+  }
+
+  async resolveChildrenForParent(userId: string, subSchoolId: string) {
+    const [userRecord] = await db
+      .select({ parentId: users.parentId })
+      .from(users)
+      .where(eq(users.id, userId))
+      .limit(1);
+
+    if (!userRecord?.parentId) {
+      throw new AppError('FORBIDDEN', 'Aucun profil parent associé à ce compte', 403);
+    }
+
+    return db
+      .select({
+        id: students.id,
+        firstName: students.firstName,
+        lastName: students.lastName,
+        email: students.email,
+        phone: students.phone,
+        address: students.address,
+        gender: students.gender,
+        image: students.image,
+        dateOfBirth: students.dateOfBirth,
+        enrollmentDate: students.enrollmentDate,
+        subSchoolId: students.subSchoolId,
+        parentId: students.parentId,
+        isActive: students.isActive,
+        createdAt: students.createdAt,
+        updatedAt: students.updatedAt,
+      })
+      .from(students)
+      .innerJoin(parentStudents, eq(parentStudents.studentId, students.id))
       .where(
         and(
-            eq(students.id, id),
-            eq(students.subSchoolId, subSchoolId)
+          eq(parentStudents.parentId, userRecord.parentId),
+          eq(students.subSchoolId, subSchoolId),
+          isNull(students.deletedAt),
         ),
       );
   }
-
-    async resolveChildrenForParent(userId: string, subSchoolId: string) {
-        const [userRecord] = await db
-            .select({ parentId: users.parentId })
-            .from(users)
-            .where(eq(users.id, userId))
-            .limit(1);
-
-        if (!userRecord?.parentId) {
-            throw new AppError('FORBIDDEN', 'Aucun profil parent associé à ce compte', 403);
-        }
-
-        return db
-            .select({
-                id: students.id,
-                firstName: students.firstName,
-                lastName: students.lastName,
-                email: students.email,
-                phone: students.phone,
-                address: students.address,
-                gender: students.gender,
-                image: students.image,
-                dateOfBirth: students.dateOfBirth,
-                enrollmentDate: students.enrollmentDate,
-                subSchoolId: students.subSchoolId,
-                parentId: students.parentId,
-                isActive: students.isActive,
-                createdAt: students.createdAt,
-                updatedAt: students.updatedAt,
-            })
-            .from(students)
-            .innerJoin(parentStudents, eq(parentStudents.studentId, students.id))
-            .where(
-                and(
-                    eq(parentStudents.parentId, userRecord.parentId),
-                    eq(students.subSchoolId, subSchoolId),
-                    isNull(students.deletedAt),
-                ),
-            );
-    }
 }

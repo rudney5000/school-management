@@ -1,9 +1,6 @@
 import { z } from 'zod';
 
-export const enrollmentStatusEnumSchema = z.enum([
-    'draft',
-    'complete'
-]);
+export const enrollmentStatusEnumSchema = z.enum(['draft', 'complete']);
 
 export const updateEnrollmentStatusSchema = z.object({
   status: enrollmentStatusEnumSchema,
@@ -19,8 +16,8 @@ export const enrollmentParamsSchema = z.object({
 });
 
 export const enrollmentQuerySchema = z.object({
-    classId: z.string().uuid('Invalid class ID').optional(),
-    studentId: z.string().uuid('Invalid student ID').optional(),
+  classId: z.string().uuid('Invalid class ID').optional(),
+  studentId: z.string().uuid('Invalid student ID').optional(),
 });
 
 export type UpdateEnrollmentStatusDto = z.infer<typeof updateEnrollmentStatusSchema>;

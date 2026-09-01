@@ -37,11 +37,7 @@ export class ParentsController {
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const subSchoolId = resolveSubSchoolId(req);
-    const data = await this.service.update(
-      req.params.id,
-      subSchoolId,
-      req.body as UpdateParentDto,
-    );
+    const data = await this.service.update(req.params.id, subSchoolId, req.body as UpdateParentDto);
     respond(res, data);
   });
 

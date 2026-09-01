@@ -1,87 +1,92 @@
 export const DOCUMENT_TYPES = [
-    'bulletin',
-    'enrollment',
-    'certificate',
-    'teacher_contract',
-    'payment_receipt'
-] as const
+  'bulletin',
+  'enrollment',
+  'certificate',
+  'teacher_contract',
+  'payment_receipt',
+] as const;
 
-export type DocumentType = typeof DOCUMENT_TYPES[number]
+export type DocumentType = (typeof DOCUMENT_TYPES)[number];
 
-export type SignatureStatus = 'active' | 'revoked'
+export type SignatureStatus = 'active' | 'revoked';
 
-export type PdfLocale = 'fr' | 'en' | 'ru' | 'ln'
+export type PdfLocale = 'fr' | 'en' | 'ru' | 'ln';
 
 export type DocumentSignature = {
-    id:              string
-    documentType:    DocumentType
-    documentId:      string | null
-    documentRef:     Record<string, string> | null
-    subSchoolId:     string
-    classId:         string | null
-    studentId:       string | null
-    signedByUserId:  string
-    signedByRole:    string
-    contentHash:     string
-    status:          SignatureStatus
-    revokedAt:       string | null
-    revokedReason:   string | null
-    ipAddress:       string | null
-    userAgent:       string | null
-    signedAt:        string
-    createdAt:       string
-    updatedAt:       string
-}
+  id: string;
+  documentType: DocumentType;
+  documentId: string | null;
+  documentRef: Record<string, string> | null;
+  subSchoolId: string;
+  classId: string | null;
+  studentId: string | null;
+  signedByUserId: string;
+  signedByRole: string;
+  contentHash: string;
+  status: SignatureStatus;
+  revokedAt: string | null;
+  revokedReason: string | null;
+  ipAddress: string | null;
+  userAgent: string | null;
+  signedAt: string;
+  createdAt: string;
+  updatedAt: string;
+};
 
 export type SignatureStatusResult =
-    | { isSigned: false }
-    | { isSigned: true; signature: DocumentSignature; isStale: boolean }
-
+  | { isSigned: false }
+  | { isSigned: true; signature: DocumentSignature; isStale: boolean };
 
 export type BulletinSignParams = {
-    subSchoolId:      string
-    classId:          string
-    studentId:        string
-    academicPeriodId: string
-}
+  subSchoolId: string;
+  classId: string;
+  studentId: string;
+  academicPeriodId: string;
+};
 
 export type EnrollmentSignParams = {
-    subSchoolId:  string
-    enrollmentId: string
-    studentId:    string
-}
+  subSchoolId: string;
+  enrollmentId: string;
+  studentId: string;
+};
 
 export type CertificateSignParams = {
-    subSchoolId:   string
-    certificateId: string
-    studentId:     string
-}
+  subSchoolId: string;
+  certificateId: string;
+  studentId: string;
+};
 
 export type TeacherContractSignParams = {
-    subSchoolId: string
-    teacherId: string
-}
+  subSchoolId: string;
+  teacherId: string;
+};
 
 export type PaymentReceiptSignParams = {
-    subSchoolId: string
-    paymentId: string
-    studentId: string
-}
+  subSchoolId: string;
+  paymentId: string;
+  studentId: string;
+};
 
-export type BulletinPdfParams = BulletinSignParams & { locale: PdfLocale }
+export type BulletinPdfParams = BulletinSignParams & { locale: PdfLocale };
 
-export type EnrollmentPdfParams = EnrollmentSignParams & { locale: PdfLocale; preview?: boolean }
+export type EnrollmentPdfParams = EnrollmentSignParams & { locale: PdfLocale; preview?: boolean };
 
-export type CertificatePdfParams = CertificateSignParams & { locale: PdfLocale; preview?: boolean }
+export type CertificatePdfParams = CertificateSignParams & { locale: PdfLocale; preview?: boolean };
 
-export type TeacherContractPdfParams = TeacherContractSignParams & { locale: PdfLocale; preview?: boolean }
+export type TeacherContractPdfParams = TeacherContractSignParams & {
+  locale: PdfLocale;
+  preview?: boolean;
+};
 
-export type PaymentReceiptPdfParams = PaymentReceiptSignParams & { locale: PdfLocale; preview?: boolean }
+export type PaymentReceiptPdfParams = PaymentReceiptSignParams & {
+  locale: PdfLocale;
+  preview?: boolean;
+};
 
 export type DocumentPdfParamsMap = {
-    bulletin:    BulletinPdfParams
-    enrollment:  EnrollmentPdfParams
-    certificate: CertificatePdfParams
-    teacher_contract: TeacherContractPdfParams
-    payment_receipt: PaymentReceiptPdfParams
-}
+  bulletin: BulletinPdfParams;
+  enrollment: EnrollmentPdfParams;
+  certificate: CertificatePdfParams;
+  teacher_contract: TeacherContractPdfParams;
+  payment_receipt: PaymentReceiptPdfParams;
+};

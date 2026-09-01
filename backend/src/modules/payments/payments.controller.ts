@@ -1,16 +1,8 @@
-import type {
-  Request,
-  Response
-} from 'express';
+import type { Request, Response } from 'express';
 import { asyncHandler } from '@/shared/utils/async-handler';
 import { respond } from '@/shared/utils/respond';
-import type {
-  CreatePaymentDto,
-  UpdatePaymentDto,
-} from '@/modules/payments/payments.schema';
-import {
-  PaymentsService
-} from '@/modules/payments/payments.service';
+import type { CreatePaymentDto, UpdatePaymentDto } from '@/modules/payments/payments.schema';
+import { PaymentsService } from '@/modules/payments/payments.service';
 
 export class PaymentsController {
   private readonly service = new PaymentsService();
@@ -31,10 +23,7 @@ export class PaymentsController {
   });
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const data = await this.service.update(
-      req.params.id,
-      req.body as UpdatePaymentDto,
-    );
+    const data = await this.service.update(req.params.id, req.body as UpdatePaymentDto);
     respond(res, data);
   });
 
