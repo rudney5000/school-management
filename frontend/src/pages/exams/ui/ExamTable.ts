@@ -1,8 +1,8 @@
-import {withDataTable} from "@shared/ui";
-import type {Exam} from "@entities/exams";
+import { withDataTable } from '@shared/ui';
+import type { Exam } from '@entities/exams';
 
 export const ExamTable = withDataTable<Exam>({
-    getRowId: (row) => row.id,
-    searchKey: 'title',
-    columns: [],
-})
+  getRowId: (row) => row.id,
+  searchKey: 'title',
+  columns: [],
+});

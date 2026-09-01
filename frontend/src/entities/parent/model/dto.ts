@@ -1,7 +1,7 @@
 export type ParentParamsDto = {
-    id: string
-}
+  id: string;
+};
 
 export type ParentListQueryDto = {
-    subSchoolId: string
-}
+  subSchoolId: string;
+};

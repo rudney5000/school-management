@@ -1,0 +1,16 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/backend/**'
+      - 'pnpm-lock.yaml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    needs: []
+    steps:
+      - name: Trigger Render deploy hook
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"

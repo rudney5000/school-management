@@ -1,0 +1,16 @@
+# .github/CODEOWNERS
+
+# Fallback : owner par défaut pour tout le repo
+*                              @rudney5000
+
+# Backend (Express / Drizzle)
+/apps/backend/                 @rudney5000
+
+# Frontend (React)
+/apps/frontend/                @rudney5000
+
+# Fichiers sensibles : migrations DB, à ne jamais merger sans revue attentive
+/apps/backend/**/migrations/   @rudney5000
+
+# Config CI/CD
+/.github/                      @rudney5000

@@ -2,7 +2,8 @@ import type { Request, Response } from 'express';
 import { asyncHandler } from '@/shared/utils/async-handler';
 import { respond } from '@/shared/utils/respond';
 import type {
-  ClassCourseQueryDto, CreateClassCourseDto,
+  ClassCourseQueryDto,
+  CreateClassCourseDto,
   CreateClassDto,
   SubSchoolQueryDto,
   UpdateClassDto,
@@ -49,11 +50,7 @@ export class ClassesController {
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const subSchoolId = resolveSubSchoolId(req);
-    const data = await this.service.update(
-      req.params.id,
-      subSchoolId,
-      req.body as UpdateClassDto,
-    );
+    const data = await this.service.update(req.params.id, subSchoolId, req.body as UpdateClassDto);
     respond(res, data);
   });
 

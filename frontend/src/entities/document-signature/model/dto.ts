@@ -1,3 +1,3 @@
 export type DocumentSignatureParamsDto = {
-    id: string
-}
+  id: string;
+};

@@ -15,12 +15,12 @@ declare global {
 }
 
 export type UserRole =
-    | 'super_admin'
-    | 'admin'
-    | 'director'
-    | 'teacher'
-    | 'parent'
-    | 'student'
-    | 'worker'
+  | 'super_admin'
+  | 'admin'
+  | 'director'
+  | 'teacher'
+  | 'parent'
+  | 'student'
+  | 'worker';
 
 export {};

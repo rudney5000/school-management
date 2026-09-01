@@ -1,6 +1,6 @@
-import sharp from 'sharp'
-import fs from 'fs'
-import path from 'path'
+import sharp from 'sharp';
+import fs from 'fs';
+import path from 'path';
 
 const svg = `
 <svg width="300" height="120" xmlns="http://www.w3.org/2000/svg">
@@ -26,24 +26,22 @@ const svg = `
     opacity="0.3"
   />
 </svg>
-`
+`;
 
 async function generate() {
-    const outputDir = path.join(__dirname, 'assets')
-    if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true })
-    }
+  const outputDir = path.join(__dirname, 'assets');
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
 
-    const outputPath = path.join(outputDir, 'sample-signature.png')
+  const outputPath = path.join(outputDir, 'sample-signature.png');
 
-    await sharp(Buffer.from(svg))
-        .png()
-        .toFile(outputPath)
+  await sharp(Buffer.from(svg)).png().toFile(outputPath);
 
-    console.log(`✓ Signature générée : ${outputPath}`)
+  console.log(`✓ Signature générée : ${outputPath}`);
 }
 
 generate().catch((err) => {
-    console.error('✗ Échec génération signature:', err)
-    process.exit(1)
-})
+  console.error('✗ Échec génération signature:', err);
+  process.exit(1);
+});

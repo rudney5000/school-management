@@ -8,22 +8,14 @@ export type SubSchoolRecord = typeof subSchools.$inferSelect;
 
 export class SubSchoolsService {
   async findAll(schoolId: string): Promise<SubSchoolRecord[]> {
-    return db
-      .select()
-      .from(subSchools)
-      .where(eq(subSchools.schoolId, schoolId));
+    return db.select().from(subSchools).where(eq(subSchools.schoolId, schoolId));
   }
 
   async findById(id: string, schoolId: string): Promise<SubSchoolRecord> {
     const [subSchool] = await db
       .select()
       .from(subSchools)
-      .where(
-        and(
-          eq(subSchools.id, id),
-          eq(subSchools.schoolId, schoolId),
-        ),
-      );
+      .where(and(eq(subSchools.id, id), eq(subSchools.schoolId, schoolId)));
 
     if (!subSchool) {
       throw new AppError('NOT_FOUND', 'Sous-école introuvable', 404);
@@ -49,11 +41,7 @@ export class SubSchoolsService {
     return subSchool;
   }
 
-  async update(
-    id: string,
-    schoolId: string,
-    input: UpdateSubSchoolDto,
-  ): Promise<SubSchoolRecord> {
+  async update(id: string, schoolId: string, input: UpdateSubSchoolDto): Promise<SubSchoolRecord> {
     await this.findById(id, schoolId);
 
     const [subSchool] = await db
@@ -62,12 +50,7 @@ export class SubSchoolsService {
         ...input,
         updatedAt: new Date(),
       })
-      .where(
-        and(
-          eq(subSchools.id, id),
-          eq(subSchools.schoolId, schoolId),
-        ),
-      )
+      .where(and(eq(subSchools.id, id), eq(subSchools.schoolId, schoolId)))
       .returning();
 
     return subSchool;
@@ -75,11 +58,8 @@ export class SubSchoolsService {
 
   async remove(id: string, schoolId: string): Promise<void> {
     await this.findById(id, schoolId);
-    await db.delete(subSchools).where(
-      and(
-        eq(subSchools.id, id),
-        eq(subSchools.schoolId, schoolId),
-      ),
-    );
+    await db
+      .delete(subSchools)
+      .where(and(eq(subSchools.id, id), eq(subSchools.schoolId, schoolId)));
   }
 }

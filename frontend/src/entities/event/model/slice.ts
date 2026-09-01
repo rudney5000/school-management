@@ -1,21 +1,21 @@
-import {createSlice, type PayloadAction, type Slice} from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction, type Slice } from '@reduxjs/toolkit';
 
 type EventState = {
-    selectedEventId: string | null;
-}
+  selectedEventId: string | null;
+};
 
 const initialState: EventState = {
-    selectedEventId: null,
+  selectedEventId: null,
 };
 
 export const eventSlice: Slice<EventState> = createSlice({
-    name: 'event',
-    initialState,
-    reducers: {
-        setSelectedEventId: (state, action: PayloadAction<string>) => {
-            state.selectedEventId = action.payload;
-        },
+  name: 'event',
+  initialState,
+  reducers: {
+    setSelectedEventId: (state, action: PayloadAction<string>) => {
+      state.selectedEventId = action.payload;
     },
+  },
 });
 
 export const { setSelectedEventId } = eventSlice.actions;

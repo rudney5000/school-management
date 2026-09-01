@@ -12,10 +12,7 @@ export class PaymentsService {
   }
 
   async findById(id: string): Promise<PaymentRecord> {
-    const [payment] = await db
-      .select()
-      .from(payments)
-      .where(eq(payments.id, id));
+    const [payment] = await db.select().from(payments).where(eq(payments.id, id));
 
     if (!payment) {
       throw new AppError('NOT_FOUND', 'Paiement introuvable', 404);

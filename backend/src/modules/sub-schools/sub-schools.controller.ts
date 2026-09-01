@@ -37,11 +37,7 @@ export class SubSchoolsController {
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const schoolId = resolveSchoolId(req);
-    const data = await this.service.update(
-      req.params.id,
-      schoolId,
-      req.body as UpdateSubSchoolDto,
-    );
+    const data = await this.service.update(req.params.id, schoolId, req.body as UpdateSubSchoolDto);
     respond(res, data);
   });
 

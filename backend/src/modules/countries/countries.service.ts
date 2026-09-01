@@ -12,10 +12,7 @@ export class CountriesService {
   }
 
   async findById(id: string): Promise<CountryRecord> {
-    const [country] = await db
-      .select()
-      .from(countries)
-      .where(eq(countries.id, id));
+    const [country] = await db.select().from(countries).where(eq(countries.id, id));
 
     if (!country) {
       throw new AppError('NOT_FOUND', 'Pays introuvable', 404);

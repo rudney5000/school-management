@@ -4,17 +4,8 @@ export const subSchoolQuerySchema = z.object({
   subSchoolId: z.string().uuid('Invalid school ID'),
 });
 
-export const contractTypeSchema = z.enum([
-  'permanent',
-  'fixed_term',
-  'part_time'
-]);
-export const maritalStatusSchema = z.enum([
-  'single',
-  'married',
-  'divorced',
-  'widowed'
-]);
+export const contractTypeSchema = z.enum(['permanent', 'fixed_term', 'part_time']);
+export const maritalStatusSchema = z.enum(['single', 'married', 'divorced', 'widowed']);
 
 export const createTeacherSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(100),
@@ -35,7 +26,10 @@ export const createTeacherSchema = z.object({
 const assignTeacherObjectSchema = z.object({
   subSchoolId: z.string().uuid('Invalid sub-school ID'),
   hireDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD'),
-  contractEndDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD').optional(),
+  contractEndDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD')
+    .optional(),
   contractType: contractTypeSchema.optional(),
   salary: z.string().optional(),
   weeklyHours: z.number().int().positive().optional(),
@@ -50,32 +44,31 @@ function requiresContractEndDate(data: { contractType?: string; contractEndDate?
   return data.contractType !== 'fixed_term' || !!data.contractEndDate;
 }
 
-export const assignTeacherSchema = assignTeacherObjectSchema.refine(
-    requiresContractEndDate,
-    { message: 'La date de fin est requise pour un CDD', path: ['contractEndDate'] }
-);
+export const assignTeacherSchema = assignTeacherObjectSchema.refine(requiresContractEndDate, {
+  message: 'La date de fin est requise pour un CDD',
+  path: ['contractEndDate'],
+});
 
-export const updateTeacherSchema = createTeacherSchema
-  .partial()
+export const updateTeacherSchema = createTeacherSchema.partial();
 
 export const updateAssignmentSchema = assignTeacherObjectSchema
-    .partial()
-    .omit({ subSchoolId: true })
-    .refine(
-        requiresContractEndDate,
-        { message: 'La date de fin est requise pour un CDD', path: ['contractEndDate'] }
-    );
+  .partial()
+  .omit({ subSchoolId: true })
+  .refine(requiresContractEndDate, {
+    message: 'La date de fin est requise pour un CDD',
+    path: ['contractEndDate'],
+  });
 
 export const teacherParamsSchema = z.object({
   id: z.string().uuid('Invalid teacher ID'),
 });
 
 export const createTeacherWithAssignmentSchema = createTeacherSchema
-    .merge(assignTeacherObjectSchema)
-    .refine(
-        requiresContractEndDate,
-        { message: 'La date de fin est requise pour un CDD', path: ['contractEndDate'] }
-    );
+  .merge(assignTeacherObjectSchema)
+  .refine(requiresContractEndDate, {
+    message: 'La date de fin est requise pour un CDD',
+    path: ['contractEndDate'],
+  });
 
 export type AssignTeacherDto = z.infer<typeof assignTeacherSchema>;
 export type UpdateAssignmentDto = z.infer<typeof updateAssignmentSchema>;

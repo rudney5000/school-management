@@ -1,7 +1,7 @@
 export interface UserDto {
-    id: string
-    email: string
-    role: string
-    schoolId: string
-    subSchoolId: string
+  id: string;
+  email: string;
+  role: string;
+  schoolId: string;
+  subSchoolId: string;
 }

@@ -18,7 +18,7 @@ router.get(
   authenticate,
   authorize('admin', 'director', 'super_admin', 'teacher'),
   validate({
-      query: subSchoolQuerySchema
+    query: subSchoolQuerySchema,
   }),
   controller.getAll,
 );
@@ -27,8 +27,8 @@ router.get(
   authenticate,
   authorize('admin', 'director', 'teacher', 'super_admin'),
   validate({
-      params: workerParamsSchema,
-      query: subSchoolQuerySchema
+    params: workerParamsSchema,
+    query: subSchoolQuerySchema,
   }),
   controller.getById,
 );
@@ -37,7 +37,7 @@ router.post(
   authenticate,
   authorize('admin', 'director', 'super_admin'),
   validate({
-      body: createWorkerSchema
+    body: createWorkerSchema,
   }),
   controller.create,
 );
@@ -57,8 +57,8 @@ router.delete(
   authenticate,
   authorize('admin', 'director', 'super_admin'),
   validate({
-      params: workerParamsSchema,
-      query: subSchoolQuerySchema
+    params: workerParamsSchema,
+    query: subSchoolQuerySchema,
   }),
   controller.remove,
 );

@@ -1,7 +1,7 @@
 export type CourseParamsDto = {
-    id: string
-}
+  id: string;
+};
 
 export type CourseListQueryDto = {
-    subSchoolId: string
-}
+  subSchoolId: string;
+};

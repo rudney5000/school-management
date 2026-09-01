@@ -9,19 +9,13 @@ export type SchoolRecord = typeof schools.$inferSelect;
 export class SchoolsService {
   async findAll(districtId?: string): Promise<SchoolRecord[]> {
     if (districtId) {
-      return db
-        .select()
-        .from(schools)
-        .where(eq(schools.districtId, districtId));
+      return db.select().from(schools).where(eq(schools.districtId, districtId));
     }
     return db.select().from(schools);
   }
 
   async findById(id: string): Promise<SchoolRecord> {
-    const [school] = await db
-      .select()
-      .from(schools)
-      .where(eq(schools.id, id));
+    const [school] = await db.select().from(schools).where(eq(schools.id, id));
 
     if (!school) {
       throw new AppError('NOT_FOUND', 'École introuvable', 404);

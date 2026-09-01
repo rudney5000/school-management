@@ -5,7 +5,10 @@ export const createPaymentSchema = z.object({
   amount: z.number().positive('Amount must be positive'),
   type: z.enum(['TUITION', 'CANTEEN', 'UNIFORM', 'EXAM_FEE', 'TRANSPORT', 'ACTIVITY', 'OTHER']),
   status: z.enum(['PENDING', 'PAID', 'FAILED', 'REFUNDED']).optional().default('PENDING'),
-  paymentDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD').optional(),
+  paymentDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD')
+    .optional(),
   description: z.string().optional(),
 });
 

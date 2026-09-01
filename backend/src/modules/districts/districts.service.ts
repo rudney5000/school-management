@@ -20,10 +20,7 @@ export class DistrictsService {
   }
 
   async findById(id: string): Promise<DistrictRecord> {
-    const [district] = await db
-      .select()
-      .from(districts)
-      .where(eq(districts.id, id));
+    const [district] = await db.select().from(districts).where(eq(districts.id, id));
 
     if (!district) {
       throw new AppError('NOT_FOUND', 'Quartier introuvable', 404);
@@ -33,10 +30,7 @@ export class DistrictsService {
   }
 
   private async assertCityExists(cityId: string): Promise<void> {
-    const [city] = await db
-      .select({ id: cities.id })
-      .from(cities)
-      .where(eq(cities.id, cityId));
+    const [city] = await db.select({ id: cities.id }).from(cities).where(eq(cities.id, cityId));
 
     if (!city) {
       throw new AppError('NOT_FOUND', 'Ville introuvable', 404);
