@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build shared packages
+        run: pnpm --filter @school-hub/pdf-templates build
+
       - name: Lint
         run: pnpm -r lint
 
@@ -64,6 +67,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build shared packages
+        run: pnpm --filter @school-hub/pdf-templates build
+
       - name: Run migrations
         run: pnpm --filter backend db:migrate
         env:
@@ -85,6 +91,7 @@ jobs:
           node-version: 22
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @school-hub/pdf-templates build
       - run: pnpm --filter backend build
 
   build-frontend:
