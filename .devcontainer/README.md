@@ -14,6 +14,7 @@ This project uses VS Code Dev Containers for a consistent development environmen
    - Wait for build (first time takes ~2-3 minutes)
 
 3. **Inside the container:**
+
    ```bash
    # Install dependencies (auto-runs on create)
    pnpm install
@@ -28,14 +29,14 @@ This project uses VS Code Dev Containers for a consistent development environmen
 
 ## Ports Forwarded
 
-| Port | Service |
-|------|---------|
-| 3000 | Backend API |
-| 5173 | Frontend (Vite) |
-| 5432 | PostgreSQL |
-| 6379 | Redis |
-| 9000/9001 | MinIO |
-| 7880/7881 | LiveKit |
+| Port      | Service         |
+| --------- | --------------- |
+| 3000      | Backend API     |
+| 5173      | Frontend (Vite) |
+| 5432      | PostgreSQL      |
+| 6379      | Redis           |
+| 9000/9001 | MinIO           |
+| 7880/7881 | LiveKit         |
 
 ## Services
 
