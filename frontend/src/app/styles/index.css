@@ -56,8 +56,7 @@
 /*}*/
 
 :root {
-  /*--background: 0 0% 100%;*/
-  --foreground: 240 10% 3.9%;
+  color-scheme: light dark;
 
   --card: 0 0% 100%;
   --card-foreground: 240 10% 3.9%;
