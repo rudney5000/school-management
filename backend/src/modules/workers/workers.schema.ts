@@ -17,16 +17,18 @@ export const createWorkerSchema = z.object({
 export const presignSignatureImageSchema = z.object({
   filename: z.string().min(1).max(255),
   mimeType: z.enum(['image/png', 'image/jpeg']),
-  size: z.number().int().positive().max(2 * 1024 * 1024),
+  size: z
+    .number()
+    .int()
+    .positive()
+    .max(2 * 1024 * 1024),
 });
 
 export const confirmSignatureImageSchema = z.object({
   key: z.string().min(1).max(512),
 });
 
-export const updateWorkerSchema = createWorkerSchema
-  .partial()
-  .omit({ subSchoolId: true });
+export const updateWorkerSchema = createWorkerSchema.partial().omit({ subSchoolId: true });
 
 export const workerParamsSchema = z.object({
   id: z.string().uuid('Invalid worker ID'),

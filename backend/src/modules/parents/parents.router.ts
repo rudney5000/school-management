@@ -18,7 +18,7 @@ router.get(
   authenticate,
   authorize('admin', 'director', 'super_admin', 'teacher', 'student'),
   validate({
-      query: subSchoolQuerySchema
+    query: subSchoolQuerySchema,
   }),
   controller.getAll,
 );
@@ -27,8 +27,8 @@ router.get(
   authenticate,
   authorize('admin', 'director', 'parent', 'super_admin', 'teacher', 'student'),
   validate({
-      params: parentParamsSchema,
-      query: subSchoolQuerySchema
+    params: parentParamsSchema,
+    query: subSchoolQuerySchema,
   }),
   controller.getById,
 );
@@ -37,7 +37,7 @@ router.post(
   authenticate,
   authorize('admin', 'director', 'super_admin'),
   validate({
-      body: createParentSchema
+    body: createParentSchema,
   }),
   controller.create,
 );
@@ -57,8 +57,8 @@ router.delete(
   authenticate,
   authorize('admin', 'director', 'super_admin'),
   validate({
-      params: parentParamsSchema,
-      query: subSchoolQuerySchema
+    params: parentParamsSchema,
+    query: subSchoolQuerySchema,
   }),
   controller.remove,
 );

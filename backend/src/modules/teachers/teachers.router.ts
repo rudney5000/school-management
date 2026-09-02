@@ -2,12 +2,12 @@ import { Router } from 'express';
 import { validate } from '@/shared/utils/validate';
 import { TeachersController } from '@/modules/teachers/teachers.controller';
 import {
-    teacherParamsSchema,
-    subSchoolQuerySchema,
-    updateTeacherSchema,
-    createTeacherWithAssignmentSchema,
-    assignTeacherSchema,
-    updateAssignmentSchema,
+  teacherParamsSchema,
+  subSchoolQuerySchema,
+  updateTeacherSchema,
+  createTeacherWithAssignmentSchema,
+  assignTeacherSchema,
+  updateAssignmentSchema,
 } from '@/modules/teachers/teachers.schema';
 import { authenticate } from '@/middleware/authenticate';
 import { authorize } from '@/middleware/authorize';
@@ -20,7 +20,7 @@ router.get(
   authenticate,
   authorize('admin', 'director', 'teacher', 'super_admin', 'student'),
   validate({
-      query: subSchoolQuerySchema
+    query: subSchoolQuerySchema,
   }),
   controller.getAll,
 );
@@ -30,27 +30,29 @@ router.get(
   authenticate,
   authorize('admin', 'director', 'teacher', 'super_admin', 'student'),
   validate({
-      params: teacherParamsSchema,
-      query: subSchoolQuerySchema
+    params: teacherParamsSchema,
+    query: subSchoolQuerySchema,
   }),
   controller.getById,
 );
 
-router.get('/:id/dossier-status',
-    authenticate,
-    authorize('admin', 'director', 'super_admin'),
-    validate({
-        params: teacherParamsSchema,
-        query: subSchoolQuerySchema,
-    }),
-    controller.getDossierStatus);
+router.get(
+  '/:id/dossier-status',
+  authenticate,
+  authorize('admin', 'director', 'super_admin'),
+  validate({
+    params: teacherParamsSchema,
+    query: subSchoolQuerySchema,
+  }),
+  controller.getDossierStatus,
+);
 
 router.post(
   '/',
   authenticate,
   authorize('admin', 'director', 'super_admin'),
   validate({
-      body: createTeacherWithAssignmentSchema
+    body: createTeacherWithAssignmentSchema,
   }),
   controller.create,
 );
@@ -72,29 +74,33 @@ router.delete(
   authenticate,
   authorize('admin'),
   validate({
-      params: teacherParamsSchema,
-      query: subSchoolQuerySchema
+    params: teacherParamsSchema,
+    query: subSchoolQuerySchema,
   }),
   controller.remove,
 );
 
-router.post('/:id/assign',
-    authenticate,
-    authorize('admin', 'director', 'super_admin'),
-    validate({
-        params: teacherParamsSchema,
-        body: assignTeacherSchema
-    }),
-    controller.assign);
+router.post(
+  '/:id/assign',
+  authenticate,
+  authorize('admin', 'director', 'super_admin'),
+  validate({
+    params: teacherParamsSchema,
+    body: assignTeacherSchema,
+  }),
+  controller.assign,
+);
 
-router.patch('/:id/assignment',
-    authenticate,
-    authorize('admin', 'super_admin', 'director'),
-    validate({
-        params: teacherParamsSchema,
-        query: subSchoolQuerySchema,
-        body: updateAssignmentSchema
-    }),
-    controller.updateAssignment);
+router.patch(
+  '/:id/assignment',
+  authenticate,
+  authorize('admin', 'super_admin', 'director'),
+  validate({
+    params: teacherParamsSchema,
+    query: subSchoolQuerySchema,
+    body: updateAssignmentSchema,
+  }),
+  controller.updateAssignment,
+);
 
 export { router as teachersRouter };

@@ -12,12 +12,7 @@ import { authorize } from '@/middleware/authorize';
 const router = Router();
 const controller = new CountriesController();
 
-router.get(
-  '/',
-  authenticate,
-  authorize('admin', 'director'),
-  controller.getAll,
-);
+router.get('/', authenticate, authorize('admin', 'director'), controller.getAll);
 router.get(
   '/:id',
   authenticate,

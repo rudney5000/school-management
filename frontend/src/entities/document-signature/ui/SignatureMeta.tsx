@@ -1,20 +1,20 @@
-import type { SignatureStatusResult } from "../model/types"
+import type { SignatureStatusResult } from '../model/types';
 
 interface SignatureMetaProps {
-  status: SignatureStatusResult
+  status: SignatureStatusResult;
 }
 
 export function SignatureMeta({ status }: SignatureMetaProps) {
   if (!status.isSigned) {
-    return null
+    return null;
   }
 
-  const { signature } = status
+  const { signature } = status;
   const signedDate = new Date(signature.signedAt).toLocaleDateString('fr-FR', {
     day: '2-digit',
     month: '2-digit',
-    year: 'numeric'
-  })
+    year: 'numeric',
+  });
 
   return (
     <div className="text-sm text-muted-foreground">
@@ -22,5 +22,5 @@ export function SignatureMeta({ status }: SignatureMetaProps) {
       {' • '}
       {signedDate}
     </div>
-  )
+  );
 }

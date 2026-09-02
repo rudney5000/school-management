@@ -9,10 +9,7 @@ export type CityRecord = typeof cities.$inferSelect;
 export class CitiesService {
   async findAll(query: CityListQueryDto): Promise<CityRecord[]> {
     if (query.departmentId) {
-      return db
-        .select()
-        .from(cities)
-        .where(eq(cities.departmentId, query.departmentId));
+      return db.select().from(cities).where(eq(cities.departmentId, query.departmentId));
     }
 
     return db.select().from(cities);

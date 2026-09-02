@@ -1,55 +1,50 @@
-import type {
-    Request,
-    Response
-} from 'express';
+import type { Request, Response } from 'express';
 import { asyncHandler } from '@/shared/utils/async-handler';
 import type {
-    BulletinPdfQueryDto,
-    EnrollmentPdfQueryDto,
-    CertificatePdfQueryDto,
-    TeacherContractPdfQueryDto,
-    PaymentReceiptPdfQueryDto,
+  BulletinPdfQueryDto,
+  EnrollmentPdfQueryDto,
+  CertificatePdfQueryDto,
+  TeacherContractPdfQueryDto,
+  PaymentReceiptPdfQueryDto,
 } from '@/modules/document-pdf/document-pdf.schema';
-import {
-    DocumentPdfService
-} from "@/modules/document-pdf/document-pdf.service";
+import { DocumentPdfService } from '@/modules/document-pdf/document-pdf.service';
 
 function sendPdf(res: Response, buffer: Buffer, filename: string) {
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-    res.send(buffer);
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+  res.send(buffer);
 }
 
 export class DocumentPdfController {
-    private readonly service = new DocumentPdfService();
+  private readonly service = new DocumentPdfService();
 
-    getBulletinPdf = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const { locale, ...params } = req.query as unknown as BulletinPdfQueryDto;
-        const buffer = await this.service.generate('bulletin', params, locale);
-        sendPdf(res, buffer, 'bulletin.pdf');
-    });
+  getBulletinPdf = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { locale, ...params } = req.query as unknown as BulletinPdfQueryDto;
+    const buffer = await this.service.generate('bulletin', params, locale);
+    sendPdf(res, buffer, 'bulletin.pdf');
+  });
 
-    getEnrollmentPdf = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const { locale, preview, ...params } = req.query as unknown as EnrollmentPdfQueryDto;
-        const buffer = await this.service.generate('enrollment', params, locale, preview);
-        sendPdf(res, buffer, 'enrollment.pdf');
-    });
+  getEnrollmentPdf = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { locale, preview, ...params } = req.query as unknown as EnrollmentPdfQueryDto;
+    const buffer = await this.service.generate('enrollment', params, locale, preview);
+    sendPdf(res, buffer, 'enrollment.pdf');
+  });
 
-    getCertificatePdf = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const { locale, ...params } = req.query as unknown as CertificatePdfQueryDto;
-        const buffer = await this.service.generate('certificate', params, locale);
-        sendPdf(res, buffer, 'certificate.pdf');
-    });
+  getCertificatePdf = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { locale, ...params } = req.query as unknown as CertificatePdfQueryDto;
+    const buffer = await this.service.generate('certificate', params, locale);
+    sendPdf(res, buffer, 'certificate.pdf');
+  });
 
-    getTeacherContractPdf = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const { locale, preview, ...params } = req.query as unknown as TeacherContractPdfQueryDto;
-        const buffer = await this.service.generate('teacher_contract', params, locale, preview);
-        sendPdf(res, buffer, 'teacher-contract.pdf');
-    });
+  getTeacherContractPdf = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { locale, preview, ...params } = req.query as unknown as TeacherContractPdfQueryDto;
+    const buffer = await this.service.generate('teacher_contract', params, locale, preview);
+    sendPdf(res, buffer, 'teacher-contract.pdf');
+  });
 
-    getPaymentReceiptPdf = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const { locale, preview, ...params } = req.query as unknown as PaymentReceiptPdfQueryDto;
-        const buffer = await this.service.generate('payment_receipt', params, locale, preview);
-        sendPdf(res, buffer, 'recu-paiement.pdf');
-    });
+  getPaymentReceiptPdf = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { locale, preview, ...params } = req.query as unknown as PaymentReceiptPdfQueryDto;
+    const buffer = await this.service.generate('payment_receipt', params, locale, preview);
+    sendPdf(res, buffer, 'recu-paiement.pdf');
+  });
 }

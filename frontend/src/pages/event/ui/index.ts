@@ -1,1 +1,1 @@
-export * from './AvatarStack'
+export * from './AvatarStack';

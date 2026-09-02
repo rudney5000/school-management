@@ -1,12 +1,12 @@
 export type TeacherParamsDto = {
-    id: string
-}
+  id: string;
+};
 
 export type TeacherListQueryDto = {
-    subSchoolId: string
-}
+  subSchoolId: string;
+};
 
 export type TeacherDossierStatusDto = {
-    isComplete: boolean
-    missing: string[]
-}
+  isComplete: boolean;
+  missing: string[];
+};

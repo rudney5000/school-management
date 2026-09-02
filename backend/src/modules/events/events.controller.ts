@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express';
 import { asyncHandler } from '@/shared/utils/async-handler';
 import { respond } from '@/shared/utils/respond';
-import {EventsService} from "@/modules/events/events.service";
-import {createEventSchema, UpdateEventDto} from "@/modules/events/events.schema";
-import {SubSchoolQueryDto} from "@/modules/students/students.schema";
+import { EventsService } from '@/modules/events/events.service';
+import { createEventSchema, UpdateEventDto } from '@/modules/events/events.schema';
+import { SubSchoolQueryDto } from '@/modules/students/students.schema';
 
 function resolvesSubSchoolId(req: Request): string {
   if (req.user?.subSchoolId) {
@@ -42,11 +42,7 @@ export class EventsController {
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const subSchoolId = resolvesSubSchoolId(req);
-    const data = await this.service.update(
-        req.params.id,
-        subSchoolId,
-        req.body as UpdateEventDto,
-    );
+    const data = await this.service.update(req.params.id, subSchoolId, req.body as UpdateEventDto);
     respond(res, data);
   });
 

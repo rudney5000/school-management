@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const loginSchema = z.object({
-  email:    z.string().email('Invalid email address'),
+  email: z.string().email('Invalid email address'),
   password: z.string().min(1, 'Password is required'),
 });
 
@@ -10,17 +10,16 @@ export const refreshSchema = z.object({
 });
 
 export const registerSchema = z.object({
-  email:     z.string().email('Invalid email address'),
-  password:  z.string().min(8, 'Password must be at least 8 characters'),
-  role:      z.enum(['admin', 'director', 'teacher', 'worker', 'parent', 'student']),
-  workerId:  z.string().uuid().optional(),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+  role: z.enum(['admin', 'director', 'teacher', 'worker', 'parent', 'student']),
+  workerId: z.string().uuid().optional(),
   teacherId: z.string().uuid().optional(),
   studentId: z.string().uuid().optional(),
-  parentId:  z.string().uuid().optional(),
+  parentId: z.string().uuid().optional(),
 });
 
 export type RegisterDto = z.infer<typeof registerSchema>;
 
-export type LoginDto   = z.infer<typeof loginSchema>;
+export type LoginDto = z.infer<typeof loginSchema>;
 export type RefreshDto = z.infer<typeof refreshSchema>;
-

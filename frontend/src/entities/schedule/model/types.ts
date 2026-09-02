@@ -1,31 +1,31 @@
 export type Schedule = {
-    id: string
-    classId: string
-    courseId: string
-    teacherId: string
-    dayOfWeek: 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY'
-    startTime: string
-    endTime: string
-    room: string | null
-    subSchoolId: string
-    academicYear: string
-    isLiveSession: boolean
-    liveUrl: string | null
-    createdAt: string
-}
+  id: string;
+  classId: string;
+  courseId: string;
+  teacherId: string;
+  dayOfWeek: 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY';
+  startTime: string;
+  endTime: string;
+  room: string | null;
+  subSchoolId: string;
+  academicYear: string;
+  isLiveSession: boolean;
+  liveUrl: string | null;
+  createdAt: string;
+};
 
 export type ScheduleWithRelations = Schedule & {
-    class: {
-        id: string
-        name: string
-    }
-    course: {
-        id: string
-        name: string
-    }
-    teacher: {
-        id: string
-        firstName: string
-        lastName: string
-    }
-}
+  class: {
+    id: string;
+    name: string;
+  };
+  course: {
+    id: string;
+    name: string;
+  };
+  teacher: {
+    id: string;
+    firstName: string;
+    lastName: string;
+  };
+};

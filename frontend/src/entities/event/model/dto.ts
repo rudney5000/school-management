@@ -1,7 +1,7 @@
 export type EventParamsDto = {
-    id: string
-}
+  id: string;
+};
 
 export type EventListQueryDto = {
-    subSchoolId: string
-}
+  subSchoolId: string;
+};

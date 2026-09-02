@@ -1,10 +1,10 @@
-import i18n from 'i18next'
-import { initReactI18next } from 'react-i18next'
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 
-import fr from '@shared/config/locales/fr.json'
-import en from '@/shared/config/locales/en.json'
-import ru from '@/shared/config/locales/ru.json'
-import ln from  '@/shared/config/locales/ln.json'
+import fr from '@shared/config/locales/fr.json';
+import en from '@/shared/config/locales/en.json';
+import ru from '@/shared/config/locales/ru.json';
+import ln from '@/shared/config/locales/ln.json';
 
 // Next task
 // import frCommon from '@shared/config/locales/fr/common.json'
@@ -26,27 +26,25 @@ import ln from  '@/shared/config/locales/ln.json'
 //     defaultNS: 'common',
 //     fallbackLng: 'fr',
 // })
-i18n
-    .use(initReactI18next)
-    .init({
-        resources: {
-            fr: {
-                translation: fr,
-            },
-            en: {
-                translation: en,
-            },
-            ru: {
-                translation: ru,
-            },
-            ln: {
-                translation: ln,
-            },
-        },
-        fallbackLng: 'fr',
-        interpolation: {
-            escapeValue: false,
-        },
-    })
+i18n.use(initReactI18next).init({
+  resources: {
+    fr: {
+      translation: fr,
+    },
+    en: {
+      translation: en,
+    },
+    ru: {
+      translation: ru,
+    },
+    ln: {
+      translation: ln,
+    },
+  },
+  fallbackLng: 'fr',
+  interpolation: {
+    escapeValue: false,
+  },
+});
 
-export default i18n
+export default i18n;

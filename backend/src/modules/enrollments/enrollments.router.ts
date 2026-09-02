@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import { validate } from '@/shared/utils/validate';
-import {
-  EnrollmentsController
-} from '@/modules/enrollments/enrollments.controller';
+import { EnrollmentsController } from '@/modules/enrollments/enrollments.controller';
 import {
   createEnrollmentSchema,
   enrollmentParamsSchema,
@@ -18,9 +16,9 @@ router.get(
   '/',
   authenticate,
   authorize('admin', 'director', 'super_admin', 'teacher', 'parent', 'student'),
-    validate({
-      query: enrollmentQuerySchema
-    }),
+  validate({
+    query: enrollmentQuerySchema,
+  }),
   controller.getAll,
 );
 router.get(
@@ -28,7 +26,7 @@ router.get(
   authenticate,
   authorize('admin', 'director', 'super_admin', 'teacher', 'parent', 'student'),
   validate({
-    params: enrollmentParamsSchema
+    params: enrollmentParamsSchema,
   }),
   controller.getById,
 );
@@ -37,7 +35,7 @@ router.post(
   authenticate,
   authorize('admin', 'director', 'super_admin'),
   validate({
-    body: createEnrollmentSchema
+    body: createEnrollmentSchema,
   }),
   controller.create,
 );
@@ -46,7 +44,7 @@ router.delete(
   authenticate,
   authorize('admin', 'director', 'super_admin'),
   validate({
-    params: enrollmentParamsSchema
+    params: enrollmentParamsSchema,
   }),
   controller.remove,
 );

@@ -7,13 +7,14 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint src --ext .ts,.tsx",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "lint": "eslint src --ext .ts --ext .tsx",
+    "lint:fix": "eslint src --ext .ts --ext .tsx --fix",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
     "@reduxjs/toolkit": "^1.9.5",
+    "@school-hub/pdf-templates": "workspace:*",
     "@tailwindcss/vite": "^4.3.0",
     "@tanstack/react-query": "^5.17.1",
     "@tanstack/react-query-devtools": "^5.101.0",
@@ -43,17 +44,18 @@
     "tailwind-merge": "^2.2.0",
     "tailwindcss": "^4.3.0",
     "vaul": "^1.1.2",
-    "zod": "^3.22.4",
-    "@school-hub/pdf-templates": "workspace:*"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.11.4",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
+    "@typescript-eslint/eslint-plugin": "^8.68.0",
+    "@typescript-eslint/parser": "^8.68.0",
     "@vitejs/plugin-react-swc": "^3.8.0",
-    "eslint": "^8.56.0",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^4.6.2",
     "typescript": "^5.3.3",
     "vite": "^6.3.5",
     "vite-tsconfig-paths": "^4.3.1"

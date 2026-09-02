@@ -1,7 +1,7 @@
 export type SchoolParamsDto = {
-    id: string
-}
+  id: string;
+};
 
 export type SchoolListQueryDto = {
-    districtId?: string
-}
+  districtId?: string;
+};

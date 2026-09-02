@@ -1,2 +1,2 @@
-export * from './SignatureBadge'
-export * from './SignatureMeta'
+export * from './SignatureBadge';
+export * from './SignatureMeta';

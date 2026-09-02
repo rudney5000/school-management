@@ -24,9 +24,7 @@ export const classCourseQuerySchema = z.object({
   classId: z.string().uuid('Invalid class ID'),
 });
 
-export const updateClassSchema = createClassSchema
-  .partial()
-  .omit({ subSchoolId: true });
+export const updateClassSchema = createClassSchema.partial().omit({ subSchoolId: true });
 
 export const classParamsSchema = z.object({
   id: z.string().uuid('Invalid class ID'),

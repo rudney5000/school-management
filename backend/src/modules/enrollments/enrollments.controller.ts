@@ -1,15 +1,8 @@
-import type {
-  Request,
-  Response
-} from 'express';
+import type { Request, Response } from 'express';
 import { asyncHandler } from '@/shared/utils/async-handler';
 import { respond } from '@/shared/utils/respond';
-import type {
-  CreateEnrollmentDto
-} from '@/modules/enrollments/enrollments.schema';
-import {
-  EnrollmentsService
-} from '@/modules/enrollments/enrollments.service';
+import type { CreateEnrollmentDto } from '@/modules/enrollments/enrollments.schema';
+import { EnrollmentsService } from '@/modules/enrollments/enrollments.service';
 
 export class EnrollmentsController {
   private readonly service = new EnrollmentsService();
