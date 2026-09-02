@@ -1,21 +1,21 @@
-import {createSlice, type PayloadAction, type Slice} from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction, type Slice } from '@reduxjs/toolkit';
 
 type DistrictState = {
-    selectedDistrictId: string | null;
-}
+  selectedDistrictId: string | null;
+};
 
 const initialState: DistrictState = {
-    selectedDistrictId: null,
+  selectedDistrictId: null,
 };
 
 export const districtSlice: Slice<DistrictState> = createSlice({
-    name: 'district',
-    initialState,
-    reducers: {
-        setSelectedDistrictId: (state, action: PayloadAction<string>) => {
-            state.selectedDistrictId = action.payload;
-        },
+  name: 'district',
+  initialState,
+  reducers: {
+    setSelectedDistrictId: (state, action: PayloadAction<string>) => {
+      state.selectedDistrictId = action.payload;
     },
+  },
 });
 
 export const { setSelectedDistrictId } = districtSlice.actions;

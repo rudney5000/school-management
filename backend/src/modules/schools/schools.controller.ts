@@ -28,10 +28,7 @@ export class SchoolsController {
   });
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const data = await this.service.update(
-      req.params.id,
-      req.body as UpdateSchoolDto,
-    );
+    const data = await this.service.update(req.params.id, req.body as UpdateSchoolDto);
     respond(res, data);
   });
 

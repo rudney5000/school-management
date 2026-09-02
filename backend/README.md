@@ -13,18 +13,21 @@ A modular school management system backend built with TypeScript, Express, Drizz
 
 **Important: Start Docker first**
 Before proceeding, navigate to the project root directory and start the Docker containers:
+
 ```bash
 cd ..
 docker-compose up -d
 ```
 
 1. Install dependencies:
+
 ```bash
 pnpm install
 ```
 
 2. Set up environment variables:
-Create a `.env` file in the root directory with the following variables:
+   Create a `.env` file in the root directory with the following variables:
+
 ```env
 DATABASE_URL=postgresql://user:password@localhost:5432/school_management
 PORT=3000
@@ -33,11 +36,13 @@ NODE_ENV=development
 ```
 
 3. Run database migrations:
+
 ```bash
 pnpm run db:push
 ```
 
 4. Seed the database (optional):
+
 ```bash
 pnpm run db:seed
 ```
@@ -45,11 +50,13 @@ pnpm run db:seed
 ## Running the Backend
 
 ### Development Mode
+
 ```bash
 pnpm run dev
 ```
 
 ### Production Mode
+
 ```bash
 pnpm run build
 pnpm start
@@ -229,7 +236,9 @@ backend/
 Each module follows a consistent structure with four main files:
 
 ### 1. **Schema** (`*.schema.ts`)
+
 Defines Zod validation schemas for request/response DTOs:
+
 - Create schemas (for POST requests)
 - Update schemas (for PATCH requests)
 - Query schemas (for query parameters)
@@ -237,21 +246,27 @@ Defines Zod validation schemas for request/response DTOs:
 - TypeScript type exports
 
 ### 2. **Service** (`*.service.ts`)
+
 Contains business logic and database operations:
+
 - CRUD operations (Create, Read, Update, Delete)
 - Database queries using Drizzle ORM
 - Error handling and validation
 - Type exports for record types
 
 ### 3. **Controller** (`*.controller.ts`)
+
 Handles HTTP requests and responses:
+
 - Request handler methods (getAll, getById, create, update, remove)
 - Calls service methods for business logic
 - Uses asyncHandler for error handling
 - Uses respond utility for consistent responses
 
 ### 4. **Router** (`*.router.ts`)
+
 Defines Express routes with middleware:
+
 - Route definitions (GET, POST, PATCH, DELETE)
 - Authentication middleware
 - Authorization middleware (role-based)
@@ -292,6 +307,7 @@ Each module exposes RESTful API endpoints following this pattern:
 ## Authentication & Authorization
 
 Most endpoints require:
+
 - **Authentication** - Valid JWT token in the Authorization header
 - **Authorization** - Appropriate role (super_admin, admin, director, teacher, parent, student)
 

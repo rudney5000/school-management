@@ -1,3 +1,4 @@
-import type { RootState } from "@shared/store";
+import type { RootState } from '@shared/store';
 
-export const selectSelectedLiveSessionId = (state: RootState) => state.liveSession.selectedLiveSessionId;
+export const selectSelectedLiveSessionId = (state: RootState) =>
+  state.liveSession.selectedLiveSessionId;

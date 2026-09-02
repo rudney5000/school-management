@@ -1,4 +1,4 @@
-import type { RootState } from "@shared/store";
+import type { RootState } from '@shared/store';
 
 export const selectIsMuted = (state: RootState) => state.callUi.isMuted;
 export const selectIsCameraOff = (state: RootState) => state.callUi.isCameraOff;

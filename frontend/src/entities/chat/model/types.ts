@@ -1,90 +1,93 @@
-import type { ConversationType, MemberRole, MessageType } from './constants'
+import type { ConversationType, MemberRole, MessageType } from './constants';
 
 export type ChatUser = {
-    id: string
-    email: string
-    role: string
-    teacher?: { id: string; firstName: string; lastName: string; image?: string | null } | null
-    student?: { id: string; firstName: string; lastName: string; image?: string | null } | null
-    worker?:  { id: string; firstName: string; lastName: string } | null
-}
+  id: string;
+  email: string;
+  role: string;
+  teacher?: { id: string; firstName: string; lastName: string; image?: string | null } | null;
+  student?: { id: string; firstName: string; lastName: string; image?: string | null } | null;
+  worker?: { id: string; firstName: string; lastName: string } | null;
+};
 
 export type ConversationMember = {
-    id: string
-    conversationId: string
-    userId: string
-    role: MemberRole
-    lastReadAt: string | null
-    isMuted: boolean
-    joinedAt: string
-    user: ChatUser
-}
+  id: string;
+  conversationId: string;
+  userId: string;
+  role: MemberRole;
+  lastReadAt: string | null;
+  isMuted: boolean;
+  joinedAt: string;
+  user: ChatUser;
+};
 
 export type MessageReaction = {
-    id: string
-    messageId: string
-    userId: string
-    emoji: string
-    user: Pick<ChatUser, 'id'> & { teacher?: { firstName: string } | null; student?: { firstName: string } | null }
-}
+  id: string;
+  messageId: string;
+  userId: string;
+  emoji: string;
+  user: Pick<ChatUser, 'id'> & {
+    teacher?: { firstName: string } | null;
+    student?: { firstName: string } | null;
+  };
+};
 
 export type Message = {
-    id: string
-    conversationId: string
-    senderId: string
-    type: MessageType
-    content: string | null
-    replyToId: string | null
-    replyTo?: { id: string; content: string | null; senderId: string } | null
-    isDeleted: boolean
-    threadId:      string | null
-    forwardedFrom: string | null
-    subject:       string | null
-    isStarred:     boolean
-    isArchived:    boolean
-    isEdited: boolean
-    deletedAt: string | null
-    editedAt: string | null
-    createdAt: string
-    sender: ChatUser
-    reactions: MessageReaction[]
-    attachments: MessageAttachment[]
-}
+  id: string;
+  conversationId: string;
+  senderId: string;
+  type: MessageType;
+  content: string | null;
+  replyToId: string | null;
+  replyTo?: { id: string; content: string | null; senderId: string } | null;
+  isDeleted: boolean;
+  threadId: string | null;
+  forwardedFrom: string | null;
+  subject: string | null;
+  isStarred: boolean;
+  isArchived: boolean;
+  isEdited: boolean;
+  deletedAt: string | null;
+  editedAt: string | null;
+  createdAt: string;
+  sender: ChatUser;
+  reactions: MessageReaction[];
+  attachments: MessageAttachment[];
+};
 
 export type Conversation = {
-    id: string
-    type: ConversationType
-    name: string | null
-    description: string | null
-    avatar: string | null
-    classId: string | null
-    courseId: string | null
-    subSchoolId: string
-    createdBy: string
-    createdAt: string
-    updatedAt: string
-    members: ConversationMember[]
-}
+  id: string;
+  type: ConversationType;
+  name: string | null;
+  description: string | null;
+  avatar: string | null;
+  classId: string | null;
+  courseId: string | null;
+  subSchoolId: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  members: ConversationMember[];
+};
 
 export type UploadedFile = {
-    key:      string
-    publicUrl: string
-    filename: string
-    mimeType: string
-    size:     number
-    width?:   number
-    height?:  number
-}
+  key: string;
+  publicUrl: string;
+  filename: string;
+  mimeType: string;
+  size: number;
+  width?: number;
+  height?: number;
+};
 
 export type MessageAttachment = {
-    id:        string
-    messageId: string
-    key:       string
-    filename:  string
-    mimeType:  string
-    size:      number
-    width:     number | null
-    height:    number | null
-    createdAt: string
-    url:       string
-}
+  id: string;
+  messageId: string;
+  key: string;
+  filename: string;
+  mimeType: string;
+  size: number;
+  width: number | null;
+  height: number | null;
+  createdAt: string;
+  url: string;
+};

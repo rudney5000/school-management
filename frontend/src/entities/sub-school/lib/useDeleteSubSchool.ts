@@ -1,17 +1,17 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { handleApiError } from '@shared/lib'
-import {schoolApi} from "@entities/school";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { handleApiError } from '@shared/lib';
+import { schoolApi } from '@entities/school';
 
 export const useDeleteSubSchool = () => {
-    const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: (id: string) => schoolApi.delete(id),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['schools'] })
-        },
-        onError: (error: Error) => {
-            handleApiError(error)
-        }
-    })
-}
+  return useMutation({
+    mutationFn: (id: string) => schoolApi.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['schools'] });
+    },
+    onError: (error: Error) => {
+      handleApiError(error);
+    },
+  });
+};

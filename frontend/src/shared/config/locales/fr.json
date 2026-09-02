@@ -171,35 +171,35 @@
   },
   "nav": {
     "group": {
-      "main":     "Principal",
+      "main": "Principal",
       "pedagogy": "Pédagogie",
-      "people":   "Personnes",
-      "system":   "Système",
-      "other":    "Autre"
+      "people": "Personnes",
+      "system": "Système",
+      "other": "Autre"
     },
-    "dashboard":   "Tableau de bord",
-    "schools":     "Établissements",
-    "classes":     "Classes",
-    "schedule":    "Emploi du temps",
-    "courses":     "Cours",
-    "exams":       "Examens",
+    "dashboard": "Tableau de bord",
+    "schools": "Établissements",
+    "classes": "Classes",
+    "schedule": "Emploi du temps",
+    "courses": "Cours",
+    "exams": "Examens",
     "assessments": "Évaluations",
-    "reports":    "Signalements",
-    "teachers":    "Enseignants",
-    "students":    "Élèves",
-    "parents":     "Parents",
-    "attendances":  "Présences",
-    "messages":    "Messages",
-    "settings":    "Paramètres",
-    "events":       "Événements"
+    "reports": "Signalements",
+    "teachers": "Enseignants",
+    "students": "Élèves",
+    "parents": "Parents",
+    "attendances": "Présences",
+    "messages": "Messages",
+    "settings": "Paramètres",
+    "events": "Événements"
   },
   "header": {
-    "search":        "Rechercher...",
+    "search": "Rechercher...",
     "notifications": "Notifications"
   },
   "dashboard": {
-    "title":          "Tableau de bord",
-    "subtitle":       "Vue d'ensemble",
+    "title": "Tableau de bord",
+    "subtitle": "Vue d'ensemble",
     "tagline": "Gestion Scolaire",
     "live": "En direct",
     "aria": {
@@ -213,23 +213,23 @@
       "evening": "Bonsoir"
     },
     "stats": {
-      "schools":  "Établissements",
-      "classes":  "Classes",
-      "levels":   "Niveaux",
-      "courses":  "Cours",
-      "exams":    "Examens",
+      "schools": "Établissements",
+      "classes": "Classes",
+      "levels": "Niveaux",
+      "courses": "Cours",
+      "exams": "Examens",
       "students": "Élèves",
       "teachers": "Enseignants",
-      "events":   "Événements",
+      "events": "Événements",
       "term": "Trimestre",
       "period": "Période {{number}}"
     },
     "schedule": {
-      "title":   "Cours du jour",
+      "title": "Cours du jour",
       "viewAll": "Voir tout"
     },
     "activity": {
-      "title":   "Activité récente",
+      "title": "Activité récente",
       "viewAll": "Tout voir"
     },
     "enrollment": {
@@ -483,7 +483,6 @@
           "previewDrawerTitle": "Aperçu du contrat",
           "previewDrawerDescription": "Vérifiez le contenu avant de confirmer la signature.",
           "previewIframeTitle": "Aperçu du contrat"
-
         },
         "dossier": {
           "title": "Dossier de recrutement",

@@ -1,14 +1,14 @@
 export type CreateDistrictDto = {
-    name: string
-    cityId: string
-}
+  name: string;
+  cityId: string;
+};
 
-export type UpdateDistrictDto = Partial<CreateDistrictDto>
+export type UpdateDistrictDto = Partial<CreateDistrictDto>;
 
 export type DistrictParamsDto = {
-    id: string
-}
+  id: string;
+};
 
 export type DistrictListQueryDto = {
-    cityId?: string
-}
+  cityId?: string;
+};

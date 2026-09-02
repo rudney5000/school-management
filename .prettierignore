@@ -1,0 +1,9 @@
+.claude/
+.cursor/
+.kiro/
+claude.md
+CONTEXT.md
+MEMORY.md
+STRUCTURE.md
+docs/
+pnpm-lock.yaml

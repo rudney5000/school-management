@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import {COURSE_COLORS, COURSE_ICONS, COURSE_RESOURCE_TYPES, COURSE_STATUSES} from "@/db/schema";
+import { COURSE_COLORS, COURSE_ICONS, COURSE_RESOURCE_TYPES, COURSE_STATUSES } from '@/db/schema';
 
 export const subSchoolQuerySchema = z.object({
   subSchoolId: z.string().uuid('Invalid sub-school ID'),
@@ -28,9 +28,7 @@ export const createCourseResourceSchema = z.object({
   url: z.string().url('Invalid URL').optional(),
 });
 
-export const updateCourseSchema = createCourseSchema
-  .partial()
-  .omit({ subSchoolId: true });
+export const updateCourseSchema = createCourseSchema.partial().omit({ subSchoolId: true });
 
 export const courseParamsSchema = z.object({
   id: z.string().uuid('Invalid course ID'),

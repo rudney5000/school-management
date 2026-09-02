@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { asyncHandler } from '@/shared/utils/async-handler';
 import { respond } from '@/shared/utils/respond';
 import { AuthService } from './auth.service';
-import type {LoginDto, RefreshDto, RegisterDto} from './auth.schema';
+import type { LoginDto, RefreshDto, RegisterDto } from './auth.schema';
 
 export class AuthController {
   private readonly service = new AuthService();

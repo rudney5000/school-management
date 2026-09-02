@@ -1,7 +1,7 @@
 export type ScheduleParamsDto = {
-    id: string
-}
+  id: string;
+};
 
 export type ScheduleListQueryDto = {
-    subSchoolId: string
-}
+  subSchoolId: string;
+};
