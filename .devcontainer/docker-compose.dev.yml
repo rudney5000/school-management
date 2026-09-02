@@ -1,12 +1,12 @@
 services:
   app:
     build:
-      context: ..
-      dockerfile: .devcontainer/Dockerfile
+      context: .
+      dockerfile: Dockerfile
     container_name: school_app_dev
     working_dir: /workspace
     volumes:
-      - ..:/workspace
+      - ../..:/workspace
       - node_modules:/workspace/node_modules
       - backend_node_modules:/workspace/backend/node_modules
       - frontend_node_modules:/workspace/frontend/node_modules
