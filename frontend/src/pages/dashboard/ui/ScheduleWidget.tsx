@@ -200,7 +200,9 @@ export function ScheduleWidget() {
                 item.status === 'live' ? 'bg-indigo-50 ring-1 ring-indigo-200' : 'hover:bg-zinc-50',
               )}
             >
-              <div className="w-14 sm:w-16 text-xs font-mono text-zinc-400 shrink-0">{item.time}</div>
+              <div className="w-14 sm:w-16 text-xs font-mono text-zinc-400 shrink-0">
+                {item.time}
+              </div>
 
               <div className="flex-1 min-w-0">
                 <div

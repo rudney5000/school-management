@@ -52,7 +52,9 @@ export function StatCard({
             <span>{trendLabel}</span>
           </div>
         )}
-        <div className="text-2xl sm:text-3xl font-bold text-zinc-900 leading-none mb-1">{value}</div>
+        <div className="text-2xl sm:text-3xl font-bold text-zinc-900 leading-none mb-1">
+          {value}
+        </div>
         <div className="text-sm font-medium text-zinc-700">{label}</div>
         {sub && <div className="text-xs text-zinc-400 mt-1">{sub}</div>}
         {highlight && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500" />}

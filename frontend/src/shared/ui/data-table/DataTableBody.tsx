@@ -146,9 +146,7 @@ export function DataTableBody<TData, TValue>({
       </div>
 
       {renderDetailPanel && (
-        <div className="w-full xl:w-[360px] shrink-0">
-          {renderDetailPanel(selectedRow)}
-        </div>
+        <div className="w-full xl:w-[360px] shrink-0">{renderDetailPanel(selectedRow)}</div>
       )}
     </div>
   );

@@ -262,7 +262,9 @@ export function ClassroomPulse() {
           </div>
 
           <div>
-            <div className="text-xl sm:text-2xl font-bold text-red-500">{pulseData.needAttention}</div>
+            <div className="text-xl sm:text-2xl font-bold text-red-500">
+              {pulseData.needAttention}
+            </div>
             <div className="text-xs text-zinc-400 uppercase tracking-wide">
               {t('dashboard.widgets.classroomPulse.needAttention')}
             </div>
