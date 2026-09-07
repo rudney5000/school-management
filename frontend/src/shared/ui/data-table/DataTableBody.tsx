@@ -33,7 +33,7 @@ export function DataTableBody<TData, TValue>({
 
   return (
     <div className="flex flex-col xl:flex-row gap-5">
-      <div className="flex-[7] min-w-0">
+      <div className="flex-1 min-w-0">
         <div className="rounded-2xl border border-zinc-100/80 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(23,85,236,0.05)] overflow-hidden">
           <UiTable>
             <TableHeader>
@@ -42,7 +42,7 @@ export function DataTableBody<TData, TValue>({
                   {hg.headers.map((header) => (
                     <TableHead
                       key={header.id}
-                      className="h-12 px-4 text-xs font-semibold uppercase tracking-wider text-zinc-400 bg-zinc-50/60"
+                      className="h-12 px-3 sm:px-4 text-xs font-semibold uppercase tracking-wider text-zinc-400 bg-zinc-50/60"
                     >
                       {header.isPlaceholder
                         ? null
@@ -71,7 +71,7 @@ export function DataTableBody<TData, TValue>({
                       {row.getVisibleCells().map((cell, idx) => (
                         <TableCell
                           key={cell.id}
-                          className={cn('px-4 py-3 align-middle', idx === 0 && 'relative')}
+                          className={cn('px-3 sm:px-4 py-3 align-middle', idx === 0 && 'relative')}
                           onClick={(e) => {
                             if (cell.column.id === 'actions') e.stopPropagation();
                           }}
@@ -96,7 +96,7 @@ export function DataTableBody<TData, TValue>({
           </UiTable>
         </div>
 
-        <div className="flex items-center justify-between mt-4 px-1">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 mt-4 px-1">
           <span className="text-xs text-zinc-400">
             {t('dashboard.common.dataTable.results', {
               count: table.getFilteredRowModel().rows.length,
@@ -146,9 +146,7 @@ export function DataTableBody<TData, TValue>({
       </div>
 
       {renderDetailPanel && (
-        <div className="flex-[3] min-w-[280px] xl:max-w-[360px] shrink-0">
-          {renderDetailPanel(selectedRow)}
-        </div>
+        <div className="w-full xl:w-[360px] shrink-0">{renderDetailPanel(selectedRow)}</div>
       )}
     </div>
   );

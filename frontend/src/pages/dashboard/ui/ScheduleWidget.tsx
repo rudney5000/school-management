@@ -196,16 +196,18 @@ export function ScheduleWidget() {
             <div
               key={item.id}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg',
+                'flex items-center gap-2 sm:gap-3 px-3 py-2.5 rounded-lg',
                 item.status === 'live' ? 'bg-indigo-50 ring-1 ring-indigo-200' : 'hover:bg-zinc-50',
               )}
             >
-              <div className="w-16 text-xs font-mono text-zinc-400 shrink-0">{item.time}</div>
+              <div className="w-14 sm:w-16 text-xs font-mono text-zinc-400 shrink-0">
+                {item.time}
+              </div>
 
               <div className="flex-1 min-w-0">
                 <div
                   className={cn(
-                    'text-sm font-semibold truncate',
+                    'text-xs sm:text-sm font-semibold truncate',
                     item.status === 'live' ? 'text-indigo-700' : 'text-zinc-800',
                   )}
                 >
