@@ -66,11 +66,11 @@ export default function CoursesPage() {
     <div className="min-h-screen bg-secondary/40">
       <header className="bg-background border-b sticky top-0 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-3">
-          <h1 className="text-lg sm:text-xl font-bold tracking-tight shrink-0">
+          <h1 className="text-base sm:text-lg font-bold tracking-tight shrink-0">
             {t('dashboard.courses.title')}
           </h1>
           <div className="flex-1" />
-          <div className="relative w-full max-w-[200px] sm:max-w-[250px] md:max-w-[300px]">
+          <div className="relative w-full max-w-[150px] sm:max-w-[200px] md:max-w-[250px]">
             <Search
               size={14}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"

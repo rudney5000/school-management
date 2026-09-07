@@ -30,12 +30,12 @@ export function DataTableHeader<TData>({
   return (
     <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
       <div className="min-w-0">
-        <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">{title}</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight">{title}</h1>
         {subtitle && <p className="mt-1 text-sm text-zinc-500">{subtitle}</p>}
       </div>
       {toolbar ?? (
-        <div className="flex flex-wrap items-center gap-2 shrink-0">
-          <div className="relative w-full sm:w-56 lg:w-64">
+        <div className="flex flex-wrap items-center gap-2 shrink-0 w-full lg:w-auto">
+          <div className="relative w-full sm:w-48 lg:w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
             <Input
               placeholder={searchPlaceholder ?? t('dashboard.common.dataTable.search')}

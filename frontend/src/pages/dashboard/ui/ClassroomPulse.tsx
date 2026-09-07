@@ -206,7 +206,7 @@ export function ClassroomPulse() {
       </CardHeader>
 
       <CardContent>
-        <div className="grid grid-cols-7 gap-1.5 mb-4">
+        <div className="grid grid-cols-5 sm:grid-cols-7 gap-1.5 mb-4">
           {pulseData.students.map((student) => (
             <div
               key={student.id}
@@ -221,7 +221,7 @@ export function ClassroomPulse() {
           ))}
         </div>
 
-        <div className="flex flex-wrap gap-3 text-xs text-zinc-500 mb-4">
+        <div className="flex flex-wrap gap-2 sm:gap-3 text-xs text-zinc-500 mb-4">
           {(
             [
               {
@@ -253,16 +253,16 @@ export function ClassroomPulse() {
           ))}
         </div>
 
-        <div className="flex gap-6 pt-3 border-t border-zinc-100">
+        <div className="flex gap-4 sm:gap-6 pt-3 border-t border-zinc-100">
           <div>
-            <div className="text-2xl font-bold text-zinc-800">{pulseData.present}</div>
+            <div className="text-xl sm:text-2xl font-bold text-zinc-800">{pulseData.present}</div>
             <div className="text-xs text-zinc-400 uppercase tracking-wide">
               {t('dashboard.widgets.classroomPulse.present')}
             </div>
           </div>
 
           <div>
-            <div className="text-2xl font-bold text-red-500">{pulseData.needAttention}</div>
+            <div className="text-xl sm:text-2xl font-bold text-red-500">{pulseData.needAttention}</div>
             <div className="text-xs text-zinc-400 uppercase tracking-wide">
               {t('dashboard.widgets.classroomPulse.needAttention')}
             </div>

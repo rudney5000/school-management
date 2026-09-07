@@ -55,14 +55,12 @@ export function DashboardLayout() {
       )}
 
       <div className="flex flex-col flex-1 min-w-0 min-h-0 p-3 pl-0">
-        <div className="flex flex-col flex-1 min-w-0 min-h-0 p-3 pl-0">
-          <div className="flex flex-col flex-1 min-w-0 min-h-0 bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06),0_4px_16px_rgba(23,85,236,0.04)] overflow-hidden">
-            <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+        <div className="flex flex-col flex-1 min-w-0 min-h-0 bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06),0_4px_16px_rgba(23,85,236,0.04)] overflow-hidden">
+          <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
 
-            <main className="flex-1 min-h-0 overflow-y-auto p-6 lg:p-8 bg-zinc-50/40">
-              <Outlet />
-            </main>
-          </div>
+          <main className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-zinc-50/40">
+            <Outlet />
+          </main>
         </div>
         <VideoCallOverlay />
       </div>

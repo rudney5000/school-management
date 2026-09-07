@@ -116,8 +116,8 @@ export function StatsCards() {
 
   if (loading || !stats) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {[1, 2, 3, 4, 5].map((i) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[1, 2, 3, 4].map((i) => (
           <div key={i} className="h-24 bg-zinc-100 rounded-lg animate-pulse" />
         ))}
       </div>
@@ -125,7 +125,7 @@ export function StatsCards() {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <StatCard
         value={stats.classAverageScore}
         label={t('dashboard.widgets.statsCards.classAverageScore')}

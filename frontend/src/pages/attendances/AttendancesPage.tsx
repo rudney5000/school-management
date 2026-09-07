@@ -145,7 +145,7 @@ export default function AttendancePage() {
           </div>
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
-            <div className="flex items-center gap-2 bg-muted rounded-lg px-3 py-2 text-sm text-muted-foreground w-full sm:w-52">
+            <div className="flex items-center gap-2 bg-muted rounded-lg px-3 py-2 text-sm text-muted-foreground w-full sm:w-48">
               <Search className="size-4 shrink-0" />
               <span>{t('dashboard.attendance.search')}</span>
             </div>
