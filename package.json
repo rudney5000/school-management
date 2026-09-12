@@ -49,6 +49,9 @@
     ],
     "*.{json,md,yml,yaml}": [
       "prettier --write"
+    ],
+    ".devcontainer/**/*.{json,yml,yaml,md}": [
+      "prettier --write"
     ]
   }
 }

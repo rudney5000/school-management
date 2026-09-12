@@ -1,0 +1,30 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: school_app_dev
+    working_dir: /workspace
+    volumes:
+      - ../..:/workspace
+      - node_modules:/workspace/node_modules
+      - backend_node_modules:/workspace/backend/node_modules
+      - frontend_node_modules:/workspace/frontend/node_modules
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://school:schoolpass@postgres:5432/school_dev
+      - REDIS_URL=redis://redis:6379
+    ports:
+      - '3000:3000'
+      - '5173:5173'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    command: sleep infinity
+
+volumes:
+  node_modules:
+  backend_node_modules:
+  frontend_node_modules:
