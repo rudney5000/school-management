@@ -5,13 +5,13 @@ school-management/
 ├── claude.md                   ← Contexte IA principal (lu à chaque prompt)
 ├── MEMORY.md                   ← Décisions & mémoire persistante
 ├── STRUCTURE.md                ← Ce fichier
-├── docker-compose.yml          ← PostgreSQL + Redis + App
-├── docker-compose.prod.yml
+├── docker-compose.yml          ← PostgreSQL + Redis + MinIO + LiveKit
 ├── .env.example
 │
 ├── docs/
 │   ├── PRD.md                  ← Product Requirements Document
-│   └── ADR.md                  ← Architecture Decision Records
+│   ├── ADR.md                  ← Architecture Decision Records
+│   └── BILAN.md                ← Audit de l'état réel du projet (2026-09)
 │
 ├── .cursor/
 │   └── rules/
@@ -23,8 +23,8 @@ school-management/
 │   ├── skills/
 │   │   ├── drizzle.md          ← Comment écrire des schémas Drizzle
 │   │   ├── tanstack.md         ← Patterns TanStack Query/Router
-│   │   ├── fsd.md              ← Guide Feature-Sliced Design
-│   │   └── offline.md          ← Patterns offline-first + sync
+│   │   ├── fsd.md              ← (prévu, pas encore créé)
+│   │   └── offline.md          ← (prévu, pas encore créé — offline-first non implémenté)
 │   ├── commands/
 │   │   ├── new-feature.md      ← Template pour créer une feature FSD
 │   │   ├── new-entity.md       ← Template pour créer une entité DB
@@ -36,8 +36,9 @@ school-management/
 │   ├── src/
 │   │   ├── app/                ← Bootstrap, providers, router
 │   │   │   ├── providers/
-│   │   │   ├── router.tsx
-│   │   │   └── store.ts
+│   │   │   ├── router/
+│   │   │   ├── i18n/            ← Traductions (fr, en, ru, ln — sw pas encore fait)
+│   │   │   └── theme/
 │   │   ├── pages/              ← Routes (FSD layer)
 │   │   │   ├── dashboard/
 │   │   │   ├── students/
@@ -52,18 +53,17 @@ school-management/
 │   │   │   ├── grade-entry/
 │   │   │   ├── schedule-builder/
 │   │   │   ├── payment-tracking/
-│   │   │   └── offline-sync/
-│   │   ├── entities/           ← Modèles & API calls (FSD layer)
+│   │   │   └── offline-sync/    ← (prévu, pas encore créé)
+│   │   ├── entities/           ← Modèles & API calls (FSD layer) — 18 entités au 2026-09
 │   │   │   ├── student/
 │   │   │   ├── teacher/
-│   │   │   ├── classroom/
+│   │   │   ├── class/
 │   │   │   ├── school/
 │   │   │   ├── payment/
-│   │   │   └── notification/
+│   │   │   └── ... (exams, grades, chat, document-signature, video-call, etc.)
 │   │   ├── shared/             ← Réutilisable partout (FSD layer)
 │   │   │   ├── ui/             ← shadcn/ui components
 │   │   │   ├── api/            ← axios instance, interceptors
-│   │   │   ├── i18n/           ← Traductions (fr, ln, sw)
 │   │   │   ├── hooks/
 │   │   │   ├── lib/
 │   │   │   └── types/
@@ -89,24 +89,23 @@ school-management/
     │   │   │   └── index.ts
     │   │   ├── migrations/
     │   │   └── index.ts        ← Drizzle client
-    │   ├── modules/            ← 1 dossier par domaine métier
+    │   ├── modules/            ← 1 dossier par domaine métier — 27 modules au 2026-09
     │   │   ├── auth/
     │   │   │   ├── auth.router.ts
     │   │   │   ├── auth.controller.ts
     │   │   │   ├── auth.service.ts
     │   │   │   └── auth.schema.ts    ← Zod validation
-    │   │   ├── schools/
-    │   │   ├── students/
-    │   │   ├── teachers/
-    │   │   ├── classrooms/
-    │   │   ├── grades/
-    │   │   ├── schedules/
-    │   │   ├── payments/
-    │   │   └── notifications/
+    │   │   ├── schools/, sub-schools/, students/, teachers/, parents/, workers/
+    │   │   ├── classes/, courses/, grades/, exams/, schedules/, attendances/, enrollments/
+    │   │   ├── payments/, reports/, attachments/, document-pdf/, signature/
+    │   │   ├── chat/, liveSessions/, videoCalls/, events/, academic-periods/
+    │   │   ├── countries/, cities/, districts/, departments/
+    │   │   └── notifications/       ← ⚠️ PAS ENCORE créé (mentionné ici et dans backend/README.md mais absent de src/modules)
     │   ├── middleware/
-    │   │   ├── auth.middleware.ts
-    │   │   ├── rbac.middleware.ts
-    │   │   └── error.middleware.ts
+    │   │   ├── authenticate.ts      ← (nommé auth.middleware.ts dans ce plan initial)
+    │   │   ├── authorize.ts         ← (nommé rbac.middleware.ts dans ce plan initial)
+    │   │   ├── error-handler.ts     ← (nommé error.middleware.ts dans ce plan initial)
+    │   │   └── restrict-to-own-child.ts
     │   ├── shared/
     │   │   ├── types/
     │   │   ├── utils/
