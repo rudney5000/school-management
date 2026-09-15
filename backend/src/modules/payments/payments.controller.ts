@@ -4,6 +4,29 @@ import { respond } from '@/shared/utils/respond';
 import type { CreatePaymentDto, UpdatePaymentDto } from '@/modules/payments/payments.schema';
 import { PaymentsService } from '@/modules/payments/payments.service';
 import { resolveSubSchoolId } from '@/shared/utils/resolvers/subSchoolId/subSchool.resolver';
+import { db } from '@/db';
+import { users } from '@/db/schema';
+import { eq } from 'drizzle-orm';
+import { AppError } from '@/shared/errors/app-error';
+
+/** The parent profile to restrict a lookup to, or undefined for staff roles. */
+async function parentScope(req: Request): Promise<string | undefined> {
+  if (req.user!.role !== 'parent') {
+    return undefined;
+  }
+
+  const [record] = await db
+    .select({ parentId: users.parentId })
+    .from(users)
+    .where(eq(users.id, req.user!.id))
+    .limit(1);
+
+  if (!record?.parentId) {
+    throw new AppError('FORBIDDEN', 'Aucun profil parent associé à ce compte', 403);
+  }
+
+  return record.parentId;
+}
 
 export class PaymentsController {
   private readonly service = new PaymentsService();
@@ -16,7 +39,7 @@ export class PaymentsController {
 
   getById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const subSchoolId = await resolveSubSchoolId(req);
-    const data = await this.service.findById(req.params.id, subSchoolId);
+    const data = await this.service.findById(req.params.id, subSchoolId, await parentScope(req));
     respond(res, data);
   });
 

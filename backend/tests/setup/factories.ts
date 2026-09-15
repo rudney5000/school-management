@@ -7,6 +7,8 @@ import {
   departments,
   districts,
   enrollments,
+  parentStudents,
+  parents,
   payments,
   schools,
   students,
@@ -152,6 +154,27 @@ export async function createEnrollment(studentId: string, classId: string) {
   const [enrollment] = await db.insert(enrollments).values({ studentId, classId }).returning();
 
   return enrollment;
+}
+
+export async function createParent(subSchoolId: string) {
+  const id = next();
+
+  const [parent] = await db
+    .insert(parents)
+    .values({
+      firstName: `Parent${id}`,
+      lastName: `Last${id}`,
+      email: `parent-${id}@test.local`,
+      gender: 'female',
+      subSchoolId,
+    })
+    .returning();
+
+  return parent;
+}
+
+export async function linkParentToStudent(parentId: string, studentId: string) {
+  await db.insert(parentStudents).values({ parentId, studentId }).onConflictDoNothing();
 }
 
 export async function createPayment(studentId: string, amount = '100.00') {
