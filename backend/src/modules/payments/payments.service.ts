@@ -1,6 +1,6 @@
 import { and, eq, getTableColumns } from 'drizzle-orm';
 import { db } from '@/db';
-import { payments, students } from '@/db/schema';
+import { parentStudents, payments, students } from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
 import type { CreatePaymentDto, UpdatePaymentDto } from './payments.schema';
 
@@ -19,7 +19,12 @@ export class PaymentsService {
       .where(eq(students.subSchoolId, subSchoolId));
   }
 
-  async findById(id: string, subSchoolId: string): Promise<PaymentRecord> {
+  /**
+   * `parentId` narrows the lookup to that parent's own children. Being in the
+   * right sub-school is not enough for a parent: it would expose every family's
+   * payments in the school.
+   */
+  async findById(id: string, subSchoolId: string, parentId?: string): Promise<PaymentRecord> {
     const [payment] = await db
       .select(getTableColumns(payments))
       .from(payments)
@@ -28,6 +33,23 @@ export class PaymentsService {
 
     if (!payment) {
       throw new AppError('NOT_FOUND', 'Paiement introuvable', 404);
+    }
+
+    if (parentId) {
+      const [link] = await db
+        .select({ parentId: parentStudents.parentId })
+        .from(parentStudents)
+        .where(
+          and(
+            eq(parentStudents.parentId, parentId),
+            eq(parentStudents.studentId, payment.studentId),
+          ),
+        )
+        .limit(1);
+
+      if (!link) {
+        throw new AppError('NOT_FOUND', 'Paiement introuvable', 404);
+      }
     }
 
     return payment;
