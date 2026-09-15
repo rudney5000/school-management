@@ -70,11 +70,8 @@ jobs:
       - name: Build shared packages
         run: pnpm --filter @school-hub/pdf-templates build
 
-      - name: Run migrations
-        run: pnpm --filter backend db:migrate
-        env:
-          DATABASE_URL: postgres://test:test@localhost:5432/school_hub_test
-
+      # Migrations are applied by the Vitest global setup, so local runs and CI
+      # go through the same path.
       - name: Run backend tests
         run: pnpm --filter backend test
         env:
