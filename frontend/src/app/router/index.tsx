@@ -14,7 +14,6 @@ import { FAQPage } from '@/pages/faq/FAQPage';
 import { AuthLayout } from '@app/router/layouts/AuthLayout';
 import { requireGuest } from '@app/router/guards';
 import { LoginPage } from '@/pages/login/LoginPage';
-import { RegisterPage } from '@/pages/register/RegisterPage';
 import i18n from '@app/i18n/i18n';
 import { DashboardLayout } from '@app/router/layouts/DashboardLayout';
 import { DEFAULT_LOCALE, SUPPORT_LOCALES } from '@shared/config/i18n/locale-config';
@@ -110,12 +109,6 @@ const loginRoute = createRoute({
   getParentRoute: () => authLayoutRoute,
   path: 'login',
   component: LoginPage,
-});
-
-const registerRoute = createRoute({
-  getParentRoute: () => authLayoutRoute,
-  path: 'register',
-  component: RegisterPage,
 });
 
 export const subSchoolRoute = createRoute({
@@ -226,7 +219,7 @@ const routeTree = rootRoute.addChildren([
   indexRedirectRoute,
   localeRoute.addChildren([
     homeLayoutRoute.addChildren([homeRoute, faqRoute]),
-    authLayoutRoute.addChildren([loginRoute, registerRoute]),
+    authLayoutRoute.addChildren([loginRoute]),
     dashboardLayoutRoute.addChildren([
       subSchoolRoute.addChildren([
         dashboardRoute,

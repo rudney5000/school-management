@@ -4,7 +4,7 @@ import { authApi } from '../api/auth.api';
 import { setCredentials } from '@features/auth/store/auth-slice';
 import { useAppDispatch } from '@/shared/store/hooks';
 import { baseApi } from '@/shared/api/instance';
-import type { LoginFormData, RegisterFormData } from './auth.schema';
+import type { LoginFormData } from './auth.schema';
 import type { CommonError } from '@shared/helperClass/CommonError';
 import type { AuthTokensDto } from '@features/auth/model/dto/AuthTokensDto';
 import i18n from '@app/i18n/i18n';
@@ -64,24 +64,5 @@ export function useAuth() {
     setIsLoading(false);
   };
 
-  const register = async (data: RegisterFormData) => {
-    setIsLoading(true);
-    setError(null);
-
-    const res = await authApi.register({
-      email: data.email,
-      password: data.password,
-      role: data.role,
-    });
-
-    if (res.IsSuccess) {
-      await handleAuthSuccess(res.result as AuthTokensDto);
-    } else {
-      setError((res.result as CommonError).Message);
-    }
-
-    setIsLoading(false);
-  };
-
-  return { login, register, isLoading, error };
+  return { login, isLoading, error };
 }

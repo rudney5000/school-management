@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt, { type SignOptions } from 'jsonwebtoken';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { db } from '@/db';
-import { users } from '@/db/schema';
+import { parents, students, teacherSchools, users, workers } from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
 import { env } from '@/config/env';
 import type { LoginDto, RegisterDto } from './auth.schema';
@@ -21,8 +21,24 @@ export interface AuthTokens {
   refreshToken: string;
 }
 
+export interface CreatedUser {
+  id: string;
+  email: string;
+  role: UserRole;
+}
+
 export class AuthService {
-  async register(input: RegisterDto): Promise<AuthTokens> {
+  /**
+   * Creates an account on behalf of an administrator.
+   *
+   * The caller is never handed the new account's tokens: creating a user must
+   * not be a way to impersonate one. The profile the account is attached to is
+   * checked against the caller's own sub-school, otherwise naming any known
+   * worker id would mint an admin inside that worker's school.
+   */
+  async register(input: RegisterDto, actor: Express.User): Promise<CreatedUser> {
+    await this.assertProfileInActorScope(input, actor);
+
     const [existing] = await db.select().from(users).where(eq(users.email, input.email)).limit(1);
 
     if (existing) {
@@ -42,15 +58,66 @@ export class AuthService {
       })
       .returning();
 
-    const context = await this.resolveContext(user);
+    return { id: user.id, email: user.email, role: user.role as UserRole };
+  }
 
-    return this.generateTokens({
-      id: user.id,
-      email: user.email,
-      role: user.role as UserRole,
-      schoolId: context.schoolId,
-      subSchoolId: context.subSchoolId,
-    });
+  private async assertProfileInActorScope(input: RegisterDto, actor: Express.User): Promise<void> {
+    if (actor.role === 'super_admin') {
+      return;
+    }
+
+    const { subSchoolId } = actor;
+
+    if (!subSchoolId) {
+      throw new AppError('FORBIDDEN', 'Aucune sous-école associée à ce compte', 403);
+    }
+
+    const scoped = async (found: unknown): Promise<void> => {
+      if (!found) {
+        throw new AppError('FORBIDDEN', 'Profil hors de votre sous-école', 403);
+      }
+    };
+
+    if (input.workerId) {
+      const [row] = await db
+        .select({ id: workers.id })
+        .from(workers)
+        .where(and(eq(workers.id, input.workerId), eq(workers.subSchoolId, subSchoolId)))
+        .limit(1);
+      await scoped(row);
+    }
+
+    if (input.teacherId) {
+      const [row] = await db
+        .select({ id: teacherSchools.id })
+        .from(teacherSchools)
+        .where(
+          and(
+            eq(teacherSchools.teacherId, input.teacherId),
+            eq(teacherSchools.subSchoolId, subSchoolId),
+          ),
+        )
+        .limit(1);
+      await scoped(row);
+    }
+
+    if (input.studentId) {
+      const [row] = await db
+        .select({ id: students.id })
+        .from(students)
+        .where(and(eq(students.id, input.studentId), eq(students.subSchoolId, subSchoolId)))
+        .limit(1);
+      await scoped(row);
+    }
+
+    if (input.parentId) {
+      const [row] = await db
+        .select({ id: parents.id })
+        .from(parents)
+        .where(and(eq(parents.id, input.parentId), eq(parents.subSchoolId, subSchoolId)))
+        .limit(1);
+      await scoped(row);
+    }
   }
 
   async login(input: LoginDto): Promise<AuthTokens> {

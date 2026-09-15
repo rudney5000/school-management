@@ -6,7 +6,7 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useAuth } from '@features/auth/model/use-auth';
 import { loginSchema, type LoginFormData } from '@features/auth/model/auth.schema';
 
-import { Button, Input, Label, Alert, AlertDescription, LocaleLink, Spinner } from '@/shared/ui';
+import { Button, Input, Label, Alert, AlertDescription, Spinner } from '@/shared/ui';
 import { cn } from '@shared/lib';
 
 export function LoginForm() {
@@ -86,10 +86,6 @@ export function LoginForm() {
           )}
         </Button>
       </form>
-
-      <p className="mt-6 text-center text-sm text-gray-500">
-        Don't have an account? <LocaleLink to="/register">Create one</LocaleLink>
-      </p>
     </>
   );
 }
