@@ -8,8 +8,8 @@ export class AuthController {
   private readonly service = new AuthService();
 
   register = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const tokens = await this.service.register(req.body as RegisterDto);
-    respond(res, tokens, 201);
+    const user = await this.service.register(req.body as RegisterDto, req.user!);
+    respond(res, user, 201);
   });
 
   login = asyncHandler(async (req: Request, res: Response): Promise<void> => {

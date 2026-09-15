@@ -19,10 +19,11 @@ class AuthApi extends ApiWrapper {
     );
   }
 
-  async register(payload: RegisterDto): Promise<CommonResponse<AuthTokensDto | CommonError>> {
+  /** Administrative account creation. Returns the created user, never its tokens. */
+  async createUser(payload: RegisterDto): Promise<CommonResponse<UserDto | CommonError>> {
     return this.handleRequest(
       this._baseApi.post('/auth/register', payload),
-      (data) => data as AuthTokensDto,
+      (data) => data as UserDto,
     );
   }
 
