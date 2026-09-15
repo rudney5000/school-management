@@ -7,3 +7,7 @@ MEMORY.md
 STRUCTURE.md
 docs/
 pnpm-lock.yaml
+
+# Written by drizzle-kit generate, in its own style. Reformatting them would
+# break CI again on the next generated migration.
+backend/src/db/migrations/

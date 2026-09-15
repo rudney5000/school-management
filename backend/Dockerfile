@@ -41,4 +41,8 @@ WORKDIR /app/backend
 
 EXPOSE 3000
 
-CMD ["node", "dist/index.js"]
+# Migrations run before the server accepts traffic. drizzle-kit is a dev
+# dependency and absent from this image, so this uses drizzle-orm's own
+# migrator. A failing migration aborts startup instead of serving code against
+# a schema that does not match it.
+CMD ["sh", "-c", "node dist/db/migrate.js && node dist/index.js"]
