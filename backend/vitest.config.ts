@@ -16,6 +16,7 @@ export default defineConfig({
     // Every test file shares the same Postgres database and truncates it
     // between tests, so they must not run concurrently.
     fileParallelism: false,
+    hookTimeout: 30_000,
     env: {
       NODE_ENV: 'test',
       DATABASE_URL: TEST_DATABASE_URL,
