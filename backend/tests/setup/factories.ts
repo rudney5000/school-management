@@ -2,9 +2,11 @@ import bcrypt from 'bcryptjs';
 import { db } from '@/db';
 import {
   cities,
+  classes,
   countries,
   departments,
   districts,
+  enrollments,
   payments,
   schools,
   students,
@@ -133,6 +135,23 @@ export async function createAdminIn(subSchoolId: string) {
   const user = await createUser('admin', { workerId: worker.id });
 
   return { user, worker };
+}
+
+export async function createClass(subSchoolId: string) {
+  const id = next();
+
+  const [klass] = await db
+    .insert(classes)
+    .values({ name: `Class ${id}`, subSchoolId })
+    .returning();
+
+  return klass;
+}
+
+export async function createEnrollment(studentId: string, classId: string) {
+  const [enrollment] = await db.insert(enrollments).values({ studentId, classId }).returning();
+
+  return enrollment;
 }
 
 export async function createPayment(studentId: string, amount = '100.00') {

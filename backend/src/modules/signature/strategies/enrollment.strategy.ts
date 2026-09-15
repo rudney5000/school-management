@@ -27,7 +27,7 @@ export const enrollmentSignatureStrategy: DocumentSignatureStrategy<'enrollment'
   },
 
   async computeContentHash({ documentId }) {
-    const enrollment = await enrollmentsService.findById(documentId!);
+    const enrollment = await enrollmentsService.findByIdUnscoped(documentId!);
 
     const validatedDocs = await db
       .select({ category: attachments.category, key: attachments.key })

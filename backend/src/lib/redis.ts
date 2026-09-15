@@ -6,6 +6,9 @@ export const redisClient = new Redis({
   port: env.REDIS_PORT,
   password: env.REDIS_PASSWORD,
   tls: env.REDIS_TLS ? {} : undefined,
+  // Importing the app under test must not open a socket to a Redis that the
+  // test environment does not run.
+  lazyConnect: env.NODE_ENV === 'test',
 });
 
 redisClient.on('connect', () => console.log('✓ Redis connected'));

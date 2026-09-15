@@ -7,7 +7,6 @@ import {
   BulkUpsertTeacherAttendanceDto,
   CreateStudentAttendanceDto,
   CreateTeacherAttendanceDto,
-  SubSchoolQueryDto,
   UpdateStudentAttendanceDto,
   UpdateTeacherAttendanceDto,
 } from '@/modules/attendances/attendances.schema';
@@ -16,19 +15,13 @@ import {
   TeacherAttendanceService,
 } from '@/modules/attendances/attendances.service';
 import { AppError } from '@/shared/errors/app-error';
-
-function resolveSubSchoolId(req: Request): string {
-  if (req.user?.subSchoolId) {
-    return req.user.subSchoolId;
-  }
-  return (req.query as SubSchoolQueryDto).subSchoolId;
-}
+import { resolveSubSchoolId } from '@/shared/utils/resolvers/subSchoolId/subSchool.resolver';
 
 export class StudentAttendanceController {
   private readonly service = new StudentAttendanceService();
 
   getAll = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const query = attendanceQuerySchema.parse({
       ...req.query,
       subSchoolId,
@@ -38,7 +31,7 @@ export class StudentAttendanceController {
   });
 
   getById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.findById(req.params.id, subSchoolId);
     respond(res, data);
   });
@@ -47,7 +40,7 @@ export class StudentAttendanceController {
     if (!req.user) {
       throw new AppError('UNAUTHORIZED', 'Utilisateur non authentifié', 401);
     }
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const query = attendanceQuerySchema.parse({
       ...req.query,
       subSchoolId,
@@ -67,7 +60,7 @@ export class StudentAttendanceController {
   });
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.update(
       req.params.id,
       subSchoolId,
@@ -77,7 +70,7 @@ export class StudentAttendanceController {
   });
 
   remove = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     await this.service.delete(req.params.id, subSchoolId);
     res.status(204).send();
   });
@@ -87,7 +80,7 @@ export class TeacherAttendanceController {
   private readonly service = new TeacherAttendanceService();
 
   getAll = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const query = attendanceQuerySchema.parse({
       ...req.query,
       subSchoolId,
@@ -97,7 +90,7 @@ export class TeacherAttendanceController {
   });
 
   getById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.findById(req.params.id, subSchoolId);
     respond(res, data);
   });
@@ -107,7 +100,7 @@ export class TeacherAttendanceController {
       if (!req.user) {
         throw new AppError('UNAUTHORIZED', 'Utilisateur non authentifié', 401);
       }
-      const subSchoolId = resolveSubSchoolId(req);
+      const subSchoolId = await resolveSubSchoolId(req);
       const query = attendanceQuerySchema.parse({
         ...req.query,
         subSchoolId,
@@ -128,7 +121,7 @@ export class TeacherAttendanceController {
   });
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.update(
       req.params.id,
       subSchoolId,
@@ -138,7 +131,7 @@ export class TeacherAttendanceController {
   });
 
   remove = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     await this.service.delete(req.params.id, subSchoolId);
     res.status(204).send();
   });

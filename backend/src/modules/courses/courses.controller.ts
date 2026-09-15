@@ -4,24 +4,17 @@ import { respond } from '@/shared/utils/respond';
 import type {
   CreateCourseDto,
   CreateCourseResourceDto,
-  SubSchoolQueryDto,
   UpdateCourseDto,
 } from '@/modules/courses/courses.schema';
 import { CoursesService } from '@/modules/courses/courses.service';
 import { AppError } from '@/shared/errors/app-error';
-
-function resolveSubSchoolId(req: Request): string {
-  if (req.user?.subSchoolId) {
-    return req.user.subSchoolId;
-  }
-  return (req.query as SubSchoolQueryDto).subSchoolId;
-}
+import { resolveSubSchoolId } from '@/shared/utils/resolvers/subSchoolId/subSchool.resolver';
 
 export class CoursesController {
   private readonly service = new CoursesService();
 
   getAll = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.findAll(subSchoolId);
     respond(res, data);
   });
@@ -32,7 +25,7 @@ export class CoursesController {
   });
 
   getById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.findById(req.params.id, subSchoolId);
     respond(res, data);
   });
@@ -41,7 +34,7 @@ export class CoursesController {
     if (!req.user) {
       throw new AppError('UNAUTHORIZED', 'Utilisateur non authentifié', 401);
     }
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.resolveCoursesForParent(req.user.id, subSchoolId);
     respond(res, data);
   });
@@ -65,13 +58,13 @@ export class CoursesController {
   // });
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.update(req.params.id, subSchoolId, req.body as UpdateCourseDto);
     respond(res, data);
   });
 
   remove = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     await this.service.remove(req.params.id, subSchoolId);
     res.status(204).send();
   });

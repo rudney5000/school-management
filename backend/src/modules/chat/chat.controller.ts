@@ -12,17 +12,13 @@ import {
   ForwardMessageInput,
   ContactableStaffQuery,
 } from './chat.schema';
-
-function resolveSubSchoolId(req: Request): string {
-  if (req.user?.subSchoolId) return req.user.subSchoolId;
-  return (req.query as { subSchoolId: string }).subSchoolId;
-}
+import { resolveSubSchoolId } from '@/shared/utils/resolvers/subSchoolId/subSchool.resolver';
 
 export class ChatController {
   private readonly service = new ChatService();
 
   getConversations = asyncHandler(async (req: Request, res: Response) => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.findUserConversations(req.user!.id, subSchoolId);
     respond(res, data);
   });
