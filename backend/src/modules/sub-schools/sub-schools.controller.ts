@@ -3,17 +3,11 @@ import { asyncHandler } from '@/shared/utils/async-handler';
 import { respond } from '@/shared/utils/respond';
 import type {
   CreateSubSchoolDto,
-  SchoolQueryDto,
   UpdateSubSchoolDto,
 } from '@/modules/sub-schools/sub-schools.schema';
 import { SubSchoolsService } from '@/modules/sub-schools/sub-schools.service';
-
-function resolveSchoolId(req: Request): string {
-  if (req.user?.schoolId) {
-    return req.user.schoolId;
-  }
-  return (req.query as SchoolQueryDto).schoolId;
-}
+import { AppError } from '@/shared/errors/app-error';
+import { resolveSchoolId } from '@/shared/utils/resolvers/subSchoolId/subSchool.resolver';
 
 export class SubSchoolsController {
   private readonly service = new SubSchoolsService();
@@ -31,7 +25,14 @@ export class SubSchoolsController {
   });
 
   create = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const data = await this.service.create(req.body as CreateSubSchoolDto);
+    const input = req.body as CreateSubSchoolDto;
+    const schoolId = resolveSchoolId(req);
+
+    if (input.schoolId !== schoolId) {
+      throw new AppError('FORBIDDEN', 'Accès refusé à cette école', 403);
+    }
+
+    const data = await this.service.create(input);
     respond(res, data, 201);
   });
 

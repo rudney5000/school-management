@@ -3,26 +3,19 @@ import { asyncHandler } from '@/shared/utils/async-handler';
 import { respond } from '@/shared/utils/respond';
 import { EventsService } from '@/modules/events/events.service';
 import { createEventSchema, UpdateEventDto } from '@/modules/events/events.schema';
-import { SubSchoolQueryDto } from '@/modules/students/students.schema';
-
-function resolvesSubSchoolId(req: Request): string {
-  if (req.user?.subSchoolId) {
-    return req.user.subSchoolId;
-  }
-  return (req.query as SubSchoolQueryDto).subSchoolId;
-}
+import { resolveSubSchoolId } from '@/shared/utils/resolvers/subSchoolId/subSchool.resolver';
 
 export class EventsController {
   private readonly service = new EventsService();
 
   getAll = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolvesSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.findAll(subSchoolId);
     respond(res, data);
   });
 
   getById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolvesSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.findById(req.params.id, subSchoolId);
     respond(res, data);
   });
@@ -41,13 +34,13 @@ export class EventsController {
   });
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolvesSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.update(req.params.id, subSchoolId, req.body as UpdateEventDto);
     respond(res, data);
   });
 
   remove = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolvesSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     await this.service.remove(req.params.id, subSchoolId);
     res.status(204).send();
   });

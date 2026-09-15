@@ -8,17 +8,13 @@ import {
   UpdateExamInput,
 } from '@/modules/exams/exams.schema';
 import { AppError } from '@/shared/errors/app-error';
-
-function resolveSubSchoolId(req: Request): string {
-  if (req.user?.subSchoolId) return req.user.subSchoolId;
-  return (req.query as { subSchoolId: string }).subSchoolId;
-}
+import { resolveSubSchoolId } from '@/shared/utils/resolvers/subSchoolId/subSchool.resolver';
 
 export class ExamsController {
   private readonly service = new ExamsService();
 
   getAll = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const { classId, teacherOnly } = req.query as { classId?: string; teacherOnly?: boolean };
 
     const data = await this.service.findAll(subSchoolId, {
@@ -29,7 +25,7 @@ export class ExamsController {
   });
 
   getById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.findById(req.params.id, subSchoolId);
     respond(res, data);
   });
@@ -38,13 +34,13 @@ export class ExamsController {
     if (!req.user) {
       throw new AppError('UNAUTHORIZED', 'Utilisateur non authentifié', 401);
     }
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.resolveExamsForParent(req.user.id, subSchoolId);
     respond(res, data);
   });
 
   create = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.create({
       ...(req.body as CreateExamInput),
       subSchoolId,
@@ -54,13 +50,13 @@ export class ExamsController {
   });
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.update(req.params.id, subSchoolId, req.body as UpdateExamInput);
     respond(res, data);
   });
 
   remove = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     await this.service.delete(req.params.id, subSchoolId);
     res.status(204).send();
   });
@@ -70,19 +66,19 @@ export class ExamResultsController {
   private readonly service = new ExamResultsService();
 
   getByExam = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.findByExam(req.params.examId, subSchoolId);
     respond(res, data);
   });
 
   getByStudent = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.findByStudent(req.params.studentId, subSchoolId);
     respond(res, data);
   });
 
   bulkUpsert = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const subSchoolId = resolveSubSchoolId(req);
+    const subSchoolId = await resolveSubSchoolId(req);
     const data = await this.service.bulkUpsert(
       req.body as BulkUpsertExamResultsInput,
       subSchoolId,
