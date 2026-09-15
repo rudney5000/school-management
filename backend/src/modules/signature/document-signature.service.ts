@@ -44,6 +44,7 @@ export class DocumentSignaturesService {
       const activeConditions = [
         eq(documentSignatures.documentType, documentType),
         eq(documentSignatures.status, 'active'),
+        eq(documentSignatures.subSchoolId, scope.subSchoolId),
         ...(scope.documentId ? [eq(documentSignatures.documentId, scope.documentId)] : []),
         ...(scope.classId ? [eq(documentSignatures.classId, scope.classId)] : []),
       ];
@@ -115,6 +116,7 @@ export class DocumentSignaturesService {
     const conditions = [
       eq(documentSignatures.documentType, documentType),
       eq(documentSignatures.status, 'active'),
+      eq(documentSignatures.subSchoolId, scope.subSchoolId),
       ...(scope.documentId ? [eq(documentSignatures.documentId, scope.documentId)] : []),
       ...(scope.classId ? [eq(documentSignatures.classId, scope.classId)] : []),
     ];
@@ -136,11 +138,11 @@ export class DocumentSignaturesService {
     };
   }
 
-  async revoke(id: string, reason: string): Promise<DocumentSignatureRecord> {
+  async revoke(id: string, reason: string, subSchoolId: string): Promise<DocumentSignatureRecord> {
     const [existing] = await db
       .select()
       .from(documentSignatures)
-      .where(eq(documentSignatures.id, id));
+      .where(and(eq(documentSignatures.id, id), eq(documentSignatures.subSchoolId, subSchoolId)));
     if (!existing) {
       throw new AppError('NOT_FOUND', 'Signature introuvable', 404);
     }
