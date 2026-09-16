@@ -26,7 +26,9 @@ services:
       - redisdata:/data
 
   minio:
-    image: minio/minio:latest
+    # MinIO no longer publishes to Docker Hub; docker.io/minio/minio now fails
+    # with "pull access denied", which blocks a fresh environment entirely.
+    image: quay.io/minio/minio:latest
     command: server /data --console-address ":9001"
     ports:
       - '9000:9000'
