@@ -8,6 +8,8 @@
     "dev": "pnpm -r --parallel dev",
     "dev:backend": "pnpm --filter @school/backend dev",
     "dev:frontend": "pnpm --filter @school/frontend dev",
+    "dev:up": "bash scripts/dev.sh",
+    "dev:down": "bash scripts/dev.sh down",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
