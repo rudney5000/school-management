@@ -2,13 +2,13 @@ workspace "School Management Backend" "Backend architecture for the school-manag
     model {
         frontend = softwareSystem "Frontend applications" "React/Vite web and Tauri clients." "External"
         backend = softwareSystem "Backend API" "Express and TypeScript modular backend." {
-            api = container "HTTP API" "Authentication, tenant access and domain endpoints." "Express, TypeScript"
+            api = container "HTTP API" "Authentication (password + SMS OTP), tenant access and domain endpoints." "Express, TypeScript"
             realtime = container "Realtime gateway" "Socket.IO connections, chat and live events." "Socket.IO"
             modules = container "Domain modules" "Schools, students, teachers, courses, exams, grades, attendance, payments, reports and schedules." "TypeScript"
             documents = container "Document services" "PDF generation, attachments and signatures." "React-PDF, S3 SDK"
-            workers = container "Background workers" "Asynchronous document and notification processing." "Node.js"
+            workers = container "Background workers" "Asynchronous document processing and SMS dispatch via Redis Streams (consumer groups, retry/backoff). See notifications.dsl." "Node.js"
             db = container "PostgreSQL" "Tenant-aware transactional data." "PostgreSQL, Drizzle ORM"
-            cache = container "Redis" "Cache and Socket.IO adapter state." "Redis"
+            cache = container "Redis" "Cache, Socket.IO adapter state and SMS Streams." "Redis"
             storage = container "MinIO/S3" "Attachments and generated documents." "S3-compatible storage"
             livekit = container "LiveKit" "Video and audio session infrastructure." "LiveKit"
 
@@ -19,7 +19,7 @@ workspace "School Management Backend" "Backend architecture for the school-manag
             socketServer = component "Socket.IO server" "Initializes realtime connections and Redis adapter integration." "Socket.IO"
             workerRunner = component "Worker runner" "Runs asynchronous jobs for documents and notifications." "Node.js"
         }
-        sms = softwareSystem "Africa's Talking SMS" "Critical notification provider." "External"
+        smsGateway = softwareSystem "android-sms-gateway (Cloud)" "External SMS gateway for OTP and notifications — one deviceId per sub-school. See notifications.dsl." "External"
         frontend -> api "Calls endpoints" "HTTPS/JSON"
         frontend -> realtime "Connects for live updates" "WebSocket"
         api -> modules "Routes validated requests" "In-process"
@@ -30,8 +30,9 @@ workspace "School Management Backend" "Backend architecture for the school-manag
         documents -> storage "Stores files" "S3 API"
         documents -> db "Stores document metadata" "SQL"
         workers -> documents "Processes document jobs" "In-process"
+        workers -> cache "Consumes SMS Streams (XREADGROUP/XACK)" "Redis"
         modules -> livekit "Creates and manages sessions" "LiveKit API"
-        modules -> sms "Sends critical notifications" "HTTPS API"
+        modules -> smsGateway "Sends SMS notifications and OTP codes" "HTTPS API"
 
         api -> httpMiddleware "Applies request middleware" "In-process"
         httpMiddleware -> routers "Passes validated requests" "In-process"
@@ -68,7 +69,7 @@ workspace "School Management Backend" "Backend architecture for the school-manag
             databaseClient -> db "6. Executes SQL query"
             services -> cache "7. Reads or updates cache when needed"
             services -> documents "8. Generates document or attachment when needed"
-            services -> sms "9. Sends notification when needed"
+            services -> smsGateway "9. Sends SMS notification when needed"
             autoLayout
         }
     }
