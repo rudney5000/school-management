@@ -7,7 +7,7 @@ import { AppError } from '@/shared/errors/app-error';
 import { env } from '@/config/env';
 import type { LoginDto, RegisterDto } from './auth.schema';
 import type { UserRole } from '@/shared/types/express';
-import { createIdentifiers } from './user-identifiers.service';
+import { createIdentifiers, findUserIdByIdentifierValue } from './user-identifiers.service';
 
 export interface TokenPayload {
   id: string;
@@ -118,7 +118,8 @@ export class AuthService {
   }
 
   async login(input: LoginDto): Promise<AuthTokens> {
-    const [user] = await db.select().from(users).where(eq(users.email, input.email)).limit(1);
+    const userId = await findUserIdByIdentifierValue(input.identifier);
+    const [user] = userId ? await db.select().from(users).where(eq(users.id, userId)).limit(1) : [];
 
     if (!user) {
       throw new AppError('UNAUTHORIZED', 'Invalid credentials', 401);
