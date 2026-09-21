@@ -1,9 +1,19 @@
 import request from 'supertest';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createApp } from '@/app';
+import { bearer } from '../setup/auth';
 import { createAdminIn, createTenant, type Tenant } from '../setup/factories';
 
 const app = createApp();
+
+const adminOf = (tenant: Tenant) =>
+  bearer({
+    id: crypto.randomUUID(),
+    email: 'admin@test.local',
+    role: 'admin',
+    schoolId: tenant.schoolId,
+    subSchoolId: tenant.subSchoolId,
+  });
 
 describe('auth', () => {
   let tenant: Tenant;
@@ -44,6 +54,49 @@ describe('auth', () => {
         .expect(401);
 
       expect(response.body.error.code).toBe('UNAUTHORIZED');
+    });
+  });
+
+  describe('POST /api/auth/register — identifiers', () => {
+    it('registers an account with only a phone and a username, no email', async () => {
+      const response = await request(app)
+        .post('/api/auth/register')
+        .set('Authorization', adminOf(tenant))
+        .send({
+          phone: '+243810000001',
+          username: 'no-email-user',
+          password: 'password123',
+          role: 'worker',
+        })
+        .expect(201);
+
+      expect(response.body.data.email).toBeUndefined();
+    });
+
+    it('rejects registration with none of email, phone or username', async () => {
+      const response = await request(app)
+        .post('/api/auth/register')
+        .set('Authorization', adminOf(tenant))
+        .send({ password: 'password123', role: 'worker' })
+        .expect(400);
+
+      expect(response.body.error.code).toBe('VALIDATION_ERROR');
+    });
+
+    it('rejects a username identical to another account email', async () => {
+      const { user: existing } = await createAdminIn(tenant.subSchoolId);
+
+      const response = await request(app)
+        .post('/api/auth/register')
+        .set('Authorization', adminOf(tenant))
+        .send({
+          username: existing.email,
+          password: 'password123',
+          role: 'worker',
+        })
+        .expect(409);
+
+      expect(response.body.error.code).toBe('CONFLICT');
     });
   });
 
