@@ -29,7 +29,7 @@ describe('parents may only read their own children payments', () => {
 
     const token = bearer({
       id: user.id,
-      email: user.email,
+      email: user.email ?? undefined,
       role: 'parent',
       schoolId: tenant.schoolId,
       subSchoolId: tenant.subSchoolId,
@@ -72,7 +72,7 @@ describe('parents may only read their own children payments', () => {
         'Authorization',
         bearer({
           id: user.id,
-          email: user.email,
+          email: user.email ?? undefined,
           role: 'parent',
           schoolId: tenant.schoolId,
           subSchoolId: tenant.subSchoolId,

@@ -48,6 +48,8 @@ export const roleEnum = pgEnum('role', [
   'student',
 ]);
 
+export const identifierTypeEnum = pgEnum('identifier_type', ['email', 'phone', 'username']);
+
 export const EventTypeEnum = pgEnum('event_type', [
   'EXAM',
   'MEETING',

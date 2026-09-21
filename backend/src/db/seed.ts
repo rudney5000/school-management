@@ -11,6 +11,7 @@ import {
   workers,
   students,
   users,
+  userIdentifiers,
   teacherSchools,
   teachers,
   parents,
@@ -248,12 +249,20 @@ async function seed() {
       isActive: true,
     });
 
-    await db.insert(users).values({
-      email: 'jean.muamba@saintjoseph.cd',
-      password: hashedPassword,
-      role: 'teacher',
-      teacherId: newTeacher.id,
-    });
+    const [teacherUser] = await db
+      .insert(users)
+      .values({
+        email: 'jean.muamba@saintjoseph.cd',
+        password: hashedPassword,
+        role: 'teacher',
+        teacherId: newTeacher.id,
+      })
+      .returning();
+
+    await db.insert(userIdentifiers).values([
+      { userId: teacherUser.id, type: 'email', value: 'jean.muamba@saintjoseph.cd' },
+      { userId: teacherUser.id, type: 'phone', value: newTeacher.phone! },
+    ]);
 
     teacher = newTeacher;
     console.log('✓ Teacher user: jean.muamba@saintjoseph.cd');
@@ -443,12 +452,19 @@ async function seed() {
       })
       .returning();
 
-    await db.insert(users).values({
-      email: 'admin@saintjoseph.cd',
-      password: hashedPassword,
-      role: 'admin',
-      workerId: worker.id,
-    });
+    const [adminUser] = await db
+      .insert(users)
+      .values({
+        email: 'admin@saintjoseph.cd',
+        password: hashedPassword,
+        role: 'admin',
+        workerId: worker.id,
+      })
+      .returning();
+
+    await db
+      .insert(userIdentifiers)
+      .values({ userId: adminUser.id, type: 'email', value: 'admin@saintjoseph.cd' });
 
     adminWorker = worker;
     console.log('✓ Admin user: admin@saintjoseph.cd');
@@ -505,12 +521,19 @@ async function seed() {
       })
       .returning();
 
-    await db.insert(users).values({
-      email: 'directeur@saintjoseph.cd',
-      password: hashedPassword,
-      role: 'director',
-      workerId: directorWorker.id,
-    });
+    const [directorUser] = await db
+      .insert(users)
+      .values({
+        email: 'directeur@saintjoseph.cd',
+        password: hashedPassword,
+        role: 'director',
+        workerId: directorWorker.id,
+      })
+      .returning();
+
+    await db
+      .insert(userIdentifiers)
+      .values({ userId: directorUser.id, type: 'email', value: 'directeur@saintjoseph.cd' });
     console.log('✓ Director user: directeur@saintjoseph.cd');
   } else {
     console.log('~ Director already exists');
@@ -532,12 +555,19 @@ async function seed() {
       })
       .returning();
 
-    await db.insert(users).values({
-      email: 'secretaire@saintjoseph.cd',
-      password: hashedPassword,
-      role: 'worker',
-      workerId: staffWorker.id,
-    });
+    const [staffUser] = await db
+      .insert(users)
+      .values({
+        email: 'secretaire@saintjoseph.cd',
+        password: hashedPassword,
+        role: 'worker',
+        workerId: staffWorker.id,
+      })
+      .returning();
+
+    await db
+      .insert(userIdentifiers)
+      .values({ userId: staffUser.id, type: 'email', value: 'secretaire@saintjoseph.cd' });
     console.log('✓ Worker user: secretaire@saintjoseph.cd');
   } else {
     console.log('~ Worker already exists');
@@ -564,12 +594,19 @@ async function seed() {
     })
     .returning();
 
-  await db.insert(users).values({
-    email: 'marie.kabila@saintjoseph.cd',
-    password: hashedPassword,
-    role: 'student',
-    studentId: student.id,
-  });
+  const [marieUser] = await db
+    .insert(users)
+    .values({
+      email: 'marie.kabila@saintjoseph.cd',
+      password: hashedPassword,
+      role: 'student',
+      studentId: student.id,
+    })
+    .returning();
+
+  await db
+    .insert(userIdentifiers)
+    .values({ userId: marieUser.id, type: 'email', value: 'marie.kabila@saintjoseph.cd' });
 
   console.log('✓ Student user: marie.kabila@saintjoseph.cd');
 
@@ -595,12 +632,19 @@ async function seed() {
     })
     .returning();
 
-  await db.insert(users).values({
-    email: 'paul.kabila@saintjoseph.cd',
-    password: hashedPassword,
-    role: 'student',
-    studentId: student2.id,
-  });
+  const [paulUser] = await db
+    .insert(users)
+    .values({
+      email: 'paul.kabila@saintjoseph.cd',
+      password: hashedPassword,
+      role: 'student',
+      studentId: student2.id,
+    })
+    .returning();
+
+  await db
+    .insert(userIdentifiers)
+    .values({ userId: paulUser.id, type: 'email', value: 'paul.kabila@saintjoseph.cd' });
 
   console.log('✓ Student 2: paul.kabila@saintjoseph.cd');
 
@@ -723,12 +767,20 @@ async function seed() {
     })
     .returning();
 
-  await db.insert(users).values({
-    email: 'sophie.kabila@saintjoseph.cd',
-    password: hashedPassword,
-    role: 'parent',
-    parentId: parent.id,
-  });
+  const [sophieUser] = await db
+    .insert(users)
+    .values({
+      email: 'sophie.kabila@saintjoseph.cd',
+      password: hashedPassword,
+      role: 'parent',
+      parentId: parent.id,
+    })
+    .returning();
+
+  await db.insert(userIdentifiers).values([
+    { userId: sophieUser.id, type: 'email', value: 'sophie.kabila@saintjoseph.cd' },
+    { userId: sophieUser.id, type: 'phone', value: parent.phone! },
+  ]);
   console.log('✓ Parent user: sophie.kabila@saintjoseph.cd');
 
   await db
@@ -799,12 +851,20 @@ async function seed() {
       })
       .returning();
 
-    await db.insert(users).values({
-      email: p.email,
-      password: hashedPassword,
-      role: 'parent',
-      parentId: newParent.id,
-    });
+    const [newParentUser] = await db
+      .insert(users)
+      .values({
+        email: p.email,
+        password: hashedPassword,
+        role: 'parent',
+        parentId: newParent.id,
+      })
+      .returning();
+
+    await db.insert(userIdentifiers).values([
+      { userId: newParentUser.id, type: 'email', value: p.email },
+      { userId: newParentUser.id, type: 'phone', value: p.phone },
+    ]);
     console.log(`✓ Parent user: ${p.email}`);
 
     if (p.childIndexes.length > 0) {

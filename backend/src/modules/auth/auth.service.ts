@@ -10,7 +10,7 @@ import type { UserRole } from '@/shared/types/express';
 
 export interface TokenPayload {
   id: string;
-  email: string;
+  email?: string;
   role: UserRole;
   schoolId: string;
   subSchoolId?: string;
@@ -23,7 +23,7 @@ export interface AuthTokens {
 
 export interface CreatedUser {
   id: string;
-  email: string;
+  email?: string;
   role: UserRole;
 }
 
@@ -58,7 +58,7 @@ export class AuthService {
       })
       .returning();
 
-    return { id: user.id, email: user.email, role: user.role as UserRole };
+    return { id: user.id, email: user.email ?? undefined, role: user.role as UserRole };
   }
 
   private async assertProfileInActorScope(input: RegisterDto, actor: Express.User): Promise<void> {
@@ -138,7 +138,7 @@ export class AuthService {
 
     return this.generateTokens({
       id: user.id,
-      email: user.email,
+      email: user.email ?? undefined,
       role: user.role as UserRole,
       schoolId: context.schoolId,
       subSchoolId: context.subSchoolId,
@@ -174,7 +174,7 @@ export class AuthService {
 
     return {
       id: user.id,
-      email: user.email,
+      email: user.email ?? undefined,
       role: user.role as UserRole,
       schoolId: context.schoolId,
       subSchoolId: context.subSchoolId,
