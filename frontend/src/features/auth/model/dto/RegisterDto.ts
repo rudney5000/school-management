@@ -1,5 +1,3 @@
-import type { LoginDto } from '@features/auth/model/dto/LoginDto';
-
 export type UserRole =
   | 'admin'
   | 'super_admin'
@@ -9,7 +7,14 @@ export type UserRole =
   | 'parent'
   | 'student';
 
-export interface RegisterDto extends LoginDto {
+// Register and login diverge on purpose: registration accepts any
+// combination of email/phone/username (at least one), while login takes a
+// single identifier that could be any of the three.
+export interface RegisterDto {
+  email?: string;
+  phone?: string;
+  username?: string;
+  password: string;
   role: UserRole;
   workerId?: string;
   parentId?: string;

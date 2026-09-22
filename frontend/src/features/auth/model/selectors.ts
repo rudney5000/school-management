@@ -23,3 +23,6 @@ export const selectAccessToken = (state: RootState) => state.auth.accessToken;
 export const selectUserId = (state: RootState) => state.auth.userId;
 export const selectSubSchoolId = (state: RootState) => state.auth.subSchoolId;
 export const selectSchoolId = (state: RootState) => state.auth.schoolId;
+export const selectEmail = (state: RootState) => state.auth.email;
+export const selectPhone = (state: RootState) => state.auth.phone;
+export const selectUsername = (state: RootState) => state.auth.username;
