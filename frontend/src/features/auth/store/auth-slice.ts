@@ -11,6 +11,8 @@ export interface AuthState {
   refreshToken: string | null;
   role: UserRole | null;
   email: string | null;
+  phone: string | null;
+  username: string | null;
   userId: string | null;
   schoolId: string | null;
   subSchoolId: string | null;
@@ -22,6 +24,8 @@ const initialState: AuthState = {
   refreshToken: localStorage.getItem('refreshToken'),
   role: (localStorage.getItem('role') as UserRole) || null,
   email: localStorage.getItem('email'),
+  phone: localStorage.getItem('phone'),
+  username: localStorage.getItem('username'),
   userId: localStorage.getItem('userId'),
   schoolId: localStorage.getItem('schoolId'),
   subSchoolId: localStorage.getItem('subSchoolId'),
@@ -33,22 +37,35 @@ export const authSlice: Slice<AuthState> = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action: PayloadAction<AuthState & { refreshToken: string }>) => {
-      const { accessToken, refreshToken, role, email, userId, schoolId, subSchoolId } =
-        action.payload;
+      const {
+        accessToken,
+        refreshToken,
+        role,
+        email,
+        phone,
+        username,
+        userId,
+        schoolId,
+        subSchoolId,
+      } = action.payload;
       state.accessToken = accessToken;
       state.refreshToken = refreshToken;
       state.role = role;
       state.email = email;
+      state.phone = phone;
+      state.username = username;
       state.userId = userId;
       state.schoolId = schoolId;
       state.subSchoolId = subSchoolId;
       state.isAuthenticated = true;
 
-      localStorage.setItem('accessToken', accessToken!);
+      if (accessToken) localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('role', role!);
-      localStorage.setItem('email', email!);
-      localStorage.setItem('schoolId', schoolId!);
+      if (role) localStorage.setItem('role', role);
+      if (email) localStorage.setItem('email', email);
+      if (phone) localStorage.setItem('phone', phone);
+      if (username) localStorage.setItem('username', username);
+      if (schoolId) localStorage.setItem('schoolId', schoolId);
       if (userId) localStorage.setItem('userId', userId);
       if (subSchoolId) localStorage.setItem('subSchoolId', subSchoolId);
     },
@@ -56,6 +73,8 @@ export const authSlice: Slice<AuthState> = createSlice({
       state.accessToken = null;
       state.role = null;
       state.email = null;
+      state.phone = null;
+      state.username = null;
       state.userId = null;
       state.schoolId = null;
       state.subSchoolId = null;
@@ -65,6 +84,8 @@ export const authSlice: Slice<AuthState> = createSlice({
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('role');
       localStorage.removeItem('email');
+      localStorage.removeItem('phone');
+      localStorage.removeItem('username');
       localStorage.removeItem('userId');
       localStorage.removeItem('schoolId');
       localStorage.removeItem('subSchoolId');

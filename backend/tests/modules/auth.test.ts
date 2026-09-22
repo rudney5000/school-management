@@ -1,9 +1,19 @@
 import request from 'supertest';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createApp } from '@/app';
-import { createAdminIn, createTenant, type Tenant } from '../setup/factories';
+import { bearer } from '../setup/auth';
+import { createAdminIn, createTenant, createUser, type Tenant } from '../setup/factories';
 
 const app = createApp();
+
+const adminOf = (tenant: Tenant) =>
+  bearer({
+    id: crypto.randomUUID(),
+    email: 'admin@test.local',
+    role: 'admin',
+    schoolId: tenant.schoolId,
+    subSchoolId: tenant.subSchoolId,
+  });
 
 describe('auth', () => {
   let tenant: Tenant;
@@ -18,7 +28,7 @@ describe('auth', () => {
 
       const response = await request(app)
         .post('/api/auth/login')
-        .send({ email: user.email, password: 'password123' })
+        .send({ identifier: user.email, password: 'password123' })
         .expect(200);
 
       expect(response.body.success).toBe(true);
@@ -26,24 +36,85 @@ describe('auth', () => {
       expect(response.body.data.refreshToken).toEqual(expect.any(String));
     });
 
+    it('logs in with a username', async () => {
+      await createUser('worker', {}, 'password123', { username: 'jdoe' });
+
+      await request(app)
+        .post('/api/auth/login')
+        .send({ identifier: 'jdoe', password: 'password123' })
+        .expect(200);
+    });
+
+    it('logs in with a phone number', async () => {
+      await createUser('worker', {}, 'password123', { phone: '+243820000002' });
+
+      await request(app)
+        .post('/api/auth/login')
+        .send({ identifier: '+243820000002', password: 'password123' })
+        .expect(200);
+    });
+
     it('rejects a wrong password', async () => {
       const { user } = await createAdminIn(tenant.subSchoolId);
 
       const response = await request(app)
         .post('/api/auth/login')
-        .send({ email: user.email, password: 'wrong-password' })
+        .send({ identifier: user.email, password: 'wrong-password' })
         .expect(401);
 
       expect(response.body.error.code).toBe('UNAUTHORIZED');
     });
 
-    it('rejects an unknown email', async () => {
+    it('rejects an unknown identifier with the same generic error as a wrong password', async () => {
       const response = await request(app)
         .post('/api/auth/login')
-        .send({ email: 'nobody@test.local', password: 'password123' })
+        .send({ identifier: 'nobody@test.local', password: 'password123' })
         .expect(401);
 
       expect(response.body.error.code).toBe('UNAUTHORIZED');
+    });
+  });
+
+  describe('POST /api/auth/register — identifiers', () => {
+    it('registers an account with only a phone and a username, no email', async () => {
+      const response = await request(app)
+        .post('/api/auth/register')
+        .set('Authorization', adminOf(tenant))
+        .send({
+          phone: '+243810000001',
+          username: 'no-email-user',
+          password: 'password123',
+          role: 'worker',
+        })
+        .expect(201);
+
+      expect(response.body.data.email).toBeUndefined();
+    });
+
+    it('rejects registration with none of email, phone or username', async () => {
+      const response = await request(app)
+        .post('/api/auth/register')
+        .set('Authorization', adminOf(tenant))
+        .send({ password: 'password123', role: 'worker' })
+        .expect(400);
+
+      expect(response.body.error.code).toBe('VALIDATION_ERROR');
+    });
+
+    it('rejects a username identical to another account email', async () => {
+      const { user: existing } = await createAdminIn(tenant.subSchoolId);
+
+      const response = await request(app)
+        .post('/api/auth/register')
+        .set('Authorization', adminOf(tenant))
+        .send({
+          username: existing.email,
+          password: 'password123',
+          role: 'worker',
+        })
+        .expect(409);
+
+      expect(response.body.error.code).toBe('CONFLICT');
     });
   });
 
@@ -53,7 +124,7 @@ describe('auth', () => {
 
       const login = await request(app)
         .post('/api/auth/login')
-        .send({ email: user.email, password: 'password123' })
+        .send({ identifier: user.email, password: 'password123' })
         .expect(200);
 
       const response = await request(app)
@@ -68,6 +139,31 @@ describe('auth', () => {
         schoolId: tenant.schoolId,
         subSchoolId: tenant.subSchoolId,
       });
+    });
+
+    it('does not crash for an account with no email', async () => {
+      await request(app)
+        .post('/api/auth/register')
+        .set('Authorization', adminOf(tenant))
+        .send({
+          phone: '+243830000003',
+          username: 'no-email-me',
+          password: 'password123',
+          role: 'worker',
+        })
+        .expect(201);
+
+      const login = await request(app)
+        .post('/api/auth/login')
+        .send({ identifier: 'no-email-me', password: 'password123' })
+        .expect(200);
+
+      const response = await request(app)
+        .get('/api/auth/me')
+        .set('Authorization', `Bearer ${login.body.data.accessToken}`)
+        .expect(200);
+
+      expect(response.body.data.email).toBeUndefined();
     });
 
     it('rejects a request without a token', async () => {

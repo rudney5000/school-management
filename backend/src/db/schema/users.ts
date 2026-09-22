@@ -10,7 +10,9 @@ export const users = pgTable(
   'users',
   {
     id: uuid('id').primaryKey().defaultRandom(),
-    email: varchar('email', { length: 255 }).notNull().unique(),
+    email: varchar('email', { length: 255 }).unique(),
+    phone: varchar('phone', { length: 20 }),
+    username: varchar('username', { length: 50 }),
     password: varchar('password', { length: 255 }).notNull(), // bcrypt hash
     role: roleEnum('role').notNull(),
     workerId: uuid('worker_id').references(() => workers.id, { onDelete: 'cascade' }),

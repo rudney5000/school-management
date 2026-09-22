@@ -445,8 +445,8 @@ export class ChatService {
 
     const subSchoolIds = [...new Set(childStudents.map((s) => s.subSchoolId))];
 
-    const staff = await db
-      .select({ id: users.id, email: users.email, role: users.role })
+    const staffRaw = await db
+      .select({ id: users.id, email: users.email, username: users.username, role: users.role })
       .from(users)
       .innerJoin(workers, eq(workers.id, users.workerId))
       .where(
@@ -457,17 +457,25 @@ export class ChatService {
       );
 
     const teachersRaw = await db
-      .select({ id: users.id, email: users.email, role: users.role })
+      .select({ id: users.id, email: users.email, username: users.username, role: users.role })
       .from(teacherSchools)
       .innerJoin(users, eq(users.teacherId, teacherSchools.teacherId))
       .where(inArray(teacherSchools.subSchoolId, subSchoolIds));
 
+    const withDisplayEmail = <T extends { email: string | null; username: string | null }>(
+      row: T,
+    ): Omit<T, 'username'> => ({ ...row, email: row.email ?? row.username ?? 'Utilisateur' });
+
+    const staff = staffRaw.map(withDisplayEmail);
+
     const seen = new Set<string>();
-    const teachers = teachersRaw.filter((t) => {
-      if (seen.has(t.id)) return false;
-      seen.add(t.id);
-      return true;
-    });
+    const teachers = teachersRaw
+      .filter((t) => {
+        if (seen.has(t.id)) return false;
+        seen.add(t.id);
+        return true;
+      })
+      .map(withDisplayEmail);
 
     return { staff, teachers };
   }

@@ -55,6 +55,7 @@ export class DocumentPdfService {
       .select({
         role: users.role,
         email: users.email,
+        username: users.username,
         workerFirstName: workers.firstName,
         workerLastName: workers.lastName,
         workerJobTitle: workers.jobTitle,
@@ -71,7 +72,7 @@ export class DocumentPdfService {
     const signerName =
       signer.workerFirstName && signer.workerLastName
         ? `${signer.workerFirstName} ${signer.workerLastName}`
-        : signer.email;
+        : (signer.email ?? signer.username ?? 'Utilisateur inconnu');
 
     const signerRoleLabel = signer.workerJobTitle ?? signer.role;
 

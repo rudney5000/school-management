@@ -15,7 +15,11 @@ export type ErrorCode =
   | 'DOCUMENTS_INCOMPLETE'
   | 'CURRICULUM_NOT_CONFIGURED'
   | 'BATCH_NOT_SUPPORTED'
-  | 'PAYMENT_NOT_CONFIRMED';
+  | 'PAYMENT_NOT_CONFIRMED'
+  | 'RATE_LIMITED'
+  | 'OTP_INVALID'
+  | 'OTP_EXPIRED'
+  | 'TOO_MANY_ATTEMPTS';
 
 export class AppError extends Error {
   readonly code: ErrorCode;

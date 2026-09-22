@@ -2,7 +2,7 @@ declare global {
   namespace Express {
     type User = {
       id: string;
-      email: string;
+      email?: string;
       role: string;
       schoolId: string;
       subSchoolId?: string;
