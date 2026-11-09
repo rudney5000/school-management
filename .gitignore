@@ -47,3 +47,5 @@ frontend/dist/
 frontend/src-tauri/target/
 frontend/src-tauri/gen/
 .early.coverage
+# pnpm content-addressable store (created inside the bind-mounted workspace)
+.pnpm-store/

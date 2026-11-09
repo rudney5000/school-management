@@ -2,8 +2,12 @@
   "name": "School Management",
   "dockerComposeFile": ["../docker-compose.yml", "docker-compose.dev.yml"],
   "service": "app",
+  "runServices": ["app", "postgres", "redis"],
   "workspaceFolder": "/workspace",
   "forwardPorts": [3000, 5173, 5432, 6379],
+  "containerEnv": {
+    "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0"
+  },
   "postCreateCommand": "pnpm install && pnpm --filter backend db:push",
   "remoteUser": "node",
   "customizations": {
@@ -32,12 +36,5 @@
         }
       }
     }
-  },
-  "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "20",
-      "installPnpm": true
-    },
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   }
 }
