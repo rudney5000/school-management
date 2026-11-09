@@ -2,13 +2,13 @@
   "name": "School Management",
   "dockerComposeFile": ["../docker-compose.yml", "docker-compose.dev.yml"],
   "service": "app",
-  "runServices": ["app", "postgres", "redis"],
+  "runServices": ["app", "postgres", "redis", "minio"],
   "workspaceFolder": "/workspace",
   "forwardPorts": [3000, 5173, 5432, 6379],
   "containerEnv": {
     "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0"
   },
-  "postCreateCommand": "pnpm install && pnpm --filter backend db:push",
+  "postCreateCommand": "sudo chown node:node node_modules backend/node_modules frontend/node_modules && pnpm install && pnpm --filter @school-hub/pdf-templates build && pnpm --filter backend db:migrate",
   "remoteUser": "node",
   "customizations": {
     "vscode": {
