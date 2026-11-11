@@ -39,3 +39,4 @@ export * from './toast/toast';
 export * from './tooltip';
 export * from './popover';
 export * from './progress';
+export * from './context-menu';
