@@ -13,6 +13,8 @@ import {
   ClipboardList,
   MessageSquare,
   CalendarCheck,
+  FileText,
+  FileStack,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { UserRole } from '@features/auth/model/dto/RegisterDto';
@@ -59,6 +61,12 @@ export const adminNav: NavGroup[] = [
         path: '/sub-schools/$subSchoolId/attendances',
       },
       { labelKey: 'nav.reports', icon: BarChart3, path: '/sub-schools/$subSchoolId/reports' },
+      { labelKey: 'nav.documents', icon: FileText, path: '/sub-schools/$subSchoolId/documents' },
+      {
+        labelKey: 'nav.documentTemplates',
+        icon: FileStack,
+        path: '/sub-schools/$subSchoolId/documents/templates',
+      },
     ],
   },
   {
@@ -201,6 +209,12 @@ export const directorNav: NavGroup[] = [
         path: '/sub-schools/$subSchoolId/attendances',
       },
       { labelKey: 'nav.reports', icon: BarChart3, path: '/sub-schools/$subSchoolId/reports' },
+      { labelKey: 'nav.documents', icon: FileText, path: '/sub-schools/$subSchoolId/documents' },
+      {
+        labelKey: 'nav.documentTemplates',
+        icon: FileStack,
+        path: '/sub-schools/$subSchoolId/documents/templates',
+      },
     ],
   },
   {

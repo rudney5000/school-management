@@ -1,0 +1,283 @@
+{
+  "basePdf": { "width": 210, "height": 297, "padding": [0, 0, 0, 0] },
+  "schemas": [
+    [
+      {
+        "name": "headerBand",
+        "type": "rectangle",
+        "position": { "x": 0, "y": 0 },
+        "width": 210,
+        "height": 34,
+        "borderWidth": 0,
+        "borderColor": "",
+        "color": "#1e3a5f",
+        "readOnly": true
+      },
+      {
+        "name": "country",
+        "type": "text",
+        "content": "RÉPUBLIQUE DÉMOCRATIQUE DU CONGO",
+        "position": { "x": 12, "y": 6 },
+        "width": 186,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontSize": 8,
+        "alignment": "center",
+        "fontColor": "#ffffff",
+        "readOnly": true
+      },
+      {
+        "name": "ministry",
+        "type": "text",
+        "content": "Ministère de l'Enseignement Primaire, Secondaire et Technique",
+        "position": { "x": 12, "y": 11 },
+        "width": 186,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontSize": 8,
+        "alignment": "center",
+        "fontColor": "#ffffff",
+        "readOnly": true
+      },
+      {
+        "name": "schoolName",
+        "type": "text",
+        "content": "{{school.name|upper}}",
+        "position": { "x": 12, "y": 17 },
+        "width": 186,
+        "height": 8,
+        "fontName": "NotoSansBold",
+        "fontSize": 15,
+        "alignment": "center",
+        "fontColor": "#ffffff"
+      },
+      {
+        "name": "docTitle",
+        "type": "text",
+        "content": "Bulletin — {{period.name}} {{period.schoolYear}}",
+        "position": { "x": 12, "y": 26 },
+        "width": 186,
+        "height": 6,
+        "fontName": "NotoSans",
+        "fontSize": 10,
+        "alignment": "center",
+        "fontColor": "#c9a227"
+      },
+      {
+        "name": "infoBand",
+        "type": "rectangle",
+        "position": { "x": 0, "y": 34 },
+        "width": 210,
+        "height": 24,
+        "borderWidth": 0,
+        "borderColor": "",
+        "color": "#f8f9fb",
+        "readOnly": true
+      },
+      {
+        "name": "infoStudent",
+        "type": "text",
+        "content": "**Élève :** {{student.fullName}}",
+        "position": { "x": 12, "y": 38 },
+        "width": 94,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontVariants": { "bold": "NotoSansBold" },
+        "textFormat": "inline-markdown",
+        "fontSize": 9.5
+      },
+      {
+        "name": "infoBirth",
+        "type": "text",
+        "content": "**Né(e) le :** {{student.birthDate|date}}",
+        "position": { "x": 12, "y": 44 },
+        "width": 94,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontVariants": { "bold": "NotoSansBold" },
+        "textFormat": "inline-markdown",
+        "fontSize": 9.5
+      },
+      {
+        "name": "infoMatricule",
+        "type": "text",
+        "content": "**Matricule :** {{student.matricule}}",
+        "position": { "x": 12, "y": 50 },
+        "width": 94,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontVariants": { "bold": "NotoSansBold" },
+        "textFormat": "inline-markdown",
+        "fontSize": 9.5
+      },
+      {
+        "name": "infoClass",
+        "type": "text",
+        "content": "**Classe :** {{class.name}}",
+        "position": { "x": 110, "y": 38 },
+        "width": 88,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontVariants": { "bold": "NotoSansBold" },
+        "textFormat": "inline-markdown",
+        "fontSize": 9.5
+      },
+      {
+        "name": "infoLevel",
+        "type": "text",
+        "content": "**Niveau :** {{class.level}}",
+        "position": { "x": 110, "y": 44 },
+        "width": 88,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontVariants": { "bold": "NotoSansBold" },
+        "textFormat": "inline-markdown",
+        "fontSize": 9.5
+      },
+      {
+        "name": "infoNumber",
+        "type": "text",
+        "content": "**N° :** {{document.number}}",
+        "position": { "x": 110, "y": 50 },
+        "width": 88,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontVariants": { "bold": "NotoSansBold" },
+        "textFormat": "inline-markdown",
+        "fontSize": 9.5
+      },
+      {
+        "name": "grades",
+        "type": "table",
+        "content": "{{rows}}",
+        "position": { "x": 12, "y": 64 },
+        "width": 186,
+        "height": 86,
+        "showHead": true,
+        "repeatHead": true,
+        "head": ["Cours", "Note", "Max", "Coef.", "Points"],
+        "headWidthPercentages": [40, 15, 15, 12, 18],
+        "tableStyles": { "borderColor": "#e5e7eb", "borderWidth": 0.3 },
+        "headStyles": {
+          "fontName": "NotoSansBold",
+          "alignment": "left",
+          "verticalAlignment": "middle",
+          "fontSize": 9,
+          "lineHeight": 1,
+          "characterSpacing": 0,
+          "fontColor": "#ffffff",
+          "backgroundColor": "#1e3a5f",
+          "borderColor": "",
+          "borderWidth": { "top": 0, "right": 0, "bottom": 0, "left": 0 },
+          "padding": { "top": 2.2, "right": 2.5, "bottom": 2.2, "left": 2.5 }
+        },
+        "bodyStyles": {
+          "fontName": "NotoSans",
+          "alignment": "left",
+          "verticalAlignment": "middle",
+          "fontSize": 9,
+          "lineHeight": 1,
+          "characterSpacing": 0,
+          "fontColor": "#1a1a1a",
+          "backgroundColor": "",
+          "borderColor": "#e5e7eb",
+          "borderWidth": { "top": 0, "right": 0, "bottom": 0.2, "left": 0 },
+          "padding": { "top": 2.2, "right": 2.5, "bottom": 2.2, "left": 2.5 },
+          "alternateBackgroundColor": "#f8f9fb"
+        },
+        "columnStyles": {
+          "alignment": { "1": "right", "2": "right", "3": "center", "4": "right" }
+        }
+      },
+      {
+        "name": "totals",
+        "type": "text",
+        "content": "**Total :** {{totals.obtained}} / {{totals.max}}    **Pourcentage :** {{totals.percent}} %    **Rang :** {{rank.position}} / {{rank.of}}",
+        "position": { "x": 12, "y": 158 },
+        "width": 186,
+        "height": 6,
+        "fontName": "NotoSans",
+        "fontVariants": { "bold": "NotoSansBold" },
+        "textFormat": "inline-markdown",
+        "fontSize": 10,
+        "fontColor": "#1e3a5f"
+      },
+      {
+        "name": "decision",
+        "type": "text",
+        "content": "**Mention :** {{mention|default:—}}    **Décision :** {{decision|default:—}}",
+        "position": { "x": 12, "y": 165 },
+        "width": 186,
+        "height": 6,
+        "fontName": "NotoSans",
+        "fontVariants": { "bold": "NotoSansBold" },
+        "textFormat": "inline-markdown",
+        "fontSize": 10
+      },
+      {
+        "name": "placeDate",
+        "type": "text",
+        "content": "Fait à {{school.city}}, le {{document.issuedAt|date}}",
+        "position": { "x": 12, "y": 190 },
+        "width": 100,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontSize": 9.5
+      },
+      {
+        "name": "signatureLine",
+        "type": "line",
+        "position": { "x": 128, "y": 214 },
+        "width": 70,
+        "height": 0.3,
+        "color": "#6b7280",
+        "readOnly": true
+      },
+      {
+        "name": "signerRole",
+        "type": "text",
+        "content": "{{signature.signerRole}}",
+        "position": { "x": 128, "y": 216 },
+        "width": 70,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontSize": 9,
+        "alignment": "center",
+        "fontColor": "#6b7280"
+      },
+      {
+        "name": "signerName",
+        "type": "text",
+        "content": "{{signature.signerName}}",
+        "position": { "x": 128, "y": 221 },
+        "width": 70,
+        "height": 5,
+        "fontName": "NotoSansBold",
+        "fontSize": 10,
+        "alignment": "center"
+      },
+      {
+        "name": "qr",
+        "type": "qrcode",
+        "content": "{{document.verifyUrl}}",
+        "position": { "x": 12, "y": 252 },
+        "width": 26,
+        "height": 26,
+        "backgroundColor": "#ffffff",
+        "barColor": "#000000"
+      },
+      {
+        "name": "verifyHint",
+        "type": "text",
+        "content": "Document n° {{document.number}}\nScannez le code QR pour vérifier son authenticité.",
+        "position": { "x": 42, "y": 260 },
+        "width": 120,
+        "height": 10,
+        "fontName": "NotoSans",
+        "fontSize": 7.5,
+        "lineHeight": 1.3,
+        "fontColor": "#6b7280"
+      }
+    ]
+  ]
+}

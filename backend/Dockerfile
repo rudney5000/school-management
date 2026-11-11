@@ -7,6 +7,7 @@ WORKDIR /app
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY backend/package.json ./backend/
 COPY packages/pdf-templates/package.json ./packages/pdf-templates/
+COPY packages/documents/package.json ./packages/documents/
 RUN pnpm install --frozen-lockfile --prod --filter @school/backend... --ignore-scripts
 
 # ── Build (deps complètes incl. dev, puis compile pdf-templates → backend) ──
@@ -16,10 +17,13 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY tsconfig.base.json ./
 COPY backend/package.json ./backend/
 COPY packages/pdf-templates/package.json ./packages/pdf-templates/
+COPY packages/documents/package.json ./packages/documents/
 RUN pnpm install --frozen-lockfile --filter @school/backend... --ignore-scripts
 COPY packages/pdf-templates/ ./packages/pdf-templates/
+COPY packages/documents/ ./packages/documents/
 COPY backend/ ./backend/
 RUN pnpm --filter @school-hub/pdf-templates build
+RUN pnpm --filter @school-hub/documents build
 RUN pnpm --filter @school/backend build
 
 # ── Production ────────────────────────────────────────────
@@ -33,6 +37,10 @@ COPY --from=deps    /app/backend/node_modules                ./backend/node_modu
 COPY --from=deps    /app/packages/pdf-templates/node_modules ./packages/pdf-templates/node_modules
 COPY --from=builder /app/packages/pdf-templates/dist         ./packages/pdf-templates/dist
 COPY --from=builder /app/packages/pdf-templates/package.json ./packages/pdf-templates/package.json
+COPY --from=deps    /app/packages/documents/node_modules     ./packages/documents/node_modules
+COPY --from=builder /app/packages/documents/dist             ./packages/documents/dist
+COPY --from=builder /app/packages/documents/fonts            ./packages/documents/fonts
+COPY --from=builder /app/packages/documents/package.json     ./packages/documents/package.json
 COPY --from=builder /app/backend/dist                         ./backend/dist
 COPY --from=builder /app/backend/src/db/migrations            ./backend/migrations
 COPY --from=builder /app/backend/package.json                 ./backend/package.json

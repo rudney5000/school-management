@@ -15,7 +15,8 @@ export type ErrorCode =
   | 'DOCUMENTS_INCOMPLETE'
   | 'CURRICULUM_NOT_CONFIGURED'
   | 'BATCH_NOT_SUPPORTED'
-  | 'PAYMENT_NOT_CONFIRMED';
+  | 'PAYMENT_NOT_CONFIRMED'
+  | 'NOT_CONFIGURED';
 
 export class AppError extends Error {
   readonly code: ErrorCode;

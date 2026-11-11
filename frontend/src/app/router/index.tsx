@@ -63,6 +63,13 @@ const localeRoute = createRoute({
   component: LocaleOutlet,
 });
 
+// Opened from the QR code printed on issued documents: public, outside /$locale.
+const verifyDocumentRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: 'verify/$documentId',
+  component: lazyRouteComponent(() => import('@/pages/verify/VerifyDocumentPage')),
+});
+
 const homeLayoutRoute = createRoute({
   getParentRoute: () => localeRoute,
   id: 'home-layout',
@@ -215,8 +222,39 @@ const reportsRoute = createRoute({
   ),
 });
 
+const documentsRoute = createRoute({
+  getParentRoute: () => subSchoolRoute,
+  path: 'documents',
+  component: lazyRouteComponent(() => import('@/pages/documents/DocumentsPage')),
+});
+
+const documentTemplatesRoute = createRoute({
+  getParentRoute: () => subSchoolRoute,
+  path: 'documents/templates',
+  component: lazyRouteComponent(() => import('@/pages/document-templates/DocumentTemplatesPage')),
+});
+
+const documentTemplateRoute = createRoute({
+  getParentRoute: () => subSchoolRoute,
+  path: 'documents/templates/$templateId',
+  component: lazyRouteComponent(() => import('@/pages/document-templates/TemplateDetailPage')),
+});
+
+const documentTemplateEditorRoute = createRoute({
+  getParentRoute: () => subSchoolRoute,
+  path: 'documents/templates/$templateId/edit',
+  component: lazyRouteComponent(() => import('@/pages/document-templates/TemplateEditorPage')),
+});
+
+const issueDocumentRoute = createRoute({
+  getParentRoute: () => subSchoolRoute,
+  path: 'documents/new/$templateId',
+  component: lazyRouteComponent(() => import('@/pages/documents/IssueDocumentPage')),
+});
+
 const routeTree = rootRoute.addChildren([
   indexRedirectRoute,
+  verifyDocumentRoute,
   localeRoute.addChildren([
     homeLayoutRoute.addChildren([homeRoute, faqRoute]),
     authLayoutRoute.addChildren([loginRoute]),
@@ -237,6 +275,11 @@ const routeTree = rootRoute.addChildren([
         assessmentsRoute,
         chatRoute,
         reportsRoute,
+        documentsRoute,
+        documentTemplatesRoute,
+        documentTemplateRoute,
+        documentTemplateEditorRoute,
+        issueDocumentRoute,
       ]),
     ]),
   ]),

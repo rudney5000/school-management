@@ -15,6 +15,27 @@
       "when": 1789511116948,
       "tag": "0001_wide_gladiator",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794312437562,
+      "tag": "0002_documents",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794318491347,
+      "tag": "0003_free_documents",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794321449256,
+      "tag": "0004_document_folders",
+      "breakpoints": true
     }
   ]
 }

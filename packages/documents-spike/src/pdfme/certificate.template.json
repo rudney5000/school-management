@@ -1,0 +1,218 @@
+{
+  "basePdf": {
+    "width": 210,
+    "height": 297,
+    "padding": [0, 0, 0, 0]
+  },
+  "schemas": [
+    [
+      {
+        "name": "country",
+        "type": "text",
+        "content": "RÉPUBLIQUE DÉMOCRATIQUE DU CONGO",
+        "position": {
+          "x": 20,
+          "y": 14
+        },
+        "width": 170,
+        "height": 5,
+        "fontName": "NotoSansBold",
+        "fontSize": 9,
+        "alignment": "center",
+        "readOnly": true
+      },
+      {
+        "name": "ministry",
+        "type": "text",
+        "content": "Ministère de l'Enseignement Primaire, Secondaire et Technique",
+        "position": {
+          "x": 20,
+          "y": 19.5
+        },
+        "width": 170,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontSize": 8.5,
+        "alignment": "center",
+        "readOnly": true
+      },
+      {
+        "name": "schoolName",
+        "type": "text",
+        "content": "{{school.name|upper}}",
+        "position": {
+          "x": 20,
+          "y": 26
+        },
+        "width": 170,
+        "height": 7,
+        "fontName": "NotoSansBold",
+        "fontSize": 13,
+        "alignment": "center",
+        "fontColor": "#1e3a5f"
+      },
+      {
+        "name": "address",
+        "type": "text",
+        "content": "{{school.address}}",
+        "position": {
+          "x": 20,
+          "y": 33
+        },
+        "width": 170,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontSize": 8.5,
+        "alignment": "center",
+        "fontColor": "#6b7280"
+      },
+      {
+        "name": "rule",
+        "type": "line",
+        "position": {
+          "x": 20,
+          "y": 41
+        },
+        "width": 170,
+        "height": 0.6,
+        "color": "#c9a227",
+        "readOnly": true
+      },
+      {
+        "name": "title",
+        "type": "text",
+        "content": "CERTIFICAT DE SCOLARITÉ",
+        "position": {
+          "x": 20,
+          "y": 50
+        },
+        "width": 170,
+        "height": 9,
+        "fontName": "NotoSansBold",
+        "fontSize": 17,
+        "alignment": "center",
+        "fontColor": "#1e3a5f",
+        "characterSpacing": 1,
+        "readOnly": true
+      },
+      {
+        "name": "number",
+        "type": "text",
+        "content": "N° {{document.number}}",
+        "position": {
+          "x": 20,
+          "y": 60
+        },
+        "width": 170,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontSize": 9,
+        "alignment": "center",
+        "fontColor": "#6b7280"
+      },
+      {
+        "name": "body",
+        "type": "text",
+        "content": "{{@paragraphs}}",
+        "position": {
+          "x": 20,
+          "y": 74
+        },
+        "width": 170,
+        "height": 150,
+        "fontName": "NotoSans",
+        "fontVariants": {
+          "bold": "NotoSansBold"
+        },
+        "textFormat": "inline-markdown",
+        "fontSize": 10,
+        "lineHeight": 1.4,
+        "alignment": "justify"
+      },
+      {
+        "name": "placeDate",
+        "type": "text",
+        "content": "Fait à {{school.city}}, le {{document.issuedAt|date}}",
+        "position": {
+          "x": 110,
+          "y": 230
+        },
+        "width": 80,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontSize": 10,
+        "alignment": "center"
+      },
+      {
+        "name": "signerRole",
+        "type": "text",
+        "content": "{{signature.signerRole}}",
+        "position": {
+          "x": 110,
+          "y": 237
+        },
+        "width": 80,
+        "height": 5,
+        "fontName": "NotoSans",
+        "fontSize": 9.5,
+        "alignment": "center",
+        "fontColor": "#6b7280"
+      },
+      {
+        "name": "signatureLine",
+        "type": "line",
+        "position": {
+          "x": 115,
+          "y": 258
+        },
+        "width": 70,
+        "height": 0.3,
+        "color": "#6b7280",
+        "readOnly": true
+      },
+      {
+        "name": "signerName",
+        "type": "text",
+        "content": "{{signature.signerName}}",
+        "position": {
+          "x": 110,
+          "y": 260
+        },
+        "width": 80,
+        "height": 5,
+        "fontName": "NotoSansBold",
+        "fontSize": 10,
+        "alignment": "center"
+      },
+      {
+        "name": "qr",
+        "type": "qrcode",
+        "content": "{{document.verifyUrl}}",
+        "position": {
+          "x": 20,
+          "y": 238
+        },
+        "width": 28,
+        "height": 28,
+        "backgroundColor": "#ffffff",
+        "barColor": "#000000"
+      },
+      {
+        "name": "verifyHint",
+        "type": "text",
+        "content": "Vérifiez ce certificat\nen scannant le code QR.",
+        "position": {
+          "x": 20,
+          "y": 268
+        },
+        "width": 60,
+        "height": 8,
+        "fontName": "NotoSans",
+        "fontSize": 7.5,
+        "lineHeight": 1.3,
+        "fontColor": "#6b7280",
+        "readOnly": true
+      }
+    ]
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "name": "@school-hub/documents-spike",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Spike: compare pdfme and TipTap -> HTML -> Gotenberg for school documents",
+  "scripts": {
+    "bench": "tsx src/bench.ts",
+    "bench:pdfme": "tsx src/bench.ts pdfme",
+    "bench:gotenberg": "tsx src/bench.ts gotenberg",
+    "gotenberg:up": "docker compose -f docker-compose.yml up -d",
+    "gotenberg:down": "docker compose -f docker-compose.yml down",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@pdfme/common": "^6.2.8",
+    "@pdfme/generator": "^6.2.8",
+    "@pdfme/schemas": "^6.2.8",
+    "@react-pdf/renderer": "^3.4.5",
+    "@school-hub/pdf-templates": "workspace:*",
+    "@tiptap/core": "^3.33.0",
+    "@tiptap/extension-table": "^3.33.0",
+    "@tiptap/extension-text-align": "^3.33.0",
+    "@tiptap/html": "^3.33.0",
+    "@tiptap/starter-kit": "^3.33.0",
+    "qrcode": "^1.5.4",
+    "react": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/qrcode": "^1.5.6",
+    "tsx": "^4.22.3",
+    "typescript": "^5.9.3"
+  }
+}

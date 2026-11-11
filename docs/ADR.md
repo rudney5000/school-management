@@ -163,3 +163,40 @@
 - `XACK` a lieu au moment où la gateway a accepté l'envoi, pas à la livraison confirmée — le cycle de vie complet (`sent`/`delivered`/`failed`) vit dans la table Postgres `notifications`, mise à jour par le webhook de la gateway (signature HMAC-SHA256 vérifiée) et, en secours, par un job de réconciliation qui poll `GET /messages/{id}` si aucun webhook n'arrive dans un délai donné
 - Si RabbitMQ devient nécessaire plus tard (écosystème multi-services/multi-langages du plugin system), cette décision est à rouvrir — non exclu à long terme, simplement pas justifié à l'échelle du pilote
 - **Point de vigilance non résolu** : aucune politique de purge/rétention n'est définie sur les streams (`MAXLEN` ou équivalent) — sans elle, `sms:out:<deviceId>` et `sms:otp:<deviceId>` croissent indéfiniment. À définir avant la mise en prod, pas nécessaire pour le pilote à faible volume.
+
+---
+
+## ADR-008 — Rendu des documents : React-PDF dans le backend (pas Gotenberg, pas pdfme)
+
+**Date** : 2026-11  
+**Statut** : ✅ Accepté (confirme le choix « React-PDF, un seul moteur » de la conception du moteur de documents)
+
+**Contexte** : Le moteur de documents (bulletins, reçus, certificats, diplômes, inscriptions, fournitures) stocke chaque modèle en base sous forme de JSON en blocs (`header`, `infoGrid`, `gradesTable`, `text`, `signatures`, `qrVerify`…), avec versions immuables et documents émis figés. Il restait à confirmer comment transformer un modèle et ses données en PDF. Un spike (`packages/documents-spike/`) a refait le bulletin et un certificat d'une page avec trois moteurs, sur la même machine (médiane de 50 rendus après 3 de chauffe) :
+
+| | React-PDF (actuel) | pdfme | TipTap → HTML → Gotenberg |
+|---|---:|---:|---:|
+| Bulletin, médiane | 137 ms | 94 ms | 555 ms |
+| Certificat, médiane | 74 ms | 245 ms | 532 ms |
+| Premier rendu (à froid) | 0,9 s | 8,9 s | 9,3 s |
+| Taille PDF (bulletin / certificat) | 13 / 13 Ko | 17 / 16 Ko | 21 / 24 Ko |
+| Lot de 40 bulletins, 4 en parallèle | 12 docs/s | 11,2 docs/s | 3,7 docs/s |
+
+Gotenberg donnait la mise en page la plus souple (HTML + CSS) et un aperçu identique au PDF dans le navigateur, mais il demande un service Chromium à part. Le backend tourne sur l'offre gratuite de Render, qui n'a pas de service privé, limite une instance à 512 Mo, la met en veille après 15 minutes d'inactivité et partage 750 heures par mois entre tous les services du compte.
+
+**Décision** :
+- Le PDF est produit **dans le process du backend avec React-PDF** : chaque bloc du modèle est un composant React-PDF.
+- Le format des modèles (JSON en blocs, variables `{{chemin|formateur}}`, validation) ne dépend pas du moteur : il reste celui de la conception.
+- L'aperçu du back-office est le PDF rendu par le même code que le document final.
+
+**Raisons** :
+- Aucun service supplémentaire : compatible avec l'offre gratuite de Render, aucune mise en veille ni quota d'heures de plus
+- Le plus rapide du spike sur le certificat, au niveau de pdfme sur le bulletin, et le plus léger en taille de fichier
+- Déjà utilisé par `packages/pdf-templates` : l'équipe le connaît, et les composants actuels servent de point de départ aux blocs
+- pdfme repose sur des positions fixes : le texte long (certificats, lettres) y est pénible, et il imposerait un autre format de modèle
+
+**Conséquences** :
+- La mise en page est limitée à ce que React-PDF sait faire (flexbox, pas de CSS complet) : les blocs comme `frame` (cadre et fond de diplôme) sont à valider tôt
+- L'éditeur visuel (étape 5) affichera un aperçu PDF rendu par le backend, pas une page HTML modifiable en direct ; chaque modification demande un nouveau rendu (environ 0,1 s)
+- Le rendu consomme la mémoire et le CPU du backend : l'émission en lot (bulletins d'une classe) passe par une tâche en arrière-plan, une classe à la fois, et la mémoire est à surveiller sur l'instance de 512 Mo
+- Le package `@school-hub/documents` appelle le rendu à travers un port `PdfRenderer` : passer à Gotenberg plus tard demandera de réécrire les blocs en HTML, mais pas les modèles, l'émission ni les règles
+- **À rouvrir** si le backend passe sur une offre payante ou si une mise en page indispensable (diplôme, bulletin officiel de l'EPST) s'avère impossible en React-PDF

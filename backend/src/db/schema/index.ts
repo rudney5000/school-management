@@ -27,3 +27,4 @@ export * from './liveSessions';
 export * from './documentSignature';
 export * from './certificates';
 export * from './reports';
+export * from './documents';

@@ -185,6 +185,8 @@
     "exams": "Examens",
     "assessments": "Évaluations",
     "reports": "Signalements",
+    "documents": "Documents",
+    "documentTemplates": "Modèles de documents",
     "teachers": "Enseignants",
     "students": "Élèves",
     "parents": "Parents",
@@ -1568,5 +1570,456 @@
       }
     },
     "questionsCount": "{{count}} questions"
+  },
+  "verifyDocument": {
+    "heading": "Vérification de document",
+    "loading": "Vérification en cours…",
+    "valid": {
+      "title": "Document authentique",
+      "text": "Ce document a bien été émis par l'établissement ci-dessous et il est toujours valable."
+    },
+    "revoked": {
+      "title": "Document révoqué",
+      "text": "Ce document a été émis par l'établissement, puis annulé. Il n'est plus valable.",
+      "textReplaced": "Ce document a été annulé et remplacé par une version corrigée. Seul le document de remplacement est valable."
+    },
+    "notFound": {
+      "title": "Document introuvable",
+      "text": "Aucun document ne correspond à ce code. Le QR code est peut-être abîmé, ou le document n'a pas été émis par cette plateforme."
+    },
+    "error": {
+      "title": "Vérification impossible",
+      "text": "Le service ne répond pas pour le moment. Vérifiez votre connexion et réessayez.",
+      "retry": "Réessayer"
+    },
+    "number": "Numéro",
+    "type": "Type",
+    "school": "Établissement",
+    "holder": "Titulaire",
+    "issuedAt": "Date d'émission",
+    "revokedAt": "Date d'annulation",
+    "replacedBy": "Remplacé par",
+    "types": {
+      "free": "Document",
+      "bulletin": "Bulletin scolaire",
+      "receipt": "Reçu de paiement",
+      "certificate": "Certificat",
+      "diploma": "Diplôme",
+      "enrollment": "Fiche d'inscription",
+      "reenrollment": "Fiche de réinscription",
+      "supplies": "Liste de fournitures"
+    },
+    "privacy": "Comparez ces informations avec le document papier. Le nom du titulaire est en partie masqué pour protéger sa vie privée, et aucune note ni aucun montant n'est affiché ici."
+  },
+  "documentsPage": {
+    "free": {
+      "title": "Nouveau document",
+      "subtitle": "Certificat, attestation… : choisissez un modèle publié, puis remplissez ses zones jaunes.",
+      "none": "Aucun modèle publié pour l'instant. Créez-en un dans Modèles de documents, puis publiez-le.",
+      "template": "Modèle",
+      "fill": "Remplir"
+    },
+    "loadFailed": "Impossible de charger la liste. Votre session a peut-être expiré : reconnectez-vous.",
+    "title": "Documents",
+    "issued": "Bulletin {{number}} émis",
+    "issue": {
+      "title": "Émettre un bulletin",
+      "subtitle": "Le bulletin est calculé à partir des notes, numéroté et enregistré. Il ne change plus ensuite : pour le corriger, on le révoque et on en émet un nouveau.",
+      "class": "Classe",
+      "period": "Période",
+      "student": "Élève",
+      "choose": "Choisir…",
+      "noStudents": "Aucun élève inscrit",
+      "submit": "Émettre"
+    },
+    "list": {
+      "title": "Documents émis",
+      "empty": "Aucun document émis pour l'instant.",
+      "number": "Numéro",
+      "student": "Élève",
+      "period": "Période",
+      "issuedAt": "Émis le",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "status": {
+      "issued": "Valide",
+      "revoked": "Révoqué"
+    },
+    "actions": {
+      "download": "Télécharger",
+      "verify": "Vérifier",
+      "revoke": "Révoquer"
+    },
+    "revokeDialog": {
+      "title": "Révoquer le document",
+      "text": "Le document {{number}} ne sera plus valable : la page de vérification l'affichera comme révoqué. Il reste enregistré pour l'historique.",
+      "reason": "Raison (obligatoire)",
+      "cancel": "Annuler",
+      "confirm": "Révoquer",
+      "done": "Document {{number}} révoqué"
+    },
+    "errors": {
+      "NO_TEMPLATE": "Aucun modèle de bulletin n'est publié pour cette école.",
+      "NOT_CONFIGURED": "Le serveur n'est pas configuré pour les documents (APP_BASE_URL manquante).",
+      "GRADES_INCOMPLETE": "Il manque des notes pour cet élève sur cette période.",
+      "CURRICULUM_NOT_CONFIGURED": "Aucun cours n'est associé à cette classe.",
+      "CONFLICT": "Ce document a déjà été révoqué.",
+      "NOT_FOUND": "L'élève, la classe ou la période est introuvable, ou l'élève n'est pas inscrit dans cette classe.",
+      "FORBIDDEN": "Vous n'avez pas accès à cette école.",
+      "unknown": "Une erreur est survenue."
+    }
+  },
+  "templatesPage": {
+    "newTemplate": {
+      "kind": "Type de modèle",
+      "free": "Document libre",
+      "freeHelp": "Certificat, attestation… Écrit à la main, rempli à l’émission.",
+      "bulletin": "Bulletin",
+      "bulletinHelp": "Imprime les notes du module Notes : un bulletin par élève et par période.",
+      "bulletinExists": "Votre école a déjà un bulletin, « {{name}} ». Ouvrez-le pour le modifier, ou archivez-le pour en créer un nouveau.",
+      "start": "Partir de",
+      "blank": "Une page simple (en-tête, infos de l’élève, tableau des notes, signatures)",
+      "fromStarter": "Le modèle « {{name}} »"
+    },
+    "library": {
+      "issue": "Émettre un document",
+      "readOnly": "Lecture seule : seuls le directeur et l'équipe de la plateforme peuvent créer, modifier ou ranger les modèles.",
+      "subtitle": "Créez les modèles propres à votre école : certificats, attestations, contrats, reçus. Clic droit sur un dossier ou un modèle pour plus d'actions.",
+      "newFolder": "Nouveau dossier",
+      "newTemplate": "Nouveau modèle",
+      "newTemplateHere": "Nouveau modèle ici",
+      "newFolderHere": "Nouveau dossier ici",
+      "openEditor": "Ouvrir dans l'éditeur",
+      "duplicate": "Dupliquer",
+      "copyOf": "{{name}} (copie)",
+      "rename": "Renommer",
+      "moveTo": "Déplacer vers…",
+      "delete": "Supprimer",
+      "save": "Enregistrer",
+      "name": "Nom",
+      "root": "Racine (aucun dossier)",
+      "search": "Rechercher un modèle",
+      "filters": {
+        "all": "Tous",
+        "published": "Publiés",
+        "drafts": "Brouillons"
+      },
+      "columns": {
+        "name": "Nom",
+        "fields": "Champs",
+        "status": "Statut",
+        "version": "Version",
+        "modified": "Modifié"
+      },
+      "published": "Publié",
+      "draft": "Brouillon",
+      "models_one": "{{count}} modèle",
+      "models_other": "{{count}} modèles",
+      "footer": "{{folders}} dossiers · {{templates}} modèles",
+      "empty": "Aucun modèle pour l'instant. Créez un dossier ou un modèle.",
+      "noMatch": "Aucun modèle ne correspond.",
+      "dropRoot": "Déposer ici pour mettre à la racine",
+      "deleteFolderText": "Supprimer le dossier « {{name}} » ? Il doit être vide.",
+      "deleteText": "Supprimer définitivement le modèle « {{name}} » ? Il n'a jamais été publié.",
+      "archiveText": "« {{name}} » a déjà été publié : il sera archivé, pas effacé, car ses versions prouvent ce qui a été émis.",
+      "deleted": "Modèle supprimé",
+      "archived": "Modèle archivé",
+      "errors": {
+        "CONFLICT": "Impossible : le dossier n'est pas vide, ou il ne peut pas aller dans lui-même.",
+        "NOT_FOUND": "Élément introuvable, la liste a peut-être changé.",
+        "FORBIDDEN": "Vous n'avez pas accès à cette école.",
+        "NOT_CONFIGURED": "Le serveur n'est pas configuré pour les documents (APP_BASE_URL manquante)."
+      }
+    },
+    "title": "Modèles de documents",
+    "empty": "Aucun modèle pour l'instant. Créez-en un à partir d'un modèle de départ.",
+    "inUse": "Utilisé pour émettre",
+    "archived": "Archivé",
+    "unpublished": "Jamais publié",
+    "version": "Version {{version}}",
+    "active": "Active",
+    "archive": "Archiver",
+    "archiveDone": "Modèle archivé",
+    "activate": "Rendre active",
+    "activated": "Version {{version}} active",
+    "previewOf": "Aperçu de",
+    "draftLabel": "Brouillon (non publié)",
+    "sampleNote": "Avec des données d'exemple, filigrane « BROUILLON ».",
+    "noDraft": "Ce modèle n'a pas de brouillon.",
+    "noVersions": "Pas encore de version publiée.",
+    "scope": {
+      "group": "Tout le groupe",
+      "thisSubSchool": "Cette filiale",
+      "otherSubSchool": "Une autre filiale"
+    },
+    "tabs": {
+      "preview": "Aperçu",
+      "versions": "Versions",
+      "draft": "Brouillon (JSON)"
+    },
+    "create": {
+      "button": "Nouveau modèle",
+      "title": "Nouveau modèle",
+      "text": "Le modèle part d'un design prêt à l'emploi, que vous pourrez ensuite modifier puis publier.",
+      "name": "Nom",
+      "starter": "Modèle de départ",
+      "scope": "Pour",
+      "submit": "Créer",
+      "done": "Modèle créé"
+    },
+    "publish": {
+      "button": "Publier",
+      "title": "Publier le brouillon",
+      "text": "Le brouillon devient une nouvelle version, utilisée pour les prochains documents. Les documents déjà émis ne changent pas.",
+      "note": "Note (facultatif)",
+      "done": "Version publiée"
+    },
+    "draft": {
+      "help": "Modification avancée du brouillon. Il est vérifié à l'enregistrement : blocs connus, variables existantes, images de votre école.",
+      "save": "Enregistrer le brouillon",
+      "saved": "Brouillon enregistré"
+    },
+    "errors": {
+      "CONFLICT": "Un modèle de ce type existe déjà ici, ou il est archivé.",
+      "NOT_FOUND": "Modèle introuvable.",
+      "FORBIDDEN": "Vous n'avez pas accès à cette école.",
+      "NOT_CONFIGURED": "Le serveur n'est pas configuré pour les documents (APP_BASE_URL manquante).",
+      "NO_TEMPLATE": "Aucun modèle publié.",
+      "invalid": "Le modèle a {{count}} problème(s), voir la liste.",
+      "json": "Le JSON n'est pas valide.",
+      "preview": "L'aperçu n'a pas pu être généré.",
+      "unknown": "Une erreur est survenue."
+    }
+  },
+  "templateEditor": {
+    "types": {
+      "free": "Document libre",
+      "bulletin": "Bulletin"
+    },
+    "blockDialog": {
+      "apply": "Appliquer",
+      "align": "Alignement",
+      "aligns": {
+        "left": "À gauche",
+        "center": "Centré",
+        "right": "À droite"
+      },
+      "size": "Taille (pt)",
+      "moveUp": "Monter",
+      "moveDown": "Descendre",
+      "remove": "Retirer"
+    },
+    "blocks": {
+      "dragHint": "Glisser pour déplacer · double-clic pour régler",
+      "header": {
+        "name": "En-tête",
+        "help": "Nom de l'école et mentions officielles, en haut de la page.",
+        "band": "Bandeau de couleur",
+        "lines": "Lignes",
+        "addLine": "Ajouter une ligne"
+      },
+      "title": {
+        "name": "Titre",
+        "help": "Un grand titre centré, avec un sous-titre.",
+        "text": "Titre",
+        "subtitle": "Sous-titre"
+      },
+      "text": {
+        "name": "Texte",
+        "help": "Un paragraphe avec des données.",
+        "text": "Texte",
+        "formHelp": "Laissez une ligne vide entre deux paragraphes. **mot** met un mot en gras."
+      },
+      "infoGrid": {
+        "name": "Infos de l'élève",
+        "help": "Libellés et valeurs en colonnes : nom, classe, matricule…",
+        "columns": "Colonnes",
+        "band": "Fond gris",
+        "label": "Libellé",
+        "value": "Valeur",
+        "add": "Ajouter une ligne"
+      },
+      "gradesTable": {
+        "name": "Tableau des notes",
+        "help": "Une ligne par cours de la classe, avec les notes du module Notes.",
+        "moreRows": "… une ligne par cours de la classe",
+        "columns": "Colonnes",
+        "columnsHelp": "Cochez les colonnes à imprimer, dans l'ordre voulu. L'intitulé vide garde celui par défaut.",
+        "data": {
+          "course": "Cours",
+          "score": "Note obtenue",
+          "max": "Maximum",
+          "coefficient": "Coefficient",
+          "points": "Points (note × coef.)"
+        },
+        "heading": "Intitulé",
+        "results": "Sous le tableau",
+        "showTotals": "Total et pourcentage",
+        "showRank": "Rang dans la classe"
+      },
+      "signatures": {
+        "name": "Signatures",
+        "help": "Lieu, date et cadres de signature (jusqu’à 3).",
+        "place": "Lieu et date",
+        "role": "Fonction",
+        "add": "Ajouter une signature",
+        "slotName": "Nom"
+      },
+      "qrVerify": {
+        "name": "QR de vérification",
+        "help": "Code QR qui renvoie vers la page de vérification du document.",
+        "position": "Position",
+        "size": "Taille (mm)",
+        "caption": "Légende",
+        "captionPlaceholder": "Par défaut : numéro du document et invitation à scanner",
+        "positions": {
+          "bottom-left": "Placé en bas à gauche de la page",
+          "bottom-right": "Placé en bas à droite de la page"
+        },
+        "positionNames": {
+          "bottom-left": "En bas à gauche",
+          "bottom-right": "En bas à droite",
+          "inline": "Ici, dans le texte"
+        }
+      },
+      "spacer": {
+        "name": "Espace",
+        "help": "Un espace vide entre deux blocs.",
+        "height": "Hauteur (mm)"
+      },
+      "watermark": {
+        "name": "Filigrane",
+        "help": "Un mot en grand, en transparence, derrière la page.",
+        "text": "Texte",
+        "opacity": "Opacité (%)",
+        "onPage": "Filigrane « {{text}} » derrière la page"
+      },
+      "image": {
+        "name": "Image",
+        "help": "Une image envoyée par l’école."
+      }
+    },
+    "variableGroups": {
+      "student": "Élève",
+      "class": "Classe",
+      "period": "Période",
+      "totals": "Résultats",
+      "rank": "Rang",
+      "school": "École",
+      "document": "Document",
+      "other": "Autres"
+    },
+    "variables": {
+      "school_name": "Nom de l'école",
+      "school_code": "Code de l'école",
+      "school_city": "Ville de l'école",
+      "school_headName": "Chef d'établissement",
+      "student_fullName": "Nom de l'élève",
+      "student_birthDate": "Date de naissance",
+      "student_gender": "Sexe",
+      "student_matricule": "Matricule",
+      "class_name": "Classe",
+      "class_level": "Niveau",
+      "period_name": "Période",
+      "period_schoolYear": "Année scolaire",
+      "totals_obtained": "Total obtenu",
+      "totals_max": "Total maximum",
+      "totals_percent": "Pourcentage",
+      "rank_position": "Rang",
+      "rank_of": "Nombre d'élèves classés",
+      "mention": "Mention",
+      "decision": "Décision",
+      "document_number": "Numéro du document",
+      "document_issuedAt": "Date d'émission"
+    },
+    "header": {
+      "published": "Publié en v{{version}}",
+      "neverPublished": "Jamais publié",
+      "fields_one": "{{count}} champ",
+      "fields_other": "{{count}} champs",
+      "required_one": "{{count}} obligatoire",
+      "required_other": "{{count}} obligatoires",
+      "unsaved": "Modifications non enregistrées",
+      "close": "Fermer",
+      "leave": "Des modifications ne sont pas enregistrées. Quitter quand même ?",
+      "versions": "Versions",
+      "preview": "Aperçu PDF",
+      "save": "Enregistrer"
+    },
+    "toolbar": {
+      "undo": "Annuler",
+      "redo": "Rétablir",
+      "bold": "Gras",
+      "italic": "Italique",
+      "underline": "Souligné",
+      "alignLeft": "Aligner à gauche",
+      "alignCenter": "Centrer",
+      "alignRight": "Aligner à droite",
+      "justify": "Justifier",
+      "insertField": "Insérer un champ",
+      "insertBlock": "Insérer un bloc",
+      "insertVariable": "Insérer une donnée",
+      "pageFormat": "Format de page",
+      "formats": {
+        "A4-portrait": "A4 portrait",
+        "A4-landscape": "A4 paysage",
+        "A5-portrait": "A5 portrait",
+        "A5-landscape": "A5 paysage"
+      },
+      "styles": {
+        "paragraph": "Paragraphe",
+        "h1": "Titre 1",
+        "h2": "Titre 2",
+        "h3": "Titre 3"
+      },
+      "fonts": {
+        "serif": "Avec empattements",
+        "sans": "Sans empattements"
+      }
+    },
+    "menu": {
+      "fieldSettings": "Réglages du champ",
+      "deleteField": "Supprimer le champ",
+      "blockSettings": "Réglages du bloc",
+      "moveUp": "Monter",
+      "moveDown": "Descendre",
+      "deleteBlock": "Supprimer le bloc",
+      "requiredBlock": "Bloc obligatoire : ne peut pas être supprimé",
+      "deleteSelection": "Supprimer la sélection"
+    },
+    "field": {
+      "newTitle": "Nouveau champ",
+      "editTitle": "Réglages du champ",
+      "help": "Une zone jaune remplie au moment d'émettre le document.",
+      "label": "Libellé",
+      "labelPlaceholder": "ex. Date de naissance",
+      "type": "Type",
+      "source": "Source",
+      "required": "Obligatoire",
+      "insert": "Insérer",
+      "types": {
+        "text": "Texte court",
+        "longText": "Texte long",
+        "date": "Date",
+        "number": "Nombre"
+      },
+      "sources": {
+        "manual": "Saisie manuelle"
+      }
+    }
+  },
+  "issuePage": {
+    "title": "Nouveau document",
+    "required": "obligatoire",
+    "remaining_one": "{{count}} champ obligatoire restant",
+    "remaining_other": "{{count}} champs obligatoires restants",
+    "generate": "Générer le PDF",
+    "progress": "{{filled}} sur {{total}} champs renseignés",
+    "next": "Aller au champ suivant",
+    "hint": "Cliquez sur une zone jaune pour la remplir.",
+    "done": "Document {{number}} émis",
+    "invalid": "Certains champs sont à corriger : ils sont en rouge.",
+    "notPublished": "Ce modèle n'est pas publié : publiez-le avant d'émettre un document."
   }
 }

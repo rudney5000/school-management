@@ -1,0 +1,48 @@
+{
+  "type": "doc",
+  "content": [
+    {
+      "type": "schoolHeader",
+      "attrs": {
+        "config": {
+          "variant": "plain",
+          "lines": [
+            "RÉPUBLIQUE DÉMOCRATIQUE DU CONGO",
+            "Ministère de l'Enseignement Primaire, Secondaire et Technique"
+          ],
+          "title": "{{school.name|upper}}",
+          "subtitle": "{{school.address}}"
+        }
+      }
+    },
+    {
+      "type": "heading",
+      "attrs": { "level": 1, "textAlign": "center" },
+      "content": [{ "type": "text", "text": "CERTIFICAT DE SCOLARITÉ" }]
+    },
+    {
+      "type": "paragraph",
+      "attrs": { "textAlign": "center" },
+      "content": [{ "type": "text", "text": "N° {{document.number}}" }]
+    },
+    {
+      "type": "signatures",
+      "attrs": {
+        "config": {
+          "place": "Fait à {{school.city}}, le {{document.issuedAt|date}}",
+          "role": "{{signature.signerRole}}",
+          "name": "{{signature.signerName}}"
+        }
+      }
+    },
+    {
+      "type": "qrVerify",
+      "attrs": {
+        "config": {
+          "url": "{{document.verifyUrl}}",
+          "caption": ["Vérifiez ce certificat", "en scannant le code QR."]
+        }
+      }
+    }
+  ]
+}

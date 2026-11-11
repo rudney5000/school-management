@@ -1,0 +1,162 @@
+{
+  "type": "doc",
+  "content": [
+    {
+      "type": "schoolHeader",
+      "attrs": {
+        "config": {
+          "variant": "band",
+          "lines": [
+            "RÉPUBLIQUE DÉMOCRATIQUE DU CONGO",
+            "Ministère de l'Enseignement Primaire, Secondaire et Technique"
+          ],
+          "title": "{{school.name|upper}}",
+          "subtitle": "Bulletin — {{period.name}} {{period.schoolYear}}"
+        }
+      }
+    },
+    {
+      "type": "table",
+      "content": [
+        {
+          "type": "tableRow",
+          "content": [
+            {
+              "type": "tableCell",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Élève : " },
+                    { "type": "text", "text": "{{student.fullName}}" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableCell",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Classe : " },
+                    { "type": "text", "text": "{{class.name}}" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "tableRow",
+          "content": [
+            {
+              "type": "tableCell",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Né(e) le : " },
+                    { "type": "text", "text": "{{student.birthDate|date}}" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableCell",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Niveau : " },
+                    { "type": "text", "text": "{{class.level}}" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "tableRow",
+          "content": [
+            {
+              "type": "tableCell",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "Matricule : " },
+                    { "type": "text", "text": "{{student.matricule}}" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableCell",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    { "type": "text", "marks": [{ "type": "bold" }], "text": "N° : " },
+                    { "type": "text", "text": "{{document.number}}" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "gradesTable",
+      "attrs": {
+        "config": { "columns": ["Cours", "Note", "Max", "Coef.", "Points"] }
+      }
+    },
+    {
+      "type": "paragraph",
+      "attrs": { "textAlign": null },
+      "content": [
+        { "type": "text", "marks": [{ "type": "bold" }], "text": "Total : " },
+        { "type": "text", "text": "{{totals.obtained}} / {{totals.max}}    " },
+        { "type": "text", "marks": [{ "type": "bold" }], "text": "Pourcentage : " },
+        { "type": "text", "text": "{{totals.percent}} %    " },
+        { "type": "text", "marks": [{ "type": "bold" }], "text": "Rang : " },
+        { "type": "text", "text": "{{rank.position}} / {{rank.of}}" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        { "type": "text", "marks": [{ "type": "bold" }], "text": "Mention : " },
+        { "type": "text", "text": "{{mention|default:—}}    " },
+        { "type": "text", "marks": [{ "type": "bold" }], "text": "Décision : " },
+        { "type": "text", "text": "{{decision|default:—}}" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        { "type": "text", "text": "Fait à {{school.city}}, le {{document.issuedAt|date}}" }
+      ]
+    },
+    {
+      "type": "signatures",
+      "attrs": {
+        "config": { "role": "{{signature.signerRole}}", "name": "{{signature.signerName}}" }
+      }
+    },
+    {
+      "type": "qrVerify",
+      "attrs": {
+        "config": {
+          "url": "{{document.verifyUrl}}",
+          "caption": [
+            "Document n° {{document.number}}",
+            "Scannez le code QR pour vérifier son authenticité."
+          ]
+        }
+      }
+    }
+  ]
+}

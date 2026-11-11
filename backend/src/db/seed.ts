@@ -37,6 +37,7 @@ import {
   reports,
   reportStatusHistory,
 } from './schema';
+import { seedDocumentTemplates } from './seed-documents';
 import { and, eq, inArray } from 'drizzle-orm';
 import { examResults, exams } from '@/db/schema/exam';
 import { DocumentSignaturesService } from '@/modules/signature/document-signature.service';
@@ -2814,6 +2815,8 @@ async function seed() {
   } else {
     console.log('⚠ Users manquants, skip reports seed');
   }
+
+  await seedDocumentTemplates();
 
   console.log('\n✓ Seed completed. Test credentials (password: password123):');
   console.log('  Admin   → admin@saintjoseph.cd');
