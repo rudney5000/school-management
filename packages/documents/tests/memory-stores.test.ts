@@ -20,6 +20,8 @@ const issued = (number: string): IssuedDocument => ({
   revokedAt: null,
   revokedReason: null,
   replacesId: null,
+  policyId: null,
+  policyVersion: null,
   issuedBy: 'u1',
   issuedAt: new Date(),
 });

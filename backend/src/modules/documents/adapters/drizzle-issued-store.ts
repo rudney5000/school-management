@@ -6,18 +6,58 @@ import {
   type IssuedDocumentStore,
   type IssuedFilter,
   type IssuingTx,
+  type NewOutboxEntry,
 } from '@school-hub/documents';
 import { db } from '@/db';
-import { documentNumberSequences, issuedDocuments } from '@/db/schema';
+import { documentNumberSequences, documentOutbox, issuedDocuments } from '@/db/schema';
 
 type Db = typeof db;
-type Tx = Parameters<Parameters<Db['transaction']>[0]>[0];
+export type Tx = Parameters<Parameters<Db['transaction']>[0]>[0];
 type IssuedRow = typeof issuedDocuments.$inferSelect;
 
 const toDocument = ({ signedByUserId: _s, signedAt: _a, ...row }: IssuedRow): IssuedDocument => row;
 
-class DrizzleIssuingTx implements IssuingTx {
-  constructor(private readonly tx: Tx) {}
+function conditionsOf(filter: IssuedFilter): SQL[] {
+  const conditions: SQL[] = [];
+  if (filter.schoolId) conditions.push(eq(issuedDocuments.schoolId, filter.schoolId));
+  if (filter.subSchoolId) conditions.push(eq(issuedDocuments.subSchoolId, filter.subSchoolId));
+  if (filter.documentType) conditions.push(eq(issuedDocuments.documentType, filter.documentType));
+  if (filter.subjectType) conditions.push(eq(issuedDocuments.subjectType, filter.subjectType));
+  if (filter.subjectId) conditions.push(eq(issuedDocuments.subjectId, filter.subjectId));
+  if (filter.replacesId) conditions.push(eq(issuedDocuments.replacesId, filter.replacesId));
+  if (filter.status) conditions.push(eq(issuedDocuments.status, filter.status));
+  return conditions;
+}
+
+async function listIssued(executor: Db | Tx, filter: IssuedFilter) {
+  const query = executor
+    .select()
+    .from(issuedDocuments)
+    .where(and(...conditionsOf(filter)))
+    .orderBy(desc(issuedDocuments.issuedAt));
+  const rows = filter.limit === undefined ? await query : await query.limit(filter.limit);
+  return rows.map(toDocument);
+}
+
+/** The policy functions of the backend receive this, and read their tables through `db`. */
+export class DrizzleIssuingTx implements IssuingTx {
+  constructor(readonly tx: Tx) {}
+
+  /**
+   * A transaction-level advisory lock on the key: released by the commit or
+   * the rollback, never forgotten.
+   */
+  async lockSubject(key: string) {
+    await this.tx.execute(sql`SELECT pg_advisory_xact_lock(hashtextextended(${key}, 0))`);
+  }
+
+  async listIssued(filter: IssuedFilter) {
+    return listIssued(this.tx, filter);
+  }
+
+  async enqueue(entries: NewOutboxEntry[]) {
+    if (entries.length) await this.tx.insert(documentOutbox).values(entries);
+  }
 
   /**
    * One statement creates the counter or increments it. The row stays locked
@@ -59,8 +99,8 @@ class DrizzleIssuingTx implements IssuingTx {
   }
 }
 
-export class DrizzleIssuedDocumentStore implements IssuedDocumentStore {
-  transaction<T>(work: (tx: IssuingTx) => Promise<T>): Promise<T> {
+export class DrizzleIssuedDocumentStore implements IssuedDocumentStore<DrizzleIssuingTx> {
+  transaction<T>(work: (tx: DrizzleIssuingTx) => Promise<T>): Promise<T> {
     return db.transaction((tx) => work(new DrizzleIssuingTx(tx)));
   }
 
@@ -70,22 +110,6 @@ export class DrizzleIssuedDocumentStore implements IssuedDocumentStore {
   }
 
   async list(filter: IssuedFilter) {
-    const conditions: SQL[] = [];
-    if (filter.schoolId) conditions.push(eq(issuedDocuments.schoolId, filter.schoolId));
-    if (filter.subSchoolId) conditions.push(eq(issuedDocuments.subSchoolId, filter.subSchoolId));
-    if (filter.documentType) {
-      conditions.push(eq(issuedDocuments.documentType, filter.documentType));
-    }
-    if (filter.subjectType) conditions.push(eq(issuedDocuments.subjectType, filter.subjectType));
-    if (filter.subjectId) conditions.push(eq(issuedDocuments.subjectId, filter.subjectId));
-    if (filter.replacesId) conditions.push(eq(issuedDocuments.replacesId, filter.replacesId));
-
-    const query = db
-      .select()
-      .from(issuedDocuments)
-      .where(and(...conditions))
-      .orderBy(desc(issuedDocuments.issuedAt));
-    const rows = filter.limit === undefined ? await query : await query.limit(filter.limit);
-    return rows.map(toDocument);
+    return listIssued(db, filter);
   }
 }

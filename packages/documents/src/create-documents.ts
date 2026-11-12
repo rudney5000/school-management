@@ -1,20 +1,38 @@
 import type { DocumentTypeKey } from './document-types/define';
 import { renderDocument, type PdfRenderer } from './engine/render';
 import { IssuingService } from './issuing/issuing-service';
+import { builtinPolicies } from './policies/builtins';
+import { OutboxService, OutboxWorker } from './policies/outbox';
+import { PolicyService } from './policies/policy-service';
+import { PolicyRunner, type PolicyImplementations } from './policies/runtime';
 import type {
   AssetStore,
   Collector,
   FileStore,
   FolderStore,
   IssuedDocumentStore,
+  IssuingTx,
+  OutboxEntry,
+  OutboxStore,
+  PolicyStore,
   TemplateStore,
 } from './ports';
 import { TemplateService } from './templates/template-service';
 
-export interface DocumentsConfig {
+export interface DocumentsConfig<Tx extends IssuingTx = IssuingTx> {
   templates: TemplateStore;
   folders: FolderStore;
-  issued: IssuedDocumentStore;
+  issued: IssuedDocumentStore<Tx>;
+  policies: PolicyStore;
+  outbox: OutboxStore;
+  /**
+   * The policy functions that read the application's tables. requireRole and
+   * oncePerSubject come with the package; a function without implementation
+   * cannot be used in a policy.
+   */
+  policyFunctions?: PolicyImplementations<Tx>;
+  /** Called when an after… action fails, before it is retried. */
+  onOutboxError?: (error: unknown, entry: OutboxEntry | null) => void;
   files: FileStore;
   assets: AssetStore;
   collectors: Partial<Record<DocumentTypeKey, Collector>>;
@@ -26,13 +44,19 @@ export interface DocumentsConfig {
   timeZone?: string;
 }
 
-export interface Documents {
+export interface Documents<Tx extends IssuingTx = IssuingTx> {
   templates: TemplateService;
-  issuing: IssuingService;
+  issuing: IssuingService<Tx>;
+  policies: PolicyService;
+  outbox: OutboxService;
+  /** Not started: the application starts it with its server, and never in tests. */
+  worker: OutboxWorker;
 }
 
 /** The single entry point of the package: the backend passes its stores and collectors. */
-export function createDocuments(config: DocumentsConfig): Documents {
+export function createDocuments<Tx extends IssuingTx = IssuingTx>(
+  config: DocumentsConfig<Tx>,
+): Documents<Tx> {
   let base: URL;
   try {
     base = new URL(config.verifyBaseUrl);
@@ -54,8 +78,27 @@ export function createDocuments(config: DocumentsConfig): Documents {
     renderer,
     now,
   });
-  const issuing = new IssuingService({
+  const timeZone = config.timeZone ?? 'Africa/Kinshasa';
+  const localDate = (at: Date) =>
+    new Intl.DateTimeFormat('en-CA', {
+      timeZone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(at);
+  const runner = new PolicyRunner<Tx>({
+    ...config.policyFunctions,
+    ...builtinPolicies({ localDate }),
+  } as PolicyImplementations<Tx>);
+  const policies = new PolicyService({
+    policies: config.policies,
+    implemented: () => runner.implemented(),
+    now,
+  });
+  const issuing = new IssuingService<Tx>({
     templates,
+    policies,
+    runner,
     issued: config.issued,
     files: config.files,
     assets: config.assets,
@@ -63,7 +106,15 @@ export function createDocuments(config: DocumentsConfig): Documents {
     renderer,
     verifyBaseUrl: base.toString().replace(/\/+$/, ''),
     now,
-    timeZone: config.timeZone ?? 'Africa/Kinshasa',
+    timeZone,
   });
-  return { templates, issuing };
+  const outbox = new OutboxService({ outbox: config.outbox, now });
+  const worker = new OutboxWorker({
+    outbox: config.outbox,
+    issued: config.issued,
+    runner,
+    now,
+    onError: config.onOutboxError,
+  });
+  return { templates, issuing, policies, outbox, worker };
 }

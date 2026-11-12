@@ -11,8 +11,12 @@ import type {
   IssuedDocument,
   IssuedDocumentStore,
   IssuedFilter,
+  IssuingTx,
   Locale,
+  PolicyStep,
 } from '../ports';
+import type { PolicyService } from '../policies/policy-service';
+import type { PolicyRunner } from '../policies/runtime';
 import { canAccess, loadLayoutAssets, type TemplateService } from '../templates/template-service';
 import { sha256 } from './hash';
 import { checkFieldValues } from './fields';
@@ -53,9 +57,11 @@ export interface PublicVerification {
   replacedBy: string | null;
 }
 
-export interface IssuingServiceDeps {
+export interface IssuingServiceDeps<Tx extends IssuingTx = IssuingTx> {
   templates: TemplateService;
-  issued: IssuedDocumentStore;
+  policies: PolicyService;
+  runner: PolicyRunner<Tx>;
+  issued: IssuedDocumentStore<Tx>;
   files: FileStore;
   assets: AssetStore;
   collectors: Partial<Record<DocumentTypeKey, Collector>>;
@@ -72,8 +78,8 @@ export const maskName = (name: string) =>
     .map((part) => `${part[0]!.toUpperCase()}***`)
     .join(' ');
 
-export class IssuingService {
-  constructor(private readonly deps: IssuingServiceDeps) {}
+export class IssuingService<Tx extends IssuingTx = IssuingTx> {
+  constructor(private readonly deps: IssuingServiceDeps<Tx>) {}
 
   /** The calendar day in the school's time zone: 23:30 UTC is already tomorrow in Kinshasa. */
   private localDate(at: Date): string {
@@ -91,9 +97,10 @@ export class IssuingService {
   }
 
   /**
-   * Issues a document: template, data, number, hash, PDF stored, row
-   * inserted. The number is taken inside the transaction and released if
-   * anything fails before the commit, so numbers have no gaps.
+   * Issues a document: template, data, policy checks, number, hash, PDF
+   * stored, row and after… actions inserted. Everything after the checks
+   * runs in one transaction: a refusal or a failure takes no number and
+   * leaves no action behind.
    */
   async issue(input: IssueInput): Promise<IssuedDocument> {
     const { scope, actor } = input;
@@ -149,21 +156,53 @@ export class IssuingService {
     }
 
     const assets = await loadLayoutAssets(this.deps.assets, template.schoolId, version.layout);
+    const policy = await this.deps.policies.resolve(scope, input.type);
+    const steps: PolicyStep[] = policy?.version.steps ?? [];
     const id = randomUUID();
     const verifyUrl = `${this.deps.verifyBaseUrl}/verify/${id}`;
+    const subjectId = this.subjectId(type, params.data);
+    const subject = type.subject && subjectId ? { type: type.subject, id: subjectId } : null;
 
     return this.deps.issued.transaction(async (tx) => {
       const at = this.deps.now();
       const issuedAt = this.localDate(at);
+      if (subject) {
+        await tx.lockSubject(`${scope.schoolId}:${input.type}:${subject.type}:${subject.id}`);
+      }
+      const checkContext = {
+        tx,
+        actor,
+        documentType: input.type,
+        schoolId: scope.schoolId,
+        subSchoolId: scope.subSchoolId,
+        subject,
+        today: issuedAt,
+        now: at,
+      };
 
+      let old: IssuedDocument | null = null;
       if (input.replaces) {
-        const old = await this.deps.issued.findById(input.replaces.id);
+        old = await this.deps.issued.findById(input.replaces.id);
         if (!old || old.subSchoolId !== scope.subSchoolId || old.documentType !== input.type) {
           throw new DocumentError('NOT_FOUND', `Document ${input.replaces.id} not found`);
         }
         if (old.status === 'revoked') throw new DocumentError('CONFLICT', 'Already revoked');
-        await tx.revoke(old.id, input.replaces.reason, at);
+        await this.deps.runner.check(steps, 'beforeRevoke', {
+          ...checkContext,
+          params: null,
+          payload: null,
+          document: old,
+          replacesId: null,
+        });
       }
+      await this.deps.runner.check(steps, 'beforeIssue', {
+        ...checkContext,
+        params: params.data,
+        payload: payload.data,
+        document: null,
+        replacesId: old?.id ?? null,
+      });
+      if (old) await tx.revoke(old.id, input.replaces!.reason, at);
 
       let number: string = id;
       if (type.numbering) {
@@ -205,7 +244,7 @@ export class IssuingService {
         documentType: input.type,
         number,
         subjectType: type.subject,
-        subjectId: this.subjectId(type, params.data),
+        subjectId,
         templateId: template.id,
         templateVersion: version.version,
         payload: payload.data,
@@ -216,10 +255,16 @@ export class IssuingService {
         revokedAt: null,
         revokedReason: null,
         replacesId: input.replaces?.id ?? null,
+        policyId: policy?.policy.id ?? null,
+        policyVersion: policy?.version.version ?? null,
         issuedBy: actor.userId,
         issuedAt: at,
       };
       await tx.insert(doc);
+      await tx.enqueue([
+        ...(old ? this.deps.runner.actions(steps, 'afterRevoke', old, at) : []),
+        ...this.deps.runner.actions(steps, 'afterIssue', doc, at),
+      ]);
       return doc;
     });
   }
@@ -258,13 +303,36 @@ export class IssuingService {
     return { document, pdf: await this.deps.files.get(document.pdfKey) };
   }
 
-  /** The document stays stored for history; the verification page shows it as revoked. */
+  /**
+   * The document stays stored for history; the verification page shows it as
+   * revoked. The policy in force today applies, not the one of the issue.
+   */
   async revoke(actor: Actor, id: string, reason: string): Promise<IssuedDocument> {
     if (!reason.trim()) throw new DocumentError('INVALID_PARAMS', 'A reason is required');
     const doc = await this.get(actor, id);
     if (doc.status === 'revoked') throw new DocumentError('CONFLICT', 'Already revoked');
+    const policy = await this.deps.policies.resolve(doc, doc.documentType);
+    const steps = policy?.version.steps ?? [];
     const at = this.deps.now();
-    await this.deps.issued.transaction((tx) => tx.revoke(id, reason, at));
+    await this.deps.issued.transaction(async (tx) => {
+      await this.deps.runner.check(steps, 'beforeRevoke', {
+        tx,
+        actor,
+        documentType: doc.documentType,
+        schoolId: doc.schoolId,
+        subSchoolId: doc.subSchoolId,
+        subject:
+          doc.subjectType && doc.subjectId ? { type: doc.subjectType, id: doc.subjectId } : null,
+        params: null,
+        payload: null,
+        document: doc,
+        replacesId: null,
+        today: this.localDate(at),
+        now: at,
+      });
+      await tx.revoke(id, reason, at);
+      await tx.enqueue(this.deps.runner.actions(steps, 'afterRevoke', doc, at));
+    });
     return { ...doc, status: 'revoked', revokedAt: at, revokedReason: reason };
   }
 

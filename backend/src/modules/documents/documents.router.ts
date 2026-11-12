@@ -6,6 +6,9 @@ import { DocumentsController } from './documents.controller';
 import {
   activateSchema,
   createFolderSchema,
+  createPolicySchema,
+  listOutboxQuerySchema,
+  savePolicyDraftSchema,
   createTemplateSchema,
   moveFolderSchema,
   moveTemplateSchema,
@@ -129,5 +132,37 @@ router.post(
   validate({ body: revokeSchema }),
   controller.revoke,
 );
+
+// Policies and their actions: what a school allows, refuses and does after an issue.
+router.get('/policy-functions', manage, controller.listPolicyFunctions);
+router.get('/policies', manage, controller.listPolicies);
+router.post('/policies', manage, validate({ body: createPolicySchema }), controller.createPolicy);
+router.get('/policies/:id', manage, byId, controller.getPolicy);
+router.get('/policies/:id/versions', manage, byId, controller.listPolicyVersions);
+router.put(
+  '/policies/:id/draft',
+  manage,
+  byId,
+  validate({ body: savePolicyDraftSchema }),
+  controller.savePolicyDraft,
+);
+router.post(
+  '/policies/:id/publish',
+  manage,
+  byId,
+  validate({ body: publishSchema }),
+  controller.publishPolicy,
+);
+router.post(
+  '/policies/:id/activate',
+  manage,
+  byId,
+  validate({ body: activateSchema }),
+  controller.activatePolicy,
+);
+router.post('/policies/:id/archive', manage, byId, controller.archivePolicy);
+
+router.get('/outbox', manage, validate({ query: listOutboxQuerySchema }), controller.listOutbox);
+router.post('/outbox/:id/retry', manage, byId, controller.retryOutbox);
 
 export { router as documentsRouter };

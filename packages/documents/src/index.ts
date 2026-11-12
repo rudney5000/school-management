@@ -53,6 +53,53 @@ export {
   type PublicVerification,
 } from './issuing/issuing-service';
 export { canonicalJson, sha256 } from './issuing/hash';
+export {
+  POLICY_EVENTS,
+  REFUSAL_CODES,
+  definePolicyFunction,
+  type PolicyEvent,
+  type CheckEvent,
+  type ActionEvent,
+  type RefusalCode,
+  type PolicyFunctionDefinition,
+} from './policies/define';
+export {
+  POLICY_FUNCTIONS,
+  PAYMENT_TYPES,
+  USER_ROLES,
+  getPolicyFunction,
+  type PolicyFunctionName,
+  type CheckFunctionName,
+  type ActionFunctionName,
+  type PolicyArgs,
+} from './policies/catalog';
+export {
+  validatePolicySteps,
+  assertPolicySteps,
+  MAX_POLICY_STEPS,
+  type PolicyValidation,
+} from './policies/validate';
+export {
+  PolicyRunner,
+  type PolicyCheckContext,
+  type PolicyCheckResult,
+  type PolicyActionContext,
+  type PolicyImplementations,
+  type CheckImplementation,
+  type ActionImplementation,
+} from './policies/runtime';
+export {
+  PolicyService,
+  type ResolvedPolicy,
+  type PolicyFunctionInfo,
+} from './policies/policy-service';
+export {
+  OutboxWorker,
+  OutboxService,
+  outcomeOf,
+  MAX_ATTEMPTS,
+  RETRY_DELAYS_MS,
+} from './policies/outbox';
 export { checkFieldValues } from './issuing/fields';
 export {
   documentTables,
@@ -60,6 +107,8 @@ export {
   subjectTypeEnum,
   issuedStatusEnum,
   assetKindEnum,
+  policyEventEnum,
+  outboxStatusEnum,
   type DocumentTables,
   type HostTables,
 } from './schema';

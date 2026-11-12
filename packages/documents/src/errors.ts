@@ -22,7 +22,20 @@ export type DocumentErrorCode =
   | 'INVALID_PAYLOAD'
   | 'NO_TEMPLATE'
   | 'NOT_FOUND'
-  | 'CONFLICT';
+  | 'CONFLICT'
+  // Publication of a policy: INVALID_POLICY carries one issue per faulty step.
+  | 'INVALID_POLICY'
+  | 'UNKNOWN_FUNCTION'
+  | 'EVENT_NOT_ALLOWED'
+  | 'FUNCTION_NOT_ALLOWED'
+  | 'INVALID_ARGS'
+  | 'TOO_MANY_STEPS'
+  // Refusals of a before… step: the issue or the revocation does not happen.
+  | 'FEES_UNPAID'
+  | 'MISSING_GRADES'
+  | 'ATTENDANCE_TOO_LOW'
+  | 'ALREADY_ISSUED'
+  | 'ROLE_NOT_ALLOWED';
 
 /** One problem found in a template, located by a JSON path such as `blocks.3.text`. */
 export interface LayoutIssue {

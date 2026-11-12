@@ -36,6 +36,13 @@
       "when": 1794321449256,
       "tag": "0004_document_folders",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794493228920,
+      "tag": "0005_document_policies",
+      "breakpoints": true
     }
   ]
 }

@@ -7,12 +7,15 @@ import {
   type Actor,
   type Collector,
   type PdfRenderer,
+  type PolicyImplementations,
 } from '../src';
 import {
   MemoryAssetStore,
   MemoryFileStore,
   MemoryFolderStore,
   MemoryIssuedDocumentStore,
+  MemoryOutboxStore,
+  MemoryPolicyStore,
   MemoryTemplateStore,
 } from '../src/testing';
 
@@ -48,12 +51,17 @@ export function setup(
     renderer?: PdfRenderer;
     collector?: Collector;
     now?: () => Date;
+    policyFunctions?: PolicyImplementations;
   } = {},
 ) {
+  const now = options.now ?? (() => new Date('2025-12-19T10:00:00Z'));
+  const outbox = new MemoryOutboxStore();
   const stores = {
     templates: new MemoryTemplateStore(),
     folders: new MemoryFolderStore(),
-    issued: new MemoryIssuedDocumentStore(),
+    policies: new MemoryPolicyStore(),
+    outbox,
+    issued: new MemoryIssuedDocumentStore(outbox),
     files: new MemoryFileStore(),
     assets: new MemoryAssetStore(),
   };
@@ -63,9 +71,11 @@ export function setup(
     collectors: { bulletin: collector, free: { collect: async () => freeDocument.sample } },
     verifyBaseUrl: 'https://app.example.org/',
     renderer: options.renderer,
-    now: options.now ?? (() => new Date('2025-12-19T10:00:00Z')),
+    now,
+    policyFunctions: options.policyFunctions,
   });
-  return { ...stores, ...documents };
+  // `outbox` is the service; the memory store stays reachable for assertions.
+  return { ...stores, ...documents, outboxStore: outbox };
 }
 
 /** A group template for Saint-Joseph, published once. */

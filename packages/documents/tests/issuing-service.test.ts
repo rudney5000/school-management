@@ -5,6 +5,8 @@ import {
   MemoryFileStore,
   MemoryFolderStore,
   MemoryIssuedDocumentStore,
+  MemoryOutboxStore,
+  MemoryPolicyStore,
   MemoryTemplateStore,
 } from '../src/testing';
 import {
@@ -220,6 +222,8 @@ describe('createDocuments', () => {
       templates: new MemoryTemplateStore(),
       folders: new MemoryFolderStore(),
       issued: new MemoryIssuedDocumentStore(),
+      policies: new MemoryPolicyStore(),
+      outbox: new MemoryOutboxStore(),
       files: new MemoryFileStore(),
       assets: new MemoryAssetStore(),
       collectors: {},
