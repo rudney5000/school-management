@@ -34,6 +34,18 @@ const DOCUMENT_ERROR_STATUS: Record<DocumentErrorCode, number> = {
   NO_TEMPLATE: 422,
   NOT_FOUND: 404,
   CONFLICT: 409,
+  INVALID_POLICY: 400,
+  UNKNOWN_FUNCTION: 400,
+  EVENT_NOT_ALLOWED: 400,
+  FUNCTION_NOT_ALLOWED: 400,
+  INVALID_ARGS: 400,
+  TOO_MANY_STEPS: 400,
+  // The school's policy refuses: the request is well formed, the situation does not allow it.
+  FEES_UNPAID: 422,
+  MISSING_GRADES: 422,
+  ATTENDANCE_TOO_LOW: 422,
+  ALREADY_ISSUED: 422,
+  ROLE_NOT_ALLOWED: 422,
 };
 
 export function errorHandler(

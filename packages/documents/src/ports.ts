@@ -1,6 +1,7 @@
 import type { DocumentTypeKey, SubjectType } from './document-types/define';
 import type { AssetFile } from './blocks/context';
 import type { LayoutInput } from './engine/layout';
+import type { PolicyEvent } from './policies/define';
 
 /**
  * What the package asks of the application. The backend implements these
@@ -125,6 +126,9 @@ export interface IssuedDocument {
   revokedAt: Date | null;
   revokedReason: string | null;
   replacesId: string | null;
+  /** The policy applied at issue, null when the school has none: answers "why was it allowed". */
+  policyId: string | null;
+  policyVersion: number | null;
   issuedBy: string;
   issuedAt: Date;
 }
@@ -137,12 +141,22 @@ export interface IssuedFilter {
   subjectId?: string;
   /** The document that corrects this one. */
   replacesId?: string;
+  status?: IssuedStatus;
   /** Most recent first; at most this many. */
   limit?: number;
 }
 
 /** Everything done inside one issuing transaction commits or rolls back together. */
 export interface IssuingTx {
+  /**
+   * Held until the transaction ends: two issues about the same subject run one
+   * after the other, so a check such as oncePerSubject sees the first one.
+   */
+  lockSubject(key: string): Promise<void>;
+  /** Reads inside the transaction, after the lock: sees what the previous holder committed. */
+  listIssued(filter: IssuedFilter): Promise<IssuedDocument[]>;
+  /** The after… actions, written with the document: both exist or neither does. */
+  enqueue(entries: NewOutboxEntry[]): Promise<void>;
   /** Locks the counter row until commit, so numbers have no gaps and no duplicates. */
   nextNumber(subSchoolId: string, type: DocumentTypeKey, period: string): Promise<number>;
   insert(doc: IssuedDocument): Promise<void>;
@@ -153,8 +167,12 @@ export interface IssuingTx {
   revoke(id: string, reason: string, at: Date): Promise<void>;
 }
 
-export interface IssuedDocumentStore {
-  transaction<T>(work: (tx: IssuingTx) => Promise<T>): Promise<T>;
+/**
+ * Generic on the transaction, so the policy functions the backend implements
+ * receive its own transaction and can read its tables in it.
+ */
+export interface IssuedDocumentStore<Tx extends IssuingTx = IssuingTx> {
+  transaction<T>(work: (tx: Tx) => Promise<T>): Promise<T>;
   findById(id: string): Promise<IssuedDocument | null>;
   /** Most recent first. */
   list(filter: IssuedFilter): Promise<IssuedDocument[]>;
@@ -181,6 +199,8 @@ export interface AssetStore {
 export interface Actor {
   userId: string;
   schoolId: string | null;
+  /** The user's role (director, admin…), read by the requireRole policy function. */
+  role?: string;
 }
 
 export type Locale = 'fr' | 'en';
@@ -188,4 +208,116 @@ export type Locale = 'fr' | 'en';
 /** Implemented by the backend for each document type: reads the data and does the maths. */
 export interface Collector<P = unknown, D = unknown> {
   collect(params: P, ctx: { schoolId: string; subSchoolId: string; locale: Locale }): Promise<D>;
+}
+
+/** One step of a policy: on this event, run this function of the catalogue with these args. */
+export interface PolicyStep {
+  on: PolicyEvent;
+  fn: string;
+  args?: Record<string, unknown>;
+}
+
+/**
+ * The rules of a group (subSchoolId null) or of a sub-school for one type of
+ * document, kept apart from the template: a rule changes without republishing
+ * the design. At most one live policy per scope and type.
+ */
+export interface DocumentPolicy {
+  id: string;
+  schoolId: string;
+  subSchoolId: string | null;
+  documentType: DocumentTypeKey;
+  /** As last saved; checked again at publication. */
+  draftSteps: PolicyStep[] | null;
+  activeVersion: number | null;
+  archivedAt: Date | null;
+  createdBy: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type NewPolicy = Pick<
+  DocumentPolicy,
+  'schoolId' | 'subSchoolId' | 'documentType' | 'draftSteps' | 'createdBy'
+>;
+
+/** A published version of the steps. Never updated, never deleted. */
+export interface PolicyVersion {
+  policyId: string;
+  version: number;
+  steps: PolicyStep[];
+  note: string | null;
+  publishedBy: string;
+  publishedAt: Date;
+}
+
+export interface PolicyStore {
+  findById(id: string): Promise<DocumentPolicy | null>;
+  /** The non-archived policy of this exact scope (sub-school OR group). */
+  findForScope(scope: Scope, type: DocumentTypeKey): Promise<DocumentPolicy | null>;
+  listForSchool(schoolId: string): Promise<DocumentPolicy[]>;
+  /** Fails with CONFLICT when the scope already has a live policy for the type. */
+  insert(policy: NewPolicy): Promise<DocumentPolicy>;
+  saveDraft(id: string, steps: PolicyStep[]): Promise<void>;
+  findVersion(id: string, version: number): Promise<PolicyVersion | null>;
+  listVersions(id: string): Promise<PolicyVersion[]>;
+  latestVersion(id: string): Promise<number>;
+  /** Fails with CONFLICT when the version already exists. */
+  appendVersion(version: PolicyVersion): Promise<void>;
+  setActive(id: string, version: number): Promise<void>;
+  archive(id: string, at: Date): Promise<void>;
+}
+
+export type OutboxStatus = 'pending' | 'done' | 'failed';
+
+/** An after… action to run. Its id is also the idempotency key given to the function. */
+export interface OutboxEntry {
+  id: string;
+  schoolId: string;
+  issuedDocumentId: string;
+  event: PolicyEvent;
+  fn: string;
+  args: Record<string, unknown>;
+  status: OutboxStatus;
+  attempts: number;
+  nextAttemptAt: Date;
+  lastError: string | null;
+  doneAt: Date | null;
+  createdAt: Date;
+}
+
+/** Due from the clock of the issue, the same clock the worker reads. */
+export type NewOutboxEntry = Pick<
+  OutboxEntry,
+  'id' | 'schoolId' | 'issuedDocumentId' | 'event' | 'fn' | 'args' | 'nextAttemptAt'
+>;
+
+/** What the worker records once the action has run. */
+export type OutboxOutcome =
+  | { status: 'done'; attempts: number; at: Date }
+  | { status: 'pending'; attempts: number; nextAttemptAt: Date; error: string }
+  | { status: 'failed'; attempts: number; error: string };
+
+export interface OutboxFilter {
+  schoolId?: string;
+  status?: OutboxStatus;
+  issuedDocumentId?: string;
+  /** Most recent first; at most this many. */
+  limit?: number;
+}
+
+export interface OutboxStore {
+  /**
+   * Takes the oldest due pending entry, locked so no other worker takes it
+   * (FOR UPDATE SKIP LOCKED), runs `work` and records its outcome before
+   * releasing it. Null when nothing is due.
+   */
+  processNext(
+    now: Date,
+    work: (entry: OutboxEntry) => Promise<OutboxOutcome>,
+  ): Promise<OutboxEntry | null>;
+  findById(id: string): Promise<OutboxEntry | null>;
+  list(filter: OutboxFilter): Promise<OutboxEntry[]>;
+  /** A failed entry goes back to pending, due now, with its attempts reset. CONFLICT otherwise. */
+  retry(id: string, now: Date): Promise<void>;
 }

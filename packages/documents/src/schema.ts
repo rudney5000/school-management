@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm';
 import {
   foreignKey,
   index,
@@ -15,7 +16,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 /**
- * The five tables of the document engine. The package cannot import the
+ * The tables of the document engine. The package cannot import the
  * backend's `schools`, `sub_schools` and `users`, so the backend passes them
  * in and gets the new tables back (see backend/src/db/schema/documents.ts).
  */
@@ -45,6 +46,14 @@ export const assetKindEnum = pgEnum('template_asset_kind', [
   'background',
   'image',
 ]);
+
+export const policyEventEnum = pgEnum('document_policy_event', [
+  'beforeIssue',
+  'afterIssue',
+  'beforeRevoke',
+  'afterRevoke',
+]);
+export const outboxStatusEnum = pgEnum('document_outbox_status', ['pending', 'done', 'failed']);
 
 type WithId = { id: AnyPgColumn };
 
@@ -152,6 +161,57 @@ export const documentTables = ({ schools, subSchools, users }: HostTables) => {
     (t) => ({ bySchool: index('idx_template_assets_school').on(t.schoolId) }),
   );
 
+  /** The rules of a group or a sub-school for one type, apart from the design. */
+  const documentPolicies = pgTable(
+    'document_policies',
+    {
+      id: uuid('id').primaryKey().defaultRandom(),
+      schoolId: uuid('school_id')
+        .notNull()
+        .references(() => schools.id, { onDelete: 'restrict' }),
+      subSchoolId: uuid('sub_school_id').references(() => subSchools.id, {
+        onDelete: 'restrict',
+      }),
+      documentType: documentTypeEnum('document_type').notNull(),
+      draftSteps: jsonb('draft_steps'),
+      activeVersion: integer('active_version'),
+      archivedAt: timestamp('archived_at', { withTimezone: true }),
+      createdBy: uuid('created_by')
+        .notNull()
+        .references(() => users.id),
+      createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+      updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+    },
+    (t) => ({
+      // One live policy per scope and type; the group's applies where a sub-school has none.
+      uniqGroup: uniqueIndex('uniq_document_policy_group')
+        .on(t.schoolId, t.documentType)
+        .where(sql`sub_school_id IS NULL AND archived_at IS NULL`),
+      uniqSubSchool: uniqueIndex('uniq_document_policy_sub_school')
+        .on(t.subSchoolId, t.documentType)
+        .where(sql`sub_school_id IS NOT NULL AND archived_at IS NULL`),
+      bySchool: index('idx_document_policies_school').on(t.schoolId),
+    }),
+  );
+
+  const documentPolicyVersions = pgTable(
+    'document_policy_versions',
+    {
+      policyId: uuid('policy_id')
+        .notNull()
+        .references(() => documentPolicies.id, { onDelete: 'restrict' }),
+      version: integer('version').notNull(),
+      // [{ on, fn, args }], args parsed with their defaults.
+      steps: jsonb('steps').notNull(),
+      note: text('note'),
+      publishedBy: uuid('published_by')
+        .notNull()
+        .references(() => users.id),
+      publishedAt: timestamp('published_at', { withTimezone: true }).notNull().defaultNow(),
+    },
+    (t) => ({ pk: primaryKey({ columns: [t.policyId, t.version] }) }),
+  );
+
   const issuedDocuments = pgTable(
     'issued_documents',
     {
@@ -178,6 +238,9 @@ export const documentTables = ({ schools, subSchools, users }: HostTables) => {
       revokedAt: timestamp('revoked_at', { withTimezone: true }),
       revokedReason: text('revoked_reason'),
       replacesId: uuid('replaces_id'),
+      // The policy applied at issue, null when the school had none.
+      policyId: uuid('policy_id'),
+      policyVersion: integer('policy_version'),
       signedByUserId: uuid('signed_by_user_id').references(() => users.id),
       signedAt: timestamp('signed_at', { withTimezone: true }),
       issuedBy: uuid('issued_by')
@@ -195,6 +258,11 @@ export const documentTables = ({ schools, subSchools, users }: HostTables) => {
         name: 'fk_issued_documents_replaces',
         columns: [t.replacesId],
         foreignColumns: [t.id],
+      }),
+      policy: foreignKey({
+        name: 'fk_issued_documents_policy_version',
+        columns: [t.policyId, t.policyVersion],
+        foreignColumns: [documentPolicyVersions.policyId, documentPolicyVersions.version],
       }),
       uniqNumber: uniqueIndex('uniq_issued_document_number').on(
         t.subSchoolId,
@@ -227,8 +295,43 @@ export const documentTables = ({ schools, subSchools, users }: HostTables) => {
     (t) => ({ pk: primaryKey({ columns: [t.subSchoolId, t.documentType, t.period] }) }),
   );
 
+  /** The after… actions, written in the transaction of the document and run by the worker. */
+  const documentOutbox = pgTable(
+    'document_outbox',
+    {
+      // Also the idempotency key given to the function.
+      id: uuid('id').primaryKey(),
+      // Copied from the document, so the back-office lists a school's actions without a join.
+      schoolId: uuid('school_id')
+        .notNull()
+        .references(() => schools.id, { onDelete: 'restrict' }),
+      issuedDocumentId: uuid('issued_document_id')
+        .notNull()
+        .references(() => issuedDocuments.id, { onDelete: 'restrict' }),
+      event: policyEventEnum('event').notNull(),
+      fn: varchar('fn', { length: 64 }).notNull(),
+      args: jsonb('args').notNull().default({}),
+      status: outboxStatusEnum('status').notNull().default('pending'),
+      attempts: integer('attempts').notNull().default(0),
+      nextAttemptAt: timestamp('next_attempt_at', { withTimezone: true }).notNull().defaultNow(),
+      lastError: text('last_error'),
+      doneAt: timestamp('done_at', { withTimezone: true }),
+      createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    },
+    (t) => ({
+      due: index('idx_document_outbox_due')
+        .on(t.nextAttemptAt)
+        .where(sql`status = 'pending'`),
+      byDocument: index('idx_document_outbox_document').on(t.issuedDocumentId),
+      bySchool: index('idx_document_outbox_school').on(t.schoolId, t.status, t.createdAt),
+    }),
+  );
+
   return {
     documentFolders,
+    documentPolicies,
+    documentPolicyVersions,
+    documentOutbox,
     documentTemplates,
     documentTemplateVersions,
     templateAssets,

@@ -54,6 +54,11 @@ export interface DocumentTypeDefinition<
   /** The school year a payload belongs to ("2025-2026"), for `schoolYear` numbering. */
   schoolYearOf?(payload: z.output<D>): string;
   /**
+   * The period a document covers, for the oncePerSubject policy: a bulletin
+   * covers one term. Without it, the numbering period (school or calendar year).
+   */
+  periodOf?(payload: z.output<D>): string;
+  /**
    * What the public verification page may show. Only identity, never grades
    * or amounts: the page is open to anyone holding the QR code.
    */

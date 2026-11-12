@@ -100,6 +100,7 @@ export const bulletin = defineDocumentType({
   requiredBlocks: ['gradesTable'],
   numbering: { prefix: 'BUL', period: 'schoolYear' },
   schoolYearOf: (payload) => payload.period.schoolYear,
+  periodOf: (payload) => `${payload.period.schoolYear} ${payload.period.name}`,
   publicView: (payload) => ({
     schoolName: payload.school.name,
     holderName: payload.student.fullName,

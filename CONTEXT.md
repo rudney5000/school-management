@@ -71,6 +71,15 @@ Liste des mutations (create, update, delete) effectuées quand `navigator.onLine
 Rejouée automatiquement à la reconnexion.
 Critique pour les environnements à connexion instable (RDC).
 
+### Règle de document (Document Policy)
+Ce qu'une School ou une SubSchool exige ou déclenche pour un type de document, à part de son modèle.
+Une suite d'étapes choisies dans un catalogue fermé : vérifier avant l'émission ou la révocation (et refuser : frais impayés, notes manquantes…), ou agir après (publier sur le portail parent).
+La règle de la SubSchool passe avant celle de la School ; sans règle, tout est permis.
+
+### Outbox (actions à faire)
+Les actions « après » d'une Règle de document, écrites avec le document et exécutées ensuite par un worker, avec nouvel essai en cas d'échec.
+Une action n'est jamais perdue et ne bloque jamais l'émission.
+
 ### Trimestre
 Période académique standard au Congo (3 trimestres par an).
 ≠ Semestre utilisé dans d'autres systèmes.

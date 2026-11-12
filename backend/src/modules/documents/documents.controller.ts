@@ -22,6 +22,9 @@ import type { z } from 'zod';
 import type {
   activateSchema,
   createFolderSchema,
+  createPolicySchema,
+  listOutboxQuerySchema,
+  savePolicyDraftSchema,
   moveFolderSchema,
   moveTemplateSchema,
   renameSchema,
@@ -37,7 +40,11 @@ import type {
 /** super_admin is the platform team: it reaches every school. */
 function actorOf(req: Request): Actor {
   const user = req.user!;
-  return { userId: user.id, schoolId: user.role === 'super_admin' ? null : user.schoolId };
+  return {
+    userId: user.id,
+    schoolId: user.role === 'super_admin' ? null : user.schoolId,
+    role: user.role,
+  };
 }
 
 function sendPdf(res: Response, pdf: Uint8Array, filename: string, inline = false) {
@@ -283,6 +290,82 @@ export class DocumentsController {
     const { reason } = req.body as z.infer<typeof revokeSchema>;
     const doc = await ownDocument(req, req.params.id!);
     respond(res, await getDocuments().issuing.revoke(actorOf(req), doc.id, reason));
+  });
+
+  /** The catalogue a policy picks from, with what this deployment implements. */
+  listPolicyFunctions = asyncHandler(async (_req, res) => {
+    respond(res, getDocuments().policies.functions());
+  });
+
+  listPolicies = asyncHandler(async (req, res) => {
+    respond(res, await getDocuments().policies.list(actorOf(req), await schoolOf(req)));
+  });
+
+  createPolicy = asyncHandler(async (req, res) => {
+    const body = req.body as z.infer<typeof createPolicySchema>;
+    const schoolId = await schoolOf(req);
+    const subSchoolId = body.subSchoolId ?? null;
+    if (subSchoolId) {
+      const subSchool = await subSchoolOf(req, subSchoolId);
+      if (subSchool.schoolId !== schoolId) {
+        throw new AppError('FORBIDDEN', 'Accès refusé à cette sous-école', 403);
+      }
+    }
+    const policy = await getDocuments().policies.create(actorOf(req), {
+      scope: { schoolId, subSchoolId },
+      documentType: body.documentType,
+      steps: body.steps,
+    });
+    respond(res, policy, 201);
+  });
+
+  getPolicy = asyncHandler(async (req, res) => {
+    respond(res, await getDocuments().policies.find(actorOf(req), req.params.id!));
+  });
+
+  listPolicyVersions = asyncHandler(async (req, res) => {
+    respond(res, await getDocuments().policies.versions(actorOf(req), req.params.id!));
+  });
+
+  savePolicyDraft = asyncHandler(async (req, res) => {
+    const { steps } = req.body as z.infer<typeof savePolicyDraftSchema>;
+    await getDocuments().policies.saveDraft(actorOf(req), req.params.id!, steps);
+    respond(res, await getDocuments().policies.find(actorOf(req), req.params.id!));
+  });
+
+  publishPolicy = asyncHandler(async (req, res) => {
+    const { note } = req.body as z.infer<typeof publishSchema>;
+    respond(
+      res,
+      await getDocuments().policies.publish(actorOf(req), req.params.id!, note ?? null),
+      201,
+    );
+  });
+
+  activatePolicy = asyncHandler(async (req, res) => {
+    const { version } = req.body as z.infer<typeof activateSchema>;
+    await getDocuments().policies.activate(actorOf(req), req.params.id!, version);
+    respond(res, await getDocuments().policies.find(actorOf(req), req.params.id!));
+  });
+
+  archivePolicy = asyncHandler(async (req, res) => {
+    await getDocuments().policies.archive(actorOf(req), req.params.id!);
+    respond(res, await getDocuments().policies.find(actorOf(req), req.params.id!));
+  });
+
+  /** The after… actions of the school's documents; ?status=failed for the ones to look at. */
+  listOutbox = asyncHandler(async (req, res) => {
+    const query = req.query as unknown as z.infer<typeof listOutboxQuerySchema>;
+    const entries = await getDocuments().outbox.list(actorOf(req), await schoolOf(req), {
+      status: query.status,
+      issuedDocumentId: query.issuedDocumentId,
+      limit: query.limit,
+    });
+    respond(res, entries);
+  });
+
+  retryOutbox = asyncHandler(async (req, res) => {
+    respond(res, await getDocuments().outbox.retry(actorOf(req), req.params.id!));
   });
 
   /** Public: what the QR code opens. No grades, no amounts. */

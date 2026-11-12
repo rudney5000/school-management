@@ -7,6 +7,7 @@ import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import { createServer } from 'node:http';
 import { initSocketServer } from '@/socket/socket';
 import path from 'node:path';
+import { startDocumentWorker } from '@/modules/documents/documents.module';
 
 async function bootstrap(): Promise<void> {
   if (env.NODE_ENV === 'production') {
@@ -22,6 +23,8 @@ async function bootstrap(): Promise<void> {
   const httpServer = createServer(app);
 
   initSocketServer(httpServer);
+  // A process killed mid-action rolls back its row, which stays pending: no shutdown hook needed.
+  startDocumentWorker();
   const port = process.env.PORT || env.PORT_BACKEND;
 
   httpServer.listen(port, () => {

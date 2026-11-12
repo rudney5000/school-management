@@ -79,3 +79,22 @@ export const createFolderSchema = z.object({
 export const renameSchema = z.object({ name });
 export const moveFolderSchema = z.object({ parentId: z.string().uuid().nullable(), index });
 export const moveTemplateSchema = z.object({ folderId: z.string().uuid().nullable(), index });
+
+// The steps themselves are checked by the engine against the catalogue, every problem at once.
+const steps = z.array(z.unknown()).max(100);
+
+export const createPolicySchema = z.object({
+  documentType,
+  /** Absent or null: the policy of the whole group. */
+  subSchoolId: z.string().uuid().nullable().optional(),
+  steps: steps.default([]),
+});
+
+export const savePolicyDraftSchema = z.object({ steps });
+
+export const listOutboxQuerySchema = z.object({
+  subSchoolId: z.string().uuid().optional(),
+  status: z.enum(['pending', 'done', 'failed']).optional(),
+  issuedDocumentId: z.string().uuid().optional(),
+  limit: z.coerce.number().int().min(1).max(200).default(50),
+});
