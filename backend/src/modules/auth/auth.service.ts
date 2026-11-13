@@ -7,11 +7,13 @@ import { AppError } from '@/shared/errors/app-error';
 import { env } from '@/config/env';
 import type { LoginDto, RegisterDto } from './auth.schema';
 import type { UserRole } from '@/shared/types/express';
-import { createIdentifiers, findUserIdByIdentifierValue } from './user-identifiers.service';
+import { createIdentifiers, findUserByIdentifier } from './user-identifiers.service';
 
 export interface TokenPayload {
   id: string;
   email?: string;
+  phone?: string;
+  username?: string;
   role: UserRole;
   schoolId: string;
   subSchoolId?: string;
@@ -118,8 +120,7 @@ export class AuthService {
   }
 
   async login(input: LoginDto): Promise<AuthTokens> {
-    const userId = await findUserIdByIdentifierValue(input.identifier);
-    const [user] = userId ? await db.select().from(users).where(eq(users.id, userId)).limit(1) : [];
+    const user = await findUserByIdentifier(input.identifier);
 
     if (!user) {
       throw new AppError('UNAUTHORIZED', 'Invalid credentials', 401);
@@ -137,6 +138,8 @@ export class AuthService {
     return this.generateTokens({
       id: user.id,
       email: user.email ?? undefined,
+      phone: user.phone ?? undefined,
+      username: user.username ?? undefined,
       role: user.role as UserRole,
       schoolId: context.schoolId,
       subSchoolId: context.subSchoolId,
@@ -173,6 +176,8 @@ export class AuthService {
     return {
       id: user.id,
       email: user.email ?? undefined,
+      phone: user.phone ?? undefined,
+      username: user.username ?? undefined,
       role: user.role as UserRole,
       schoolId: context.schoolId,
       subSchoolId: context.subSchoolId,

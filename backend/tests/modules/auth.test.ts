@@ -1,6 +1,9 @@
+import { eq } from 'drizzle-orm';
 import request from 'supertest';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createApp } from '@/app';
+import { db } from '@/db';
+import { userIdentifiers, users } from '@/db/schema';
 import { bearer } from '../setup/auth';
 import { createAdminIn, createTenant, createUser, type Tenant } from '../setup/factories';
 
@@ -54,6 +57,44 @@ describe('auth', () => {
         .expect(200);
     });
 
+    it('logs in with a phone number typed with separators', async () => {
+      await createUser('worker', {}, 'password123', { phone: '+243820000003' });
+
+      await request(app)
+        .post('/api/auth/login')
+        .send({ identifier: '+243 (82) 000-0003', password: 'password123' })
+        .expect(200);
+    });
+
+    it('logs in with an email or username regardless of case and surrounding spaces', async () => {
+      const user = await createUser('worker', {}, 'password123', { username: 'casey' });
+
+      for (const identifier of [` ${user.email!.toUpperCase()} `, 'Casey']) {
+        await request(app)
+          .post('/api/auth/login')
+          .send({ identifier, password: 'password123' })
+          .expect(200);
+      }
+    });
+
+    it('puts the phone and username in the access token', async () => {
+      const { user } = await createAdminIn(tenant.subSchoolId);
+      await db
+        .update(users)
+        .set({ phone: '+243820000004', username: 'tokenuser' })
+        .where(eq(users.id, user.id));
+
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({ identifier: user.email, password: 'password123' })
+        .expect(200);
+
+      const payload = JSON.parse(
+        Buffer.from(response.body.data.accessToken.split('.')[1], 'base64url').toString(),
+      );
+      expect(payload).toMatchObject({ phone: '+243820000004', username: 'tokenuser' });
+    });
+
     it('rejects a wrong password', async () => {
       const { user } = await createAdminIn(tenant.subSchoolId);
 
@@ -101,7 +142,7 @@ describe('auth', () => {
       expect(response.body.error.code).toBe('VALIDATION_ERROR');
     });
 
-    it('rejects a username identical to another account email', async () => {
+    it('rejects a username shaped like another account email', async () => {
       const { user: existing } = await createAdminIn(tenant.subSchoolId);
 
       const response = await request(app)
@@ -112,9 +153,52 @@ describe('auth', () => {
           password: 'password123',
           role: 'worker',
         })
-        .expect(409);
+        .expect(400);
 
-      expect(response.body.error.code).toBe('CONFLICT');
+      expect(response.body.error.code).toBe('VALIDATION_ERROR');
+    });
+
+    it.each([
+      ['a username longer than 50 characters', { username: `u${'x'.repeat(50)}` }],
+      ['a username that starts with a digit', { username: '0812345678' }],
+      ['a phone number without a country code', { phone: '0812345678' }],
+      ['a phone number longer than E.164 allows', { phone: '+2438123456789012' }],
+      ['an email longer than 255 characters', { email: `${'a'.repeat(251)}@x.cd` }],
+    ])('rejects %s with a 400', async (_label, identifier) => {
+      const response = await request(app)
+        .post('/api/auth/register')
+        .set('Authorization', adminOf(tenant))
+        .send({ ...identifier, password: 'password123', role: 'worker' })
+        .expect(400);
+
+      expect(response.body.error.code).toBe('VALIDATION_ERROR');
+    });
+
+    it('stores identifiers in their normalized form', async () => {
+      const response = await request(app)
+        .post('/api/auth/register')
+        .set('Authorization', adminOf(tenant))
+        .send({
+          email: ' New.User@Test.Local ',
+          phone: '+243 (81) 234-5678',
+          username: 'NewUser',
+          password: 'password123',
+          role: 'worker',
+        })
+        .expect(201);
+
+      const stored = await db
+        .select({ type: userIdentifiers.type, value: userIdentifiers.value })
+        .from(userIdentifiers)
+        .where(eq(userIdentifiers.userId, response.body.data.id));
+
+      expect(stored).toEqual(
+        expect.arrayContaining([
+          { type: 'email', value: 'new.user@test.local' },
+          { type: 'phone', value: '+243812345678' },
+          { type: 'username', value: 'newuser' },
+        ]),
+      );
     });
   });
 

@@ -3,6 +3,8 @@ declare global {
     type User = {
       id: string;
       email?: string;
+      phone?: string;
+      username?: string;
       role: string;
       schoolId: string;
       subSchoolId?: string;

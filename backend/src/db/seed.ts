@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import bcrypt from 'bcryptjs';
 import { db } from './index';
+import { createIdentifiers } from '../modules/auth/user-identifiers.service';
 import {
   schools,
   subSchools,
@@ -260,10 +261,10 @@ async function seed() {
       })
       .returning();
 
-    await db.insert(userIdentifiers).values([
-      { userId: teacherUser.id, type: 'email', value: 'jean.muamba@saintjoseph.cd' },
-      { userId: teacherUser.id, type: 'phone', value: newTeacher.phone! },
-    ]);
+    await createIdentifiers(teacherUser.id, {
+      email: 'jean.muamba@saintjoseph.cd',
+      phone: newTeacher.phone!,
+    });
 
     teacher = newTeacher;
     console.log('✓ Teacher user: jean.muamba@saintjoseph.cd');
@@ -778,10 +779,10 @@ async function seed() {
     })
     .returning();
 
-  await db.insert(userIdentifiers).values([
-    { userId: sophieUser.id, type: 'email', value: 'sophie.kabila@saintjoseph.cd' },
-    { userId: sophieUser.id, type: 'phone', value: parent.phone! },
-  ]);
+  await createIdentifiers(sophieUser.id, {
+    email: 'sophie.kabila@saintjoseph.cd',
+    phone: parent.phone!,
+  });
   console.log('✓ Parent user: sophie.kabila@saintjoseph.cd');
 
   await db
@@ -862,10 +863,7 @@ async function seed() {
       })
       .returning();
 
-    await db.insert(userIdentifiers).values([
-      { userId: newParentUser.id, type: 'email', value: p.email },
-      { userId: newParentUser.id, type: 'phone', value: p.phone },
-    ]);
+    await createIdentifiers(newParentUser.id, { email: p.email, phone: p.phone });
     console.log(`✓ Parent user: ${p.email}`);
 
     if (p.childIndexes.length > 0) {

@@ -48,12 +48,31 @@ export async function createIdentifiers(userId: string, values: IdentifierValues
   });
 }
 
-export async function findUserIdByIdentifierValue(value: string): Promise<string | null> {
+// Login has a single free-text field, so the type is read from the value's
+// shape. Registration rules make this unambiguous: only emails contain "@",
+// and usernames must start with a letter, so anything starting with "+" or a
+// digit is a phone number.
+export function detectIdentifierType(value: string): IdentifierType {
+  const trimmed = value.trim();
+
+  if (trimmed.includes('@')) {
+    return 'email';
+  }
+
+  return /^[+\d]/.test(trimmed) ? 'phone' : 'username';
+}
+
+export async function findUserByIdentifier(
+  identifier: string,
+): Promise<typeof users.$inferSelect | null> {
+  const value = normalizeIdentifier(detectIdentifierType(identifier), identifier);
+
   const [row] = await db
-    .select({ userId: userIdentifiers.userId })
+    .select({ user: users })
     .from(userIdentifiers)
+    .innerJoin(users, eq(users.id, userIdentifiers.userId))
     .where(eq(userIdentifiers.value, value))
     .limit(1);
 
-  return row?.userId ?? null;
+  return row?.user ?? null;
 }
