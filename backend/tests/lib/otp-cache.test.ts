@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { generateAndStore, verify } from '@/lib/otp-cache';
+import { redisClient } from '@/lib/redis';
 
 describe('otp-cache', () => {
   it('verifies the correct code once, then rejects it as expired', async () => {
@@ -47,5 +48,23 @@ describe('otp-cache', () => {
 
     const code = await generateAndStore(key);
     expect(await verify(key, code, 5)).toBe('ok');
+  });
+
+  it('accepts the right code only once under concurrent verifications', async () => {
+    const key = `test:${crypto.randomUUID()}`;
+    const code = await generateAndStore(key);
+
+    const results = await Promise.all([verify(key, code), verify(key, code), verify(key, code)]);
+
+    expect(results.filter((result) => result === 'ok')).toHaveLength(1);
+  });
+
+  it('keeps the attempt budget alive as long as the code', async () => {
+    const key = `test:${crypto.randomUUID()}`;
+    await generateAndStore(key, 900);
+
+    await verify(key, '000000');
+
+    expect(await redisClient.ttl(`otp:attempts:${key}`)).toBeGreaterThan(300);
   });
 });

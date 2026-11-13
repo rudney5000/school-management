@@ -1,6 +1,7 @@
 import express from 'express';
 import request from 'supertest';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import { redisClient } from '@/lib/redis';
 import { rateLimit } from '@/middleware/rate-limit';
 import { errorHandler } from '@/middleware/error-handler';
 
@@ -42,5 +43,23 @@ describe('rateLimit', () => {
     await new Promise((resolve) => setTimeout(resolve, 1100));
 
     await request(app).get('/ping').expect(200);
+  });
+
+  it('always gives the counter an expiry', async () => {
+    const key = `test:${crypto.randomUUID()}`;
+    const app = appWithLimit({ windowSeconds: 60, max: 5, keyFn: () => key });
+
+    await request(app).get('/ping').expect(200);
+
+    expect(await redisClient.ttl(`ratelimit:${key}`)).toBeGreaterThan(0);
+  });
+
+  it('passes a Redis failure to the error handler instead of hanging', async () => {
+    const spy = vi.spyOn(redisClient, 'eval').mockRejectedValueOnce(new Error('Redis down'));
+    const app = appWithLimit({ windowSeconds: 60, max: 5, keyFn: () => 'any' });
+
+    await request(app).get('/ping').expect(500);
+
+    spy.mockRestore();
   });
 });
