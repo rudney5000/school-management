@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { db } from '@/db';
 import { userIdentifiers } from '@/db/schema';
+import { normalizeIdentifier } from '@/modules/auth/user-identifiers.service';
 import { createTenant, createUser } from '../setup/factories';
 
 describe('user_identifiers uniqueness', () => {
@@ -20,5 +21,22 @@ describe('user_identifiers uniqueness', () => {
         value: existing.email!,
       }),
     ).rejects.toThrow();
+  });
+});
+
+describe('normalizeIdentifier', () => {
+  it.each(['+243 81 234 5678', '+243 (81) 234-5678', '+243.81.234.5678'])(
+    'strips separators from %s but keeps the leading +',
+    (raw) => {
+      expect(normalizeIdentifier('phone', raw)).toBe('+243812345678');
+    },
+  );
+
+  it('trims and lowercases emails', () => {
+    expect(normalizeIdentifier('email', ' Admin@X.cd ')).toBe('admin@x.cd');
+  });
+
+  it('lowercases usernames', () => {
+    expect(normalizeIdentifier('username', 'JeanM')).toBe('jeanm');
   });
 });

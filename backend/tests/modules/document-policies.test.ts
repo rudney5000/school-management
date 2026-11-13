@@ -190,7 +190,7 @@ describe('document policies', () => {
       const { user, worker } = await createAdminIn(tenant.subSchoolId);
       const admin = bearer({
         id: user.id,
-        email: user.email,
+        email: user.email ?? undefined,
         role: 'admin',
         schoolId: tenant.schoolId,
         subSchoolId: worker.subSchoolId,
@@ -363,7 +363,7 @@ describe('document policies', () => {
       const { user, worker } = await createAdminIn(tenant.subSchoolId);
       const admin = bearer({
         id: user.id,
-        email: user.email,
+        email: user.email ?? undefined,
         role: 'admin',
         schoolId: tenant.schoolId,
         subSchoolId: worker.subSchoolId,

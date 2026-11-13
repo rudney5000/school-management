@@ -25,7 +25,7 @@ export async function directorOf(tenant: Tenant) {
   const user = await createUser('director');
   return bearer({
     id: user.id,
-    email: user.email,
+    email: user.email ?? undefined,
     role: 'director',
     schoolId: tenant.schoolId,
     subSchoolId: tenant.subSchoolId,

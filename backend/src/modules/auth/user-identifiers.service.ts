@@ -1,6 +1,6 @@
 import { eq, inArray } from 'drizzle-orm';
 import { db } from '@/db';
-import { userIdentifiers, users } from '@/db/schema';
+import { identifierTypeEnum, userIdentifiers, users } from '@/db/schema';
 import { AppError } from '@/shared/errors/app-error';
 
 export interface IdentifierValues {
@@ -9,10 +9,22 @@ export interface IdentifierValues {
   username?: string;
 }
 
+export type IdentifierType = (typeof identifierTypeEnum.enumValues)[number];
+
+export function normalizeIdentifier(type: IdentifierType, value: string): string {
+  switch (type) {
+    case 'email':
+    case 'username':
+      return value.toLowerCase().trim();
+    case 'phone':
+      return value.replace(/[\s().-]/g, '');
+  }
+}
+
 export async function createIdentifiers(userId: string, values: IdentifierValues): Promise<void> {
-  const entries = (['email', 'phone', 'username'] as const)
+  const entries = identifierTypeEnum.enumValues
     .filter((type) => values[type])
-    .map((type) => ({ type, value: values[type]! }));
+    .map((type) => ({ type, value: normalizeIdentifier(type, values[type]!) }));
 
   if (entries.length === 0) {
     return;
