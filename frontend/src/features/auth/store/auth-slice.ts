@@ -32,6 +32,28 @@ const initialState: AuthState = {
   isAuthenticated: !!localStorage.getItem('accessToken'),
 };
 
+const PERSISTED_KEYS = [
+  'accessToken',
+  'refreshToken',
+  'role',
+  'email',
+  'phone',
+  'username',
+  'userId',
+  'schoolId',
+  'subSchoolId',
+] as const;
+
+// Writes the value, or removes the key when the new session has none, so a
+// value from the previous account never survives into the next one.
+function persist(key: (typeof PERSISTED_KEYS)[number], value: string | null | undefined): void {
+  if (value) {
+    localStorage.setItem(key, value);
+  } else {
+    localStorage.removeItem(key);
+  }
+}
+
 export const authSlice: Slice<AuthState> = createSlice({
   name: 'auth',
   initialState,
@@ -59,18 +81,19 @@ export const authSlice: Slice<AuthState> = createSlice({
       state.subSchoolId = subSchoolId;
       state.isAuthenticated = true;
 
-      if (accessToken) localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      if (role) localStorage.setItem('role', role);
-      if (email) localStorage.setItem('email', email);
-      if (phone) localStorage.setItem('phone', phone);
-      if (username) localStorage.setItem('username', username);
-      if (schoolId) localStorage.setItem('schoolId', schoolId);
-      if (userId) localStorage.setItem('userId', userId);
-      if (subSchoolId) localStorage.setItem('subSchoolId', subSchoolId);
+      persist('accessToken', accessToken);
+      persist('refreshToken', refreshToken);
+      persist('role', role);
+      persist('email', email);
+      persist('phone', phone);
+      persist('username', username);
+      persist('userId', userId);
+      persist('schoolId', schoolId);
+      persist('subSchoolId', subSchoolId);
     },
     logout: (state, _action: PayloadAction<undefined>) => {
       state.accessToken = null;
+      state.refreshToken = null;
       state.role = null;
       state.email = null;
       state.phone = null;
@@ -80,15 +103,7 @@ export const authSlice: Slice<AuthState> = createSlice({
       state.subSchoolId = null;
       state.isAuthenticated = false;
 
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('role');
-      localStorage.removeItem('email');
-      localStorage.removeItem('phone');
-      localStorage.removeItem('username');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('schoolId');
-      localStorage.removeItem('subSchoolId');
+      PERSISTED_KEYS.forEach((key) => localStorage.removeItem(key));
     },
   },
 });
