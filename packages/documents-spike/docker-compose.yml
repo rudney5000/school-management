@@ -1,0 +1,21 @@
+# Gotenberg for the spike only. It joins the network of the main compose
+# project ("school-management"), so the dev container reaches it at
+# http://gotenberg:3000. Start it from the host:
+#   docker compose -f packages/documents-spike/docker-compose.yml up -d
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    container_name: school_gotenberg_spike
+    command:
+      - gotenberg
+      - --chromium-auto-start=true
+      - --api-timeout=60s
+    networks:
+      default:
+        aliases:
+          - gotenberg
+
+networks:
+  default:
+    name: school-management_default
+    external: true

@@ -36,6 +36,7 @@ import { liveSessionsRouter } from '@/modules/liveSessions/liveSessions.router';
 import { documentSignaturesRouter } from '@/modules/signature/document-signature.router';
 import { documentPdfRouter } from '@/modules/document-pdf/document-pdf.router';
 import { reportsRouter } from '@/modules/reports/reports.router';
+import { documentsRouter } from '@/modules/documents/documents.router';
 
 export function createApp(): express.Application {
   const app = express();
@@ -82,6 +83,7 @@ export function createApp(): express.Application {
   app.use('/api/live-sessions', liveSessionsRouter);
   app.use('/api/document-signatures', documentSignaturesRouter);
   app.use('/api/document-pdf', documentPdfRouter);
+  app.use('/api/documents', documentsRouter);
 
   app.use(errorHandler);
 

@@ -117,10 +117,12 @@ step "Installing dependencies"
 CI=true pnpm install
 ok "workspace installed"
 
-# The backend imports this package; without its dist the app will not even boot.
+# The backend imports these packages; without their dist the app will not even boot.
 step "Building shared packages"
 pnpm --filter @school-hub/pdf-templates build
 ok "@school-hub/pdf-templates built"
+pnpm --filter @school-hub/documents build
+ok "@school-hub/documents built"
 
 step "Applying migrations to the development database"
 pnpm --filter backend db:migrate

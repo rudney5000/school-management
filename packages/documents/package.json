@@ -1,0 +1,46 @@
+{
+  "name": "@school-hub/documents",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Document engine: block templates, variables, validation and PDF rendering for school documents",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "fonts"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@react-pdf/renderer": "^3.4.0",
+    "qrcode": "^1.5.3",
+    "react": "18.3.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^18.3.1",
+    "drizzle-orm": "^0.45.2",
+    "typescript": "^5.4.0",
+    "vitest": "^5.0.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./testing": {
+      "types": "./dist/testing/index.d.ts",
+      "require": "./dist/testing/index.js",
+      "default": "./dist/testing/index.js"
+    }
+  },
+  "peerDependencies": {
+    "drizzle-orm": "^0.45.2"
+  }
+}

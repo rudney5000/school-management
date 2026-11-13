@@ -1,12 +1,12 @@
 services:
   app:
     build:
-      context: .
+      context: .devcontainer
       dockerfile: Dockerfile
     container_name: school_app_dev
     working_dir: /workspace
     volumes:
-      - ../..:/workspace
+      - .:/workspace
       - node_modules:/workspace/node_modules
       - backend_node_modules:/workspace/backend/node_modules
       - frontend_node_modules:/workspace/frontend/node_modules
@@ -14,6 +14,8 @@ services:
       - NODE_ENV=development
       - DATABASE_URL=postgresql://school:schoolpass@postgres:5432/school_dev
       - REDIS_URL=redis://redis:6379
+      - REDIS_HOST=redis
+      - MINIO_ENDPOINT=http://minio:9090
     ports:
       - '3000:3000'
       - '5173:5173'
@@ -22,7 +24,21 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+      minio:
+        condition: service_started
     command: sleep infinity
+
+  # MinIO images are no longer pullable (Docker Hub: access denied,
+  # quay.io: 401), so the dev container swaps in S3Mock, an S3-compatible
+  # test server that accepts any credentials and creates the bucket at boot.
+  minio:
+    image: adobe/s3mock:3.12.0
+    command: !reset null
+    healthcheck: !reset null
+    ports: !reset []
+    environment:
+      COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS: school-management-minio-chat
+      initialBuckets: school-management-minio-chat
 
 volumes:
   node_modules:

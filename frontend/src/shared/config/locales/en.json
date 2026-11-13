@@ -186,6 +186,8 @@
     "events": "Events",
     "finance": "Finance",
     "reports": "Reports",
+    "documents": "Documents",
+    "documentTemplates": "Document templates",
     "calendar": "Calendar",
     "attendances": "Attendance",
     "chat": "Chat",
@@ -1544,5 +1546,456 @@
       }
     },
     "questionsCount": "{{count}} questions"
+  },
+  "verifyDocument": {
+    "heading": "Document verification",
+    "loading": "Checking…",
+    "valid": {
+      "title": "Authentic document",
+      "text": "This document was issued by the school below and is still valid."
+    },
+    "revoked": {
+      "title": "Revoked document",
+      "text": "This document was issued by the school, then cancelled. It is no longer valid.",
+      "textReplaced": "This document was cancelled and replaced by a corrected version. Only the replacement is valid."
+    },
+    "notFound": {
+      "title": "Document not found",
+      "text": "No document matches this code. The QR code may be damaged, or the document was not issued on this platform."
+    },
+    "error": {
+      "title": "Verification unavailable",
+      "text": "The service is not responding right now. Check your connection and try again.",
+      "retry": "Try again"
+    },
+    "number": "Number",
+    "type": "Type",
+    "school": "School",
+    "holder": "Holder",
+    "issuedAt": "Issued on",
+    "revokedAt": "Cancelled on",
+    "replacedBy": "Replaced by",
+    "types": {
+      "free": "Document",
+      "bulletin": "School report",
+      "receipt": "Payment receipt",
+      "certificate": "Certificate",
+      "diploma": "Diploma",
+      "enrollment": "Enrollment form",
+      "reenrollment": "Re-enrollment form",
+      "supplies": "Supplies list"
+    },
+    "privacy": "Compare these details with the paper document. The holder's name is partly hidden to protect their privacy, and no grades or amounts are shown here."
+  },
+  "documentsPage": {
+    "free": {
+      "title": "New document",
+      "subtitle": "Certificate, attestation…: choose a published template, then fill its yellow zones.",
+      "none": "No published template yet. Create one in Document templates, then publish it.",
+      "template": "Template",
+      "fill": "Fill in"
+    },
+    "loadFailed": "The list could not be loaded. Your session may have expired: sign in again.",
+    "title": "Documents",
+    "issued": "Report {{number}} issued",
+    "issue": {
+      "title": "Issue a school report",
+      "subtitle": "The report is computed from the grades, numbered and stored. It never changes afterwards: to correct it, revoke it and issue a new one.",
+      "class": "Class",
+      "period": "Period",
+      "student": "Student",
+      "choose": "Choose…",
+      "noStudents": "No enrolled student",
+      "submit": "Issue"
+    },
+    "list": {
+      "title": "Issued documents",
+      "empty": "No document issued yet.",
+      "number": "Number",
+      "student": "Student",
+      "period": "Period",
+      "issuedAt": "Issued on",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "issued": "Valid",
+      "revoked": "Revoked"
+    },
+    "actions": {
+      "download": "Download",
+      "verify": "Verify",
+      "revoke": "Revoke"
+    },
+    "revokeDialog": {
+      "title": "Revoke the document",
+      "text": "Document {{number}} will no longer be valid: the verification page will show it as revoked. It stays stored for history.",
+      "reason": "Reason (required)",
+      "cancel": "Cancel",
+      "confirm": "Revoke",
+      "done": "Document {{number}} revoked"
+    },
+    "errors": {
+      "NO_TEMPLATE": "No report template is published for this school.",
+      "NOT_CONFIGURED": "The server is not configured for documents (APP_BASE_URL missing).",
+      "GRADES_INCOMPLETE": "Some grades are missing for this student in this period.",
+      "CURRICULUM_NOT_CONFIGURED": "No course is assigned to this class.",
+      "CONFLICT": "This document was already revoked.",
+      "NOT_FOUND": "The student, class or period was not found, or the student is not enrolled in this class.",
+      "FORBIDDEN": "You have no access to this school.",
+      "unknown": "Something went wrong."
+    }
+  },
+  "templatesPage": {
+    "newTemplate": {
+      "kind": "Template type",
+      "free": "Free document",
+      "freeHelp": "Certificate, attestation… Written by hand, filled when issued.",
+      "bulletin": "School report",
+      "bulletinHelp": "Prints the grades of the Grades module: one report per student and per period.",
+      "bulletinExists": "Your school already has a school report, “{{name}}”. Open it to change it, or archive it to create a new one.",
+      "start": "Start from",
+      "blank": "A simple page (header, student details, grades table, signatures)",
+      "fromStarter": "The “{{name}}” design"
+    },
+    "library": {
+      "issue": "Issue a document",
+      "readOnly": "Read only: only the director and the platform team can create, edit or file templates.",
+      "subtitle": "Create your school's own templates: certificates, attestations, contracts, receipts. Right-click a folder or a template for more actions.",
+      "newFolder": "New folder",
+      "newTemplate": "New template",
+      "newTemplateHere": "New template here",
+      "newFolderHere": "New folder here",
+      "openEditor": "Open in the editor",
+      "duplicate": "Duplicate",
+      "copyOf": "{{name}} (copy)",
+      "rename": "Rename",
+      "moveTo": "Move to…",
+      "delete": "Delete",
+      "save": "Save",
+      "name": "Name",
+      "root": "Root (no folder)",
+      "search": "Search a template",
+      "filters": {
+        "all": "All",
+        "published": "Published",
+        "drafts": "Drafts"
+      },
+      "columns": {
+        "name": "Name",
+        "fields": "Fields",
+        "status": "Status",
+        "version": "Version",
+        "modified": "Modified"
+      },
+      "published": "Published",
+      "draft": "Draft",
+      "models_one": "{{count}} template",
+      "models_other": "{{count}} templates",
+      "footer": "{{folders}} folders · {{templates}} templates",
+      "empty": "No template yet. Create a folder or a template.",
+      "noMatch": "No template matches.",
+      "dropRoot": "Drop here to move to the root",
+      "deleteFolderText": "Delete the folder \"{{name}}\"? It must be empty.",
+      "deleteText": "Permanently delete the template \"{{name}}\"? It was never published.",
+      "archiveText": "\"{{name}}\" was already published: it will be archived, not erased, because its versions prove what was issued.",
+      "deleted": "Template deleted",
+      "archived": "Template archived",
+      "errors": {
+        "CONFLICT": "Not possible: the folder is not empty, or it cannot go inside itself.",
+        "NOT_FOUND": "Item not found, the list may have changed.",
+        "FORBIDDEN": "You have no access to this school.",
+        "NOT_CONFIGURED": "The server is not configured for documents (APP_BASE_URL missing)."
+      }
+    },
+    "title": "Document templates",
+    "empty": "No template yet. Create one from a starter.",
+    "inUse": "Used to issue",
+    "archived": "Archived",
+    "unpublished": "Never published",
+    "version": "Version {{version}}",
+    "active": "Active",
+    "archive": "Archive",
+    "archiveDone": "Template archived",
+    "activate": "Make active",
+    "activated": "Version {{version}} active",
+    "previewOf": "Preview of",
+    "draftLabel": "Draft (unpublished)",
+    "sampleNote": "With sample data, \"BROUILLON\" watermark.",
+    "noDraft": "This template has no draft.",
+    "noVersions": "No published version yet.",
+    "scope": {
+      "group": "Whole group",
+      "thisSubSchool": "This sub-school",
+      "otherSubSchool": "Another sub-school"
+    },
+    "tabs": {
+      "preview": "Preview",
+      "versions": "Versions",
+      "draft": "Draft (JSON)"
+    },
+    "create": {
+      "button": "New template",
+      "title": "New template",
+      "text": "The template starts from a ready-made design that you can then edit and publish.",
+      "name": "Name",
+      "starter": "Starter",
+      "scope": "For",
+      "submit": "Create",
+      "done": "Template created"
+    },
+    "publish": {
+      "button": "Publish",
+      "title": "Publish the draft",
+      "text": "The draft becomes a new version, used for the next documents. Documents already issued do not change.",
+      "note": "Note (optional)",
+      "done": "Version published"
+    },
+    "draft": {
+      "help": "Advanced editing of the draft. It is checked on save: known blocks, existing variables, images of your school.",
+      "save": "Save draft",
+      "saved": "Draft saved"
+    },
+    "errors": {
+      "CONFLICT": "A template of this type already exists here, or it is archived.",
+      "NOT_FOUND": "Template not found.",
+      "FORBIDDEN": "You have no access to this school.",
+      "NOT_CONFIGURED": "The server is not configured for documents (APP_BASE_URL missing).",
+      "NO_TEMPLATE": "No published template.",
+      "invalid": "The template has {{count}} problem(s), see the list.",
+      "json": "The JSON is not valid.",
+      "preview": "The preview could not be generated.",
+      "unknown": "Something went wrong."
+    }
+  },
+  "templateEditor": {
+    "types": {
+      "free": "Free document",
+      "bulletin": "School report"
+    },
+    "blockDialog": {
+      "apply": "Apply",
+      "align": "Alignment",
+      "aligns": {
+        "left": "Left",
+        "center": "Centred",
+        "right": "Right"
+      },
+      "size": "Size (pt)",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "remove": "Remove"
+    },
+    "blocks": {
+      "dragHint": "Drag to move · double-click for settings",
+      "header": {
+        "name": "Header",
+        "help": "School name and official lines, at the top of the page.",
+        "band": "Coloured band",
+        "lines": "Lines",
+        "addLine": "Add a line"
+      },
+      "title": {
+        "name": "Title",
+        "help": "A large centred title, with a subtitle.",
+        "text": "Title",
+        "subtitle": "Subtitle"
+      },
+      "text": {
+        "name": "Text",
+        "help": "A paragraph with data.",
+        "text": "Text",
+        "formHelp": "Leave an empty line between paragraphs. **word** makes a word bold."
+      },
+      "infoGrid": {
+        "name": "Student details",
+        "help": "Labels and values in columns: name, class, ID…",
+        "columns": "Columns",
+        "band": "Grey background",
+        "label": "Label",
+        "value": "Value",
+        "add": "Add a line"
+      },
+      "gradesTable": {
+        "name": "Grades table",
+        "help": "One row per course of the class, with the grades of the Grades module.",
+        "moreRows": "… one row per course of the class",
+        "columns": "Columns",
+        "columnsHelp": "Tick the columns to print, in the order you want. An empty heading keeps the default one.",
+        "data": {
+          "course": "Course",
+          "score": "Score",
+          "max": "Maximum",
+          "coefficient": "Coefficient",
+          "points": "Points (score × coef.)"
+        },
+        "heading": "Heading",
+        "results": "Below the table",
+        "showTotals": "Total and percentage",
+        "showRank": "Rank in the class"
+      },
+      "signatures": {
+        "name": "Signatures",
+        "help": "Place, date and signature boxes (up to 3).",
+        "place": "Place and date",
+        "role": "Role",
+        "add": "Add a signature",
+        "slotName": "Name"
+      },
+      "qrVerify": {
+        "name": "Verification QR",
+        "help": "QR code leading to the document's verification page.",
+        "position": "Position",
+        "size": "Size (mm)",
+        "caption": "Caption",
+        "captionPlaceholder": "Default: document number and an invitation to scan",
+        "positions": {
+          "bottom-left": "Placed at the bottom left of the page",
+          "bottom-right": "Placed at the bottom right of the page"
+        },
+        "positionNames": {
+          "bottom-left": "Bottom left",
+          "bottom-right": "Bottom right",
+          "inline": "Here, in the text"
+        }
+      },
+      "spacer": {
+        "name": "Space",
+        "help": "Empty space between two blocks.",
+        "height": "Height (mm)"
+      },
+      "watermark": {
+        "name": "Watermark",
+        "help": "A large faded word behind the page.",
+        "text": "Text",
+        "opacity": "Opacity (%)",
+        "onPage": "Watermark “{{text}}” behind the page"
+      },
+      "image": {
+        "name": "Image",
+        "help": "An image uploaded by the school."
+      }
+    },
+    "variableGroups": {
+      "student": "Student",
+      "class": "Class",
+      "period": "Period",
+      "totals": "Results",
+      "rank": "Rank",
+      "school": "School",
+      "document": "Document",
+      "other": "Other"
+    },
+    "variables": {
+      "school_name": "School name",
+      "school_code": "School code",
+      "school_city": "School city",
+      "school_headName": "Head of school",
+      "student_fullName": "Student name",
+      "student_birthDate": "Date of birth",
+      "student_gender": "Gender",
+      "student_matricule": "Student ID",
+      "class_name": "Class",
+      "class_level": "Level",
+      "period_name": "Period",
+      "period_schoolYear": "School year",
+      "totals_obtained": "Total obtained",
+      "totals_max": "Maximum total",
+      "totals_percent": "Percentage",
+      "rank_position": "Rank",
+      "rank_of": "Students ranked",
+      "mention": "Distinction",
+      "decision": "Decision",
+      "document_number": "Document number",
+      "document_issuedAt": "Issue date"
+    },
+    "header": {
+      "published": "Published as v{{version}}",
+      "neverPublished": "Never published",
+      "fields_one": "{{count}} field",
+      "fields_other": "{{count}} fields",
+      "required_one": "{{count}} required",
+      "required_other": "{{count}} required",
+      "unsaved": "Unsaved changes",
+      "close": "Close",
+      "leave": "Some changes are not saved. Leave anyway?",
+      "versions": "Versions",
+      "preview": "PDF preview",
+      "save": "Save"
+    },
+    "toolbar": {
+      "undo": "Undo",
+      "redo": "Redo",
+      "bold": "Bold",
+      "italic": "Italic",
+      "underline": "Underline",
+      "alignLeft": "Align left",
+      "alignCenter": "Center",
+      "alignRight": "Align right",
+      "justify": "Justify",
+      "insertField": "Insert a field",
+      "insertBlock": "Insert a block",
+      "insertVariable": "Insert data",
+      "pageFormat": "Page format",
+      "formats": {
+        "A4-portrait": "A4 portrait",
+        "A4-landscape": "A4 landscape",
+        "A5-portrait": "A5 portrait",
+        "A5-landscape": "A5 landscape"
+      },
+      "styles": {
+        "paragraph": "Paragraph",
+        "h1": "Heading 1",
+        "h2": "Heading 2",
+        "h3": "Heading 3"
+      },
+      "fonts": {
+        "serif": "Serif",
+        "sans": "Sans serif"
+      }
+    },
+    "menu": {
+      "fieldSettings": "Field settings",
+      "deleteField": "Delete the field",
+      "blockSettings": "Block settings",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "deleteBlock": "Delete block",
+      "requiredBlock": "Required block: cannot be deleted",
+      "deleteSelection": "Delete selection"
+    },
+    "field": {
+      "newTitle": "New field",
+      "editTitle": "Field settings",
+      "help": "A yellow zone filled when the document is issued.",
+      "label": "Label",
+      "labelPlaceholder": "e.g. Date of birth",
+      "type": "Type",
+      "source": "Source",
+      "required": "Required",
+      "insert": "Insert",
+      "types": {
+        "text": "Short text",
+        "longText": "Long text",
+        "date": "Date",
+        "number": "Number"
+      },
+      "sources": {
+        "manual": "Manual entry"
+      }
+    }
+  },
+  "issuePage": {
+    "title": "New document",
+    "required": "required",
+    "remaining_one": "{{count}} required field left",
+    "remaining_other": "{{count}} required fields left",
+    "generate": "Generate the PDF",
+    "progress": "{{filled}} of {{total}} fields filled",
+    "next": "Go to the next field",
+    "hint": "Click a yellow zone to fill it.",
+    "done": "Document {{number}} issued",
+    "invalid": "Some fields need correcting: they are in red.",
+    "notPublished": "This template is not published: publish it before issuing a document."
   }
 }

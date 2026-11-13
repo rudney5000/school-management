@@ -19,7 +19,8 @@ export type ErrorCode =
   | 'RATE_LIMITED'
   | 'OTP_INVALID'
   | 'OTP_EXPIRED'
-  | 'TOO_MANY_ATTEMPTS';
+  | 'TOO_MANY_ATTEMPTS'
+  | 'NOT_CONFIGURED';
 
 export class AppError extends Error {
   readonly code: ErrorCode;
