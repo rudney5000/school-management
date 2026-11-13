@@ -7,10 +7,13 @@ import { AppError } from '@/shared/errors/app-error';
 import { env } from '@/config/env';
 import type { LoginDto, RegisterDto } from './auth.schema';
 import type { UserRole } from '@/shared/types/express';
+import { createIdentifiers, findUserByIdentifier } from './user-identifiers.service';
 
 export interface TokenPayload {
   id: string;
-  email: string;
+  email?: string;
+  phone?: string;
+  username?: string;
   role: UserRole;
   schoolId: string;
   subSchoolId?: string;
@@ -23,42 +26,39 @@ export interface AuthTokens {
 
 export interface CreatedUser {
   id: string;
-  email: string;
+  email?: string;
   role: UserRole;
 }
 
 export class AuthService {
-  /**
-   * Creates an account on behalf of an administrator.
-   *
-   * The caller is never handed the new account's tokens: creating a user must
-   * not be a way to impersonate one. The profile the account is attached to is
-   * checked against the caller's own sub-school, otherwise naming any known
-   * worker id would mint an admin inside that worker's school.
-   */
   async register(input: RegisterDto, actor: Express.User): Promise<CreatedUser> {
     await this.assertProfileInActorScope(input, actor);
 
-    const [existing] = await db.select().from(users).where(eq(users.email, input.email)).limit(1);
+    const password = await bcrypt.hash(input.password, 10);
 
-    if (existing) {
-      throw new AppError('CONFLICT', 'Email already in use', 409);
-    }
+    const user = await db.transaction(async (tx) => {
+      const [created] = await tx
+        .insert(users)
+        .values({
+          password,
+          role: input.role,
+          workerId: input.workerId,
+          teacherId: input.teacherId,
+          studentId: input.studentId,
+          parentId: input.parentId,
+        })
+        .returning();
 
-    const [user] = await db
-      .insert(users)
-      .values({
-        email: input.email,
-        password: await bcrypt.hash(input.password, 10),
-        role: input.role,
-        workerId: input.workerId,
-        teacherId: input.teacherId,
-        studentId: input.studentId,
-        parentId: input.parentId,
-      })
-      .returning();
+      await createIdentifiers(
+        created.id,
+        { email: input.email, phone: input.phone, username: input.username },
+        tx,
+      );
 
-    return { id: user.id, email: user.email, role: user.role as UserRole };
+      return created;
+    });
+
+    return { id: user.id, email: input.email, role: user.role as UserRole };
   }
 
   private async assertProfileInActorScope(input: RegisterDto, actor: Express.User): Promise<void> {
@@ -121,7 +121,7 @@ export class AuthService {
   }
 
   async login(input: LoginDto): Promise<AuthTokens> {
-    const [user] = await db.select().from(users).where(eq(users.email, input.email)).limit(1);
+    const user = await findUserByIdentifier(input.identifier);
 
     if (!user) {
       throw new AppError('UNAUTHORIZED', 'Invalid credentials', 401);
@@ -138,7 +138,9 @@ export class AuthService {
 
     return this.generateTokens({
       id: user.id,
-      email: user.email,
+      email: user.email ?? undefined,
+      phone: user.phone ?? undefined,
+      username: user.username ?? undefined,
       role: user.role as UserRole,
       schoolId: context.schoolId,
       subSchoolId: context.subSchoolId,
@@ -174,7 +176,9 @@ export class AuthService {
 
     return {
       id: user.id,
-      email: user.email,
+      email: user.email ?? undefined,
+      phone: user.phone ?? undefined,
+      username: user.username ?? undefined,
       role: user.role as UserRole,
       schoolId: context.schoolId,
       subSchoolId: context.subSchoolId,

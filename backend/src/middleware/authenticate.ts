@@ -18,6 +18,8 @@ export const authenticate = (req: Request, _res: Response, next: NextFunction): 
     req.user = {
       id: payload.id,
       email: payload.email,
+      phone: payload.phone,
+      username: payload.username,
       role: payload.role,
       schoolId: payload.schoolId,
       subSchoolId: payload.subSchoolId,

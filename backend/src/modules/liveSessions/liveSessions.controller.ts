@@ -51,7 +51,7 @@ export class LiveSessionsController {
   join = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const subSchoolId = await resolveSubSchoolId(req);
     const userId = req.user!.id;
-    const userName = req.user!.email;
+    const userName = req.user!.email ?? 'Participant';
 
     const data = await this.service.join(req.params.sessionId, subSchoolId, userId, userName);
     respond(res, data);

@@ -13,6 +13,7 @@ import {
   schools,
   students,
   subSchools,
+  userIdentifiers,
   users,
   workers,
 } from '@/db/schema';
@@ -115,18 +116,32 @@ export async function createUser(
   role: Role,
   links: { workerId?: string; teacherId?: string; studentId?: string; parentId?: string } = {},
   password = 'password123',
+  identifiers: { phone?: string; username?: string } = {},
 ) {
   const id = next();
+  const email = `user-${id}@test.local`;
 
   const [user] = await db
     .insert(users)
     .values({
-      email: `user-${id}@test.local`,
+      email,
       password: await bcrypt.hash(password, 10),
       role,
       ...links,
     })
     .returning();
+
+  await db
+    .insert(userIdentifiers)
+    .values([
+      { userId: user.id, type: 'email', value: email },
+      ...(identifiers.phone
+        ? [{ userId: user.id, type: 'phone' as const, value: identifiers.phone }]
+        : []),
+      ...(identifiers.username
+        ? [{ userId: user.id, type: 'username' as const, value: identifiers.username }]
+        : []),
+    ]);
 
   return user;
 }

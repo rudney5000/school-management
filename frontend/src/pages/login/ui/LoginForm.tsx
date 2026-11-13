@@ -31,16 +31,19 @@ export function LoginForm() {
 
       <form onSubmit={handleSubmit(login)} className="space-y-5">
         <div className="space-y-1.5">
-          <Label htmlFor="email">Email address</Label>
+          <Label htmlFor="identifier">Email, username or phone</Label>
           <Input
-            id="email"
-            type="email"
+            id="identifier"
+            type="text"
             placeholder="admin@school.cd"
-            autoComplete="email"
-            {...register('email')}
-            className={cn('w-full', errors.email && 'border-red-500 focus-visible:ring-red-500')}
+            autoComplete="username"
+            {...register('identifier')}
+            className={cn(
+              'w-full',
+              errors.identifier && 'border-red-500 focus-visible:ring-red-500',
+            )}
           />
-          {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
+          {errors.identifier && <p className="text-xs text-red-500">{errors.identifier.message}</p>}
         </div>
 
         <div className="space-y-1.5">

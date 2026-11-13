@@ -11,7 +11,7 @@ import {
 } from '@school-hub/documents';
 import { db } from '@/db';
 import { documentPolicies, documentPolicyVersions } from '@/db/schema';
-import { isUniqueViolation } from './pg-errors';
+import { isUniqueViolation } from '@/shared/utils/pg-errors';
 
 type PolicyRow = typeof documentPolicies.$inferSelect;
 type VersionRow = typeof documentPolicyVersions.$inferSelect;

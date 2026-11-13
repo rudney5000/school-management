@@ -21,6 +21,7 @@ export * from './school';
 export * from './enums';
 export * from './students';
 export * from './users';
+export * from './userIdentifiers';
 export * from './attachment';
 export * from './videoCallSessions';
 export * from './liveSessions';

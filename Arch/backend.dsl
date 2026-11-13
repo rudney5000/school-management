@@ -2,13 +2,14 @@ workspace "School Management Backend" "Backend architecture for the school-manag
     model {
         frontend = softwareSystem "Frontend applications" "React/Vite web and Tauri clients." "External"
         backend = softwareSystem "Backend API" "Express and TypeScript modular backend." {
-            api = container "HTTP API" "Authentication (password + SMS OTP), tenant access and domain endpoints." "Express, TypeScript"
+            api = container "HTTP API" "Multi-identifier auth (email/phone/username) + SMS OTP, tenant access and domain endpoints." "Express, TypeScript"
             realtime = container "Realtime gateway" "Socket.IO connections, chat and live events." "Socket.IO"
             modules = container "Domain modules" "Schools, students, teachers, courses, exams, grades, attendance, payments, reports and schedules." "TypeScript"
             documents = container "Document services" "PDF generation, attachments and signatures." "React-PDF, S3 SDK"
-            workers = container "Background workers" "Asynchronous document processing and SMS dispatch via Redis Streams (consumer groups, retry/backoff). See notifications.dsl." "Node.js"
+            notificationsPkg = container "Notifications package" "packages/notifications — auth service, SMS worker, webhook handler, reconciliation. Imported in-process. See notifications.dsl, ADR-008." "TypeScript, workspace package"
+            workers = container "Background workers" "Asynchronous document processing jobs." "Node.js"
             db = container "PostgreSQL" "Tenant-aware transactional data." "PostgreSQL, Drizzle ORM"
-            cache = container "Redis" "Cache, Socket.IO adapter state and SMS Streams." "Redis"
+            cache = container "Redis" "Cache, Socket.IO adapter state and Redis Streams for SMS dispatch (consumed by notificationsPkg)." "Redis"
             storage = container "MinIO/S3" "Attachments and generated documents." "S3-compatible storage"
             livekit = container "LiveKit" "Video and audio session infrastructure." "LiveKit"
 
@@ -17,22 +18,25 @@ workspace "School Management Backend" "Backend architecture for the school-manag
             services = component "Domain services" "Business rules for school, academic, attendance, payment, communication and document workflows." "TypeScript"
             databaseClient = component "Database client" "Drizzle ORM and postgres-js connection used by backend modules." "Drizzle ORM, postgres-js"
             socketServer = component "Socket.IO server" "Initializes realtime connections and Redis adapter integration." "Socket.IO"
-            workerRunner = component "Worker runner" "Runs asynchronous jobs for documents and notifications." "Node.js"
+            workerRunner = component "Worker runner" "Runs asynchronous jobs for documents." "Node.js"
         }
         smsGateway = softwareSystem "android-sms-gateway (Cloud)" "External SMS gateway for OTP and notifications — one deviceId per sub-school. See notifications.dsl." "External"
         frontend -> api "Calls endpoints" "HTTPS/JSON"
         frontend -> realtime "Connects for live updates" "WebSocket"
         api -> modules "Routes validated requests" "In-process"
+        api -> notificationsPkg "Auth (login, OTP) and SMS notifications" "In-process import"
         api -> db "Reads and writes" "SQL"
         modules -> db "Persists domain data" "SQL"
         modules -> cache "Caches and coordinates" "Redis"
+        modules -> notificationsPkg "Triggers notifications (grades, payments, attendance...)" "In-process import"
         realtime -> cache "Uses adapter state" "Redis"
         documents -> storage "Stores files" "S3 API"
         documents -> db "Stores document metadata" "SQL"
         workers -> documents "Processes document jobs" "In-process"
-        workers -> cache "Consumes SMS Streams (XREADGROUP/XACK)" "Redis"
+        notificationsPkg -> db "Via injected NotificationStore/IdentifierStore (does not import backend/db directly, ADR-008)" "SQL, in-process interface"
+        notificationsPkg -> cache "SMS Streams (XADD/XREADGROUP/XACK) and OTP cache" "Redis"
+        notificationsPkg -> smsGateway "Sends SMS notifications and OTP codes" "HTTPS API"
         modules -> livekit "Creates and manages sessions" "LiveKit API"
-        modules -> smsGateway "Sends SMS notifications and OTP codes" "HTTPS API"
 
         api -> httpMiddleware "Applies request middleware" "In-process"
         httpMiddleware -> routers "Passes validated requests" "In-process"
@@ -69,7 +73,7 @@ workspace "School Management Backend" "Backend architecture for the school-manag
             databaseClient -> db "6. Executes SQL query"
             services -> cache "7. Reads or updates cache when needed"
             services -> documents "8. Generates document or attachment when needed"
-            services -> smsGateway "9. Sends SMS notification when needed"
+            services -> notificationsPkg "9. Sends SMS notification when needed"
             autoLayout
         }
     }

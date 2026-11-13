@@ -200,3 +200,30 @@ Gotenberg donnait la mise en page la plus souple (HTML + CSS) et un aperçu iden
 - Le rendu consomme la mémoire et le CPU du backend : l'émission en lot (bulletins d'une classe) passe par une tâche en arrière-plan, une classe à la fois, et la mémoire est à surveiller sur l'instance de 512 Mo
 - Le package `@school-hub/documents` appelle le rendu à travers un port `PdfRenderer` : passer à Gotenberg plus tard demandera de réécrire les blocs en HTML, mais pas les modèles, l'émission ni les règles
 - **À rouvrir** si le backend passe sur une offre payante ou si une mise en page indispensable (diplôme, bulletin officiel de l'EPST) s'avère impossible en React-PDF
+
+---
+
+## ADR-009 — `packages/notifications` comme package interne du monorepo
+
+**Date** : 2026-09  
+**Statut** : ✅ Accepté
+
+**Contexte** : Le pipeline décrit par ADR-005/006/007 (auth multi-identifiants + OTP, dispatch SMS, webhook, réconciliation) a peu de couplage avec les modules métier de `backend/src/modules` (students, grades, payments...) — il ne fait que leur fournir un moyen d'envoyer une notification et de vérifier une identité. Le monorepo a déjà ce pattern de frontière avec `packages/pdf-templates`, partagé entre `backend` et `frontend`. La question posée était de savoir si ce même traitement valait pour l'auth/notifications, et si le package devait être conçu pour être réutilisable dans le monorepo "platform" ou le projet "sms" séparé mentionnés comme vision long terme.
+
+**Décision** : Créer `packages/notifications`, package pnpm au même niveau que `packages/pdf-templates` (déjà couvert par le glob `packages/*` de `pnpm-workspace.yaml`, aucune modification de config nécessaire). Contrairement à `pdf-templates`, il n'est consommé que par `backend` (le frontend n'a pas besoin de logique d'envoi SMS). Portée volontairement restreinte à ce repo — pas d'effort de généricité pour une réutilisation dans "platform" ou "sms", cette réutilisation n'étant pas confirmée à ce stade.
+
+Le sens de dépendance reste `backend → packages/notifications`, jamais l'inverse : le package ne dépend pas du schéma Drizzle de `backend/db`. Il déclare une petite interface (`NotificationStore`, `IdentifierStore`) que `backend` implémente et injecte, pour éviter un couplage circulaire et garder le package testable indépendamment de la connexion Postgres réelle.
+
+Le worker Redis Streams tourne **in-process** avec l'API au démarrage du pilote (importé et démarré dans `backend/src/index.ts`) plutôt que comme process séparé — la frontière de package rend ce découplage possible plus tard sans réécriture, mais rien n'oblige à le payer dès maintenant sur un petit VPS.
+
+**Raisons** :
+- Frontière de code déjà naturelle, peu de couplage avec les modules métier
+- Cohérent avec le pattern déjà en place (`pdf-templates`)
+- Prépare un futur découplage du worker en process séparé sans réécriture
+- Portée volontairement restreinte : pas de sur-ingénierie pour une réutilisation externe non confirmée
+
+**Conséquences** :
+- Nouveau `package.json` (`@school-hub/notifications` ou équivalent) — pas de changement à `pnpm-workspace.yaml`, le glob `packages/*` le couvre déjà
+- `backend/src/modules/auth` appelle `packages/notifications` pour déclencher l'OTP ou le provisioning, mais garde la logique JWT/session propre à `backend`
+- Le package expose une interface (`NotificationStore`, `IdentifierStore`) plutôt que d'importer directement `backend/src/db` — discipline à maintenir à l'implémentation
+- **Aucun scaffolding fait à ce stade** — décision d'architecture seule ; la structure de fichiers, le `package.json` et le code restent à créer
