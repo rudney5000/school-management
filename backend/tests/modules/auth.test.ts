@@ -158,6 +158,36 @@ describe('auth', () => {
       expect(response.body.error.code).toBe('VALIDATION_ERROR');
     });
 
+    it('returns 409, not 500, for the email of an account created before user_identifiers', async () => {
+      const [legacy] = await db
+        .insert(users)
+        .values({ email: 'legacy@test.local', password: 'x', role: 'worker' })
+        .returning();
+      const before = await db.select({ id: users.id }).from(users);
+
+      const response = await request(app)
+        .post('/api/auth/register')
+        .set('Authorization', adminOf(tenant))
+        .send({ email: legacy.email, password: 'password123', role: 'worker' })
+        .expect(409);
+
+      expect(response.body.error.code).toBe('CONFLICT');
+      // The account row is rolled back with its identifiers: no orphan is left.
+      expect(await db.select({ id: users.id }).from(users)).toHaveLength(before.length);
+    });
+
+    it('lets only one of two concurrent registrations of the same phone succeed', async () => {
+      const register = () =>
+        request(app)
+          .post('/api/auth/register')
+          .set('Authorization', adminOf(tenant))
+          .send({ phone: '+243810000099', password: 'password123', role: 'worker' });
+
+      const statuses = (await Promise.all([register(), register()])).map((r) => r.status);
+
+      expect(statuses.sort()).toEqual([201, 409]);
+    });
+
     it.each([
       ['a username longer than 50 characters', { username: `u${'x'.repeat(50)}` }],
       ['a username that starts with a digit', { username: '0812345678' }],

@@ -11,7 +11,7 @@ import {
 } from '@school-hub/documents';
 import { db } from '@/db';
 import { documentTemplates, documentTemplateVersions } from '@/db/schema';
-import { isUniqueViolation } from './pg-errors';
+import { isUniqueViolation } from '@/shared/utils/pg-errors';
 
 type TemplateRow = typeof documentTemplates.$inferSelect;
 type VersionRow = typeof documentTemplateVersions.$inferSelect;

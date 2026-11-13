@@ -34,28 +34,29 @@ export class AuthService {
   async register(input: RegisterDto, actor: Express.User): Promise<CreatedUser> {
     await this.assertProfileInActorScope(input, actor);
 
-    const [user] = await db
-      .insert(users)
-      .values({
-        password: await bcrypt.hash(input.password, 10),
-        role: input.role,
-        workerId: input.workerId,
-        teacherId: input.teacherId,
-        studentId: input.studentId,
-        parentId: input.parentId,
-      })
-      .returning();
+    const password = await bcrypt.hash(input.password, 10);
 
-    try {
-      await createIdentifiers(user.id, {
-        email: input.email,
-        phone: input.phone,
-        username: input.username,
-      });
-    } catch (error) {
-      await db.delete(users).where(eq(users.id, user.id));
-      throw error;
-    }
+    const user = await db.transaction(async (tx) => {
+      const [created] = await tx
+        .insert(users)
+        .values({
+          password,
+          role: input.role,
+          workerId: input.workerId,
+          teacherId: input.teacherId,
+          studentId: input.studentId,
+          parentId: input.parentId,
+        })
+        .returning();
+
+      await createIdentifiers(
+        created.id,
+        { email: input.email, phone: input.phone, username: input.username },
+        tx,
+      );
+
+      return created;
+    });
 
     return { id: user.id, email: input.email, role: user.role as UserRole };
   }
