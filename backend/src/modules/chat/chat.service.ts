@@ -462,9 +462,12 @@ export class ChatService {
       .innerJoin(users, eq(users.teacherId, teacherSchools.teacherId))
       .where(inArray(teacherSchools.subSchoolId, subSchoolIds));
 
-    const withDisplayEmail = <T extends { email: string | null; username: string | null }>(
-      row: T,
-    ): Omit<T, 'username'> => ({ ...row, email: row.email ?? row.username ?? 'Utilisateur' });
+    // username only serves as the display fallback: it is taken out of the row so
+    // the response matches the declared type and does not expose it.
+    const withDisplayEmail = <T extends { email: string | null; username: string | null }>({
+      username,
+      ...rest
+    }: T): Omit<T, 'username'> => ({ ...rest, email: rest.email ?? username ?? 'Utilisateur' });
 
     const staff = staffRaw.map(withDisplayEmail);
 
