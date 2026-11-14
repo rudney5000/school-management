@@ -3,6 +3,7 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import { allowedOrigins } from '@/config/cors';
 import { env } from '@/config/env';
 import { studentsRouter } from '@/modules/students/students.router';
 import { countriesRouter } from '@/modules/countries/countries.router';
@@ -43,7 +44,7 @@ export function createApp(): express.Application {
 
   app.use(helmet());
   app.use(compression());
-  app.use(cors({ origin: env.ALLOWED_ORIGINS }));
+  app.use(cors({ origin: allowedOrigins }));
   app.use(express.json());
 
   if (env.NODE_ENV !== 'test') {

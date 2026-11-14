@@ -1,7 +1,7 @@
 import { Server as HttpServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
 import { createAdapter } from '@socket.io/redis-adapter';
-import { env } from '@/config/env';
+import { allowedOrigins } from '@/config/cors';
 import { registerChatHandlers } from './handlers/chat.handler';
 import { socketAuthMiddleware } from './middleware/socket-auth';
 import { redisClient } from '@/lib/redis';
@@ -11,7 +11,7 @@ let io: SocketServer;
 export function initSocketServer(httpServer: HttpServer): SocketServer {
   io = new SocketServer(httpServer, {
     cors: {
-      origin: env.ALLOWED_ORIGINS,
+      origin: allowedOrigins,
       credentials: true,
     },
   });
