@@ -10,7 +10,7 @@ export function AuthLayout() {
           <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
             <GraduationCap className="w-6 h-6 text-white" />
           </div>
-          <span className="text-xl font-bold">SchoolManager CD</span>
+          <span className="text-xl font-bold">EcoLinga</span>
         </div>
 
         <div>
@@ -40,7 +40,7 @@ export function AuthLayout() {
         </div>
 
         <p className="text-blue-300 text-sm">
-          © {new Date().getFullYear()} SchoolManager CD. Tous droits réservés.
+          © {new Date().getFullYear()} EcoLinga. Tous droits réservés.
         </p>
       </div>
 
@@ -52,7 +52,7 @@ export function AuthLayout() {
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <GraduationCap className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-gray-900">SchoolManager CD</span>
+            <span className="font-bold text-gray-900">EcoLinga</span>
           </div>
 
           <Outlet />

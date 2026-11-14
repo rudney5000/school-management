@@ -12,7 +12,7 @@ export function Navigation() {
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
           S
         </div>
-        <span className="text-2xl font-semibold tracking-tight text-blue-600">SchoolHub</span>
+        <span className="text-2xl font-semibold tracking-tight text-blue-600">EcoLinga</span>
       </LocaleLink>
 
       <div className="hidden items-center gap-8 text-sm text-slate-600 md:flex">

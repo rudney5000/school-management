@@ -1,4 +1,4 @@
-# CONTEXT — Vocabulaire du domaine School Management Africa
+# CONTEXT — Vocabulaire du domaine EcoLinga
 
 > Fichier central du langage partagé entre toi et l'IA.
 > Mis à jour en direct pendant les sessions `grill-with-docs`.

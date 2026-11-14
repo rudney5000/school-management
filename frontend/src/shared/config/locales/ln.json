@@ -14,7 +14,7 @@
   },
   "register": {
     "create_account": "Sala compte",
-    "join_today": "Yaka na SchoolManager CD lelo",
+    "join_today": "Yaka na EcoLinga lelo",
     "email_address": "Adrɛsi ya email",
     "role": "Mosala",
     "select_role": "Pona mosala na yo",
@@ -43,7 +43,7 @@
     "looking_for_something": "Ozali koluka mosusu?",
     "use_navigation": "Salela menu ya navigation to kokota na ekolo mpo na kokota nzela.",
     "page_on_trip": "Page oyo aza kenda na excursion",
-    "dont_worry": "Kasi kokanga! Ezali makambo mingi mpo na koyeba na SchoolHub.",
+    "dont_worry": "Kasi kokanga! Ezali makambo mingi mpo na koyeba na EcoLinga.",
     "school_management": "Bokambi ya kelasi",
     "complete_platform": "Plateforme ya mobimba kobanda na primaire kino na université",
     "establishments": "Ba eteyelo koleka 150",
@@ -144,7 +144,7 @@
       "designed_for_modern_education": "Esalemi mpo na mateya ya mikolo oyo",
       "designed_description": "Plateforme na biso ekoki kosalelama na maternelle, primaire, collège, lycée mpe université. Eteyelo nyonso ekoki kozwa modèle oyo ebongi na yango.",
       "ready_to_transform": "Ozali prêt mpo na kobongola eteyelo na yo?",
-      "ready_description": "Sangana na ba eteyelo koleka 150 oyo bazali kotiela SchoolHub motema mpo na kobongisa bokambi mpe expérience éducative.",
+      "ready_description": "Sangana na ba eteyelo koleka 150 oyo bazali kotiela EcoLinga motema mpo na kobongisa bokambi mpe expérience éducative.",
       "request_demo": "Senga démonstration"
     }
   },
@@ -1325,7 +1325,7 @@
     "hero": {
       "badge": "Esika ya bosungi",
       "title": "Mituna oyo etunamaka mingi",
-      "description": "Tia bisusu mbandaka ya ba masolo na yo na SchoolHub. Equipe ya bisungi na biso ezali mpo na kosunga yo."
+      "description": "Tia bisusu mbandaka ya ba masolo na yo na EcoLinga. Equipe ya bisungi na biso ezali mpo na kosunga yo."
     },
     "quickLinks": {
       "documentation": {
@@ -1358,7 +1358,7 @@
         "title": "Ba comptes & Basaleli",
         "questions": {
           "createAccount": {
-            "question": "Comment na kokota compte na SchoolHub?",
+            "question": "Comment na kokota compte na EcoLinga?",
             "answer": "Kokana na 'Bandá' na likolo ya mobali mbala, sima kokota na ba étapes ya inscription. Ozali kokota email ya confirmation mpo na kotia compte na yo na mbote. Ba administrateurs bakoki mpe kosalaka ba comptes mpo na bayekoli mpe balakisi na eteyelo na bango."
           },
           "addChildren": {

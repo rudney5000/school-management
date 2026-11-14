@@ -1,4 +1,4 @@
-# PRD — School Management Africa
+# PRD — EcoLinga
 
 ## Vision
 Rendre la gestion scolaire accessible aux établissements africains : simple, fiable même sans internet, abordable, et adapté aux réalités locales (Mobile Money, multilangue, multi-devise).
