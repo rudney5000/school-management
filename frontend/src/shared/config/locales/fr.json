@@ -14,7 +14,7 @@
   },
   "register": {
     "create_account": "Créer un compte",
-    "join_today": "Rejoignez SchoolManager CD aujourd'hui",
+    "join_today": "Rejoignez EcoLinga aujourd'hui",
     "email_address": "Adresse e-mail",
     "role": "Rôle",
     "select_role": "Sélectionnez votre rôle",
@@ -112,7 +112,7 @@
       "designed_for_modern_education": "Conçu pour l'éducation moderne",
       "designed_description": "Notre plateforme s'adapte à tous les niveaux: maternelle, primaire, collège, lycée et enseignement supérieur. Chaque établissement trouve son modèle idéal.",
       "ready_to_transform": "Prêt à transformer votre établissement?",
-      "ready_description": "Rejoignez plus de 150 établissements qui font confiance à SchoolHub pour moderniser leur gestion scolaire et améliorer l'expérience éducative.",
+      "ready_description": "Rejoignez plus de 150 établissements qui font confiance à EcoLinga pour moderniser leur gestion scolaire et améliorer l'expérience éducative.",
       "request_demo": "Demander une démo"
     },
     "hero_section": {
@@ -161,7 +161,7 @@
     "looking_for_something": "Vous cherchez quelque chose?",
     "use_navigation": "Utilisez le menu de navigation ou retournez à l'accueil pour trouver votre chemin.",
     "page_on_trip": "Cette page est partie en excursion",
-    "dont_worry": "Mais ne vous inquiétez pas! Il y a beaucoup à découvrir sur SchoolHub.",
+    "dont_worry": "Mais ne vous inquiétez pas! Il y a beaucoup à découvrir sur EcoLinga.",
     "school_management": "Gestion Scolaire",
     "complete_platform": "Plateforme complète du primaire au supérieur",
     "establishments": "150+ Établissements",
@@ -1391,7 +1391,7 @@
     "hero": {
       "badge": "Centre d'Aide",
       "title": "Questions Fréquentes",
-      "description": "Retrouvez toutes les réponses à vos questions sur SchoolHub. Notre équipe support est également disponible pour vous aider."
+      "description": "Retrouvez toutes les réponses à vos questions sur EcoLinga. Notre équipe support est également disponible pour vous aider."
     },
     "quickLinks": {
       "documentation": {
@@ -1424,7 +1424,7 @@
         "title": "Comptes & Utilisateurs",
         "questions": {
           "createAccount": {
-            "question": "Comment créer un compte sur SchoolHub?",
+            "question": "Comment créer un compte sur EcoLinga?",
             "answer": "Cliquez sur 'Commencer' en haut à droite, puis suivez les étapes d'inscription. Vous recevrez un email de confirmation pour activer votre compte. Les administrateurs peuvent également créer des comptes pour les élèves et enseignants de leur établissement."
           },
           "addChildren": {

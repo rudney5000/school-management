@@ -65,7 +65,7 @@ function DocumentView({
 }) {
   const { page, theme, blocks } = ctx.layout;
   return (
-    <Document title={title} creator="School Hub" producer="School Hub">
+    <Document title={title} creator="EcoLinga" producer="EcoLinga">
       <Page
         size={page.size}
         orientation={page.orientation}

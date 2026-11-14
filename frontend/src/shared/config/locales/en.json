@@ -14,7 +14,7 @@
   },
   "register": {
     "create_account": "Create account",
-    "join_today": "Join SchoolManager CD today",
+    "join_today": "Join EcoLinga today",
     "email_address": "Email address",
     "role": "Role",
     "select_role": "Select your role",
@@ -112,7 +112,7 @@
       "designed_for_modern_education": "Designed for Modern Education",
       "designed_description": "Our platform adapts to all levels: kindergarten, primary, middle school, high school and higher education. Each establishment finds its ideal model.",
       "ready_to_transform": "Ready to Transform Your Establishment?",
-      "ready_description": "Join more than 150 establishments that trust SchoolHub to modernize their school management and improve the educational experience.",
+      "ready_description": "Join more than 150 establishments that trust EcoLinga to modernize their school management and improve the educational experience.",
       "request_demo": "Request a Demo"
     },
     "hero_section": {
@@ -161,7 +161,7 @@
     "looking_for_something": "Looking for something?",
     "use_navigation": "Use the navigation menu or go back to home to find your way.",
     "page_on_trip": "This page went on a field trip",
-    "dont_worry": "But don't worry! There's plenty to discover on SchoolHub.",
+    "dont_worry": "But don't worry! There's plenty to discover on EcoLinga.",
     "school_management": "School Management",
     "complete_platform": "Complete platform from primary to higher education",
     "establishments": "150+ Establishments",
@@ -1367,7 +1367,7 @@
     "hero": {
       "badge": "Help Center",
       "title": "Frequently Asked Questions",
-      "description": "Find all the answers to your questions about SchoolHub. Our support team is also available to help you."
+      "description": "Find all the answers to your questions about EcoLinga. Our support team is also available to help you."
     },
     "quickLinks": {
       "documentation": {
@@ -1400,7 +1400,7 @@
         "title": "Accounts & Users",
         "questions": {
           "createAccount": {
-            "question": "How do I create an account on SchoolHub?",
+            "question": "How do I create an account on EcoLinga?",
             "answer": "Click 'Get Started' in the top right, then follow the registration steps. You will receive a confirmation email to activate your account. Administrators can also create accounts for students and teachers at their institution."
           },
           "addChildren": {

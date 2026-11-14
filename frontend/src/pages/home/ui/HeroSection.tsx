@@ -64,7 +64,7 @@ export function HeroSection() {
 
           <Card className="relative overflow-hidden rounded-[2rem] border-0 bg-blue-600 p-6 text-white shadow-[0_30px_80px_rgba(37,99,235,0.35)]">
             <div className="mb-6 flex items-center justify-between text-sm text-white/80">
-              <span className="font-semibold">SchoolHub</span>
+              <span className="font-semibold">EcoLinga</span>
               <span>{t('home.hero_section.trusted_by')}</span>
             </div>
 

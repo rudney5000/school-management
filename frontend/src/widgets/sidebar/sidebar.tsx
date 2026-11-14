@@ -92,7 +92,7 @@ export function Sidebar({
               className="flex items-center gap-3 hover:opacity-80 transition-opacity"
             >
               <span className="text-[15px] font-bold tracking-tight text-white truncate">
-                SchoolHub
+                EcoLinga
               </span>
             </LocaleLink>
             <span className="text-[10px] font-medium uppercase tracking-widest text-white/50">

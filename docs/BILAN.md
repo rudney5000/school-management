@@ -1,4 +1,4 @@
-# Bilan du projet — School Management Africa
+# Bilan du projet — EcoLinga
 
 *Analysé à partir du dossier `school-management` (backend, frontend, docs, ADR, CI).*
 
