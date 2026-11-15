@@ -9,6 +9,7 @@ import type { CommonError } from '@shared/helperClass/CommonError';
 import type { AuthTokensDto } from '@features/auth/model/dto/AuthTokensDto';
 import i18n from '@app/i18n/i18n';
 import { store } from '@shared/store';
+import { credentialsFromTokens } from './credentials';
 
 export function useAuth() {
   const dispatch = useAppDispatch();
@@ -20,24 +21,12 @@ export function useAuth() {
     baseApi.saveToken(tokens.accessToken);
     localStorage.setItem('refreshToken', tokens.refreshToken);
 
-    const payload = JSON.parse(atob(tokens.accessToken.split('.')[1]));
-    dispatch(
-      setCredentials({
-        accessToken: tokens.accessToken,
-        refreshToken: tokens.refreshToken,
-        role: payload.role,
-        email: payload.email ?? null,
-        phone: payload.phone ?? null,
-        username: payload.username ?? null,
-        userId: payload.id ?? payload.userId ?? payload.sub,
-        schoolId: payload.schoolId,
-        subSchoolId: payload.subSchoolId ?? null,
-      }),
-    );
+    const credentials = credentialsFromTokens(tokens);
+    dispatch(setCredentials(credentials));
 
     const locale = i18n.language;
     const subSchoolId =
-      payload.subSchoolId ??
+      credentials.subSchoolId ??
       store.getState().subSchool?.selectedSubSchoolId ??
       localStorage.getItem('subSchoolId') ??
       'select';

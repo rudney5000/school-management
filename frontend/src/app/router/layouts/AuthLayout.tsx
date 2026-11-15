@@ -1,7 +1,10 @@
 import { Outlet } from '@tanstack/react-router';
 import { GraduationCap } from 'lucide-react';
+import { useTranslation } from '@shared/lib';
 
 export function AuthLayout() {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 flex">
       {/* Left — branding */}
@@ -14,22 +17,14 @@ export function AuthLayout() {
         </div>
 
         <div>
-          <h1 className="text-4xl font-bold leading-tight mb-4">
-            La gestion scolaire
-            <br />
-            pensée pour l'Afrique
-          </h1>
-          <p className="text-blue-200 text-lg leading-relaxed">
-            Multi-école, offline-first, Mobile Money.
-            <br />
-            Conçu pour le Congo et toute l'Afrique centrale.
-          </p>
+          <h1 className="text-4xl font-bold leading-tight mb-4">{t('authLayout.title')}</h1>
+          <p className="text-blue-200 text-lg leading-relaxed">{t('authLayout.subtitle')}</p>
 
           <div className="mt-10 grid grid-cols-3 gap-6">
             {[
-              { value: '500+', label: 'Écoles' },
-              { value: '50k+', label: 'Élèves' },
-              { value: '99%', label: 'Disponibilité' },
+              { value: 4, label: t('authLayout.languages', { count: 4 }) },
+              { value: 7, label: t('authLayout.roles', { count: 7 }) },
+              { value: 4, label: t('authLayout.platforms', { count: 4 }) },
             ].map(({ value, label }) => (
               <div key={label} className="bg-white/10 rounded-xl p-4 text-center">
                 <p className="text-2xl font-bold">{value}</p>
@@ -40,7 +35,7 @@ export function AuthLayout() {
         </div>
 
         <p className="text-blue-300 text-sm">
-          © {new Date().getFullYear()} EcoLinga. Tous droits réservés.
+          © {new Date().getFullYear()} EcoLinga. {t('authLayout.rights')}
         </p>
       </div>
 

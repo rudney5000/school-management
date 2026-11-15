@@ -200,28 +200,9 @@ async function seed() {
 
   const hashedPassword = await bcrypt.hash('password123', 10);
 
-  await db
-    .delete(users)
-    .where(eq(users.email, 'jean.muamba@saintjoseph.cd'))
-    .catch(() => {});
-  await db
-    .delete(teacherSchools)
-    .where(
-      eq(
-        teacherSchools.teacherId,
-        db
-          .select({ id: teachers.id })
-          .from(teachers)
-          .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'))
-          .limit(1),
-      ),
-    )
-    .catch(() => {});
-  await db
-    .delete(teachers)
-    .where(eq(teachers.email, 'jean.muamba@saintjoseph.cd'))
-    .catch(() => {});
-
+  // The teacher is reused when present. Deleting and recreating it used to
+  // fail half-way (messages and courses reference it) and leave it without a
+  // sub-school, so the account could no longer reach its school.
   let teacher;
   const [existingTeacher] = await db
     .select()
@@ -271,6 +252,54 @@ async function seed() {
     console.log('✓ Teacher user: jean.muamba@saintjoseph.cd');
   } else {
     teacher = existingTeacher;
+    const [assignment] = await db
+      .select({ id: teacherSchools.id })
+      .from(teacherSchools)
+      .where(
+        and(
+          eq(teacherSchools.teacherId, existingTeacher.id),
+          eq(teacherSchools.subSchoolId, subSchool.id),
+          eq(teacherSchools.isActive, true),
+        ),
+      )
+      .limit(1);
+    if (!assignment) {
+      await db.insert(teacherSchools).values({
+        teacherId: existingTeacher.id,
+        subSchoolId: subSchool.id,
+        hireDate: '2020-09-01',
+        qualification: 'Licence en Mathématiques',
+        specialization: 'Mathématiques',
+        isActive: true,
+      });
+    }
+
+    const [existingTeacherUser] = await db
+      .select({ id: users.id, teacherId: users.teacherId })
+      .from(users)
+      .where(eq(users.email, 'jean.muamba@saintjoseph.cd'))
+      .limit(1);
+    if (existingTeacherUser && existingTeacherUser.teacherId !== existingTeacher.id) {
+      await db
+        .update(users)
+        .set({ teacherId: existingTeacher.id })
+        .where(eq(users.id, existingTeacherUser.id));
+    }
+    if (!existingTeacherUser) {
+      const [teacherUser] = await db
+        .insert(users)
+        .values({
+          email: 'jean.muamba@saintjoseph.cd',
+          password: hashedPassword,
+          role: 'teacher',
+          teacherId: existingTeacher.id,
+        })
+        .returning();
+      await createIdentifiers(teacherUser.id, {
+        email: 'jean.muamba@saintjoseph.cd',
+        phone: existingTeacher.phone!,
+      });
+    }
     console.log('~ Teacher already exists');
   }
 
@@ -576,80 +605,71 @@ async function seed() {
     console.log('~ Worker already exists');
   }
 
-  try {
-    await db.delete(users).where(eq(users.email, 'marie.kabila@saintjoseph.cd'));
-    console.log('✓ Deleted user');
-    await db.delete(students).where(eq(students.email, 'marie.kabila@saintjoseph.cd'));
-    console.log('✓ Deleted student');
-  } catch (err) {
-    console.error('Delete error:', err);
-  }
-  const [student] = await db
-    .insert(students)
-    .values({
-      firstName: 'Marie',
-      lastName: 'Kabila',
-      email: 'marie.kabila@saintjoseph.cd',
-      gender: 'female',
-      dateOfBirth: '2008-07-20',
-      enrollmentDate: '2024-09-01',
-      subSchoolId: subSchool.id,
-    })
-    .returning();
+  // Reused when they already exist: deleting them would break the messages,
+  // grades and documents that reference them, and the seed must be re-runnable.
+  const findOrCreateStudent = async (values: typeof students.$inferInsert & { email: string }) => {
+    const [existingStudent] = await db
+      .select()
+      .from(students)
+      .where(eq(students.email, values.email))
+      .limit(1);
+    const studentRow = existingStudent ?? (await db.insert(students).values(values).returning())[0];
 
-  const [marieUser] = await db
-    .insert(users)
-    .values({
-      email: 'marie.kabila@saintjoseph.cd',
-      password: hashedPassword,
-      role: 'student',
-      studentId: student.id,
-    })
-    .returning();
+    const [existingUser] = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, values.email))
+      .limit(1);
+    if (existingUser) {
+      // A half-finished earlier run can leave the account pointing at another row.
+      if (existingUser.studentId !== studentRow.id) {
+        await db
+          .update(users)
+          .set({ studentId: studentRow.id })
+          .where(eq(users.id, existingUser.id));
+      }
+      return { student: studentRow, user: existingUser, created: false };
+    }
 
-  await db
-    .insert(userIdentifiers)
-    .values({ userId: marieUser.id, type: 'email', value: 'marie.kabila@saintjoseph.cd' });
+    const [userRow] = await db
+      .insert(users)
+      .values({
+        email: values.email,
+        password: hashedPassword,
+        role: 'student',
+        studentId: studentRow.id,
+      })
+      .returning();
+    await db
+      .insert(userIdentifiers)
+      .values({ userId: userRow.id, type: 'email', value: values.email });
 
-  console.log('✓ Student user: marie.kabila@saintjoseph.cd');
+    return { student: studentRow, user: userRow, created: true };
+  };
 
-  await db
-    .delete(users)
-    .where(eq(users.email, 'paul.kabila@saintjoseph.cd'))
-    .catch(() => {});
-  await db
-    .delete(students)
-    .where(eq(students.email, 'paul.kabila@saintjoseph.cd'))
-    .catch(() => {});
+  const marie = await findOrCreateStudent({
+    firstName: 'Marie',
+    lastName: 'Kabila',
+    email: 'marie.kabila@saintjoseph.cd',
+    gender: 'female',
+    dateOfBirth: '2008-07-20',
+    enrollmentDate: '2024-09-01',
+    subSchoolId: subSchool.id,
+  });
+  const student = marie.student;
+  console.log(`${marie.created ? '✓' : '~'} Student user: marie.kabila@saintjoseph.cd`);
 
-  const [student2] = await db
-    .insert(students)
-    .values({
-      firstName: 'Paul',
-      lastName: 'Kabila',
-      email: 'paul.kabila@saintjoseph.cd',
-      gender: 'male',
-      dateOfBirth: '2010-03-15',
-      enrollmentDate: '2024-09-01',
-      subSchoolId: subSchool.id,
-    })
-    .returning();
-
-  const [paulUser] = await db
-    .insert(users)
-    .values({
-      email: 'paul.kabila@saintjoseph.cd',
-      password: hashedPassword,
-      role: 'student',
-      studentId: student2.id,
-    })
-    .returning();
-
-  await db
-    .insert(userIdentifiers)
-    .values({ userId: paulUser.id, type: 'email', value: 'paul.kabila@saintjoseph.cd' });
-
-  console.log('✓ Student 2: paul.kabila@saintjoseph.cd');
+  const paul = await findOrCreateStudent({
+    firstName: 'Paul',
+    lastName: 'Kabila',
+    email: 'paul.kabila@saintjoseph.cd',
+    gender: 'male',
+    dateOfBirth: '2010-03-15',
+    enrollmentDate: '2024-09-01',
+    subSchoolId: subSchool.id,
+  });
+  const student2 = paul.student;
+  console.log(`${paul.created ? '✓' : '~'} Student 2: paul.kabila@saintjoseph.cd`);
 
   const [classAForEnroll] = await db
     .select()
@@ -748,43 +768,54 @@ async function seed() {
       console.log(`~ Student déjà existant: ${s.firstName} ${s.lastName}`);
     }
   }
-  await db
-    .delete(users)
-    .where(eq(users.email, 'sophie.kabila@saintjoseph.cd'))
-    .catch(() => {});
-  await db
-    .delete(parents)
-    .where(eq(parents.email, 'sophie.kabila@saintjoseph.cd'))
-    .catch(() => {});
+  // Same as the students: reused when present, so the seed can run again.
+  const findOrCreateParent = async (
+    values: typeof parents.$inferInsert & { email: string; phone: string },
+  ) => {
+    const [existingParent] = await db
+      .select()
+      .from(parents)
+      .where(eq(parents.email, values.email))
+      .limit(1);
+    const parentRow = existingParent ?? (await db.insert(parents).values(values).returning())[0];
 
-  const [parent] = await db
-    .insert(parents)
-    .values({
-      firstName: 'Sophie',
-      lastName: 'Kabila',
-      email: 'sophie.kabila@saintjoseph.cd',
-      phone: '+243 81 111 2222',
-      gender: 'female',
-      address: 'Kinshasa, RDC',
-      subSchoolId: subSchool.id,
-    })
-    .returning();
+    const [existingUser] = await db
+      .select({ id: users.id, parentId: users.parentId })
+      .from(users)
+      .where(eq(users.email, values.email))
+      .limit(1);
+    if (existingUser) {
+      if (existingUser.parentId !== parentRow.id) {
+        await db.update(users).set({ parentId: parentRow.id }).where(eq(users.id, existingUser.id));
+      }
+      return { parent: parentRow, created: false };
+    }
 
-  const [sophieUser] = await db
-    .insert(users)
-    .values({
-      email: 'sophie.kabila@saintjoseph.cd',
-      password: hashedPassword,
-      role: 'parent',
-      parentId: parent.id,
-    })
-    .returning();
+    const [userRow] = await db
+      .insert(users)
+      .values({
+        email: values.email,
+        password: hashedPassword,
+        role: 'parent',
+        parentId: parentRow.id,
+      })
+      .returning();
+    await createIdentifiers(userRow.id, { email: values.email, phone: values.phone });
 
-  await createIdentifiers(sophieUser.id, {
+    return { parent: parentRow, created: true };
+  };
+
+  const sophie = await findOrCreateParent({
+    firstName: 'Sophie',
+    lastName: 'Kabila',
     email: 'sophie.kabila@saintjoseph.cd',
-    phone: parent.phone!,
+    phone: '+243 81 111 2222',
+    gender: 'female',
+    address: 'Kinshasa, RDC',
+    subSchoolId: subSchool.id,
   });
-  console.log('✓ Parent user: sophie.kabila@saintjoseph.cd');
+  const parent = sophie.parent;
+  console.log(`${sophie.created ? '✓' : '~'} Parent user: sophie.kabila@saintjoseph.cd`);
 
   await db
     .insert(parentStudents)
@@ -832,40 +863,16 @@ async function seed() {
   ];
 
   for (const p of additionalParentsData) {
-    await db
-      .delete(users)
-      .where(eq(users.email, p.email))
-      .catch(() => {});
-    await db
-      .delete(parents)
-      .where(eq(parents.email, p.email))
-      .catch(() => {});
-
-    const [newParent] = await db
-      .insert(parents)
-      .values({
-        firstName: p.firstName,
-        lastName: p.lastName,
-        email: p.email,
-        phone: p.phone,
-        gender: p.gender,
-        address: p.address,
-        subSchoolId: subSchool.id,
-      })
-      .returning();
-
-    const [newParentUser] = await db
-      .insert(users)
-      .values({
-        email: p.email,
-        password: hashedPassword,
-        role: 'parent',
-        parentId: newParent.id,
-      })
-      .returning();
-
-    await createIdentifiers(newParentUser.id, { email: p.email, phone: p.phone });
-    console.log(`✓ Parent user: ${p.email}`);
+    const { parent: newParent, created } = await findOrCreateParent({
+      firstName: p.firstName,
+      lastName: p.lastName,
+      email: p.email,
+      phone: p.phone,
+      gender: p.gender,
+      address: p.address,
+      subSchoolId: subSchool.id,
+    });
+    console.log(`${created ? '✓' : '~'} Parent user: ${p.email}`);
 
     if (p.childIndexes.length > 0) {
       const childIds = p.childIndexes.map((i) => insertedUnassignedStudents[i].id);
@@ -1839,6 +1846,19 @@ async function seed() {
   }
   console.log('✓ Notes Physique-Chimie créées pour Marie (bulletin complet testable)');
 
+  /** Seeds a conversation's messages only while it has none, so re-running adds no duplicates. */
+  const insertMessagesOnce = async (
+    conversationId: string,
+    rows: (typeof messages.$inferInsert)[] | typeof messages.$inferInsert,
+  ): Promise<void> => {
+    const [existingMessage] = await db
+      .select({ id: messages.id })
+      .from(messages)
+      .where(eq(messages.conversationId, conversationId))
+      .limit(1);
+    if (!existingMessage) await db.insert(messages).values(Array.isArray(rows) ? rows : [rows]);
+  };
+
   const teacherUserForChat = await db.query.users.findFirst({
     where: eq(users.email, 'jean.muamba@saintjoseph.cd'),
   });
@@ -1885,29 +1905,26 @@ async function seed() {
       ])
       .onConflictDoNothing();
 
-    await db
-      .insert(messages)
-      .values([
-        {
-          conversationId: dm.id,
-          senderId: teacherUserForChat.id,
-          type: 'text',
-          content: 'Bonjour Marie, as-tu terminé les exercices du chapitre 3 ?',
-        },
-        {
-          conversationId: dm.id,
-          senderId: studentUserForChat.id,
-          type: 'text',
-          content: 'Oui professeur, je les ai finis hier soir !',
-        },
-        {
-          conversationId: dm.id,
-          senderId: teacherUserForChat.id,
-          type: 'text',
-          content: 'Parfait, apporte-les demain en classe.',
-        },
-      ])
-      .onConflictDoNothing();
+    await insertMessagesOnce(dm.id, [
+      {
+        conversationId: dm.id,
+        senderId: teacherUserForChat.id,
+        type: 'text',
+        content: 'Bonjour Marie, as-tu terminé les exercices du chapitre 3 ?',
+      },
+      {
+        conversationId: dm.id,
+        senderId: studentUserForChat.id,
+        type: 'text',
+        content: 'Oui professeur, je les ai finis hier soir !',
+      },
+      {
+        conversationId: dm.id,
+        senderId: teacherUserForChat.id,
+        type: 'text',
+        content: 'Parfait, apporte-les demain en classe.',
+      },
+    ]);
 
     console.log('✓ DM conversation créée: Prof → Marie');
 
@@ -1947,41 +1964,38 @@ async function seed() {
       ])
       .onConflictDoNothing();
 
-    await db
-      .insert(messages)
-      .values([
-        {
-          conversationId: classGroup.id,
-          senderId: teacherUserForChat.id,
-          type: 'text',
-          content: 'Bienvenue dans le groupe de la 1ère Secondaire A 🎓',
-        },
-        {
-          conversationId: classGroup.id,
-          senderId: teacherUserForChat.id,
-          type: 'text',
-          content: "L'examen de mathématiques aura lieu le 20 novembre. Préparez-vous bien !",
-        },
-        {
-          conversationId: classGroup.id,
-          senderId: studentUserForChat.id,
-          type: 'text',
-          content: 'Merci professeur, on va bien réviser.',
-        },
-        {
-          conversationId: classGroup.id,
-          senderId: student2UserForChat.id,
-          type: 'text',
-          content: 'Est-ce que les exercices du chapitre 4 sont inclus ?',
-        },
-        {
-          conversationId: classGroup.id,
-          senderId: teacherUserForChat.id,
-          type: 'text',
-          content: 'Oui, chapitres 3 et 4 sont au programme.',
-        },
-      ])
-      .onConflictDoNothing();
+    await insertMessagesOnce(classGroup.id, [
+      {
+        conversationId: classGroup.id,
+        senderId: teacherUserForChat.id,
+        type: 'text',
+        content: 'Bienvenue dans le groupe de la 1ère Secondaire A 🎓',
+      },
+      {
+        conversationId: classGroup.id,
+        senderId: teacherUserForChat.id,
+        type: 'text',
+        content: "L'examen de mathématiques aura lieu le 20 novembre. Préparez-vous bien !",
+      },
+      {
+        conversationId: classGroup.id,
+        senderId: studentUserForChat.id,
+        type: 'text',
+        content: 'Merci professeur, on va bien réviser.',
+      },
+      {
+        conversationId: classGroup.id,
+        senderId: student2UserForChat.id,
+        type: 'text',
+        content: 'Est-ce que les exercices du chapitre 4 sont inclus ?',
+      },
+      {
+        conversationId: classGroup.id,
+        senderId: teacherUserForChat.id,
+        type: 'text',
+        content: 'Oui, chapitres 3 et 4 sont au programme.',
+      },
+    ]);
 
     console.log('✓ Groupe classe créé: 1ère Secondaire A');
 
@@ -2021,35 +2035,32 @@ async function seed() {
       ])
       .onConflictDoNothing();
 
-    await db
-      .insert(messages)
-      .values([
-        {
-          conversationId: courseGroup.id,
-          senderId: teacherUserForChat.id,
-          type: 'text',
-          content: 'Voici le groupe dédié au cours de Mathématiques.',
-        },
-        {
-          conversationId: courseGroup.id,
-          senderId: teacherUserForChat.id,
-          type: 'text',
-          content: 'Posez vos questions ici, je répondrai dès que possible.',
-        },
-        {
-          conversationId: courseGroup.id,
-          senderId: studentUserForChat.id,
-          type: 'text',
-          content: "Professeur, je ne comprends pas l'exercice 5 du chapitre 3.",
-        },
-        {
-          conversationId: courseGroup.id,
-          senderId: teacherUserForChat.id,
-          type: 'text',
-          content: "Je vais t'expliquer demain avant le cours. Viens 15 min avant.",
-        },
-      ])
-      .onConflictDoNothing();
+    await insertMessagesOnce(courseGroup.id, [
+      {
+        conversationId: courseGroup.id,
+        senderId: teacherUserForChat.id,
+        type: 'text',
+        content: 'Voici le groupe dédié au cours de Mathématiques.',
+      },
+      {
+        conversationId: courseGroup.id,
+        senderId: teacherUserForChat.id,
+        type: 'text',
+        content: 'Posez vos questions ici, je répondrai dès que possible.',
+      },
+      {
+        conversationId: courseGroup.id,
+        senderId: studentUserForChat.id,
+        type: 'text',
+        content: "Professeur, je ne comprends pas l'exercice 5 du chapitre 3.",
+      },
+      {
+        conversationId: courseGroup.id,
+        senderId: teacherUserForChat.id,
+        type: 'text',
+        content: "Je vais t'expliquer demain avant le cours. Viens 15 min avant.",
+      },
+    ]);
 
     console.log('✓ Groupe cours créé: Mathématiques');
 
@@ -2089,30 +2100,27 @@ async function seed() {
       ])
       .onConflictDoNothing();
 
-    await db
-      .insert(messages)
-      .values([
-        {
-          conversationId: generalGroup.id,
-          senderId: adminUserForChat.id,
-          type: 'text',
-          content:
-            'Bienvenue sur la plateforme de communication du Groupe Scolaire Saint-Joseph ! 🏫',
-        },
-        {
-          conversationId: generalGroup.id,
-          senderId: adminUserForChat.id,
-          type: 'text',
-          content: 'Les cours du lundi 11 novembre sont suspendus en raison de la fête nationale.',
-        },
-        {
-          conversationId: generalGroup.id,
-          senderId: teacherUserForChat.id,
-          type: 'text',
-          content: "Merci pour l'information !",
-        },
-      ])
-      .onConflictDoNothing();
+    await insertMessagesOnce(generalGroup.id, [
+      {
+        conversationId: generalGroup.id,
+        senderId: adminUserForChat.id,
+        type: 'text',
+        content:
+          'Bienvenue sur la plateforme de communication du Groupe Scolaire Saint-Joseph ! 🏫',
+      },
+      {
+        conversationId: generalGroup.id,
+        senderId: adminUserForChat.id,
+        type: 'text',
+        content: 'Les cours du lundi 11 novembre sont suspendus en raison de la fête nationale.',
+      },
+      {
+        conversationId: generalGroup.id,
+        senderId: teacherUserForChat.id,
+        type: 'text',
+        content: "Merci pour l'information !",
+      },
+    ]);
 
     console.log('✓ Groupe général créé: Annonces Saint-Joseph');
   } else {
@@ -2600,25 +2608,22 @@ async function seed() {
       ])
       .onConflictDoNothing();
 
-    await db
-      .insert(messages)
-      .values([
-        {
-          conversationId: announcementChannel.id,
-          senderId: adminUserForChat.id,
-          type: 'text',
-          content:
-            "Bienvenue chers parents sur le canal d'annonces officielles du Groupe Scolaire Saint-Joseph.",
-        },
-        {
-          conversationId: announcementChannel.id,
-          senderId: adminUserForChat.id,
-          type: 'text',
-          content:
-            "Réunion des parents d'élèves prévue le 15 décembre à 15h00 dans la cour principale.",
-        },
-      ])
-      .onConflictDoNothing();
+    await insertMessagesOnce(announcementChannel.id, [
+      {
+        conversationId: announcementChannel.id,
+        senderId: adminUserForChat.id,
+        type: 'text',
+        content:
+          "Bienvenue chers parents sur le canal d'annonces officielles du Groupe Scolaire Saint-Joseph.",
+      },
+      {
+        conversationId: announcementChannel.id,
+        senderId: adminUserForChat.id,
+        type: 'text',
+        content:
+          "Réunion des parents d'élèves prévue le 15 décembre à 15h00 dans la cour principale.",
+      },
+    ]);
 
     console.log('✓ Canal announcement créé: Annonces — Parents');
   } else {
@@ -2652,15 +2657,12 @@ async function seed() {
       .values({ conversationId: parentGroupA.id, userId: sophieUserForChat.id, role: 'member' })
       .onConflictDoNothing();
 
-    await db
-      .insert(messages)
-      .values({
-        conversationId: parentGroupA.id,
-        senderId: sophieUserForChat.id,
-        type: 'text',
-        content: "Bonjour à tous, quelqu'un sait si le cours d'anglais de jeudi est maintenu ?",
-      })
-      .onConflictDoNothing();
+    await insertMessagesOnce(parentGroupA.id, {
+      conversationId: parentGroupA.id,
+      senderId: sophieUserForChat.id,
+      type: 'text',
+      content: "Bonjour à tous, quelqu'un sait si le cours d'anglais de jeudi est maintenu ?",
+    });
 
     console.log(`✓ Parent group créé: Parents — ${classA.name}`);
   }

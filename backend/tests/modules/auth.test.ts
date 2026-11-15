@@ -25,6 +25,68 @@ describe('auth', () => {
     tenant = await createTenant();
   });
 
+  describe('POST /api/auth/refresh', () => {
+    it('issues a working access token with the role and school', async () => {
+      const { user } = await createAdminIn(tenant.subSchoolId);
+      const login = await request(app)
+        .post('/api/auth/login')
+        .send({ identifier: user.email, password: 'password123' })
+        .expect(200);
+
+      const refreshed = await request(app)
+        .post('/api/auth/refresh')
+        .send({ refreshToken: login.body.data.refreshToken })
+        .expect(200);
+
+      const { accessToken } = refreshed.body.data;
+      const me = await request(app)
+        .get('/api/auth/me')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .expect(200);
+
+      expect(me.body.data).toMatchObject({
+        id: user.id,
+        role: 'admin',
+        schoolId: tenant.schoolId,
+        subSchoolId: tenant.subSchoolId,
+      });
+      const claims = JSON.parse(Buffer.from(accessToken.split('.')[1], 'base64url').toString());
+      expect(claims).toMatchObject({ role: 'admin', subSchoolId: tenant.subSchoolId });
+    });
+
+    it('refuses a deactivated account, at login and at refresh', async () => {
+      const { user } = await createAdminIn(tenant.subSchoolId);
+      const login = await request(app)
+        .post('/api/auth/login')
+        .send({ identifier: user.email, password: 'password123' })
+        .expect(200);
+
+      await db.update(users).set({ isActive: 'false' }).where(eq(users.id, user.id));
+
+      await request(app)
+        .post('/api/auth/refresh')
+        .send({ refreshToken: login.body.data.refreshToken })
+        .expect(401);
+      await request(app)
+        .post('/api/auth/login')
+        .send({ identifier: user.email, password: 'password123' })
+        .expect(401);
+    });
+
+    it('refuses an access token used as a refresh token', async () => {
+      const { user } = await createAdminIn(tenant.subSchoolId);
+      const login = await request(app)
+        .post('/api/auth/login')
+        .send({ identifier: user.email, password: 'password123' })
+        .expect(200);
+
+      await request(app)
+        .post('/api/auth/refresh')
+        .send({ refreshToken: login.body.data.accessToken })
+        .expect(401);
+    });
+  });
+
   describe('POST /api/auth/login', () => {
     it('returns a token pair for valid credentials', async () => {
       const { user } = await createAdminIn(tenant.subSchoolId);

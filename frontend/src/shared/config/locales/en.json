@@ -193,7 +193,12 @@
     "chat": "Chat",
     "notifications": "Notifications",
     "assessments": "Assessments",
-    "curricula": "Curricula"
+    "curricula": "Curricula",
+    "schools": "Schools",
+    "classes": "Classes",
+    "courses": "Courses",
+    "messages": "Messages",
+    "settings": "Settings"
   },
   "header": {
     "search": "Search...",
@@ -633,10 +638,8 @@
         "completed": "Completed",
         "archived": "Archived"
       },
-      "results": {
-        "results_one": "{{count}} result",
-        "results_few": "{{count}} results"
-      },
+      "results_one": "{{count}} result",
+      "results_other": "{{count}} results",
       "empty": {
         "title": "No courses found",
         "description": "Try another search or create a new course."
@@ -2082,5 +2085,16 @@
       "delete": "Delete",
       "deleted": "Curriculum deleted."
     }
+  },
+  "authLayout": {
+    "title": "School management, built for Africa",
+    "subtitle": "Several campuses under one account, sign-in by email, phone number or username, and official documents anyone can verify.",
+    "languages_one": "Language",
+    "languages_other": "Languages",
+    "roles_one": "Role",
+    "roles_other": "Roles",
+    "platforms_one": "Platform",
+    "platforms_other": "Platforms",
+    "rights": "All rights reserved."
   }
 }
