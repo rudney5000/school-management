@@ -40,6 +40,7 @@ import {
   reportStatusHistory,
 } from './schema';
 import { seedDocumentTemplates } from './seed-documents';
+import { seedCurricula } from './seed-curricula';
 import { and, eq, inArray } from 'drizzle-orm';
 import { examResults, exams } from '@/db/schema/exam';
 import { DocumentSignaturesService } from '@/modules/signature/document-signature.service';
@@ -2875,6 +2876,7 @@ async function seed() {
   }
 
   await seedDocumentTemplates();
+  await seedCurricula(subSchool.id);
 
   console.log('\n✓ Seed completed. Test credentials (password: password123):');
   console.log('  Admin   → admin@saintjoseph.cd');
@@ -2882,6 +2884,7 @@ async function seed() {
   console.log('  Staff(Worker)      → secretaire@saintjoseph.cd');
   console.log('  Student → marie.kabila@saintjoseph.cd');
   console.log('  Teacher → jean.muamba@saintjoseph.cd');
+  console.log('  Parent  → sophie.kabila@saintjoseph.cd');
 
   process.exit(0);
 }

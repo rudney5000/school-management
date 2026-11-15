@@ -193,7 +193,8 @@
     "attendances": "Présences",
     "messages": "Messages",
     "settings": "Paramètres",
-    "events": "Événements"
+    "events": "Événements",
+    "curricula": "Programmes"
   },
   "header": {
     "search": "Rechercher...",
@@ -335,7 +336,10 @@
         "image": "Image",
         "isActive": "Étudiant actif"
       },
-      "gender": { "male": "Homme", "female": "Femme" },
+      "gender": {
+        "male": "Homme",
+        "female": "Femme"
+      },
       "columns": {
         "firstName": "Prénom",
         "lastName": "Nom",
@@ -644,7 +648,6 @@
         "completed": "Terminés",
         "archived": "Archivés"
       },
-
       "results": {
         "results_one": "{{count}} résultat",
         "results_few": "{{count}} résultats"
@@ -2021,5 +2024,89 @@
     "done": "Document {{number}} émis",
     "invalid": "Certains champs sont à corriger : ils sont en rouge.",
     "notPublished": "Ce modèle n'est pas publié : publiez-le avant d'émettre un document."
+  },
+  "curriculaPage": {
+    "title": "Programmes scolaires",
+    "add": "Ajouter un programme",
+    "subtitleManager": "Ajoutez le programme national et les programmes de l'école pour chaque classe. Une fois publiés, les enseignants, les parents et les élèves peuvent les consulter et les télécharger.",
+    "subtitleReader": "Les programmes officiels et ceux de l'école, à consulter et à télécharger.",
+    "filters": {
+      "year": "Année",
+      "type": "Type",
+      "class": "Classe",
+      "allYears": "Toutes les années",
+      "allTypes": "Tous les types",
+      "allClasses": "Toutes les classes"
+    },
+    "loadFailed": "Impossible de charger les programmes.",
+    "retry": "Réessayer",
+    "emptyManager": "Aucun programme pour l'instant. Ajoutez le programme national ou celui de l'école.",
+    "emptyReader": "Aucun programme n'a encore été publié.",
+    "noMatch": "Aucun programme ne correspond à ces filtres.",
+    "fileCount_one": "{{count}} fichier",
+    "fileCount_other": "{{count}} fichiers",
+    "type": {
+      "national": "Programme officiel",
+      "school": "Programme de l'école"
+    },
+    "status": {
+      "published": "Publié",
+      "draft": "Brouillon"
+    },
+    "form": {
+      "createTitle": "Nouveau programme",
+      "editTitle": "Modifier le programme",
+      "subtitle": "Vous pourrez joindre les fichiers une fois le programme enregistré.",
+      "title": "Titre",
+      "titlePlaceholder": "Programme de mathématiques, 7e année",
+      "type": "Type",
+      "course": "Matière",
+      "noCourse": "Aucune matière précise",
+      "schoolYear": "Année scolaire",
+      "schoolYearHint": "Format attendu : 2026-2027",
+      "description": "Description (facultatif)",
+      "classes": "Classes concernées",
+      "selected_one": "{{count}} sélectionnée",
+      "selected_other": "{{count}} sélectionnées",
+      "noClasses": "Aucune classe dans cette école. Créez d'abord les classes.",
+      "otherLevel": "Sans niveau",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "created": "Programme créé. Ajoutez maintenant ses fichiers.",
+      "updated": "Programme mis à jour."
+    },
+    "errors": {
+      "invalid": "Certaines informations sont invalides. Vérifiez les classes et la matière.",
+      "UNSUPPORTED_FILE": "Fichier refusé : PDF, image ou Word de 25 Mo maximum.",
+      "UPLOAD_FAILED": "L'envoi du fichier a échoué. Réessayez.",
+      "CONFLICT": "Ce fichier est déjà enregistré.",
+      "NOT_FOUND": "Ce programme n'existe plus.",
+      "FORBIDDEN": "Vous n'avez pas accès à ce programme.",
+      "unknown": "Une erreur est survenue."
+    },
+    "detail": {
+      "classes": "Classes",
+      "description": "Description"
+    },
+    "files": {
+      "title": "Fichiers",
+      "add": "Ajouter",
+      "hint": "PDF, images ou documents Word, 25 Mo maximum par fichier.",
+      "empty": "Aucun fichier pour l'instant.",
+      "download": "Télécharger",
+      "remove": "Supprimer le fichier",
+      "uploaded": "« {{name}} » ajouté.",
+      "kb": "{{value}} Ko",
+      "mb": "{{value}} Mo"
+    },
+    "actions": {
+      "publish": "Publier",
+      "unpublish": "Retirer la publication",
+      "published": "Programme publié : il est maintenant visible des enseignants, parents et élèves.",
+      "unpublished": "Programme retiré : seule la direction le voit.",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "deleted": "Programme supprimé."
+    }
   }
 }

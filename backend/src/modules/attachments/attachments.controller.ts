@@ -40,13 +40,13 @@ export class AttachmentsController {
   });
 
   validate = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const data = await this.service.validate(req.params.id, req.user!.id);
+    const data = await this.service.validate(req.params.id, req.user!.id, req.user!.role);
     respond(res, data);
   });
 
   reject = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { reason } = req.body as RejectAttachmentDto;
-    const data = await this.service.reject(req.params.id, reason);
+    const data = await this.service.reject(req.params.id, reason, req.user!.id, req.user!.role);
     respond(res, data);
   });
 

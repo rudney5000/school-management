@@ -73,7 +73,8 @@
     "attendance": "Présence",
     "messages": "Ba message",
     "settings": "Ba paramètre",
-    "events": "Ba évenement"
+    "events": "Ba évenement",
+    "curricula": "Ba programme"
   },
   "home": {
     "hero_section": {
@@ -152,7 +153,6 @@
     "search": "Rechercher...",
     "notifications": "Notifications"
   },
-
   "dashboard": {
     "title": "Tableau de bord",
     "subtitle": "Vue d'ensemble",

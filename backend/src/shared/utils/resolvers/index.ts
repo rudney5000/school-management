@@ -8,6 +8,7 @@ import { PaymentAttachmentResolver } from '@/shared/utils/resolvers/attachments/
 import { EnrollmentAttachmentResolver } from '@/shared/utils/resolvers/attachments/enrollment.resolver';
 import { MessageAttachmentResolver } from '@/shared/utils/resolvers/attachments/message.resolver';
 import { TeacherAttachmentResolver } from '@/shared/utils/resolvers/attachments/teacher.resolver';
+import { CurriculumAttachmentResolver } from '@/shared/utils/resolvers/attachments/curriculum.resolver';
 
 export const attachmentResolvers: Record<AttachableType, AttachmentContextResolver> = {
   conversation: new ConversationAttachmentResolver(),
@@ -16,4 +17,5 @@ export const attachmentResolvers: Record<AttachableType, AttachmentContextResolv
   payment: new PaymentAttachmentResolver(),
   teacher: new TeacherAttachmentResolver(),
   report: new ReportAttachmentResolver(),
+  curriculum: new CurriculumAttachmentResolver(),
 };

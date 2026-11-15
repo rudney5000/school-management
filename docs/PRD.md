@@ -28,6 +28,7 @@ Consulte les notes, les présences, les paiements. Reçoit des notifications SMS
 | Emplois du temps | Création, affichage, export PDF |
 | Notes & bulletins | Saisie, calcul moyennes, génération PDF |
 | Présences | Enseignants et élèves, rapports |
+| Programmes scolaires | Le directeur dépose le programme national et ceux de l'école (PDF, images, Word) par classe ; une fois publiés, enseignants, parents et élèves les consultent et les téléchargent |
 | Paiements frais | Suivi scolarité, reçus, relances |
 | Notifications | In-app + SMS (Africa's Talking) |
 

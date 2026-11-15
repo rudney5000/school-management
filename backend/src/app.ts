@@ -38,6 +38,7 @@ import { documentSignaturesRouter } from '@/modules/signature/document-signature
 import { documentPdfRouter } from '@/modules/document-pdf/document-pdf.router';
 import { reportsRouter } from '@/modules/reports/reports.router';
 import { documentsRouter } from '@/modules/documents/documents.router';
+import { curriculaRouter } from '@/modules/curricula/curricula.router';
 
 export function createApp(): express.Application {
   const app = express();
@@ -85,6 +86,7 @@ export function createApp(): express.Application {
   app.use('/api/document-signatures', documentSignaturesRouter);
   app.use('/api/document-pdf', documentPdfRouter);
   app.use('/api/documents', documentsRouter);
+  app.use('/api/curricula', curriculaRouter);
 
   app.use(errorHandler);
 

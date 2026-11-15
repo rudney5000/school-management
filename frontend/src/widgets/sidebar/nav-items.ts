@@ -15,6 +15,7 @@ import {
   CalendarCheck,
   FileText,
   FileStack,
+  BookMarked,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { UserRole } from '@features/auth/model/dto/RegisterDto';
@@ -49,6 +50,11 @@ export const adminNav: NavGroup[] = [
   {
     groupKey: 'nav.group.pedagogy',
     items: [
+      {
+        labelKey: 'nav.curricula',
+        icon: BookMarked,
+        path: '/sub-schools/$subSchoolId/curricula',
+      },
       { labelKey: 'nav.courses', icon: BookOpen, path: '/sub-schools/$subSchoolId/courses' },
       {
         labelKey: 'nav.assessments',
@@ -109,6 +115,11 @@ export const teacherNav: NavGroup[] = [
     groupKey: 'nav.group.pedagogy',
     items: [
       {
+        labelKey: 'nav.curricula',
+        icon: BookMarked,
+        path: '/sub-schools/$subSchoolId/curricula',
+      },
+      {
         labelKey: 'nav.assessments',
         icon: TrendingUp,
         path: '/sub-schools/$subSchoolId/assessments',
@@ -152,6 +163,11 @@ export const studentNav: NavGroup[] = [
   {
     groupKey: 'nav.group.pedagogy',
     items: [
+      {
+        labelKey: 'nav.curricula',
+        icon: BookMarked,
+        path: '/sub-schools/$subSchoolId/curricula',
+      },
       {
         labelKey: 'nav.assessments',
         icon: TrendingUp,
@@ -197,6 +213,11 @@ export const directorNav: NavGroup[] = [
   {
     groupKey: 'nav.group.pedagogy',
     items: [
+      {
+        labelKey: 'nav.curricula',
+        icon: BookMarked,
+        path: '/sub-schools/$subSchoolId/curricula',
+      },
       { labelKey: 'nav.courses', icon: BookOpen, path: '/sub-schools/$subSchoolId/courses' },
       {
         labelKey: 'nav.assessments',
@@ -268,6 +289,11 @@ export const parentNav: NavGroup[] = [
   {
     groupKey: 'nav.group.pedagogy',
     items: [
+      {
+        labelKey: 'nav.curricula',
+        icon: BookMarked,
+        path: '/sub-schools/$subSchoolId/curricula',
+      },
       {
         labelKey: 'nav.assessments',
         icon: TrendingUp,

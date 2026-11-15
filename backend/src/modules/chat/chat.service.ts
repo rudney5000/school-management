@@ -30,7 +30,7 @@ import {
   users,
   workers,
 } from '@/db/schema';
-import { getAttachmentUrl } from '@/config/storage';
+import { getAttachmentUrl, isUploadKeyIn, uploadKeyPrefix } from '@/config/storage';
 import { AuthService } from '@/modules/auth/auth.service';
 
 export class ChatService {
@@ -394,6 +394,27 @@ export class ChatService {
   }
 
   async saveAttachments(messageId: string, uploadedBy: string, uploadedFiles: UploadedFile[]) {
+    const message = await this.findMessageOrFail(messageId);
+    const [conversation] = await db
+      .select({ subSchoolId: conversations.subSchoolId })
+      .from(conversations)
+      .where(eq(conversations.id, message.conversationId))
+      .limit(1);
+
+    if (!conversation) throw new AppError('NOT_FOUND', 'Conversation introuvable', 404);
+
+    // Keys come from the socket payload: only accept files presigned for this
+    // conversation, or a sender could share any object of the bucket, since
+    // messages are served with a signed URL for each attachment key.
+    const prefix = uploadKeyPrefix(
+      conversation.subSchoolId,
+      'conversation',
+      message.conversationId,
+    );
+    if (!uploadedFiles.every((file) => isUploadKeyIn(file.key, prefix, file.mimeType))) {
+      throw new AppError('VALIDATION_ERROR', 'Clé de fichier invalide', 400);
+    }
+
     await db.insert(attachments).values(
       uploadedFiles.map((a) => ({
         attachableType: 'conversation' as const,

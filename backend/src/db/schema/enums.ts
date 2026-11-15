@@ -125,6 +125,7 @@ export const attachmentCategoryEnum = pgEnum('attachment_category', [
   'identity_document',
   'guardianship_proof',
   'report_evidence',
+  'curriculum',
   'other',
 ]);
 
@@ -141,6 +142,7 @@ export const attachableTypeEnum = pgEnum('attachable_type', [
   'payment',
   'teacher',
   'report',
+  'curriculum',
 ]);
 
 export const contractTypeEnum = pgEnum('contract_type', ['permanent', 'fixed_term', 'part_time']);
@@ -177,3 +179,7 @@ export const involvedPersonRoleEnum = pgEnum('involved_person_role', [
   'student',
   'other',
 ]);
+
+export const curriculumTypeEnum = pgEnum('curriculum_type', ['national', 'school']);
+
+export const curriculumStatusEnum = pgEnum('curriculum_status', ['draft', 'published']);

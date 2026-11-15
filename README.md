@@ -52,6 +52,7 @@ Most school software assumes stable internet, card payments and one school per a
 ### Teaching and learning
 
 - **Courses** — a course catalogue per school, linked to classes.
+- **Curricula** — the director uploads the national curriculum and the school's own programmes (PDF, images, Word) for each class. Once published, teachers can read them from home, and parents and students see the ones for their own classes.
 - **Exams and grades** — exam planning and grade entry, with class averages on the dashboard.
 - **Report cards** — generated as PDFs from the grades, then signed electronically by the school.
 - **Attendance** — separate attendance tracking for students, teachers and staff.
@@ -163,6 +164,7 @@ Sign in with one of the demo accounts. They all use the password `password123`:
 | Staff    | `secretaire@saintjoseph.cd`                     |
 | Teacher  | `jean.muamba@saintjoseph.cd` or `+243812345678` |
 | Student  | `marie.kabila@saintjoseph.cd`                   |
+| Parent   | `sophie.kabila@saintjoseph.cd`                  |
 
 `pnpm dev:down` stops the containers and keeps the data.
 

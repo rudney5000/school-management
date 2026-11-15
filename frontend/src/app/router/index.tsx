@@ -222,6 +222,12 @@ const reportsRoute = createRoute({
   ),
 });
 
+const curriculaRoute = createRoute({
+  getParentRoute: () => subSchoolRoute,
+  path: 'curricula',
+  component: lazyRouteComponent(() => import('@/pages/curricula/CurriculaPage')),
+});
+
 const documentsRoute = createRoute({
   getParentRoute: () => subSchoolRoute,
   path: 'documents',
@@ -267,6 +273,7 @@ const routeTree = rootRoute.addChildren([
         parentsRoute,
         classesRoute,
         coursesRoute,
+        curriculaRoute,
         teacherDetailRoute,
         parentDetailRoute,
         scheduleRoute,

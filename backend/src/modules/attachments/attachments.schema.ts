@@ -22,6 +22,7 @@ export const attachmentCategorySchema = z.enum([
   'identity_document',
   'guardianship_proof',
   'report_evidence',
+  'curriculum',
   'other',
 ]);
 
@@ -32,6 +33,7 @@ export const attachableTypeSchema = z.enum([
   'payment',
   'teacher',
   'report',
+  'curriculum',
 ]);
 
 export type AttachableType = z.infer<typeof attachableTypeSchema>;

@@ -50,6 +50,13 @@
       "when": 1794602917645,
       "tag": "0006_round_doctor_doom",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794775491661,
+      "tag": "0007_curricula",
+      "breakpoints": true
     }
   ]
 }

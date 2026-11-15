@@ -192,7 +192,8 @@
     "attendances": "Attendance",
     "chat": "Chat",
     "notifications": "Notifications",
-    "assessments": "Assessments"
+    "assessments": "Assessments",
+    "curricula": "Curricula"
   },
   "header": {
     "search": "Search...",
@@ -1997,5 +1998,89 @@
     "done": "Document {{number}} issued",
     "invalid": "Some fields need correcting: they are in red.",
     "notPublished": "This template is not published: publish it before issuing a document."
+  },
+  "curriculaPage": {
+    "title": "Curricula",
+    "add": "Add a curriculum",
+    "subtitleManager": "Add the national curriculum and your school's own programmes for each class. Once published, teachers, parents and students can read and download them.",
+    "subtitleReader": "The official curricula and the school's own programmes, to read and download.",
+    "filters": {
+      "year": "Year",
+      "type": "Type",
+      "class": "Class",
+      "allYears": "All years",
+      "allTypes": "All types",
+      "allClasses": "All classes"
+    },
+    "loadFailed": "Could not load the curricula.",
+    "retry": "Retry",
+    "emptyManager": "No curriculum yet. Add the national curriculum or one of the school's own.",
+    "emptyReader": "No curriculum has been published yet.",
+    "noMatch": "No curriculum matches these filters.",
+    "fileCount_one": "{{count}} file",
+    "fileCount_other": "{{count}} files",
+    "type": {
+      "national": "Official curriculum",
+      "school": "School programme"
+    },
+    "status": {
+      "published": "Published",
+      "draft": "Draft"
+    },
+    "form": {
+      "createTitle": "New curriculum",
+      "editTitle": "Edit curriculum",
+      "subtitle": "You can attach the files once the curriculum is saved.",
+      "title": "Title",
+      "titlePlaceholder": "Mathematics curriculum, grade 7",
+      "type": "Type",
+      "course": "Subject",
+      "noCourse": "No specific subject",
+      "schoolYear": "School year",
+      "schoolYearHint": "Expected format: 2026-2027",
+      "description": "Description (optional)",
+      "classes": "Classes",
+      "selected_one": "{{count}} selected",
+      "selected_other": "{{count}} selected",
+      "noClasses": "This school has no classes yet. Create the classes first.",
+      "otherLevel": "No level",
+      "cancel": "Cancel",
+      "save": "Save",
+      "created": "Curriculum created. Now add its files.",
+      "updated": "Curriculum updated."
+    },
+    "errors": {
+      "invalid": "Some details are invalid. Check the classes and the subject.",
+      "UNSUPPORTED_FILE": "File refused: PDF, image or Word, up to 25 MB.",
+      "UPLOAD_FAILED": "The upload failed. Please try again.",
+      "CONFLICT": "This file is already saved.",
+      "NOT_FOUND": "This curriculum no longer exists.",
+      "FORBIDDEN": "You do not have access to this curriculum.",
+      "unknown": "Something went wrong."
+    },
+    "detail": {
+      "classes": "Classes",
+      "description": "Description"
+    },
+    "files": {
+      "title": "Files",
+      "add": "Add",
+      "hint": "PDF, images or Word documents, up to 25 MB each.",
+      "empty": "No files yet.",
+      "download": "Download",
+      "remove": "Remove the file",
+      "uploaded": "“{{name}}” added.",
+      "kb": "{{value}} KB",
+      "mb": "{{value}} MB"
+    },
+    "actions": {
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "published": "Curriculum published: teachers, parents and students can now see it.",
+      "unpublished": "Curriculum unpublished: only the school management can see it.",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleted": "Curriculum deleted."
+    }
   }
 }

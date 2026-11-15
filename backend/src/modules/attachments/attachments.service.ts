@@ -1,9 +1,14 @@
 import { DeleteObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { randomUUID } from 'crypto';
 import { and, eq } from 'drizzle-orm';
 import { db } from '@/db';
-import { BUCKET_NAME, buildObjectKey, s3Client } from '@/config/storage';
+import {
+  BUCKET_NAME,
+  isUploadKeyIn,
+  newUploadKey,
+  s3Client,
+  uploadKeyPrefix,
+} from '@/config/storage';
 import {
   AttachmentStatus,
   ConfirmUploadInput,
@@ -21,13 +26,8 @@ export class AttachmentsService {
     const resolver = attachmentResolvers[input.attachableType];
     const { subSchoolId } = await resolver.resolve(userId, userRole, input.attachableId);
 
-    const extension = input.filename.split('.').pop();
-    const key = buildObjectKey(
-      subSchoolId,
-      `${input.attachableType}s`,
-      input.attachableId,
-      `${randomUUID()}.${extension}`,
-    );
+    const prefix = uploadKeyPrefix(subSchoolId, input.attachableType, input.attachableId);
+    const key = newUploadKey(prefix, input.mimeType);
 
     const command = new PutObjectCommand({
       Bucket: BUCKET_NAME,
@@ -46,7 +46,15 @@ export class AttachmentsService {
 
   async confirm(userId: string, userRole: string, input: ConfirmUploadInput) {
     const resolver = attachmentResolvers[input.attachableType];
-    await resolver.resolve(userId, userRole, input.attachableId);
+    const { subSchoolId } = await resolver.resolve(userId, userRole, input.attachableId);
+
+    // The key comes back from the client. Only accept one presign could have
+    // issued for this attachable, or a caller could record another school's file
+    // under their own record and then read it through the attachment APIs.
+    const prefix = uploadKeyPrefix(subSchoolId, input.attachableType, input.attachableId);
+    if (!isUploadKeyIn(input.key, prefix, input.mimeType)) {
+      throw new AppError('VALIDATION_ERROR', 'Clé de fichier invalide', 400);
+    }
 
     const [record] = await db
       .insert(attachments)
@@ -82,12 +90,14 @@ export class AttachmentsService {
       );
   }
 
-  async validate(id: string, validatedByUserId: string) {
+  async validate(id: string, userId: string, userRole: string) {
+    await this.assertCanAccess(id, userId, userRole);
+
     const [updated] = await db
       .update(attachments)
       .set({
         status: 'validated',
-        validatedBy: validatedByUserId,
+        validatedBy: userId,
         validatedAt: new Date(),
         rejectionReason: null,
       })
@@ -98,7 +108,9 @@ export class AttachmentsService {
     return updated;
   }
 
-  async reject(id: string, reason: string) {
+  async reject(id: string, reason: string, userId: string, userRole: string) {
+    await this.assertCanAccess(id, userId, userRole);
+
     const [updated] = await db
       .update(attachments)
       .set({
@@ -149,5 +161,24 @@ export class AttachmentsService {
     await db.delete(attachments).where(eq(attachments.id, id));
 
     return { id };
+  }
+
+  /**
+   * Runs the resolver of the record the attachment belongs to, so that a role
+   * check alone never reaches another school's attachment by its id.
+   */
+  private async assertCanAccess(id: string, userId: string, userRole: string): Promise<void> {
+    const [record] = await db
+      .select({
+        attachableType: attachments.attachableType,
+        attachableId: attachments.attachableId,
+      })
+      .from(attachments)
+      .where(eq(attachments.id, id))
+      .limit(1);
+
+    if (!record) throw new AppError('NOT_FOUND', 'Pièce jointe introuvable', 404);
+
+    await attachmentResolvers[record.attachableType].resolve(userId, userRole, record.attachableId);
   }
 }

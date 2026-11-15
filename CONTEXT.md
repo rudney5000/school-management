@@ -40,6 +40,12 @@ Ex : "6ème A", "Terminal Scientifique"
 La position d'un Learner dans le cursus.
 Défini par un LevelType (ex : Primaire, Secondaire, Maternelle).
 
+### Programme (Curriculum)
+Le programme d'enseignement qu'une SubSchool met à disposition, pour une ou plusieurs Classrooms et une année scolaire.
+Soit **officiel** (le programme national, déposé par l'école elle-même), soit **de l'école** (religion, informatique, progression interne).
+Des fichiers (PDF, images, Word) ; un brouillon n'est vu que de la direction, un programme publié l'est aussi des Teachers, des Parents et des Learners de ses classes.
+≠ `CURRICULUM_NOT_CONFIGURED` (notes et bulletins), où « curriculum » désigne la liste des cours d'une classe.
+
 ### Schedule (emploi du temps)
 L'ensemble des créneaux horaires d'une Classroom pour une période donnée.
 Associe un Teacher, un Subject, une Classroom, des horaires.
