@@ -615,11 +615,10 @@
         "completed": "Завершённые",
         "archived": "Архивные"
       },
-      "results": {
-        "results_one": "{{count}} результат",
-        "results_few": "{{count}} результата",
-        "results_many": "{{count}} результатов"
-      },
+      "results_one": "{{count}} результат",
+      "results_few": "{{count}} результата",
+      "results_many": "{{count}} результатов",
+      "results_other": "{{count}} результата",
       "empty": {
         "title": "Курсы не найдены",
         "description": "Попробуйте другой запрос или создайте новый курс."
@@ -1999,5 +1998,22 @@
       "delete": "Удалить",
       "deleted": "Программа удалена."
     }
+  },
+  "authLayout": {
+    "title": "Управление школой, созданное для Африки",
+    "subtitle": "Несколько учебных заведений в одном аккаунте, вход по e-mail, телефону или логину и официальные документы, подлинность которых может проверить каждый.",
+    "languages_one": "Язык",
+    "languages_few": "Языка",
+    "languages_many": "Языков",
+    "languages_other": "Языка",
+    "roles_one": "Роль",
+    "roles_few": "Роли",
+    "roles_many": "Ролей",
+    "roles_other": "Роли",
+    "platforms_one": "Платформа",
+    "platforms_few": "Платформы",
+    "platforms_many": "Платформ",
+    "platforms_other": "Платформы",
+    "rights": "Все права защищены."
   }
 }

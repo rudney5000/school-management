@@ -30,6 +30,13 @@ export interface CreatedUser {
   role: UserRole;
 }
 
+/** A deactivated account can neither sign in nor renew a session it already had. */
+function assertActive(user: typeof users.$inferSelect): void {
+  if (user.isActive === 'false') {
+    throw new AppError('UNAUTHORIZED', 'Account deactivated', 401);
+  }
+}
+
 export class AuthService {
   async register(input: RegisterDto, actor: Express.User): Promise<CreatedUser> {
     await this.assertProfileInActorScope(input, actor);
@@ -131,20 +138,12 @@ export class AuthService {
     if (!valid) {
       throw new AppError('UNAUTHORIZED', 'Invalid credentials', 401);
     }
-
-    const context = await this.resolveContext(user);
+    // Checked after the password, so a wrong password reveals nothing about the account.
+    assertActive(user);
 
     await db.update(users).set({ lastLoginAt: new Date() }).where(eq(users.id, user.id));
 
-    return this.generateTokens({
-      id: user.id,
-      email: user.email ?? undefined,
-      phone: user.phone ?? undefined,
-      username: user.username ?? undefined,
-      role: user.role as UserRole,
-      schoolId: context.schoolId,
-      subSchoolId: context.subSchoolId,
-    });
+    return this.generateTokens(await this.buildPayload(user));
   }
 
   async refresh(refreshToken: string): Promise<AuthTokens> {
@@ -161,8 +160,11 @@ export class AuthService {
     if (!user) {
       throw new AppError('UNAUTHORIZED', 'User not found', 401);
     }
+    assertActive(user);
 
-    return this.generateTokens(payload);
+    // The refresh token only carries the user id: the new access token is
+    // rebuilt from the database, so a changed role or school applies at once.
+    return this.generateTokens(await this.buildPayload(user));
   }
 
   async me(userId: string): Promise<TokenPayload> {
@@ -172,6 +174,11 @@ export class AuthService {
       throw new AppError('NOT_FOUND', 'User not found', 404);
     }
 
+    return this.buildPayload(user);
+  }
+
+  /** What an access token says about the user: identity, role and school, read fresh. */
+  private async buildPayload(user: typeof users.$inferSelect): Promise<TokenPayload> {
     const context = await this.resolveContext(user);
 
     return {

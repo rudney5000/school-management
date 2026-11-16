@@ -21,7 +21,6 @@ export const createConversationSchema = z.object({
 
 export const messageAttachmentInputSchema = z.object({
   key: z.string(),
-  publicUrl: z.string(),
   filename: z.string(),
   mimeType: z.string(),
   size: z.number(),

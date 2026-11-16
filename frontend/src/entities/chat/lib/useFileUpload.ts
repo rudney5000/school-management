@@ -18,17 +18,21 @@ export function useFileUpload(conversationId: string) {
           filename: file.name,
           mimeType: file.type,
           size: file.size,
-          conversationId,
+          // Uploads are filed under the conversation, which the backend checks
+          // again when the message is sent.
+          attachableType: 'conversation',
+          attachableId: conversationId,
         });
 
         if (!isSuccess(res)) throw new Error('Presign failed');
-        const { uploadUrl, key, publicUrl } = res.result;
+        const { uploadUrl, key } = res.result;
 
-        await fetch(uploadUrl, {
+        const upload = await fetch(uploadUrl, {
           method: 'PUT',
           body: file,
           headers: { 'Content-Type': file.type },
         });
+        if (!upload.ok) throw new Error(`Upload failed (${upload.status})`);
 
         setUploadProgress(100);
 
@@ -37,13 +41,12 @@ export function useFileUpload(conversationId: string) {
 
         if (file.type.startsWith('image/')) {
           const dimensions = await getImageDimensions(file);
-          width = dimensions.width;
-          height = dimensions.height;
+          width = dimensions?.width;
+          height = dimensions?.height;
         }
 
         return {
           key,
-          publicUrl,
           filename: file.name,
           mimeType: file.type,
           size: file.size,
@@ -63,12 +66,17 @@ export function useFileUpload(conversationId: string) {
   return { uploadFile, isUploading, uploadProgress };
 }
 
-function getImageDimensions(file: File): Promise<{ width: number; height: number }> {
+/** Undefined when the browser cannot decode the image: the dimensions are optional. */
+function getImageDimensions(file: File): Promise<{ width: number; height: number } | undefined> {
   return new Promise((resolve) => {
     const img = new Image();
     const url = URL.createObjectURL(file);
     img.onload = () => {
       resolve({ width: img.naturalWidth, height: img.naturalHeight });
+      URL.revokeObjectURL(url);
+    };
+    img.onerror = () => {
+      resolve(undefined);
       URL.revokeObjectURL(url);
     };
     img.src = url;

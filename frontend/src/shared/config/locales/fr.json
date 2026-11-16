@@ -648,10 +648,8 @@
         "completed": "Terminés",
         "archived": "Archivés"
       },
-      "results": {
-        "results_one": "{{count}} résultat",
-        "results_few": "{{count}} résultats"
-      },
+      "results_one": "{{count}} résultat",
+      "results_other": "{{count}} résultats",
       "live": {
         "available": "Live disponible"
       },
@@ -2108,5 +2106,16 @@
       "delete": "Supprimer",
       "deleted": "Programme supprimé."
     }
+  },
+  "authLayout": {
+    "title": "La gestion scolaire pensée pour l'Afrique",
+    "subtitle": "Plusieurs établissements sous un même compte, connexion par e-mail, téléphone ou identifiant, et des documents officiels vérifiables.",
+    "languages_one": "Langue",
+    "languages_other": "Langues",
+    "roles_one": "Rôle",
+    "roles_other": "Rôles",
+    "platforms_one": "Plateforme",
+    "platforms_other": "Plateformes",
+    "rights": "Tous droits réservés."
   }
 }

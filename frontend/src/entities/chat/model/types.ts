@@ -71,7 +71,6 @@ export type Conversation = {
 
 export type UploadedFile = {
   key: string;
-  publicUrl: string;
   filename: string;
   mimeType: string;
   size: number;

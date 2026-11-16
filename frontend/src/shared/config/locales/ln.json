@@ -70,11 +70,11 @@
     "teachers": "Balakisi",
     "students": "Bayekoli",
     "parents": "Baboti",
-    "attendance": "Présence",
     "messages": "Ba message",
     "settings": "Ba paramètre",
     "events": "Ba évenement",
-    "curricula": "Ba programme"
+    "curricula": "Ba programme",
+    "attendances": "Présence"
   },
   "home": {
     "hero_section": {
@@ -594,10 +594,8 @@
         "completed": "Esili",
         "archived": "Ebatelami"
       },
-      "results": {
-        "results_one": "{{count}} mbano",
-        "results_few": "{{count}} bambano"
-      },
+      "results_one": "{{count}} mbano",
+      "results_other": "{{count}} bambano",
       "empty": {
         "title": "Liteya moko te emonani",
         "description": "Meka boluki mosusu to sala liteya ya sika."
